@@ -154,21 +154,16 @@ const CompResult = {
     `
 };
 
-// js/components.js
-// js/components.js
-
-// ... (CompHeader, CompInput, CompResult は変更なし) ...
-
-// Keys Component (★列構成変更)
+// Keys Component (★7列表示・Devリンク追加)
 const CompKeys = {
     props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data'],
     data() {
         return {
-            viewMode: 'needed',
+            viewMode: 'needed', 
             searchQuery: '',
             collapsedMaps: {},
-            ratings: ['-', 'S', 'A', 'B', 'C', 'D', 'F']
+            ratings: ['-', 'S', 'A', 'B', 'C', 'D', 'F', 'SS']
         }
     },
     computed: {
@@ -198,7 +193,6 @@ const CompKeys = {
                 if (!groups[map]) groups[map] = [];
                 groups[map].push(k);
             });
-            // Unknownは最後にしたいのでソート工夫
             return Object.keys(groups).sort((a,b) => {
                 if (a === 'Unknown / Other') return 1;
                 if (b === 'Unknown / Other') return -1;
@@ -257,9 +251,9 @@ const CompKeys = {
                             <tr>
                                 <th style="width: 40px;" class="text-center">所持</th>
                                 <th style="width: 60px;" class="text-center">Rate</th>
-                                <th style="width: 120px;">ShortName</th>
+                                <th style="width: 100px;">ShortName</th>
                                 <th>Name / Memo</th>
-                                <th style="width: 25%;">使用Task</th>
+                                <th style="width: 20%;">使用Task</th>
                                 <th style="width: 50px;">Wiki</th>
                                 <th style="width: 50px;">Dev</th>
                             </tr>
@@ -329,6 +323,7 @@ const CompKeys = {
     </div>
     `
 };
+
 // Modal
 const CompModal = {
     props: ['selectedTask'],

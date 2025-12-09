@@ -1,4 +1,5 @@
 // js/app.js
+
 const { createApp, ref, computed, onMounted, watch } = Vue;
 
 createApp({
@@ -52,6 +53,30 @@ createApp({
             keyUserData.value[id][field] = value;
         };
 
+        const applyKeyPresets = (allItems) => {
+            if (!allItems) return;
+            if (typeof KEY_PRESETS === 'undefined') return;
+
+            const currentData = keyUserData.value;
+            allItems.forEach(item => {
+                // ★修正: IDを使ってプリセットを検索
+                const preset = KEY_PRESETS[item.id]; 
+                
+                if (preset) {
+                    if (!currentData[item.id]) currentData[item.id] = { rating: '-', memo: '' };
+                    
+                    // 既存のデータがない場合のみプリセットを適用 (ユーザー入力を優先)
+                    if (!currentData[item.id].rating || currentData[item.id].rating === '-') {
+                        currentData[item.id].rating = preset.rating || '-';
+                    }
+                    if (!currentData[item.id].memo) {
+                        currentData[item.id].memo = preset.memo || '';
+                    }
+                }
+            });
+            keyUserData.value = { ...currentData };
+        };
+
         const processTasks = (tasks) => {
             if (!tasks) return [];
             return tasks.map(t => {
@@ -97,10 +122,12 @@ createApp({
                     maps: result.data.maps || []
                 };
                 
+                applyKeyPresets(result.data.items);
+                
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
-                // ★キャッシュv11
-                localStorage.setItem('eft_api_cache_v11', JSON.stringify({
+                // ★キャッシュv13
+                localStorage.setItem('eft_api_cache_v13', JSON.stringify({
                     timestamp: now, 
                     hideoutStations: hideoutData.value, 
                     tasks: taskData.value, 
@@ -168,7 +195,7 @@ createApp({
         };
 
         onMounted(() => {
-            const cache = loadLS('eft_api_cache_v11', null); // ★v11ロード
+            const cache = loadLS('eft_api_cache_v13', null); // ★v13
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
@@ -191,6 +218,10 @@ createApp({
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             playerLevel.value = parseInt(localStorage.getItem('eft_level') || 1, 10);
             forceHideoutFir.value = loadLS('eft_force_fir', false);
+            
+            if (itemsData.value.items.length > 0) {
+                applyKeyPresets(itemsData.value.items);
+            }
         });
 
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, forceHideoutFir], () => {
@@ -211,14 +242,13 @@ createApp({
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
             
-            // ★拡張: shortName, normalizedName を受け取れるように変更
             const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
                 const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${sourceType}_${id}`;
                 if (!res[cat][uid]) {
                     res[cat][uid] = { 
                         id, uid, name, count: 0, sources: [], 
                         mapName, wikiLink: wiki, 
-                        shortName, normalizedName // ★保存
+                        shortName, normalizedName 
                     };
                 }
                 
