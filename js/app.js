@@ -243,7 +243,7 @@ createApp({
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
             
             const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
-                const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${sourceType}_${id}`;
+            const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
                 if (!res[cat][uid]) {
                     res[cat][uid] = { 
                         id, uid, name, count: 0, sources: [], 
