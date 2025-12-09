@@ -1,4 +1,4 @@
-// バックアップデータ (API通信失敗時に使用)
+// data.js
 const TARKOV_DATA = {
   "data": {
     "tasks": [
@@ -14,7 +14,6 @@ const TARKOV_DATA = {
           "name": "Ground Zero"
         },
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -69,7 +68,6 @@ const TARKOV_DATA = {
           "name": "Ground Zero"
         },
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -117,7 +115,6 @@ const TARKOV_DATA = {
           "name": "Ground Zero"
         },
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -156,7 +153,6 @@ const TARKOV_DATA = {
           "name": "Ground Zero"
         },
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -210,7 +206,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -279,7 +274,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -355,7 +349,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -416,7 +409,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -476,7 +468,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -543,7 +534,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -600,7 +590,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -661,7 +650,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -730,7 +718,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -801,7 +788,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -861,7 +847,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -921,7 +906,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -981,7 +965,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1061,7 +1044,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1099,7 +1081,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1170,7 +1151,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1222,7 +1202,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1317,7 +1296,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1368,7 +1346,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1416,7 +1393,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1466,7 +1442,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -1502,7 +1477,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1545,7 +1519,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1583,7 +1556,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1665,7 +1637,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -1715,7 +1686,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1758,7 +1728,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1817,7 +1786,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1869,7 +1837,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1928,7 +1895,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -1971,7 +1937,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -2015,7 +1980,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -2064,7 +2028,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -2118,7 +2081,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -2192,7 +2154,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -2258,7 +2219,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2304,7 +2264,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -2382,7 +2341,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2475,7 +2433,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2528,7 +2485,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2592,7 +2548,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2635,7 +2590,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2688,7 +2642,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2755,7 +2708,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2812,7 +2764,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2876,7 +2827,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2933,7 +2883,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -2990,7 +2939,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3071,7 +3019,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3117,7 +3064,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3174,7 +3120,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3220,7 +3165,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3272,7 +3216,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3349,7 +3292,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -3419,7 +3361,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -3500,7 +3441,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -3562,7 +3502,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -3630,7 +3569,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -3699,7 +3637,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -3770,7 +3707,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -3846,7 +3782,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -3904,7 +3839,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -3949,7 +3883,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -4014,7 +3947,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -4096,7 +4028,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -4186,7 +4117,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -4267,7 +4197,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -4319,7 +4248,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -4370,7 +4298,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4460,7 +4387,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -4520,7 +4446,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4582,7 +4507,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4659,7 +4583,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4719,7 +4642,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -4772,7 +4694,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4846,7 +4767,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4929,7 +4849,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -4997,7 +4916,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5065,7 +4983,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5152,7 +5069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5203,7 +5119,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5281,7 +5196,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5352,7 +5266,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -5404,7 +5317,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5459,7 +5371,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5524,7 +5435,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5578,7 +5488,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5658,7 +5567,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -5711,7 +5619,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5757,7 +5664,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5831,7 +5737,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5925,7 +5830,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -5984,7 +5888,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6049,7 +5952,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6122,7 +6024,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6195,7 +6096,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -6241,7 +6141,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6294,7 +6193,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6361,7 +6259,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6407,7 +6304,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6453,7 +6349,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6504,7 +6399,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -6603,7 +6497,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -6639,7 +6532,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -6686,7 +6578,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6770,7 +6661,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -6816,7 +6706,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -6885,7 +6774,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -6932,7 +6820,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -6985,7 +6872,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7051,7 +6937,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7097,7 +6982,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7151,7 +7035,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7252,7 +7135,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7299,7 +7181,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7343,7 +7224,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7379,7 +7259,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7498,7 +7377,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7558,7 +7436,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7622,7 +7499,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7666,7 +7542,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -7769,7 +7644,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -7876,7 +7750,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -7991,7 +7864,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8040,7 +7912,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -8088,7 +7959,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -8149,7 +8019,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -8210,7 +8079,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -8279,7 +8147,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8342,7 +8209,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8387,7 +8253,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8441,7 +8306,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8526,7 +8390,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8570,7 +8433,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -8630,7 +8492,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -8680,7 +8541,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8731,7 +8591,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8797,7 +8656,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8847,7 +8705,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8932,7 +8789,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -8977,7 +8833,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9020,7 +8875,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9125,7 +8979,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -9194,7 +9047,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9250,7 +9102,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9295,7 +9146,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9342,7 +9192,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9388,7 +9237,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9453,7 +9301,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9509,7 +9356,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9565,7 +9411,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9628,7 +9473,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9688,7 +9532,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9780,7 +9623,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9870,7 +9712,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -9908,7 +9749,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -9961,7 +9801,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10014,7 +9853,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10066,7 +9904,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -10111,7 +9948,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10158,7 +9994,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10194,14 +10029,6 @@ const TARKOV_DATA = {
             "task": {
               "name": "Ice Cream Cones"
             }
-          }
-        ],
-        "traderRequirements": [
-          {
-            "requirementType": "level",
-            "level": 2,
-            "compareMethod": ">=",
-            "value": 2
           }
         ],
         "traderLevelRequirements": [
@@ -10275,7 +10102,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10346,7 +10172,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -10408,7 +10233,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10471,7 +10295,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10523,7 +10346,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10577,7 +10399,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10625,7 +10446,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -10685,7 +10505,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10735,7 +10554,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -10795,7 +10613,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -10840,7 +10657,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10917,7 +10733,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -10971,7 +10786,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11031,7 +10845,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11095,7 +10908,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11147,7 +10959,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11201,7 +11012,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -11259,7 +11069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -11304,7 +11113,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -11362,7 +11170,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11417,7 +11224,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11484,7 +11290,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11536,7 +11341,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11597,7 +11401,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11657,7 +11460,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11710,7 +11512,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11794,7 +11595,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11833,7 +11633,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11901,7 +11700,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -11977,7 +11775,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12045,7 +11842,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12105,7 +11901,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12192,7 +11987,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12277,7 +12071,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12331,7 +12124,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -12400,7 +12192,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12459,7 +12250,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -12521,7 +12311,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -12580,7 +12369,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -12625,7 +12413,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -12675,7 +12462,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -12734,7 +12520,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -12783,7 +12568,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12832,7 +12616,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12876,7 +12659,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -12924,7 +12706,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13011,7 +12792,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13067,7 +12847,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13136,7 +12915,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13182,7 +12960,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -13226,7 +13003,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -13287,7 +13063,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13338,7 +13113,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13384,7 +13158,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13430,7 +13203,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13515,7 +13287,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -13585,7 +13356,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -13654,7 +13424,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13716,7 +13485,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13795,7 +13563,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -13896,7 +13663,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13946,7 +13712,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -13994,7 +13759,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -14064,7 +13828,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14117,7 +13880,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14165,7 +13927,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14230,7 +13991,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14292,7 +14052,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -14356,7 +14115,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -14399,7 +14157,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -14486,7 +14243,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14559,7 +14315,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -14606,7 +14361,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -14661,7 +14415,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14701,7 +14454,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14768,7 +14520,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14816,7 +14567,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -14876,7 +14626,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -14938,7 +14687,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -14999,7 +14747,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15060,7 +14807,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15107,7 +14853,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15156,7 +14901,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15212,7 +14956,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -15274,7 +15017,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -15327,7 +15069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15440,7 +15181,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -15487,7 +15227,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15550,7 +15289,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15602,7 +15340,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15656,7 +15393,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15706,7 +15442,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15744,7 +15479,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15810,7 +15544,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -15856,7 +15589,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15911,7 +15643,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -15961,7 +15692,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16014,7 +15744,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16079,7 +15808,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16117,7 +15845,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16175,7 +15902,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16246,7 +15972,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16306,7 +16031,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16373,7 +16097,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16432,7 +16155,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16487,7 +16209,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16531,7 +16252,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16591,7 +16311,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16653,7 +16372,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16709,7 +16427,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16794,7 +16511,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16839,7 +16555,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16882,7 +16597,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -16942,7 +16656,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17006,7 +16719,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17076,7 +16788,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17129,7 +16840,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17194,7 +16904,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17259,7 +16968,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17308,7 +17016,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17377,7 +17084,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17446,7 +17152,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17495,7 +17200,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -17550,7 +17254,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -17609,7 +17312,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -17682,7 +17384,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -17737,7 +17438,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -17822,7 +17522,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17891,7 +17590,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -17960,7 +17658,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18025,7 +17722,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18221,7 +17917,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18257,7 +17952,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18314,7 +18008,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18385,7 +18078,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18421,7 +18113,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18483,7 +18174,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18578,7 +18268,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18712,7 +18401,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18782,7 +18470,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18852,7 +18539,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -18918,7 +18604,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -18991,7 +18676,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -19050,7 +18734,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -19094,7 +18777,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -19160,7 +18842,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -19234,7 +18915,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -19305,7 +18985,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -19360,7 +19039,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -19443,7 +19121,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -19522,7 +19199,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -19594,7 +19270,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -19631,7 +19306,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -19670,7 +19344,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -19718,14 +19391,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 1,
-            "compareMethod": ">=",
-            "value": 1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -20010,7 +19675,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20072,7 +19736,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20160,7 +19823,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20229,7 +19891,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20305,7 +19966,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20390,7 +20050,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20485,7 +20144,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20547,7 +20205,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -20637,7 +20294,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20722,7 +20378,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20792,7 +20447,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -20879,7 +20533,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -20947,7 +20600,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21003,7 +20655,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21057,7 +20708,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21106,7 +20756,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21164,7 +20813,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21236,7 +20884,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21290,7 +20937,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21354,7 +21000,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": true,
@@ -21403,7 +21048,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21449,7 +21093,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21494,7 +21137,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21562,7 +21204,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21621,7 +21262,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21675,7 +21315,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -21735,7 +21374,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21805,7 +21443,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21848,7 +21485,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21907,7 +21543,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -21960,7 +21595,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22010,7 +21644,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22055,7 +21688,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22113,7 +21745,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22191,7 +21822,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22249,7 +21879,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22399,7 +22028,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22477,7 +22105,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22526,7 +22153,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -22679,7 +22305,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -22733,7 +22358,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22783,7 +22407,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -22850,7 +22473,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -22911,7 +22533,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -22990,7 +22611,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23043,7 +22663,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23091,7 +22710,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -23167,7 +22785,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23257,7 +22874,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23319,7 +22935,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23369,7 +22984,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23438,7 +23052,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23506,7 +23119,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -23573,7 +23185,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23626,7 +23237,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -23670,7 +23280,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23771,7 +23380,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23826,7 +23434,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23893,7 +23500,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -23960,7 +23566,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24036,7 +23641,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24093,7 +23697,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -24145,7 +23748,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24242,7 +23844,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24372,7 +23973,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -24409,7 +24009,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24498,7 +24097,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24565,14 +24163,6 @@ const TARKOV_DATA = {
             "task": {
               "name": "The Huntsman Path - Woods Keeper"
             }
-          }
-        ],
-        "traderRequirements": [
-          {
-            "requirementType": "level",
-            "level": 4,
-            "compareMethod": ">=",
-            "value": 4
           }
         ],
         "traderLevelRequirements": [
@@ -24642,7 +24232,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -24703,7 +24292,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -24756,7 +24344,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -24834,7 +24421,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -24880,7 +24466,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -24913,7 +24498,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -24943,7 +24527,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -24976,7 +24559,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -25033,7 +24615,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -25109,7 +24690,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -25140,7 +24720,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25179,14 +24758,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 0,
-            "compareMethod": "<=",
-            "value": 0
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25222,7 +24793,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25260,7 +24830,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25307,7 +24876,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25346,7 +24914,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25390,7 +24957,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25438,7 +25004,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25504,7 +25069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25576,7 +25140,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25632,7 +25195,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25703,7 +25265,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25755,7 +25316,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25811,7 +25371,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25857,7 +25416,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25934,7 +25492,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -25971,7 +25528,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26008,14 +25564,6 @@ const TARKOV_DATA = {
             "task": {
               "name": "Make Amends"
             }
-          }
-        ],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 0,
-            "compareMethod": "<=",
-            "value": 0
           }
         ],
         "traderLevelRequirements": [],
@@ -26082,7 +25630,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26110,7 +25657,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26147,14 +25693,6 @@ const TARKOV_DATA = {
             "task": {
               "name": "Make Amends"
             }
-          }
-        ],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 0,
-            "compareMethod": "<=",
-            "value": 0
           }
         ],
         "traderLevelRequirements": [],
@@ -26194,7 +25732,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26230,7 +25767,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26276,7 +25812,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26340,7 +25875,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26460,14 +25994,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 1,
-            "compareMethod": ">=",
-            "value": 1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": true,
@@ -26530,7 +26056,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26570,7 +26095,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26607,7 +26131,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -26654,7 +26177,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -26756,7 +26278,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -26815,7 +26336,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -26858,7 +26378,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -26943,7 +26462,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27003,7 +26521,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27054,7 +26571,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27193,7 +26709,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27236,7 +26751,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27274,7 +26788,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27321,7 +26834,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27367,7 +26879,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27421,7 +26932,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27494,7 +27004,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27551,7 +27060,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27611,7 +27119,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27680,7 +27187,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27743,7 +27249,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -27812,7 +27317,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27865,7 +27369,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27934,7 +27437,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -27996,7 +27498,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -28092,7 +27593,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -28151,7 +27651,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -28210,7 +27709,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -28258,7 +27756,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -28317,7 +27814,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -28394,7 +27890,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -28468,14 +27963,6 @@ const TARKOV_DATA = {
             "task": {
               "name": "Sew it Good - Part 4"
             }
-          }
-        ],
-        "traderRequirements": [
-          {
-            "requirementType": "level",
-            "level": 4,
-            "compareMethod": ">=",
-            "value": 4
           }
         ],
         "traderLevelRequirements": [
@@ -28582,14 +28069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [
-          {
-            "requirementType": "level",
-            "level": 4,
-            "compareMethod": ">=",
-            "value": 4
-          }
-        ],
         "traderLevelRequirements": [
           {
             "level": 4,
@@ -28694,7 +28173,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -28790,7 +28268,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -28886,7 +28363,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -28997,7 +28473,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -29035,7 +28510,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -29065,7 +28539,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -29095,7 +28568,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -29133,7 +28605,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -29176,7 +28647,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -29238,7 +28708,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -29718,7 +29187,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": true,
         "lightkeeperRequired": false,
@@ -30111,7 +29579,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30164,7 +29631,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30210,7 +29676,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30260,7 +29725,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30376,7 +29840,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30434,7 +29897,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30508,7 +29970,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30566,7 +30027,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30709,7 +30169,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30745,7 +30204,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30799,7 +30257,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30853,7 +30310,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30952,7 +30408,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -30997,7 +30452,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31053,7 +30507,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31107,7 +30560,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31156,14 +30608,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": -1,
-            "compareMethod": "<",
-            "value": -1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31202,14 +30646,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": -1,
-            "compareMethod": "<=",
-            "value": -1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31231,14 +30667,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": -1,
-            "compareMethod": "<=",
-            "value": -1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31277,14 +30705,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": -1,
-            "compareMethod": "<=",
-            "value": -1
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31320,7 +30740,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31363,7 +30782,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31406,7 +30824,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31610,7 +31027,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31653,7 +31069,6 @@ const TARKOV_DATA = {
             }
           }
         ],
-        "traderRequirements": [],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31725,14 +31140,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": 4,
-            "compareMethod": ">=",
-            "value": 4
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -31762,14 +31169,6 @@ const TARKOV_DATA = {
         },
         "map": null,
         "taskRequirements": [],
-        "traderRequirements": [
-          {
-            "requirementType": "reputation",
-            "level": -3,
-            "compareMethod": "<=",
-            "value": -3
-          }
-        ],
         "traderLevelRequirements": [],
         "kappaRequired": false,
         "lightkeeperRequired": false,
@@ -36385,38 +35784,22 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "66acd6702b17692df20144c0",
-              "name": "TerraGroup ストレージルーム キーカード",
-              "shortName": "Polikhim",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_storage_room_keycard",
-              "normalizedName": "terragroup-storage-room-keycard"
+              "id": "66acd6702b17692df20144c0"
             }
           }
         ]
@@ -36426,308 +35809,172 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5da743f586f7744014504f72",
-              "name": "USECの隠し倉庫の鍵",
-              "shortName": "USEC",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_stash_key",
-              "normalizedName": "usec-stash-key"
+              "id": "5da743f586f7744014504f72"
             }
           },
           {
             "key": {
-              "id": "5da743f586f7744014504f72",
-              "name": "USECの隠し倉庫の鍵",
-              "shortName": "USEC",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_stash_key",
-              "normalizedName": "usec-stash-key"
+              "id": "5da743f586f7744014504f72"
             }
           },
           {
             "key": {
-              "id": "5780d0532459777a5108b9a2",
-              "name": "Tarcone 管理事務室の鍵",
-              "shortName": "Director's",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Tarcone_Director%27s_office_key",
-              "normalizedName": "tarcone-directors-office-key"
+              "id": "5780d0532459777a5108b9a2"
             }
           },
           {
             "key": {
-              "id": "5913611c86f77479e0084092",
-              "name": "トレーラーパークの可搬式詰所の鍵",
-              "shortName": "Cabin",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Trailer_park_portable_cabin_key",
-              "normalizedName": "trailer-park-portable-cabin-key"
+              "id": "5913611c86f77479e0084092"
             }
           },
           {
             "key": {
-              "id": "5780d07a2459777de4559324",
-              "name": "ポータブルキャビンの鍵",
-              "shortName": "Cabin",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Portable_cabin_key",
-              "normalizedName": "portable-cabin-key"
+              "id": "5780d07a2459777de4559324"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "593962ca86f774068014d9af",
-              "name": "用途不明の鍵",
-              "shortName": "Unknown",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Unknown_key",
-              "normalizedName": "unknown-key"
+              "id": "593962ca86f774068014d9af"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5938603e86f77435642354f4",
-              "name": "社員寮206号室の鍵",
-              "shortName": "Dorm 206",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_206_key",
-              "normalizedName": "dorm-room-206-key"
+              "id": "5938603e86f77435642354f4"
             }
           },
           {
             "key": {
-              "id": "591382d986f774465a6413a7",
-              "name": "社員寮105号室の鍵",
-              "shortName": "Dorm 105",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_105_key",
-              "normalizedName": "dorm-room-105-key"
+              "id": "591382d986f774465a6413a7"
             }
           },
           {
             "key": {
-              "id": "59136e1e86f774432f15d133",
-              "name": "社員寮110号室の鍵",
-              "shortName": "Dorm 110",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_110_key",
-              "normalizedName": "dorm-room-110-key"
+              "id": "59136e1e86f774432f15d133"
             }
           },
           {
             "key": {
-              "id": "591383f186f7744a4c5edcf3",
-              "name": "社員寮104号室の鍵",
-              "shortName": "Dorm 104",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_104_key",
-              "normalizedName": "dorm-room-104-key"
+              "id": "591383f186f7744a4c5edcf3"
             }
           },
           {
             "key": {
-              "id": "59387a4986f77401cc236e62",
-              "name": "社員寮114号室の鍵",
-              "shortName": "Dorm 114",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_114_key",
-              "normalizedName": "dorm-room-114-key"
+              "id": "59387a4986f77401cc236e62"
             }
           },
           {
             "key": {
-              "id": "59136a4486f774447a1ed172",
-              "name": "寮の守衛室の鍵",
-              "shortName": "GDesk",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_guard_desk_key",
-              "normalizedName": "dorm-guard-desk-key"
+              "id": "59136a4486f774447a1ed172"
             }
           },
           {
             "key": {
-              "id": "5780cf692459777de4559321",
-              "name": "社員寮315号室の鍵",
-              "shortName": "Dorm 315",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_315_key",
-              "normalizedName": "dorm-room-315-key"
+              "id": "5780cf692459777de4559321"
             }
           },
           {
             "key": {
-              "id": "5780cf722459777a5108b9a1",
-              "name": "社員寮308号室の鍵",
-              "shortName": "Dorm 308",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_308_key",
-              "normalizedName": "dorm-room-308-key"
+              "id": "5780cf722459777a5108b9a1"
             }
           },
           {
             "key": {
-              "id": "5780cf7f2459777de4559322",
-              "name": "マークの刻まれた社員寮314号室の鍵",
-              "shortName": "Dorm mrk.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_314_marked_key",
-              "normalizedName": "dorm-room-314-marked-key"
+              "id": "5780cf7f2459777de4559322"
             }
           },
           {
             "key": {
-              "id": "5672c92d4bdc2d180f8b4567",
-              "name": "社員寮118号室の鍵",
-              "shortName": "Dorm 118",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_118_key",
-              "normalizedName": "dorm-room-118-key"
+              "id": "5672c92d4bdc2d180f8b4567"
             }
           },
           {
             "key": {
-              "id": "5780cfa52459777dfb276eb1",
-              "name": "社員寮220号室の鍵",
-              "shortName": "Dorm 220",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_220_key",
-              "normalizedName": "dorm-room-220-key"
+              "id": "5780cfa52459777dfb276eb1"
             }
           },
           {
             "key": {
-              "id": "5938504186f7740991483f30",
-              "name": "社員寮203号室の鍵",
-              "shortName": "Dorm 203",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_203_key",
-              "normalizedName": "dorm-room-203-key"
+              "id": "5938504186f7740991483f30"
             }
           },
           {
             "key": {
-              "id": "59148c8a86f774197930e983",
-              "name": "社員寮204号室の鍵",
-              "shortName": "Dorm 204",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_204_key",
-              "normalizedName": "dorm-room-204-key"
+              "id": "59148c8a86f774197930e983"
             }
           },
           {
             "key": {
-              "id": "593aa4be86f77457f56379f8",
-              "name": "社員寮303号室の鍵",
-              "shortName": "Dorm 303",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_303_key",
-              "normalizedName": "dorm-room-303-key"
+              "id": "593aa4be86f77457f56379f8"
             }
           },
           {
             "key": {
-              "id": "5914578086f774123569ffa4",
-              "name": "社員寮108号室の鍵",
-              "shortName": "Dorm 108",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_108_key",
-              "normalizedName": "dorm-room-108-key"
+              "id": "5914578086f774123569ffa4"
             }
           },
           {
             "key": {
-              "id": "5780cda02459777b272ede61",
-              "name": "社員寮306号室の鍵",
-              "shortName": "Dorm 306",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_306_key",
-              "normalizedName": "dorm-room-306-key"
+              "id": "5780cda02459777b272ede61"
             }
           },
           {
             "key": {
-              "id": "664d4b0103ef2c61246afb56",
-              "name": "寮の監督の鍵",
-              "shortName": "Overseer",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_overseer_key",
-              "normalizedName": "dorm-overseer-key"
+              "id": "664d4b0103ef2c61246afb56"
             }
           },
           {
             "key": {
-              "id": "5938994586f774523a425196",
-              "name": "社員寮103号室の鍵",
-              "shortName": "Dorm 103",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_103_key",
-              "normalizedName": "dorm-room-103-key"
+              "id": "5938994586f774523a425196"
             }
           },
           {
             "key": {
-              "id": "5780cf942459777df90dcb72",
-              "name": "社員寮214号室の鍵",
-              "shortName": "Dorm 214",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_214_key",
-              "normalizedName": "dorm-room-214-key"
+              "id": "5780cf942459777df90dcb72"
             }
           },
           {
             "key": {
-              "id": "5780cf9e2459777df90dcb73",
-              "name": "社員寮218号室の鍵",
-              "shortName": "Dorm 218",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_218_key",
-              "normalizedName": "dorm-room-218-key"
+              "id": "5780cf9e2459777df90dcb73"
             }
           },
           {
             "key": {
-              "id": "5913877a86f774432f15d444",
-              "name": "ガソリンスタンドの物置の鍵",
-              "shortName": "Gas store",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_station_storage_room_key",
-              "normalizedName": "gas-station-storage-room-key"
+              "id": "5913877a86f774432f15d444"
             }
           },
           {
             "key": {
-              "id": "5780d0652459777df90dcb74",
-              "name": "ガソリンスタンドの事務室の鍵",
-              "shortName": "Gas office",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_station_office_key",
-              "normalizedName": "gas-station-office-key"
+              "id": "5780d0652459777df90dcb74"
             }
           },
           {
             "key": {
-              "id": "6761a6f90575f25e020816a4",
-              "name": "会社役員室の鍵",
-              "shortName": "Company",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Company_director%27s_room_key",
-              "normalizedName": "company-directors-room-key"
+              "id": "6761a6f90575f25e020816a4"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5938144586f77473c2087145",
-              "name": "可搬式の詰所の鍵",
-              "shortName": "Bunkhouse",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Portable_bunkhouse_key",
-              "normalizedName": "portable-bunkhouse-key"
+              "id": "5938144586f77473c2087145"
             }
           },
           {
             "key": {
-              "id": "5937ee6486f77408994ba448",
-              "name": "特殊車両の鍵",
-              "shortName": "Machinery",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Machinery_key",
-              "normalizedName": "machinery-key"
+              "id": "5937ee6486f77408994ba448"
             }
           }
         ]
@@ -36737,38 +35984,22 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "664d3db6db5dea2bad286955",
-              "name": "Shatun のハイドアウトの鍵",
-              "shortName": "Shatun",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shatun%27s_hideout_key",
-              "normalizedName": "shatuns-hideout-key"
+              "id": "664d3db6db5dea2bad286955"
             }
           },
           {
             "key": {
-              "id": "591afe0186f77431bd616a11",
-              "name": "ZB-014 の鍵",
-              "shortName": "ZB-014",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/ZB-014_key",
-              "normalizedName": "zb-014-key"
+              "id": "591afe0186f77431bd616a11"
             }
           },
           {
             "key": {
-              "id": "6761a6ccd9bbb27ad703c48a",
-              "name": "古い家の部屋の鍵",
-              "shortName": "Depot",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Old_house_room_key",
-              "normalizedName": "old-house-room-key"
+              "id": "6761a6ccd9bbb27ad703c48a"
             }
           },
           {
             "key": {
-              "id": "5d08d21286f774736e7c94c3",
-              "name": "Shturman の保管庫の鍵",
-              "shortName": "SSK",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shturman%27s_stash_key",
-              "normalizedName": "shturmans-stash-key"
+              "id": "5d08d21286f774736e7c94c3"
             }
           }
         ]
@@ -36778,236 +36009,132 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "61a64428a8c6aa1b795f0ba1",
-              "name": "コンビニエンスストアの貯蔵室の鍵",
-              "shortName": "Store",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Convenience_store_storage_room_key",
-              "normalizedName": "convenience-store-storage-room-key"
+              "id": "61a64428a8c6aa1b795f0ba1"
             }
           },
           {
             "key": {
-              "id": "62987cb98081af308d7558c8",
-              "name": "会議室の鍵",
-              "shortName": "Conf.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Conference_room_key",
-              "normalizedName": "conference-room-key"
+              "id": "62987cb98081af308d7558c8"
             }
           },
           {
             "key": {
-              "id": "62987dfc402c7f69bf010923",
-              "name": "マークの刻まれた共同寝室の鍵",
-              "shortName": "Bedroom",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shared_bedroom_marked_key",
-              "normalizedName": "shared-bedroom-marked-key"
+              "id": "62987dfc402c7f69bf010923"
             }
           },
           {
             "key": {
-              "id": "62987c658081af308d7558c6",
-              "name": "レーダー管制施設の指揮官室の鍵",
-              "shortName": "Radar",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Radar_station_commandant_room_key",
-              "normalizedName": "radar-station-commandant-room-key"
+              "id": "62987c658081af308d7558c6"
             }
           },
           {
             "key": {
-              "id": "61aa5b7db225ac1ead7957c1",
-              "name": "USEC の1番金庫の鍵",
-              "shortName": "USEC 1",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_first_safe_key",
-              "normalizedName": "usec-cottage-first-safe-key"
+              "id": "61aa5b7db225ac1ead7957c1"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9",
-              "name": "USEC の2番金庫の鍵",
-              "shortName": "USEC 2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
-              "normalizedName": "usec-cottage-second-safe-key"
+              "id": "61aa5ba8018e9821b7368da9"
             }
           },
           {
             "key": {
-              "id": "66265d7be65f224b2e17c6aa",
-              "name": "USEC コテージの部屋の鍵",
-              "shortName": "USEC cott.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_room_key",
-              "normalizedName": "usec-cottage-room-key"
+              "id": "66265d7be65f224b2e17c6aa"
             }
           },
           {
             "key": {
-              "id": "61a6446f4b5f8b70f451b166",
-              "name": "Cold storage room key",
-              "shortName": "Cold",
-              "wikiLink": "",
-              "normalizedName": "cold-storage-room-key"
+              "id": "61a6446f4b5f8b70f451b166"
             }
           },
           {
             "key": {
-              "id": "664d3de85f2355673b09aed5",
-              "name": "Leon's hideout key",
-              "shortName": "Leon",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Leon%27s_hideout_key",
-              "normalizedName": "leons-hideout-key"
+              "id": "664d3de85f2355673b09aed5"
             }
           },
           {
             "key": {
-              "id": "61a6444b8c141d68246e2d2f",
-              "name": "丘陵地の家の鍵",
-              "shortName": "House",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Hillside_house_key",
-              "normalizedName": "hillside-house-key"
+              "id": "61a6444b8c141d68246e2d2f"
             }
           },
           {
             "key": {
-              "id": "62987da96188c076bc0d8c51",
-              "name": "手術室の鍵",
-              "shortName": "OR",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Operating_room_key",
-              "normalizedName": "operating-room-key"
+              "id": "62987da96188c076bc0d8c51"
             }
           },
           {
             "key": {
-              "id": "62987e26a77ec735f90a2995",
-              "name": "浄水場の保管室の鍵",
-              "shortName": "WTP store",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Water_treatment_plant_storage_room_key",
-              "normalizedName": "water-treatment-plant-storage-room-key"
+              "id": "62987e26a77ec735f90a2995"
             }
           },
           {
             "key": {
-              "id": "62a9cb937377a65d7b070cef",
-              "name": "Rogue USEC の兵舎の鍵",
-              "shortName": "Barrack",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_barrack_key",
-              "normalizedName": "rogue-usec-barrack-key"
+              "id": "62a9cb937377a65d7b070cef"
             }
           },
           {
             "key": {
-              "id": "61a64492ba05ef10d62adcc1",
-              "name": "Rogue USEC の保管庫の鍵",
-              "shortName": "Stash",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_stash_key",
-              "normalizedName": "rogue-usec-stash-key"
+              "id": "61a64492ba05ef10d62adcc1"
             }
           },
           {
             "key": {
-              "id": "61aa81fcb225ac1ead7957c3",
-              "name": "Rogue USEC の作業小屋の鍵",
-              "shortName": "Workshop",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_workshop_key",
-              "normalizedName": "rogue-usec-workshop-key"
+              "id": "61aa81fcb225ac1ead7957c3"
             }
           },
           {
             "key": {
-              "id": "61aa5aed32a4743c3453d319",
-              "name": "護送車の車室の鍵",
-              "shortName": "Police",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Police_truck_cabin_key",
-              "normalizedName": "police-truck-cabin-key"
+              "id": "61aa5aed32a4743c3453d319"
             }
           },
           {
             "key": {
-              "id": "61aa5b518f5e7a39b41416e2",
-              "name": "Merin 車のトランクの鍵",
-              "shortName": "Merin",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Merin_car_trunk_key",
-              "normalizedName": "merin-car-trunk-key"
+              "id": "61aa5b518f5e7a39b41416e2"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           }
         ]
@@ -37017,344 +36144,192 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5a0eb38b86f774153b320eb0",
-              "name": "SMW 車の鍵",
-              "shortName": "SMW",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/SMW_car_key",
-              "normalizedName": "smw-car-key"
+              "id": "5a0eb38b86f774153b320eb0"
             }
           },
           {
             "key": {
-              "id": "5d8e15b686f774445103b190",
-              "name": "水力発電所の保管庫の鍵",
-              "shortName": "HEPS",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/HEP_station_storage_room_key",
-              "normalizedName": "hep-station-storage-room-key"
+              "id": "5d8e15b686f774445103b190"
             }
           },
           {
             "key": {
-              "id": "664d3ddfdda2e85aca370d75",
-              "name": "Voron's hideout key",
-              "shortName": "Voron",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Voron%27s_hideout_key",
-              "normalizedName": "vorons-hideout-key"
+              "id": "664d3ddfdda2e85aca370d75"
             }
           },
           {
             "key": {
-              "id": "5a0eb6ac86f7743124037a28",
-              "name": "コテージの裏口の鍵",
-              "shortName": "Cottage",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cottage_back_door_key",
-              "normalizedName": "cottage-back-door-key"
+              "id": "5a0eb6ac86f7743124037a28"
             }
           },
           {
             "key": {
-              "id": "5d8e15b686f774445103b190",
-              "name": "水力発電所の保管庫の鍵",
-              "shortName": "HEPS",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/HEP_station_storage_room_key",
-              "normalizedName": "hep-station-storage-room-key"
+              "id": "5d8e15b686f774445103b190"
             }
           },
           {
             "key": {
-              "id": "5eff09cd30a7dc22fd1ddfed",
-              "name": "青いテープの貼られた保養所の事務室の鍵",
-              "shortName": "San tape",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_office_key_with_a_blue_tape",
-              "normalizedName": "health-resort-office-key-with-a-blue-tape"
+              "id": "5eff09cd30a7dc22fd1ddfed"
             }
           },
           {
             "key": {
-              "id": "5a0dc95c86f77452440fc675",
-              "name": "保養所 西棟休憩室112号室の鍵",
-              "shortName": "W112 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_office_room_112_key",
-              "normalizedName": "health-resort-west-wing-office-room-112-key"
+              "id": "5a0dc95c86f77452440fc675"
             }
           },
           {
             "key": {
-              "id": "5a0ea64786f7741707720468",
-              "name": "保養所 東棟診療室107号室の鍵",
-              "shortName": "E107 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_office_room_107_key",
-              "normalizedName": "health-resort-east-wing-office-room-107-key"
+              "id": "5a0ea64786f7741707720468"
             }
           },
           {
             "key": {
-              "id": "5a0dc45586f7742f6b0b73e3",
-              "name": "保養所 西棟診療室104号室の鍵",
-              "shortName": "W104 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_office_room_104_key",
-              "normalizedName": "health-resort-west-wing-office-room-104-key"
+              "id": "5a0dc45586f7742f6b0b73e3"
             }
           },
           {
             "key": {
-              "id": "5a145d4786f7744cbb6f4a12",
-              "name": "保養所 東棟306号室の鍵",
-              "shortName": "E306 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_306_key",
-              "normalizedName": "health-resort-east-wing-room-306-key"
+              "id": "5a145d4786f7744cbb6f4a12"
             }
           },
           {
             "key": {
-              "id": "5a144dfd86f77445cb5a0982",
-              "name": "保養所 西棟203号室の鍵",
-              "shortName": "W203 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_203_key",
-              "normalizedName": "health-resort-west-wing-room-203-key"
+              "id": "5a144dfd86f77445cb5a0982"
             }
           },
           {
             "key": {
-              "id": "5a0ea79b86f7741d4a35298e",
-              "name": "保養所 保管室の鍵",
-              "shortName": "San util.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_universal_utility_room_key",
-              "normalizedName": "health-resort-universal-utility-room-key"
+              "id": "5a0ea79b86f7741d4a35298e"
             }
           },
           {
             "key": {
-              "id": "5a13ef7e86f7741290491063",
-              "name": "保養所 西棟301号室の鍵",
-              "shortName": "W301 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_301_key",
-              "normalizedName": "health-resort-west-wing-room-301-key"
+              "id": "5a13ef7e86f7741290491063"
             }
           },
           {
             "key": {
-              "id": "5a0ee37f86f774023657a86f",
-              "name": "保養所 西棟221号室の鍵",
-              "shortName": "W221 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_221_key",
-              "normalizedName": "health-resort-west-wing-room-221-key"
+              "id": "5a0ee37f86f774023657a86f"
             }
           },
           {
             "key": {
-              "id": "5a0eec9686f77402ac5c39f2",
-              "name": "保養所 東棟310号室の鍵",
-              "shortName": "E310 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_310_key",
-              "normalizedName": "health-resort-east-wing-room-310-key"
+              "id": "5a0eec9686f77402ac5c39f2"
             }
           },
           {
             "key": {
-              "id": "5a0ee4b586f7743698200d22",
-              "name": "保養所 東棟206号室の鍵",
-              "shortName": "E206 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_206_key",
-              "normalizedName": "health-resort-east-wing-room-206-key"
+              "id": "5a0ee4b586f7743698200d22"
             }
           },
           {
             "key": {
-              "id": "5a0ee34586f774023b6ee092",
-              "name": "保養所 西棟220号室の鍵",
-              "shortName": "W220 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_220_key",
-              "normalizedName": "health-resort-west-wing-room-220-key"
+              "id": "5a0ee34586f774023b6ee092"
             }
           },
           {
             "key": {
-              "id": "5a0eecf686f7740350630097",
-              "name": "保養所 東棟313号室の鍵",
-              "shortName": "E313 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_313_key",
-              "normalizedName": "health-resort-east-wing-room-313-key"
+              "id": "5a0eecf686f7740350630097"
             }
           },
           {
             "key": {
-              "id": "5a0ee30786f774023b6ee08f",
-              "name": "保養所 西棟216号室の鍵",
-              "shortName": "W216 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_216_key",
-              "normalizedName": "health-resort-west-wing-room-216-key"
+              "id": "5a0ee30786f774023b6ee08f"
             }
           },
           {
             "key": {
-              "id": "5a13f35286f77413ef1436b0",
-              "name": "保養所 東棟226号室の鍵",
-              "shortName": "E226 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_226_key",
-              "normalizedName": "health-resort-east-wing-room-226-key"
+              "id": "5a13f35286f77413ef1436b0"
             }
           },
           {
             "key": {
-              "id": "5a0eee1486f77402aa773226",
-              "name": "保養所 東棟328号室の鍵",
-              "shortName": "E328 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_328_key",
-              "normalizedName": "health-resort-east-wing-room-328-key"
+              "id": "5a0eee1486f77402aa773226"
             }
           },
           {
             "key": {
-              "id": "5a0eed4386f77405112912aa",
-              "name": "保養所 東棟314号室の鍵",
-              "shortName": "E314 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_314_key",
-              "normalizedName": "health-resort-east-wing-room-314-key"
+              "id": "5a0eed4386f77405112912aa"
             }
           },
           {
             "key": {
-              "id": "5a145d7b86f7744cbb6f4a13",
-              "name": "保養所 東棟308号室の鍵",
-              "shortName": "E308 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_308_key",
-              "normalizedName": "health-resort-east-wing-room-308-key"
+              "id": "5a145d7b86f7744cbb6f4a13"
             }
           },
           {
             "key": {
-              "id": "5a145ebb86f77458f1796f05",
-              "name": "保養所 東棟316号室の鍵",
-              "shortName": "E316 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_316_key",
-              "normalizedName": "health-resort-east-wing-room-316-key"
+              "id": "5a145ebb86f77458f1796f05"
             }
           },
           {
             "key": {
-              "id": "5a13f46386f7741dd7384b04",
-              "name": "保養所 西棟306号室の鍵",
-              "shortName": "W306 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_306_key",
-              "normalizedName": "health-resort-west-wing-room-306-key"
+              "id": "5a13f46386f7741dd7384b04"
             }
           },
           {
             "key": {
-              "id": "5a13f24186f77410e57c5626",
-              "name": "保養所 東棟222号室の鍵",
-              "shortName": "E222 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_222_key",
-              "normalizedName": "health-resort-east-wing-room-222-key"
+              "id": "5a13f24186f77410e57c5626"
             }
           },
           {
             "key": {
-              "id": "5a0ea79b86f7741d4a35298e",
-              "name": "保養所 保管室の鍵",
-              "shortName": "San util.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_universal_utility_room_key",
-              "normalizedName": "health-resort-universal-utility-room-key"
+              "id": "5a0ea79b86f7741d4a35298e"
             }
           },
           {
             "key": {
-              "id": "5a13eebd86f7746fd639aa93",
-              "name": "保養所 西棟218号室の鍵",
-              "shortName": "W218 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_218_key",
-              "normalizedName": "health-resort-west-wing-room-218-key"
+              "id": "5a13eebd86f7746fd639aa93"
             }
           },
           {
             "key": {
-              "id": "5a0ec6d286f7742c0b518fb5",
-              "name": "保養所 西棟205号室の鍵",
-              "shortName": "W205 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_205_key",
-              "normalizedName": "health-resort-west-wing-room-205-key"
+              "id": "5a0ec6d286f7742c0b518fb5"
             }
           },
           {
             "key": {
-              "id": "5a1452ee86f7746f33111763",
-              "name": "保養所 西棟222号室の鍵",
-              "shortName": "W222 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_222_key",
-              "normalizedName": "health-resort-west-wing-room-222-key"
+              "id": "5a1452ee86f7746f33111763"
             }
           },
           {
             "key": {
-              "id": "5a13ef0686f7746e5a411744",
-              "name": "保養所 西棟219号室の鍵",
-              "shortName": "W219 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_219_key",
-              "normalizedName": "health-resort-west-wing-room-219-key"
+              "id": "5a13ef0686f7746e5a411744"
             }
           },
           {
             "key": {
-              "id": "5a144bdb86f7741d374bbde0",
-              "name": "保養所 東棟205号室の鍵",
-              "shortName": "E205 San",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_205_key",
-              "normalizedName": "health-resort-east-wing-room-205-key"
+              "id": "5a144bdb86f7741d374bbde0"
             }
           },
           {
             "key": {
-              "id": "679b9716597ba2ed120c3d3f",
-              "name": "Knossos LLC の施設の鍵",
-              "shortName": "Knossos",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Knossos_LLC_facility_key",
-              "normalizedName": "knossos-llc-facility-key"
+              "id": "679b9716597ba2ed120c3d3f"
             }
           },
           {
             "key": {
-              "id": "5a0f08bc86f77478f33b84c2",
-              "name": "保養所 管理事務室の金庫の鍵",
-              "shortName": "Safe",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_management_office_safe_key",
-              "normalizedName": "health-resort-management-office-safe-key"
+              "id": "5a0f08bc86f77478f33b84c2"
             }
           },
           {
             "key": {
-              "id": "5a0f068686f7745b0d4ea242",
-              "name": "コテージの金庫の鍵",
-              "shortName": "Safe",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cottage_safe_key",
-              "normalizedName": "cottage-safe-key"
+              "id": "5a0f068686f7745b0d4ea242"
             }
           },
           {
             "key": {
-              "id": "5a0f0f5886f7741c4e32a472",
-              "name": "保養所 管理棟倉庫の金庫の鍵",
-              "shortName": "Safe",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_management_warehouse_safe_key",
-              "normalizedName": "health-resort-management-warehouse-safe-key"
+              "id": "5a0f0f5886f7741c4e32a472"
             }
           },
           {
             "key": {
-              "id": "5a0eff2986f7741fd654e684",
-              "name": "保養所 西棟321号室の金庫の鍵",
-              "shortName": "W321 safe",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_321_safe_key",
-              "normalizedName": "health-resort-west-wing-room-321-safe-key"
+              "id": "5a0eff2986f7741fd654e684"
             }
           }
         ]
@@ -37364,299 +36339,167 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5d80c66d86f774405611c7d6",
-              "name": "RB-AO の鍵",
-              "shortName": "RB-AO",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AO_key",
-              "normalizedName": "rb-ao-key"
+              "id": "5d80c66d86f774405611c7d6"
             }
           },
           {
             "key": {
-              "id": "5d80c62a86f7744036212b3f",
-              "name": "マークの刻まれた RB-VO の鍵",
-              "shortName": "RB-VO mrk.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-VO_marked_key",
-              "normalizedName": "rb-vo-marked-key"
+              "id": "5d80c62a86f7744036212b3f"
             }
           },
           {
             "key": {
-              "id": "5d8e0e0e86f774321140eb56",
-              "name": "RB-KPRL の鍵",
-              "shortName": "RB-KPRL",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KPRL_key",
-              "normalizedName": "rb-kprl-key"
+              "id": "5d8e0e0e86f774321140eb56"
             }
           },
           {
             "key": {
-              "id": "5d8e0e0e86f774321140eb56",
-              "name": "RB-KPRL の鍵",
-              "shortName": "RB-KPRL",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KPRL_key",
-              "normalizedName": "rb-kprl-key"
+              "id": "5d8e0e0e86f774321140eb56"
             }
           },
           {
             "key": {
-              "id": "5d9f1fa686f774726974a992",
-              "name": "RB-ST の鍵",
-              "shortName": "RB-ST",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ST_key",
-              "normalizedName": "rb-st-key"
+              "id": "5d9f1fa686f774726974a992"
             }
           },
           {
             "key": {
-              "id": "5d947d4e86f774447b415895",
-              "name": "RB-KSM の鍵",
-              "shortName": "RB-KSM",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KSM_key",
-              "normalizedName": "rb-ksm-key"
+              "id": "5d947d4e86f774447b415895"
             }
           },
           {
             "key": {
-              "id": "5d947d3886f774447b415893",
-              "name": "RB-SMP の鍵",
-              "shortName": "RB-SMP",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-SMP_key",
-              "normalizedName": "rb-smp-key"
+              "id": "5d947d3886f774447b415893"
             }
           },
           {
             "key": {
-              "id": "5d95d6be86f77424444eb3a7",
-              "name": "RB-PSV2 の鍵",
-              "shortName": "RB-PSV2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSV2_key",
-              "normalizedName": "rb-psv2-key"
+              "id": "5d95d6be86f77424444eb3a7"
             }
           },
           {
             "key": {
-              "id": "5d80cb5686f77440545d1286",
-              "name": "RB-PSV1 の鍵",
-              "shortName": "RB-PSV1",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSV1_key",
-              "normalizedName": "rb-psv1-key"
+              "id": "5d80cb5686f77440545d1286"
             }
           },
           {
             "key": {
-              "id": "5d80cb3886f77440556dbf09",
-              "name": "RB-PSP1 の鍵",
-              "shortName": "RB-PSP1",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSP1_key",
-              "normalizedName": "rb-psp1-key"
+              "id": "5d80cb3886f77440556dbf09"
             }
           },
           {
             "key": {
-              "id": "5d95d6be86f77424444eb3a7",
-              "name": "RB-PSV2 の鍵",
-              "shortName": "RB-PSV2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSV2_key",
-              "normalizedName": "rb-psv2-key"
+              "id": "5d95d6be86f77424444eb3a7"
             }
           },
           {
             "key": {
-              "id": "5d80cb3886f77440556dbf09",
-              "name": "RB-PSP1 の鍵",
-              "shortName": "RB-PSP1",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSP1_key",
-              "normalizedName": "rb-psp1-key"
+              "id": "5d80cb3886f77440556dbf09"
             }
           },
           {
             "key": {
-              "id": "5d95d6fa86f77424484aa5e9",
-              "name": "RB-PSP2 の鍵",
-              "shortName": "RB-PSP2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSP2_key",
-              "normalizedName": "rb-psp2-key"
+              "id": "5d95d6fa86f77424484aa5e9"
             }
           },
           {
             "key": {
-              "id": "5d80c88d86f77440556dbf07",
-              "name": "RB-AM の鍵",
-              "shortName": "RB-AM",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AM_key",
-              "normalizedName": "rb-am-key"
+              "id": "5d80c88d86f77440556dbf07"
             }
           },
           {
             "key": {
-              "id": "5d80c78786f774403a401e3e",
-              "name": "RB-AK の鍵",
-              "shortName": "RB-AK",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AK_key",
-              "normalizedName": "rb-ak-key"
+              "id": "5d80c78786f774403a401e3e"
             }
           },
           {
             "key": {
-              "id": "5d80c60f86f77440373c4ece",
-              "name": "マークの刻まれた RB-BK の鍵",
-              "shortName": "RB-BK mrk.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-BK_marked_key",
-              "normalizedName": "rb-bk-marked-key"
+              "id": "5d80c60f86f77440373c4ece"
             }
           },
           {
             "key": {
-              "id": "5d80ccac86f77470841ff452",
-              "name": "RB-ORB1 の鍵",
-              "shortName": "RB-ORB1",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB1_key",
-              "normalizedName": "rb-orb1-key"
+              "id": "5d80ccac86f77470841ff452"
             }
           },
           {
             "key": {
-              "id": "5d80c6fc86f774403a401e3c",
-              "name": "RB-TB の鍵",
-              "shortName": "RB-TB",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-TB_key",
-              "normalizedName": "rb-tb-key"
+              "id": "5d80c6fc86f774403a401e3c"
             }
           },
           {
             "key": {
-              "id": "5d80ccdd86f77474f7575e02",
-              "name": "RB-ORB2 の鍵",
-              "shortName": "RB-ORB2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB2_key",
-              "normalizedName": "rb-orb2-key"
+              "id": "5d80ccdd86f77474f7575e02"
             }
           },
           {
             "key": {
-              "id": "5d80cd1a86f77402aa362f42",
-              "name": "RB-ORB3 の鍵",
-              "shortName": "RB-ORB3",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB3_key",
-              "normalizedName": "rb-orb3-key"
+              "id": "5d80cd1a86f77402aa362f42"
             }
           },
           {
             "key": {
-              "id": "5d80c6c586f77440351beef1",
-              "name": "RB-OB の鍵",
-              "shortName": "RB-OB",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-OB_key",
-              "normalizedName": "rb-ob-key"
+              "id": "5d80c6c586f77440351beef1"
             }
           },
           {
             "key": {
-              "id": "5d8e3ecc86f774414c78d05e",
-              "name": "RB-GN の鍵",
-              "shortName": "RB-GN",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-GN_key",
-              "normalizedName": "rb-gn-key"
+              "id": "5d8e3ecc86f774414c78d05e"
             }
           },
           {
             "key": {
-              "id": "5d80c8f586f77440373c4ed0",
-              "name": "RB-OP の鍵",
-              "shortName": "RB-OP",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-OP_key",
-              "normalizedName": "rb-op-key"
+              "id": "5d80c8f586f77440373c4ed0"
             }
           },
           {
             "key": {
-              "id": "5da5cdcd86f774529238fb9b",
-              "name": "RB-RH の鍵",
-              "shortName": "RB-RH",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RH_key",
-              "normalizedName": "rb-rh-key"
+              "id": "5da5cdcd86f774529238fb9b"
             }
           },
           {
             "key": {
-              "id": "5d80c95986f77440351beef3",
-              "name": "RB-MP12 の鍵",
-              "shortName": "RB-MP12",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP12_key",
-              "normalizedName": "rb-mp12-key"
+              "id": "5d80c95986f77440351beef3"
             }
           },
           {
             "key": {
-              "id": "5d80ca9086f774403a401e40",
-              "name": "RB-MP21 の鍵",
-              "shortName": "RB-MP21",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP21_key",
-              "normalizedName": "rb-mp21-key"
+              "id": "5d80ca9086f774403a401e40"
             }
           },
           {
             "key": {
-              "id": "5d80c93086f7744036212b41",
-              "name": "RB-MP11 の鍵",
-              "shortName": "RB-MP11",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP11_key",
-              "normalizedName": "rb-mp11-key"
+              "id": "5d80c93086f7744036212b41"
             }
           },
           {
             "key": {
-              "id": "5d80cab086f77440535be201",
-              "name": "RB-MP22の鍵",
-              "shortName": "RB-MP22",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP22_key",
-              "normalizedName": "rb-mp22-key"
+              "id": "5d80cab086f77440535be201"
             }
           },
           {
             "key": {
-              "id": "5d80cbd886f77470855c26c2",
-              "name": "RB-MP13 の鍵",
-              "shortName": "RB-MP13",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP13_key",
-              "normalizedName": "rb-mp13-key"
+              "id": "5d80cbd886f77470855c26c2"
             }
           },
           {
             "key": {
-              "id": "5d8e0db586f7744450412a42",
-              "name": "RB-KORL の鍵",
-              "shortName": "RB-KORL",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KORL_key",
-              "normalizedName": "rb-korl-key"
+              "id": "5d8e0db586f7744450412a42"
             }
           },
           {
             "key": {
-              "id": "5ede7b0c6d23e5473e6e8c66",
-              "name": "RB-RLSA の鍵",
-              "shortName": "RB-RLSA",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RLSA_key",
-              "normalizedName": "rb-rlsa-key"
+              "id": "5ede7b0c6d23e5473e6e8c66"
             }
           },
           {
             "key": {
-              "id": "5da46e3886f774653b7a83fe",
-              "name": "RB-RS の鍵",
-              "shortName": "RB-RS",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RS_key",
-              "normalizedName": "rb-rs-key"
+              "id": "5da46e3886f774653b7a83fe"
             }
           },
           {
             "key": {
-              "id": "5ede7a8229445733cb4c18e2",
-              "name": "マークの刻まれた RB-PKPM の鍵",
-              "shortName": "RB-PKPM mrk.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PKPM_marked_key",
-              "normalizedName": "rb-pkpm-marked-key"
+              "id": "5ede7a8229445733cb4c18e2"
             }
           }
         ]
@@ -37666,911 +36509,507 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5ad5d49886f77455f9731921",
-              "name": "変電所の作業小屋の鍵",
-              "shortName": "Power",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Power_substation_utility_cabin_key",
-              "normalizedName": "power-substation-utility-cabin-key"
+              "id": "5ad5d49886f77455f9731921"
             }
           },
           {
             "key": {
-              "id": "664d3dd590294949fe2d81b7",
-              "name": "Grumpy's hideout key",
-              "shortName": "Grumpy",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Grumpy%27s_hideout_key",
-              "normalizedName": "grumpys-hideout-key"
+              "id": "664d3dd590294949fe2d81b7"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5ad5d64486f774079b080af8",
-              "name": "薬局 NecrusPharm の鍵",
-              "shortName": "Pharmacy",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/NecrusPharm_pharmacy_key",
-              "normalizedName": "necruspharm-pharmacy-key"
+              "id": "5ad5d64486f774079b080af8"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce",
-              "name": "EMERCOM の仮設診療所の鍵",
-              "shortName": "EMC",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/EMERCOM_medical_unit_key",
-              "normalizedName": "emercom-medical-unit-key"
+              "id": "5ad5db3786f7743568421cce"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce",
-              "name": "EMERCOM の仮設診療所の鍵",
-              "shortName": "EMC",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/EMERCOM_medical_unit_key",
-              "normalizedName": "emercom-medical-unit-key"
+              "id": "5ad5db3786f7743568421cce"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce",
-              "name": "EMERCOM の仮設診療所の鍵",
-              "shortName": "EMC",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/EMERCOM_medical_unit_key",
-              "normalizedName": "emercom-medical-unit-key"
+              "id": "5ad5db3786f7743568421cce"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5ad5cfbd86f7742c825d6104",
-              "name": "OLI 物流部事務室の鍵",
-              "shortName": "OLI Log.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_logistics_department_office_key",
-              "normalizedName": "oli-logistics-department-office-key"
+              "id": "5ad5cfbd86f7742c825d6104"
             }
           },
           {
             "key": {
-              "id": "5ad5d20586f77449be26d877",
-              "name": "OLI 備品保管室の鍵",
-              "shortName": "OLI util.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_outlet_utility_room_key",
-              "normalizedName": "oli-outlet-utility-room-key"
+              "id": "5ad5d20586f77449be26d877"
             }
           },
           {
             "key": {
-              "id": "5ad5ccd186f774446d5706e9",
-              "name": "OLI 管理事務室の鍵",
-              "shortName": "OLI Office",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_administration_office_key",
-              "normalizedName": "oli-administration-office-key"
+              "id": "5ad5ccd186f774446d5706e9"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875",
-              "name": "OLI のレジの鍵",
-              "shortName": "OLI reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
-              "normalizedName": "oli-cash-register-key"
+              "id": "5ad7217186f7746744498875"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43",
-              "name": "IDEA のレジの鍵",
-              "shortName": "IDEA reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
-              "normalizedName": "idea-cash-register-key"
+              "id": "5ad7242b86f7740a6a3abd43"
             }
           },
           {
             "key": {
-              "id": "5e42c71586f7747f245e1343",
-              "name": "ULTRA 医薬品保管室の鍵",
-              "shortName": "ULTRA med.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/ULTRA_medical_storage_key",
-              "normalizedName": "ultra-medical-storage-key"
+              "id": "5e42c71586f7747f245e1343"
             }
           },
           {
             "key": {
-              "id": "5addaffe86f77470b455f900",
-              "name": "Kiba Arms の鉄格子の鍵",
-              "shortName": "KIBA inner",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Kiba_Arms_inner_grate_door_key",
-              "normalizedName": "kiba-arms-inner-grate-door-key"
+              "id": "5addaffe86f77470b455f900"
             }
           },
           {
             "key": {
-              "id": "5ad5d7d286f77450166e0a89",
-              "name": "Kiba Arms の外部扉の鍵",
-              "shortName": "KIBA outer",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Kiba_Arms_outer_door_key",
-              "normalizedName": "kiba-arms-outer-door-key"
+              "id": "5ad5d7d286f77450166e0a89"
             }
           },
           {
             "key": {
-              "id": "5e42c81886f7742a01529f57",
-              "name": "オブジェクト #11SR のキーカード",
-              "shortName": "#11SR",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Object_11SR_keycard",
-              "normalizedName": "object-11sr-keycard"
+              "id": "5e42c81886f7742a01529f57"
             }
           },
           {
             "key": {
-              "id": "5e42c83786f7742a021fdf3c",
-              "name": "オブジェクト #21WS のキーカード",
-              "shortName": "#21WS",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Object_21WS_keycard",
-              "normalizedName": "object-21ws-keycard"
+              "id": "5e42c83786f7742a021fdf3c"
             }
           }
         ]
@@ -38580,524 +37019,292 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "6582dc4b6ba9e979af6b79f4",
-              "name": "MVD アカデミー エントランスホールの守衛室の鍵",
-              "shortName": "MVD",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MVD_academy_entrance_hall_guard_room_key",
-              "normalizedName": "mvd-academy-entrance-hall-guard-room-key"
+              "id": "6582dc4b6ba9e979af6b79f4"
             }
           },
           {
             "key": {
-              "id": "63a39f08cd6db0635c197600",
-              "name": "ホテルの215号室の鍵",
-              "shortName": "Pnwd 215",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pinewood_hotel_room_215_key",
-              "normalizedName": "pinewood-hotel-room-215-key"
+              "id": "63a39f08cd6db0635c197600"
             }
           },
           {
             "key": {
-              "id": "6582dbf0b8d7830efc45016f",
-              "name": "リラクゼーションルームの鍵",
-              "shortName": "Relax",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Relaxation_room_key",
-              "normalizedName": "relaxation-room-key"
+              "id": "6582dbf0b8d7830efc45016f"
             }
           },
           {
             "key": {
-              "id": "63a3a93f8a56922e82001f5d",
-              "name": "マークの刻まれた廃工場の鍵",
-              "shortName": "Aband.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Abandoned_factory_marked_key",
-              "normalizedName": "abandoned-factory-marked-key"
+              "id": "63a3a93f8a56922e82001f5d"
             }
           },
           {
             "key": {
-              "id": "63a71ed21031ac76fe773c7f",
-              "name": "金融機関の事務室の鍵",
-              "shortName": "Finance s",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Financial_institution_small_office_key",
-              "normalizedName": "financial-institution-small-office-key"
+              "id": "63a71ed21031ac76fe773c7f"
             }
           },
           {
             "key": {
-              "id": "63a39667c9b3aa4b61683e98",
-              "name": "金融機関の執務室の鍵",
-              "shortName": "Finance",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Financial_institution_office_key",
-              "normalizedName": "financial-institution-office-key"
+              "id": "63a39667c9b3aa4b61683e98"
             }
           },
           {
             "key": {
-              "id": "6398fd8ad3de3849057f5128",
-              "name": "予備の隠れ家の鍵",
-              "shortName": "Hideout",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Backup_hideout_key",
-              "normalizedName": "backup-hideout-key"
+              "id": "6398fd8ad3de3849057f5128"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "6582dc5740562727a654ebb1",
-              "name": "不動産会社オフィスの鍵",
-              "shortName": "REA",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Real_estate_agency_office_room_key",
-              "normalizedName": "real-estate-agency-office-room-key"
+              "id": "6582dc5740562727a654ebb1"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289",
-              "name": "鉄格子の扉の鍵",
-              "shortName": "Iron gate",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Iron_gate_key",
-              "normalizedName": "iron-gate-key"
+              "id": "63a39f6e64283b5e9c56b289"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289",
-              "name": "鉄格子の扉の鍵",
-              "shortName": "Iron gate",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Iron_gate_key",
-              "normalizedName": "iron-gate-key"
+              "id": "63a39f6e64283b5e9c56b289"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289",
-              "name": "鉄格子の扉の鍵",
-              "shortName": "Iron gate",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Iron_gate_key",
-              "normalizedName": "iron-gate-key"
+              "id": "63a39f6e64283b5e9c56b289"
             }
           },
           {
             "key": {
-              "id": "63a39fd1c9b3aa4b61683efb",
-              "name": "階段の踊り場の鍵",
-              "shortName": "Stairs",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Stair_landing_key",
-              "normalizedName": "stair-landing-key"
+              "id": "63a39fd1c9b3aa4b61683efb"
             }
           },
           {
             "key": {
-              "id": "63a39fc0af870e651d58e6ae",
-              "name": "チェカンナヤ通り15番地の賃貸住宅の鍵",
-              "shortName": "Chek 15",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Chekannaya_15_apartment_key",
-              "normalizedName": "chekannaya-15-apartment-key"
+              "id": "63a39fc0af870e651d58e6ae"
             }
           },
           {
             "key": {
-              "id": "63a39e1d234195315d4020bd",
-              "name": "プリモルスキー通り46～48番地 スカイブリッジの鍵",
-              "shortName": "Skybridge 46-48",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Primorsky_46-48_skybridge_key",
-              "normalizedName": "primorsky-46-48-skybridge-key"
+              "id": "63a39e1d234195315d4020bd"
             }
           },
           {
             "key": {
-              "id": "63a71eb5b7f4570d3a29316b",
-              "name": "プリモルスキー通り48番地の集合住宅の鍵",
-              "shortName": "Prim 48",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Primorsky_48_apartment_key",
-              "normalizedName": "primorsky-48-apartment-key"
+              "id": "63a71eb5b7f4570d3a29316b"
             }
           },
           {
             "key": {
-              "id": "64ccc2111779ad6ba200a139",
-              "name": "タルバンクのレジ部門の鍵",
-              "shortName": "Tarbank",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Tarbank_cash_register_department_key",
-              "normalizedName": "tarbank-cash-register-department-key"
+              "id": "64ccc2111779ad6ba200a139"
             }
           },
           {
             "key": {
-              "id": "64ccc2111779ad6ba200a139",
-              "name": "タルバンクのレジ部門の鍵",
-              "shortName": "Tarbank",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Tarbank_cash_register_department_key",
-              "normalizedName": "tarbank-cash-register-department-key"
+              "id": "64ccc2111779ad6ba200a139"
             }
           },
           {
             "key": {
-              "id": "63a39dfe3901f439517cafba",
-              "name": "ズミ―スキー通り3番地のアパート8号室の鍵",
-              "shortName": "Zm apt. 8",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Zmeisky_3_apartment_8_key",
-              "normalizedName": "zmeisky-3-apartment-8-key"
+              "id": "63a39dfe3901f439517cafba"
             }
           },
           {
             "key": {
-              "id": "63a39e49cd6db0635c1975fc",
-              "name": "資料室の鍵",
-              "shortName": "Archives",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Archive_room_key",
-              "normalizedName": "archive-room-key"
+              "id": "63a39e49cd6db0635c1975fc"
             }
           },
           {
             "key": {
-              "id": "63a39df18a56922e82001f25",
-              "name": "ズミ―スキー通り5番地のアパート20号室の鍵",
-              "shortName": "Zm apt. 20",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Zmeisky_5_apartment_20_key",
-              "normalizedName": "zmeisky-5-apartment-20-key"
+              "id": "63a39df18a56922e82001f25"
             }
           },
           {
             "key": {
-              "id": "64ccc25f95763a1ae376e447",
-              "name": "マークの刻まれた怪しい部屋の鍵",
-              "shortName": "Chek. 13",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Mysterious_room_marked_key",
-              "normalizedName": "mysterious-room-marked-key"
+              "id": "64ccc25f95763a1ae376e447"
             }
           },
           {
             "key": {
-              "id": "64d4b23dc1b37504b41ac2b6",
-              "name": "錆びと血の鍵",
-              "shortName": "Rusted",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rusted_bloody_key",
-              "normalizedName": "rusted-bloody-key"
+              "id": "64d4b23dc1b37504b41ac2b6"
             }
           },
           {
             "key": {
-              "id": "64ccc268c41e91416064ebc7",
-              "name": "体育教師の事務室の鍵",
-              "shortName": "PE",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/PE_teacher%27s_office_key",
-              "normalizedName": "pe-teachers-office-key"
+              "id": "64ccc268c41e91416064ebc7"
             }
           },
           {
             "key": {
-              "id": "64ccc246ff54fb38131acf29",
-              "name": "放射線治療室の鍵",
-              "shortName": "X-ray",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/X-ray_room_key",
-              "normalizedName": "x-ray-room-key"
+              "id": "64ccc246ff54fb38131acf29"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9",
-              "name": "USEC の2番金庫の鍵",
-              "shortName": "USEC 2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
-              "normalizedName": "usec-cottage-second-safe-key"
+              "id": "61aa5ba8018e9821b7368da9"
             }
           },
           {
             "key": {
-              "id": "6582dbe43a2e5248357dbe9a",
-              "name": "「交渉室」の鍵",
-              "shortName": "Negotiations",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/%22Negotiation%22_room_key",
-              "normalizedName": "negotiation-room-key"
+              "id": "6582dbe43a2e5248357dbe9a"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "63a39cb1c9b3aa4b61683ee2",
-              "name": "建設現場の寝床の鍵",
-              "shortName": "Construct.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Construction_site_bunkhouse_key",
-              "normalizedName": "construction-site-bunkhouse-key"
+              "id": "63a39cb1c9b3aa4b61683ee2"
             }
           },
           {
             "key": {
-              "id": "63a399193901f439517cafb6",
-              "name": "カーディーラーの役員室の鍵",
-              "shortName": "LexOs",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Car_dealership_director%27s_office_room_key",
-              "normalizedName": "car-dealership-directors-office-room-key"
+              "id": "63a399193901f439517cafb6"
             }
           },
           {
             "key": {
-              "id": "63a397d3af870e651d58e65b",
-              "name": "カーディーラーの立入禁止区画の鍵",
-              "shortName": "LexOs sect.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Car_dealership_closed_section_key",
-              "normalizedName": "car-dealership-closed-section-key"
+              "id": "63a397d3af870e651d58e65b"
             }
           },
           {
             "key": {
-              "id": "63a39fdf1e21260da44a0256",
-              "name": "輸送コンテナの鉄格子の扉の鍵",
-              "shortName": "Container",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cargo_container_mesh_door_key",
-              "normalizedName": "cargo-container-mesh-door-key"
+              "id": "63a39fdf1e21260da44a0256"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "64ce572331dd890873175115",
-              "name": "Aspect 社オフィスの鍵",
-              "shortName": "Aspect",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Aspect_company_office_key",
-              "normalizedName": "aspect-company-office-key"
+              "id": "64ce572331dd890873175115"
             }
           },
           {
             "key": {
-              "id": "63a39ce4cd6db0635c1975fa",
-              "name": "供給部門責任者の事務室の鍵",
-              "shortName": "Supp.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Supply_department_director%27s_office_key",
-              "normalizedName": "supply-department-directors-office-key"
+              "id": "63a39ce4cd6db0635c1975fa"
             }
           },
           {
             "key": {
-              "id": "63a71e922b25f7513905ca20",
-              "name": "コンコルディア・アパート 64号室の鍵",
-              "shortName": "Conc 64",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_64_key",
-              "normalizedName": "concordia-apartment-64-key"
+              "id": "63a71e922b25f7513905ca20"
             }
           },
           {
             "key": {
-              "id": "64ccc1ec1779ad6ba200a137",
-              "name": "コンコルディア・アパート 8号室のシアタールームの鍵",
-              "shortName": "Cinema",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_8_home_cinema_key",
-              "normalizedName": "concordia-apartment-8-home-cinema-key"
+              "id": "64ccc1ec1779ad6ba200a137"
             }
           },
           {
             "key": {
-              "id": "63a71e781031ac76fe773c7d",
-              "name": "コンコルディア・アパート 8号室の鍵",
-              "shortName": "Conc 8",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_8_room_key",
-              "normalizedName": "concordia-apartment-8-room-key"
+              "id": "63a71e781031ac76fe773c7d"
             }
           },
           {
             "key": {
-              "id": "63a71e86b7f4570d3a293169",
-              "name": "コンコルディア・アパート 64号室の事務室の鍵",
-              "shortName": "Conc off.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_64_office_room_key",
-              "normalizedName": "concordia-apartment-64-office-room-key"
+              "id": "63a71e86b7f4570d3a293169"
             }
           },
           {
             "key": {
-              "id": "64ccc1f4ff54fb38131acf27",
-              "name": "コンコルディア・アパート 63号室の鍵",
-              "shortName": "Conc. 63",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_63_room_key",
-              "normalizedName": "concordia-apartment-63-room-key"
+              "id": "64ccc1f4ff54fb38131acf27"
             }
           },
           {
             "key": {
-              "id": "64ccc1d4a0f13c24561edf27",
-              "name": "コンコルディア・アパート 34号室の鍵",
-              "shortName": "Conc 34",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_34_room_key",
-              "normalizedName": "concordia-apartment-34-room-key"
+              "id": "64ccc1d4a0f13c24561edf27"
             }
           },
           {
             "key": {
-              "id": "63a39c7964283b5e9c56b280",
-              "name": "コンコルディアの警備室の鍵",
-              "shortName": "Conc sec.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_security_room_key",
-              "normalizedName": "concordia-security-room-key"
+              "id": "63a39c7964283b5e9c56b280"
             }
           },
           {
             "key": {
-              "id": "63a39c69af870e651d58e6aa",
-              "name": "店舗責任者の鍵",
-              "shortName": "Store",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Store_manager%27s_key",
-              "normalizedName": "store-managers-key"
+              "id": "63a39c69af870e651d58e6aa"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "64ccc24de61ea448b507d34d",
-              "name": "TerraGroup の警備用武器保管室の鍵",
-              "shortName": "TG arm.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_security_armory_key",
-              "normalizedName": "terragroup-security-armory-key"
+              "id": "64ccc24de61ea448b507d34d"
             }
           },
           {
             "key": {
-              "id": "64ccc206793ca11c8f450a38",
-              "name": "TerraGroup の会議室の鍵",
-              "shortName": "TG meeting",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_meeting_room_key",
-              "normalizedName": "terragroup-meeting-room-key"
+              "id": "64ccc206793ca11c8f450a38"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "64ccc1fe088064307e14a6f7",
-              "name": "レストラン \"ベルーガ\" の支配人の鍵",
-              "shortName": "Beluga",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Beluga_restaurant_director_key",
-              "normalizedName": "beluga-restaurant-director-key"
+              "id": "64ccc1fe088064307e14a6f7"
             }
           },
           {
             "key": {
-              "id": "64ccc1fe088064307e14a6f7",
-              "name": "レストラン \"ベルーガ\" の支配人の鍵",
-              "shortName": "Beluga",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Beluga_restaurant_director_key",
-              "normalizedName": "beluga-restaurant-director-key"
+              "id": "64ccc1fe088064307e14a6f7"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9",
-              "name": "USEC の2番金庫の鍵",
-              "shortName": "USEC 2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
-              "normalizedName": "usec-cottage-second-safe-key"
+              "id": "61aa5ba8018e9821b7368da9"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9",
-              "name": "USEC の2番金庫の鍵",
-              "shortName": "USEC 2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
-              "normalizedName": "usec-cottage-second-safe-key"
+              "id": "61aa5ba8018e9821b7368da9"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9",
-              "name": "USEC の2番金庫の鍵",
-              "shortName": "USEC 2",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
-              "normalizedName": "usec-cottage-second-safe-key"
+              "id": "61aa5ba8018e9821b7368da9"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3",
-              "name": "Goshan のレジの鍵",
-              "shortName": "Goshan reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
-              "normalizedName": "goshan-cash-register-key"
+              "id": "5ad7247386f7747487619dc3"
             }
           }
         ]
@@ -39107,38 +37314,22 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "66acd6702b17692df20144c0",
-              "name": "TerraGroup ストレージルーム キーカード",
-              "shortName": "Polikhim",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_storage_room_keycard",
-              "normalizedName": "terragroup-storage-room-keycard"
+              "id": "66acd6702b17692df20144c0"
             }
           }
         ]
@@ -39148,128 +37339,72 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5c1e2a1e86f77431ea0ea84c",
-              "name": "TerraGroup Labs 所長室の鍵",
-              "shortName": "TGL MO",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_manager%27s_office_room_key",
-              "normalizedName": "terragroup-labs-managers-office-room-key"
+              "id": "5c1e2a1e86f77431ea0ea84c"
             }
           },
           {
             "key": {
-              "id": "5c1e2a1e86f77431ea0ea84c",
-              "name": "TerraGroup Labs 所長室の鍵",
-              "shortName": "TGL MO",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_manager%27s_office_room_key",
-              "normalizedName": "terragroup-labs-managers-office-room-key"
+              "id": "5c1e2a1e86f77431ea0ea84c"
             }
           },
           {
             "key": {
-              "id": "5c1e2d1f86f77431e9280bee",
-              "name": "TerraGroup Labs 武器試験場の鍵",
-              "shortName": "TGL WT",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_weapon_testing_area_key",
-              "normalizedName": "terragroup-labs-weapon-testing-area-key"
+              "id": "5c1e2d1f86f77431e9280bee"
             }
           },
           {
             "key": {
-              "id": "5c1e2d1f86f77431e9280bee",
-              "name": "TerraGroup Labs 武器試験場の鍵",
-              "shortName": "TGL WT",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_weapon_testing_area_key",
-              "normalizedName": "terragroup-labs-weapon-testing-area-key"
+              "id": "5c1e2d1f86f77431e9280bee"
             }
           },
           {
             "key": {
-              "id": "5c1d0c5f86f7744bb2683cf0",
-              "name": "TerraGroup Labs キーカード (ブルー)",
-              "shortName": "Blue",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Blue)",
-              "normalizedName": "terragroup-labs-keycard-blue"
+              "id": "5c1d0c5f86f7744bb2683cf0"
             }
           },
           {
             "key": {
-              "id": "5efde6b4f5448336730dbd61",
-              "name": "青い印のついたキーカード",
-              "shortName": "Keycard",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Keycard_with_a_blue_marking",
-              "normalizedName": "keycard-with-a-blue-marking"
+              "id": "5efde6b4f5448336730dbd61"
             }
           },
           {
             "key": {
-              "id": "5c1d0dc586f7744baf2e7b79",
-              "name": "TerraGroup Labs キーカード (グリーン)",
-              "shortName": "Green",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Green)",
-              "normalizedName": "terragroup-labs-keycard-green"
+              "id": "5c1d0dc586f7744baf2e7b79"
             }
           },
           {
             "key": {
-              "id": "5c1d0d6d86f7744bb2683e1f",
-              "name": "TerraGroup Labs キーカード (イエロー)",
-              "shortName": "Yellow",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Yellow)",
-              "normalizedName": "terragroup-labs-keycard-yellow"
+              "id": "5c1d0d6d86f7744bb2683e1f"
             }
           },
           {
             "key": {
-              "id": "5c1d0f4986f7744bb01837fa",
-              "name": "TerraGroup Labs キーカード (ブラック)",
-              "shortName": "Black",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Black)",
-              "normalizedName": "terragroup-labs-keycard-black"
+              "id": "5c1d0f4986f7744bb01837fa"
             }
           },
           {
             "key": {
-              "id": "5c1d0f4986f7744bb01837fa",
-              "name": "TerraGroup Labs キーカード (ブラック)",
-              "shortName": "Black",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Black)",
-              "normalizedName": "terragroup-labs-keycard-black"
+              "id": "5c1d0f4986f7744bb01837fa"
             }
           },
           {
             "key": {
-              "id": "5c1e495a86f7743109743dfb",
-              "name": "TerraGroup Labs キーカード (ヴァイオレット)",
-              "shortName": "Violet",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Violet)",
-              "normalizedName": "terragroup-labs-keycard-violet"
+              "id": "5c1e495a86f7743109743dfb"
             }
           },
           {
             "key": {
-              "id": "5c1d0efb86f7744baf2e7b7b",
-              "name": "TerraGroup Labs キーカード (レッド)",
-              "shortName": "Red",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Red)",
-              "normalizedName": "terragroup-labs-keycard-red"
+              "id": "5c1d0efb86f7744baf2e7b7b"
             }
           },
           {
             "key": {
-              "id": "5c1f79a086f7746ed066fb8f",
-              "name": "TerraGroup Labs 保管室の鍵",
-              "shortName": "TGL ASR",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_arsenal_storage_room_key",
-              "normalizedName": "terragroup-labs-arsenal-storage-room-key"
+              "id": "5c1f79a086f7746ed066fb8f"
             }
           },
           {
             "key": {
-              "id": "6711039f9e648049e50b3307",
-              "name": "TerraGroup Labs 住居区画キーカード",
-              "shortName": "Res. unit",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_residential_unit_keycard",
-              "normalizedName": "terragroup-labs-residential-unit-keycard"
+              "id": "6711039f9e648049e50b3307"
             }
           }
         ]
@@ -39279,56 +37414,32 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "658199972dc4e60f6d556a2f",
-              "name": "地下駐車場ユーティリティルームの鍵",
-              "shortName": "Utility",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Underground_parking_utility_room_key",
-              "normalizedName": "underground-parking-utility-room-key"
+              "id": "658199972dc4e60f6d556a2f"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "6581998038c79576a2569e11",
-              "name": "Unity Credit 銀行レジの鍵",
-              "shortName": "UC reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Unity_Credit_Bank_cash_register_key",
-              "normalizedName": "unity-credit-bank-cash-register-key"
+              "id": "6581998038c79576a2569e11"
             }
           },
           {
             "key": {
-              "id": "658199a0490414548c0fa83b",
-              "name": "Horse restaurant toilet key",
-              "shortName": "Toilet",
-              "wikiLink": "",
-              "normalizedName": "horse-restaurant-toilet-key"
+              "id": "658199a0490414548c0fa83b"
             }
           },
           {
             "key": {
-              "id": "658199aa38c79576a2569e13",
-              "name": "TerraGroup 科学オフィスの鍵",
-              "shortName": "Science",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_science_office_key",
-              "normalizedName": "terragroup-science-office-key"
+              "id": "658199aa38c79576a2569e13"
             }
           }
         ]
@@ -39338,56 +37449,32 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "658199972dc4e60f6d556a2f",
-              "name": "地下駐車場ユーティリティルームの鍵",
-              "shortName": "Utility",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Underground_parking_utility_room_key",
-              "normalizedName": "underground-parking-utility-room-key"
+              "id": "658199972dc4e60f6d556a2f"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c",
-              "name": "Factory 非常口の鍵",
-              "shortName": "Factory",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
-              "normalizedName": "factory-emergency-exit-key"
+              "id": "5448ba0b4bdc2d02308b456c"
             }
           },
           {
             "key": {
-              "id": "6581998038c79576a2569e11",
-              "name": "Unity Credit 銀行レジの鍵",
-              "shortName": "UC reg.",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Unity_Credit_Bank_cash_register_key",
-              "normalizedName": "unity-credit-bank-cash-register-key"
+              "id": "6581998038c79576a2569e11"
             }
           },
           {
             "key": {
-              "id": "658199a0490414548c0fa83b",
-              "name": "Horse restaurant toilet key",
-              "shortName": "Toilet",
-              "wikiLink": "",
-              "normalizedName": "horse-restaurant-toilet-key"
+              "id": "658199a0490414548c0fa83b"
             }
           },
           {
             "key": {
-              "id": "658199aa38c79576a2569e13",
-              "name": "TerraGroup 科学オフィスの鍵",
-              "shortName": "Science",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_science_office_key",
-              "normalizedName": "terragroup-science-office-key"
+              "id": "658199aa38c79576a2569e13"
             }
           }
         ]
@@ -39397,101 +37484,57 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "679baa2c61f588ae2b062a24",
-              "name": "キー 01",
-              "shortName": "Key 01",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_01",
-              "normalizedName": "key-01"
+              "id": "679baa2c61f588ae2b062a24"
             }
           },
           {
             "key": {
-              "id": "679baa4f59b8961f370dd683",
-              "name": "キー 02",
-              "shortName": "Key 02",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_02",
-              "normalizedName": "key-02"
+              "id": "679baa4f59b8961f370dd683"
             }
           },
           {
             "key": {
-              "id": "679baa5a59b8961f370dd685",
-              "name": "キー 03",
-              "shortName": "Key 03",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_03",
-              "normalizedName": "key-03"
+              "id": "679baa5a59b8961f370dd685"
             }
           },
           {
             "key": {
-              "id": "679baa9091966fe40408f149",
-              "name": "キー 04",
-              "shortName": "Key 04",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_04",
-              "normalizedName": "key-04"
+              "id": "679baa9091966fe40408f149"
             }
           },
           {
             "key": {
-              "id": "679bab714e9ca6b3d80586b4",
-              "name": "遺体安置所の鍵",
-              "shortName": "Corpses",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Corpse_room_key",
-              "normalizedName": "corpse-room-key"
+              "id": "679bab714e9ca6b3d80586b4"
             }
           },
           {
             "key": {
-              "id": "679baae891966fe40408f14c",
-              "name": "拷問室の鍵",
-              "shortName": "Torture",
-              "wikiLink": "",
-              "normalizedName": "torture-room-key"
+              "id": "679baae891966fe40408f14c"
             }
           },
           {
             "key": {
-              "id": "679bac1d61f588ae2b062a26",
-              "name": "Labyrinth の鍵\n",
-              "shortName": "Labyrinth",
-              "wikiLink": "",
-              "normalizedName": "labyrinth-key"
+              "id": "679bac1d61f588ae2b062a26"
             }
           },
           {
             "key": {
-              "id": "679baace4e9ca6b3d80586b2",
-              "name": "観測室の鍵",
-              "shortName": "Observe",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Observation_room_key",
-              "normalizedName": "observation-room-key"
+              "id": "679baace4e9ca6b3d80586b2"
             }
           },
           {
             "key": {
-              "id": "67ab3d4b83869afd170fdd3f",
-              "name": "BBQ-S43 ガストーチ",
-              "shortName": "BBQ-S43",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BBQ-S43_gas_torch",
-              "normalizedName": "bbq-s43-gas-torch"
+              "id": "67ab3d4b83869afd170fdd3f"
             }
           },
           {
             "key": {
-              "id": "67ab3d4b83869afd170fdd3f",
-              "name": "BBQ-S43 ガストーチ",
-              "shortName": "BBQ-S43",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BBQ-S43_gas_torch",
-              "normalizedName": "bbq-s43-gas-torch"
+              "id": "67ab3d4b83869afd170fdd3f"
             }
           },
           {
             "key": {
-              "id": "678fa929819ddc4c350c0317",
-              "name": "バルブハンドル",
-              "shortName": "handwheel",
-              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Valve_handwheel",
-              "normalizedName": "valve-handwheel"
+              "id": "678fa929819ddc4c350c0317"
             }
           }
         ]
@@ -39506,6 +37549,7 @@ const TARKOV_DATA = {
         "id": "5448ba0b4bdc2d02308b456c",
         "name": "Factory 非常口の鍵",
         "shortName": "Factory",
+        "normalizedName": "factory-emergency-exit-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Factory_emergency_exit_key",
         "usedInTasks": []
       },
@@ -39513,6 +37557,7 @@ const TARKOV_DATA = {
         "id": "5671446a4bdc2d97058b4569",
         "name": "Pistol case key",
         "shortName": "PCase",
+        "normalizedName": "pistol-case-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -39520,6 +37565,7 @@ const TARKOV_DATA = {
         "id": "5672c92d4bdc2d180f8b4567",
         "name": "社員寮118号室の鍵",
         "shortName": "Dorm 118",
+        "normalizedName": "dorm-room-118-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_118_key",
         "usedInTasks": []
       },
@@ -39527,6 +37573,7 @@ const TARKOV_DATA = {
         "id": "5780cda02459777b272ede61",
         "name": "社員寮306号室の鍵",
         "shortName": "Dorm 306",
+        "normalizedName": "dorm-room-306-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_306_key",
         "usedInTasks": []
       },
@@ -39534,6 +37581,7 @@ const TARKOV_DATA = {
         "id": "5780cf692459777de4559321",
         "name": "社員寮315号室の鍵",
         "shortName": "Dorm 315",
+        "normalizedName": "dorm-room-315-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_315_key",
         "usedInTasks": []
       },
@@ -39541,6 +37589,7 @@ const TARKOV_DATA = {
         "id": "5780cf722459777a5108b9a1",
         "name": "社員寮308号室の鍵",
         "shortName": "Dorm 308",
+        "normalizedName": "dorm-room-308-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_308_key",
         "usedInTasks": []
       },
@@ -39548,6 +37597,7 @@ const TARKOV_DATA = {
         "id": "5780cf7f2459777de4559322",
         "name": "マークの刻まれた社員寮314号室の鍵",
         "shortName": "Dorm mrk.",
+        "normalizedName": "dorm-room-314-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_314_marked_key",
         "usedInTasks": []
       },
@@ -39555,6 +37605,7 @@ const TARKOV_DATA = {
         "id": "5780cf942459777df90dcb72",
         "name": "社員寮214号室の鍵",
         "shortName": "Dorm 214",
+        "normalizedName": "dorm-room-214-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_214_key",
         "usedInTasks": []
       },
@@ -39562,6 +37613,7 @@ const TARKOV_DATA = {
         "id": "5780cf9e2459777df90dcb73",
         "name": "社員寮218号室の鍵",
         "shortName": "Dorm 218",
+        "normalizedName": "dorm-room-218-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_218_key",
         "usedInTasks": []
       },
@@ -39569,6 +37621,7 @@ const TARKOV_DATA = {
         "id": "5780cfa52459777dfb276eb1",
         "name": "社員寮220号室の鍵",
         "shortName": "Dorm 220",
+        "normalizedName": "dorm-room-220-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_220_key",
         "usedInTasks": [
           {
@@ -39580,6 +37633,7 @@ const TARKOV_DATA = {
         "id": "5780d0532459777a5108b9a2",
         "name": "Tarcone 管理事務室の鍵",
         "shortName": "Director's",
+        "normalizedName": "tarcone-directors-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Tarcone_Director%27s_office_key",
         "usedInTasks": []
       },
@@ -39587,6 +37641,7 @@ const TARKOV_DATA = {
         "id": "5780d0652459777df90dcb74",
         "name": "ガソリンスタンドの事務室の鍵",
         "shortName": "Gas office",
+        "normalizedName": "gas-station-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_station_office_key",
         "usedInTasks": []
       },
@@ -39594,6 +37649,7 @@ const TARKOV_DATA = {
         "id": "5780d07a2459777de4559324",
         "name": "ポータブルキャビンの鍵",
         "shortName": "Cabin",
+        "normalizedName": "portable-cabin-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Portable_cabin_key",
         "usedInTasks": []
       },
@@ -39601,6 +37657,7 @@ const TARKOV_DATA = {
         "id": "57a349b2245977762b199ec7",
         "name": "ポンプ室表口の鍵",
         "shortName": "Pump Frnt",
+        "normalizedName": "pumping-station-front-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pumping_station_front_door_key",
         "usedInTasks": []
       },
@@ -39608,6 +37665,7 @@ const TARKOV_DATA = {
         "id": "590de4a286f77423d9312a32",
         "name": "Folding car key",
         "shortName": "Car",
+        "normalizedName": "folding-car-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Folding_car_key",
         "usedInTasks": []
       },
@@ -39615,6 +37673,7 @@ const TARKOV_DATA = {
         "id": "5913611c86f77479e0084092",
         "name": "トレーラーパークの可搬式詰所の鍵",
         "shortName": "Cabin",
+        "normalizedName": "trailer-park-portable-cabin-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Trailer_park_portable_cabin_key",
         "usedInTasks": []
       },
@@ -39622,6 +37681,7 @@ const TARKOV_DATA = {
         "id": "5913651986f774432f15d132",
         "name": "VAZ 車の鍵",
         "shortName": "Shestyorka",
+        "normalizedName": "vaz-car-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/VAZ_car_key",
         "usedInTasks": []
       },
@@ -39629,6 +37689,7 @@ const TARKOV_DATA = {
         "id": "59136a4486f774447a1ed172",
         "name": "寮の守衛室の鍵",
         "shortName": "GDesk",
+        "normalizedName": "dorm-guard-desk-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_guard_desk_key",
         "usedInTasks": []
       },
@@ -39636,6 +37697,7 @@ const TARKOV_DATA = {
         "id": "59136e1e86f774432f15d133",
         "name": "社員寮110号室の鍵",
         "shortName": "Dorm 110",
+        "normalizedName": "dorm-room-110-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_110_key",
         "usedInTasks": []
       },
@@ -39643,6 +37705,7 @@ const TARKOV_DATA = {
         "id": "59136f6f86f774447a1ed173",
         "name": "Folding car key",
         "shortName": "Car",
+        "normalizedName": "folding-car-key-1",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Folding_car_key",
         "usedInTasks": []
       },
@@ -39650,6 +37713,7 @@ const TARKOV_DATA = {
         "id": "591382d986f774465a6413a7",
         "name": "社員寮105号室の鍵",
         "shortName": "Dorm 105",
+        "normalizedName": "dorm-room-105-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_105_key",
         "usedInTasks": []
       },
@@ -39657,6 +37721,7 @@ const TARKOV_DATA = {
         "id": "591383f186f7744a4c5edcf3",
         "name": "社員寮104号室の鍵",
         "shortName": "Dorm 104",
+        "normalizedName": "dorm-room-104-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_104_key",
         "usedInTasks": []
       },
@@ -39664,6 +37729,7 @@ const TARKOV_DATA = {
         "id": "5913877a86f774432f15d444",
         "name": "ガソリンスタンドの物置の鍵",
         "shortName": "Gas store",
+        "normalizedName": "gas-station-storage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_station_storage_room_key",
         "usedInTasks": [
           {
@@ -39675,6 +37741,7 @@ const TARKOV_DATA = {
         "id": "5913915886f774123603c392",
         "name": "軍の検問所の鍵",
         "shortName": "Checkpoint",
+        "normalizedName": "military-checkpoint-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Military_checkpoint_key",
         "usedInTasks": [
           {
@@ -39686,6 +37753,7 @@ const TARKOV_DATA = {
         "id": "5914578086f774123569ffa4",
         "name": "社員寮108号室の鍵",
         "shortName": "Dorm 108",
+        "normalizedName": "dorm-room-108-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_108_key",
         "usedInTasks": []
       },
@@ -39693,6 +37761,7 @@ const TARKOV_DATA = {
         "id": "59148c8a86f774197930e983",
         "name": "社員寮204号室の鍵",
         "shortName": "Dorm 204",
+        "normalizedName": "dorm-room-204-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_204_key",
         "usedInTasks": []
       },
@@ -39700,6 +37769,7 @@ const TARKOV_DATA = {
         "id": "59148f8286f7741b951ea113",
         "name": "武器保管庫の鍵",
         "shortName": "WSafe",
+        "normalizedName": "weapon-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Weapon_safe_key",
         "usedInTasks": []
       },
@@ -39707,6 +37777,7 @@ const TARKOV_DATA = {
         "id": "591ae8f986f77406f854be45",
         "name": "Yotota 車の鍵",
         "shortName": "Yotota",
+        "normalizedName": "yotota-car-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Yotota_car_key",
         "usedInTasks": []
       },
@@ -39714,6 +37785,7 @@ const TARKOV_DATA = {
         "id": "591afe0186f77431bd616a11",
         "name": "ZB-014 の鍵",
         "shortName": "ZB-014",
+        "normalizedName": "zb-014-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/ZB-014_key",
         "usedInTasks": [
           {
@@ -39728,6 +37800,7 @@ const TARKOV_DATA = {
         "id": "5937ee6486f77408994ba448",
         "name": "特殊車両の鍵",
         "shortName": "Machinery",
+        "normalizedName": "machinery-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Machinery_key",
         "usedInTasks": [
           {
@@ -39739,6 +37812,7 @@ const TARKOV_DATA = {
         "id": "5938144586f77473c2087145",
         "name": "可搬式の詰所の鍵",
         "shortName": "Bunkhouse",
+        "normalizedName": "portable-bunkhouse-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Portable_bunkhouse_key",
         "usedInTasks": [
           {
@@ -39750,6 +37824,7 @@ const TARKOV_DATA = {
         "id": "5938504186f7740991483f30",
         "name": "社員寮203号室の鍵",
         "shortName": "Dorm 203",
+        "normalizedName": "dorm-room-203-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_203_key",
         "usedInTasks": []
       },
@@ -39757,6 +37832,7 @@ const TARKOV_DATA = {
         "id": "593858c486f774253a24cb52",
         "name": "ポンプ室裏口の鍵",
         "shortName": "Pump Back",
+        "normalizedName": "pumping-station-back-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pumping_station_back_door_key",
         "usedInTasks": []
       },
@@ -39764,6 +37840,7 @@ const TARKOV_DATA = {
         "id": "5938603e86f77435642354f4",
         "name": "社員寮206号室の鍵",
         "shortName": "Dorm 206",
+        "normalizedName": "dorm-room-206-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_206_key",
         "usedInTasks": []
       },
@@ -39771,6 +37848,7 @@ const TARKOV_DATA = {
         "id": "59387a4986f77401cc236e62",
         "name": "社員寮114号室の鍵",
         "shortName": "Dorm 114",
+        "normalizedName": "dorm-room-114-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_114_key",
         "usedInTasks": []
       },
@@ -39778,6 +37856,7 @@ const TARKOV_DATA = {
         "id": "5938994586f774523a425196",
         "name": "社員寮103号室の鍵",
         "shortName": "Dorm 103",
+        "normalizedName": "dorm-room-103-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_103_key",
         "usedInTasks": []
       },
@@ -39785,6 +37864,7 @@ const TARKOV_DATA = {
         "id": "593962ca86f774068014d9af",
         "name": "用途不明の鍵",
         "shortName": "Unknown",
+        "normalizedName": "unknown-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Unknown_key",
         "usedInTasks": []
       },
@@ -39792,6 +37872,7 @@ const TARKOV_DATA = {
         "id": "593aa4be86f77457f56379f8",
         "name": "社員寮303号室の鍵",
         "shortName": "Dorm 303",
+        "normalizedName": "dorm-room-303-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_303_key",
         "usedInTasks": [
           {
@@ -39803,6 +37884,7 @@ const TARKOV_DATA = {
         "id": "5a0dc45586f7742f6b0b73e3",
         "name": "保養所 西棟診療室104号室の鍵",
         "shortName": "W104 San",
+        "normalizedName": "health-resort-west-wing-office-room-104-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_office_room_104_key",
         "usedInTasks": []
       },
@@ -39810,6 +37892,7 @@ const TARKOV_DATA = {
         "id": "5a0dc95c86f77452440fc675",
         "name": "保養所 西棟休憩室112号室の鍵",
         "shortName": "W112 San",
+        "normalizedName": "health-resort-west-wing-office-room-112-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_office_room_112_key",
         "usedInTasks": []
       },
@@ -39817,6 +37900,7 @@ const TARKOV_DATA = {
         "id": "5a0ea64786f7741707720468",
         "name": "保養所 東棟診療室107号室の鍵",
         "shortName": "E107 San",
+        "normalizedName": "health-resort-east-wing-office-room-107-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_office_room_107_key",
         "usedInTasks": []
       },
@@ -39824,6 +37908,7 @@ const TARKOV_DATA = {
         "id": "5a0ea69f86f7741cd5406619",
         "name": "保養所 東棟診療室108号室の鍵",
         "shortName": "E108 San",
+        "normalizedName": "health-resort-east-wing-office-room-108-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_office_room_108_key",
         "usedInTasks": []
       },
@@ -39831,6 +37916,7 @@ const TARKOV_DATA = {
         "id": "5a0ea79b86f7741d4a35298e",
         "name": "保養所 保管室の鍵",
         "shortName": "San util.",
+        "normalizedName": "health-resort-universal-utility-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_universal_utility_room_key",
         "usedInTasks": []
       },
@@ -39838,6 +37924,7 @@ const TARKOV_DATA = {
         "id": "5a0eb38b86f774153b320eb0",
         "name": "SMW 車の鍵",
         "shortName": "SMW",
+        "normalizedName": "smw-car-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/SMW_car_key",
         "usedInTasks": []
       },
@@ -39845,6 +37932,7 @@ const TARKOV_DATA = {
         "id": "5a0eb6ac86f7743124037a28",
         "name": "コテージの裏口の鍵",
         "shortName": "Cottage",
+        "normalizedName": "cottage-back-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cottage_back_door_key",
         "usedInTasks": []
       },
@@ -39852,6 +37940,7 @@ const TARKOV_DATA = {
         "id": "5a0ec6d286f7742c0b518fb5",
         "name": "保養所 西棟205号室の鍵",
         "shortName": "W205 San",
+        "normalizedName": "health-resort-west-wing-room-205-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_205_key",
         "usedInTasks": []
       },
@@ -39859,6 +37948,7 @@ const TARKOV_DATA = {
         "id": "5a0ec70e86f7742c0b518fba",
         "name": "保養所 西棟207号室の鍵",
         "shortName": "W207 San",
+        "normalizedName": "health-resort-west-wing-room-207-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_207_key",
         "usedInTasks": []
       },
@@ -39866,6 +37956,7 @@ const TARKOV_DATA = {
         "id": "5a0ee30786f774023b6ee08f",
         "name": "保養所 西棟216号室の鍵",
         "shortName": "W216 San",
+        "normalizedName": "health-resort-west-wing-room-216-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_216_key",
         "usedInTasks": []
       },
@@ -39873,6 +37964,7 @@ const TARKOV_DATA = {
         "id": "5a0ee34586f774023b6ee092",
         "name": "保養所 西棟220号室の鍵",
         "shortName": "W220 San",
+        "normalizedName": "health-resort-west-wing-room-220-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_220_key",
         "usedInTasks": []
       },
@@ -39880,6 +37972,7 @@ const TARKOV_DATA = {
         "id": "5a0ee37f86f774023657a86f",
         "name": "保養所 西棟221号室の鍵",
         "shortName": "W221 San",
+        "normalizedName": "health-resort-west-wing-room-221-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_221_key",
         "usedInTasks": []
       },
@@ -39887,6 +37980,7 @@ const TARKOV_DATA = {
         "id": "5a0ee4b586f7743698200d22",
         "name": "保養所 東棟206号室の鍵",
         "shortName": "E206 San",
+        "normalizedName": "health-resort-east-wing-room-206-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_206_key",
         "usedInTasks": []
       },
@@ -39894,6 +37988,7 @@ const TARKOV_DATA = {
         "id": "5a0ee62286f774369454a7ac",
         "name": "保養所 東棟209号室の鍵",
         "shortName": "E209 San",
+        "normalizedName": "health-resort-east-wing-room-209-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_209_key",
         "usedInTasks": []
       },
@@ -39901,6 +37996,7 @@ const TARKOV_DATA = {
         "id": "5a0ee72c86f77436955d3435",
         "name": "保養所 東棟213号室の鍵",
         "shortName": "E213 San",
+        "normalizedName": "health-resort-east-wing-room-213-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_213_key",
         "usedInTasks": []
       },
@@ -39908,6 +38004,7 @@ const TARKOV_DATA = {
         "id": "5a0ee76686f7743698200d5c",
         "name": "保養所 東棟216号室の鍵",
         "shortName": "E216 San",
+        "normalizedName": "health-resort-east-wing-room-216-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_216_key",
         "usedInTasks": []
       },
@@ -39915,6 +38012,7 @@ const TARKOV_DATA = {
         "id": "5a0eeb1a86f774688b70aa5c",
         "name": "保養所 西棟303号室の鍵",
         "shortName": "W303 San",
+        "normalizedName": "health-resort-west-wing-room-303-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_303_key",
         "usedInTasks": []
       },
@@ -39922,6 +38020,7 @@ const TARKOV_DATA = {
         "id": "5a0eeb8e86f77461257ed71a",
         "name": "保養所 西棟309号室の鍵",
         "shortName": "W309 San",
+        "normalizedName": "health-resort-west-wing-room-309-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_309_key",
         "usedInTasks": []
       },
@@ -39929,6 +38028,7 @@ const TARKOV_DATA = {
         "id": "5a0eebed86f77461230ddb3d",
         "name": "保養所 西棟325号室の鍵",
         "shortName": "W325 San",
+        "normalizedName": "health-resort-west-wing-room-325-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_325_key",
         "usedInTasks": []
       },
@@ -39936,6 +38036,7 @@ const TARKOV_DATA = {
         "id": "5a0eec9686f77402ac5c39f2",
         "name": "保養所 東棟310号室の鍵",
         "shortName": "E310 San",
+        "normalizedName": "health-resort-east-wing-room-310-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_310_key",
         "usedInTasks": []
       },
@@ -39943,6 +38044,7 @@ const TARKOV_DATA = {
         "id": "5a0eecf686f7740350630097",
         "name": "保養所 東棟313号室の鍵",
         "shortName": "E313 San",
+        "normalizedName": "health-resort-east-wing-room-313-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_313_key",
         "usedInTasks": []
       },
@@ -39950,6 +38052,7 @@ const TARKOV_DATA = {
         "id": "5a0eed4386f77405112912aa",
         "name": "保養所 東棟314号室の鍵",
         "shortName": "E314 San",
+        "normalizedName": "health-resort-east-wing-room-314-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_314_key",
         "usedInTasks": []
       },
@@ -39957,6 +38060,7 @@ const TARKOV_DATA = {
         "id": "5a0eedb386f77403506300be",
         "name": "保養所 東棟322号室の鍵",
         "shortName": "E322 San",
+        "normalizedName": "health-resort-east-wing-room-322-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_322_key",
         "usedInTasks": []
       },
@@ -39964,6 +38068,7 @@ const TARKOV_DATA = {
         "id": "5a0eee1486f77402aa773226",
         "name": "保養所 東棟328号室の鍵",
         "shortName": "E328 San",
+        "normalizedName": "health-resort-east-wing-room-328-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_328_key",
         "usedInTasks": []
       },
@@ -39971,6 +38076,7 @@ const TARKOV_DATA = {
         "id": "5a0eff2986f7741fd654e684",
         "name": "保養所 西棟321号室の金庫の鍵",
         "shortName": "W321 safe",
+        "normalizedName": "health-resort-west-wing-room-321-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_321_safe_key",
         "usedInTasks": []
       },
@@ -39978,6 +38084,7 @@ const TARKOV_DATA = {
         "id": "5a0f006986f7741ffd2fe484",
         "name": "気象台の金庫の鍵",
         "shortName": "Safe",
+        "normalizedName": "weather-station-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Weather_station_safe_key",
         "usedInTasks": []
       },
@@ -39985,6 +38092,7 @@ const TARKOV_DATA = {
         "id": "5a0f045e86f7745b0f0d0e42",
         "name": "ガソリンスタンドの金庫の鍵",
         "shortName": "Gas safe",
+        "normalizedName": "gas-station-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_station_safe_key",
         "usedInTasks": []
       },
@@ -39992,6 +38100,7 @@ const TARKOV_DATA = {
         "id": "5a0f068686f7745b0d4ea242",
         "name": "コテージの金庫の鍵",
         "shortName": "Safe",
+        "normalizedName": "cottage-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cottage_safe_key",
         "usedInTasks": []
       },
@@ -39999,6 +38108,7 @@ const TARKOV_DATA = {
         "id": "5a0f075686f7745bcc42ee12",
         "name": "店の金庫の鍵",
         "shortName": "Safe",
+        "normalizedName": "store-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Store_safe_key",
         "usedInTasks": []
       },
@@ -40006,6 +38116,7 @@ const TARKOV_DATA = {
         "id": "5a0f08bc86f77478f33b84c2",
         "name": "保養所 管理事務室の金庫の鍵",
         "shortName": "Safe",
+        "normalizedName": "health-resort-management-office-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_management_office_safe_key",
         "usedInTasks": []
       },
@@ -40013,6 +38124,7 @@ const TARKOV_DATA = {
         "id": "5a0f0f5886f7741c4e32a472",
         "name": "保養所 管理棟倉庫の金庫の鍵",
         "shortName": "Safe",
+        "normalizedName": "health-resort-management-warehouse-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_management_warehouse_safe_key",
         "usedInTasks": []
       },
@@ -40020,6 +38132,7 @@ const TARKOV_DATA = {
         "id": "5a13ee1986f774794d4c14cd",
         "name": "保養所 西棟323号室の鍵",
         "shortName": "W323 San",
+        "normalizedName": "health-resort-west-wing-room-323-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_323_key",
         "usedInTasks": []
       },
@@ -40027,6 +38140,7 @@ const TARKOV_DATA = {
         "id": "5a13eebd86f7746fd639aa93",
         "name": "保養所 西棟218号室の鍵",
         "shortName": "W218 San",
+        "normalizedName": "health-resort-west-wing-room-218-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_218_key",
         "usedInTasks": []
       },
@@ -40034,6 +38148,7 @@ const TARKOV_DATA = {
         "id": "5a13ef0686f7746e5a411744",
         "name": "保養所 西棟219号室の鍵",
         "shortName": "W219 San",
+        "normalizedName": "health-resort-west-wing-room-219-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_219_key",
         "usedInTasks": []
       },
@@ -40041,6 +38156,7 @@ const TARKOV_DATA = {
         "id": "5a13ef7e86f7741290491063",
         "name": "保養所 西棟301号室の鍵",
         "shortName": "W301 San",
+        "normalizedName": "health-resort-west-wing-room-301-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_301_key",
         "usedInTasks": []
       },
@@ -40048,6 +38164,7 @@ const TARKOV_DATA = {
         "id": "5a13f24186f77410e57c5626",
         "name": "保養所 東棟222号室の鍵",
         "shortName": "E222 San",
+        "normalizedName": "health-resort-east-wing-room-222-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_222_key",
         "usedInTasks": []
       },
@@ -40055,6 +38172,7 @@ const TARKOV_DATA = {
         "id": "5a13f35286f77413ef1436b0",
         "name": "保養所 東棟226号室の鍵",
         "shortName": "E226 San",
+        "normalizedName": "health-resort-east-wing-room-226-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_226_key",
         "usedInTasks": []
       },
@@ -40062,6 +38180,7 @@ const TARKOV_DATA = {
         "id": "5a13f46386f7741dd7384b04",
         "name": "保養所 西棟306号室の鍵",
         "shortName": "W306 San",
+        "normalizedName": "health-resort-west-wing-room-306-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_306_key",
         "usedInTasks": []
       },
@@ -40069,6 +38188,7 @@ const TARKOV_DATA = {
         "id": "5a144bdb86f7741d374bbde0",
         "name": "保養所 東棟205号室の鍵",
         "shortName": "E205 San",
+        "normalizedName": "health-resort-east-wing-room-205-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_205_key",
         "usedInTasks": []
       },
@@ -40076,6 +38196,7 @@ const TARKOV_DATA = {
         "id": "5a144dfd86f77445cb5a0982",
         "name": "保養所 西棟203号室の鍵",
         "shortName": "W203 San",
+        "normalizedName": "health-resort-west-wing-room-203-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_203_key",
         "usedInTasks": []
       },
@@ -40083,6 +38204,7 @@ const TARKOV_DATA = {
         "id": "5a1452ee86f7746f33111763",
         "name": "保養所 西棟222号室の鍵",
         "shortName": "W222 San",
+        "normalizedName": "health-resort-west-wing-room-222-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_west_wing_room_222_key",
         "usedInTasks": []
       },
@@ -40090,6 +38212,7 @@ const TARKOV_DATA = {
         "id": "5a145d4786f7744cbb6f4a12",
         "name": "保養所 東棟306号室の鍵",
         "shortName": "E306 San",
+        "normalizedName": "health-resort-east-wing-room-306-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_306_key",
         "usedInTasks": []
       },
@@ -40097,6 +38220,7 @@ const TARKOV_DATA = {
         "id": "5a145d7b86f7744cbb6f4a13",
         "name": "保養所 東棟308号室の鍵",
         "shortName": "E308 San",
+        "normalizedName": "health-resort-east-wing-room-308-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_308_key",
         "usedInTasks": []
       },
@@ -40104,6 +38228,7 @@ const TARKOV_DATA = {
         "id": "5a145ebb86f77458f1796f05",
         "name": "保養所 東棟316号室の鍵",
         "shortName": "E316 San",
+        "normalizedName": "health-resort-east-wing-room-316-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_east_wing_room_316_key",
         "usedInTasks": []
       },
@@ -40111,6 +38236,7 @@ const TARKOV_DATA = {
         "id": "5ad5ccd186f774446d5706e9",
         "name": "OLI 管理事務室の鍵",
         "shortName": "OLI Office",
+        "normalizedName": "oli-administration-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_administration_office_key",
         "usedInTasks": []
       },
@@ -40118,6 +38244,7 @@ const TARKOV_DATA = {
         "id": "5ad5cfbd86f7742c825d6104",
         "name": "OLI 物流部事務室の鍵",
         "shortName": "OLI Log.",
+        "normalizedName": "oli-logistics-department-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_logistics_department_office_key",
         "usedInTasks": []
       },
@@ -40125,6 +38252,7 @@ const TARKOV_DATA = {
         "id": "5ad5d20586f77449be26d877",
         "name": "OLI 備品保管室の鍵",
         "shortName": "OLI util.",
+        "normalizedName": "oli-outlet-utility-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_outlet_utility_room_key",
         "usedInTasks": []
       },
@@ -40132,6 +38260,7 @@ const TARKOV_DATA = {
         "id": "5ad5d49886f77455f9731921",
         "name": "変電所の作業小屋の鍵",
         "shortName": "Power",
+        "normalizedName": "power-substation-utility-cabin-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Power_substation_utility_cabin_key",
         "usedInTasks": []
       },
@@ -40139,6 +38268,7 @@ const TARKOV_DATA = {
         "id": "5ad5d64486f774079b080af8",
         "name": "薬局 NecrusPharm の鍵",
         "shortName": "Pharmacy",
+        "normalizedName": "necruspharm-pharmacy-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/NecrusPharm_pharmacy_key",
         "usedInTasks": []
       },
@@ -40146,6 +38276,7 @@ const TARKOV_DATA = {
         "id": "5ad5d7d286f77450166e0a89",
         "name": "Kiba Arms の外部扉の鍵",
         "shortName": "KIBA outer",
+        "normalizedName": "kiba-arms-outer-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Kiba_Arms_outer_door_key",
         "usedInTasks": []
       },
@@ -40153,6 +38284,7 @@ const TARKOV_DATA = {
         "id": "5ad5db3786f7743568421cce",
         "name": "EMERCOM の仮設診療所の鍵",
         "shortName": "EMC",
+        "normalizedName": "emercom-medical-unit-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/EMERCOM_medical_unit_key",
         "usedInTasks": []
       },
@@ -40160,6 +38292,7 @@ const TARKOV_DATA = {
         "id": "5ad7217186f7746744498875",
         "name": "OLI のレジの鍵",
         "shortName": "OLI reg.",
+        "normalizedName": "oli-cash-register-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/OLI_cash_register_key",
         "usedInTasks": []
       },
@@ -40167,6 +38300,7 @@ const TARKOV_DATA = {
         "id": "5ad7242b86f7740a6a3abd43",
         "name": "IDEA のレジの鍵",
         "shortName": "IDEA reg.",
+        "normalizedName": "idea-cash-register-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/IDEA_cash_register_key",
         "usedInTasks": []
       },
@@ -40174,6 +38308,7 @@ const TARKOV_DATA = {
         "id": "5ad7247386f7747487619dc3",
         "name": "Goshan のレジの鍵",
         "shortName": "Goshan reg.",
+        "normalizedName": "goshan-cash-register-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Goshan_cash_register_key",
         "usedInTasks": [
           {
@@ -40185,6 +38320,7 @@ const TARKOV_DATA = {
         "id": "5addaffe86f77470b455f900",
         "name": "Kiba Arms の鉄格子の鍵",
         "shortName": "KIBA inner",
+        "normalizedName": "kiba-arms-inner-grate-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Kiba_Arms_inner_grate_door_key",
         "usedInTasks": []
       },
@@ -40192,6 +38328,7 @@ const TARKOV_DATA = {
         "id": "5c1d0c5f86f7744bb2683cf0",
         "name": "TerraGroup Labs キーカード (ブルー)",
         "shortName": "Blue",
+        "normalizedName": "terragroup-labs-keycard-blue",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Blue)",
         "usedInTasks": []
       },
@@ -40199,6 +38336,7 @@ const TARKOV_DATA = {
         "id": "5c1d0d6d86f7744bb2683e1f",
         "name": "TerraGroup Labs キーカード (イエロー)",
         "shortName": "Yellow",
+        "normalizedName": "terragroup-labs-keycard-yellow",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Yellow)",
         "usedInTasks": []
       },
@@ -40206,6 +38344,7 @@ const TARKOV_DATA = {
         "id": "5c1d0dc586f7744baf2e7b79",
         "name": "TerraGroup Labs キーカード (グリーン)",
         "shortName": "Green",
+        "normalizedName": "terragroup-labs-keycard-green",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Green)",
         "usedInTasks": []
       },
@@ -40213,6 +38352,7 @@ const TARKOV_DATA = {
         "id": "5c1d0efb86f7744baf2e7b7b",
         "name": "TerraGroup Labs キーカード (レッド)",
         "shortName": "Red",
+        "normalizedName": "terragroup-labs-keycard-red",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Red)",
         "usedInTasks": []
       },
@@ -40220,6 +38360,7 @@ const TARKOV_DATA = {
         "id": "5c1d0f4986f7744bb01837fa",
         "name": "TerraGroup Labs キーカード (ブラック)",
         "shortName": "Black",
+        "normalizedName": "terragroup-labs-keycard-black",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Black)",
         "usedInTasks": []
       },
@@ -40227,6 +38368,7 @@ const TARKOV_DATA = {
         "id": "5c1e2a1e86f77431ea0ea84c",
         "name": "TerraGroup Labs 所長室の鍵",
         "shortName": "TGL MO",
+        "normalizedName": "terragroup-labs-managers-office-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_manager%27s_office_room_key",
         "usedInTasks": []
       },
@@ -40234,6 +38376,7 @@ const TARKOV_DATA = {
         "id": "5c1e2d1f86f77431e9280bee",
         "name": "TerraGroup Labs 武器試験場の鍵",
         "shortName": "TGL WT",
+        "normalizedName": "terragroup-labs-weapon-testing-area-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_weapon_testing_area_key",
         "usedInTasks": []
       },
@@ -40241,6 +38384,7 @@ const TARKOV_DATA = {
         "id": "5c1e495a86f7743109743dfb",
         "name": "TerraGroup Labs キーカード (ヴァイオレット)",
         "shortName": "Violet",
+        "normalizedName": "terragroup-labs-keycard-violet",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_keycard_(Violet)",
         "usedInTasks": []
       },
@@ -40248,6 +38392,7 @@ const TARKOV_DATA = {
         "id": "5c1f79a086f7746ed066fb8f",
         "name": "TerraGroup Labs 保管室の鍵",
         "shortName": "TGL ASR",
+        "normalizedName": "terragroup-labs-arsenal-storage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_arsenal_storage_room_key",
         "usedInTasks": []
       },
@@ -40255,6 +38400,7 @@ const TARKOV_DATA = {
         "id": "5c94bbff86f7747ee735c08f",
         "name": "TerraGroup Labs アクセスキーカード",
         "shortName": "Access",
+        "normalizedName": "terragroup-labs-access-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_access_keycard",
         "usedInTasks": [
           {
@@ -40269,6 +38415,7 @@ const TARKOV_DATA = {
         "id": "5d08d21286f774736e7c94c3",
         "name": "Shturman の保管庫の鍵",
         "shortName": "SSK",
+        "normalizedName": "shturmans-stash-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shturman%27s_stash_key",
         "usedInTasks": [
           {
@@ -40280,6 +38427,7 @@ const TARKOV_DATA = {
         "id": "5d80c60f86f77440373c4ece",
         "name": "マークの刻まれた RB-BK の鍵",
         "shortName": "RB-BK mrk.",
+        "normalizedName": "rb-bk-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-BK_marked_key",
         "usedInTasks": []
       },
@@ -40287,6 +38435,7 @@ const TARKOV_DATA = {
         "id": "5d80c62a86f7744036212b3f",
         "name": "マークの刻まれた RB-VO の鍵",
         "shortName": "RB-VO mrk.",
+        "normalizedName": "rb-vo-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-VO_marked_key",
         "usedInTasks": []
       },
@@ -40294,6 +38443,7 @@ const TARKOV_DATA = {
         "id": "5d80c66d86f774405611c7d6",
         "name": "RB-AO の鍵",
         "shortName": "RB-AO",
+        "normalizedName": "rb-ao-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AO_key",
         "usedInTasks": []
       },
@@ -40301,6 +38451,7 @@ const TARKOV_DATA = {
         "id": "5d80c6c586f77440351beef1",
         "name": "RB-OB の鍵",
         "shortName": "RB-OB",
+        "normalizedName": "rb-ob-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-OB_key",
         "usedInTasks": []
       },
@@ -40308,6 +38459,7 @@ const TARKOV_DATA = {
         "id": "5d80c6fc86f774403a401e3c",
         "name": "RB-TB の鍵",
         "shortName": "RB-TB",
+        "normalizedName": "rb-tb-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-TB_key",
         "usedInTasks": []
       },
@@ -40315,6 +38467,7 @@ const TARKOV_DATA = {
         "id": "5d80c78786f774403a401e3e",
         "name": "RB-AK の鍵",
         "shortName": "RB-AK",
+        "normalizedName": "rb-ak-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AK_key",
         "usedInTasks": []
       },
@@ -40322,6 +38475,7 @@ const TARKOV_DATA = {
         "id": "5d80c88d86f77440556dbf07",
         "name": "RB-AM の鍵",
         "shortName": "RB-AM",
+        "normalizedName": "rb-am-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-AM_key",
         "usedInTasks": []
       },
@@ -40329,6 +38483,7 @@ const TARKOV_DATA = {
         "id": "5d80c8f586f77440373c4ed0",
         "name": "RB-OP の鍵",
         "shortName": "RB-OP",
+        "normalizedName": "rb-op-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-OP_key",
         "usedInTasks": []
       },
@@ -40336,6 +38491,7 @@ const TARKOV_DATA = {
         "id": "5d80c93086f7744036212b41",
         "name": "RB-MP11 の鍵",
         "shortName": "RB-MP11",
+        "normalizedName": "rb-mp11-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP11_key",
         "usedInTasks": []
       },
@@ -40343,6 +38499,7 @@ const TARKOV_DATA = {
         "id": "5d80c95986f77440351beef3",
         "name": "RB-MP12 の鍵",
         "shortName": "RB-MP12",
+        "normalizedName": "rb-mp12-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP12_key",
         "usedInTasks": []
       },
@@ -40350,6 +38507,7 @@ const TARKOV_DATA = {
         "id": "5d80ca9086f774403a401e40",
         "name": "RB-MP21 の鍵",
         "shortName": "RB-MP21",
+        "normalizedName": "rb-mp21-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP21_key",
         "usedInTasks": []
       },
@@ -40357,6 +38515,7 @@ const TARKOV_DATA = {
         "id": "5d80cab086f77440535be201",
         "name": "RB-MP22の鍵",
         "shortName": "RB-MP22",
+        "normalizedName": "rb-mp22-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP22_key",
         "usedInTasks": []
       },
@@ -40364,6 +38523,7 @@ const TARKOV_DATA = {
         "id": "5d80cb3886f77440556dbf09",
         "name": "RB-PSP1 の鍵",
         "shortName": "RB-PSP1",
+        "normalizedName": "rb-psp1-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSP1_key",
         "usedInTasks": []
       },
@@ -40371,6 +38531,7 @@ const TARKOV_DATA = {
         "id": "5d80cb5686f77440545d1286",
         "name": "RB-PSV1 の鍵",
         "shortName": "RB-PSV1",
+        "normalizedName": "rb-psv1-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSV1_key",
         "usedInTasks": []
       },
@@ -40378,6 +38539,7 @@ const TARKOV_DATA = {
         "id": "5d80cb8786f774405611c7d9",
         "name": "RB-PP の鍵",
         "shortName": "RB-PP",
+        "normalizedName": "rb-pp-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PP_key",
         "usedInTasks": []
       },
@@ -40385,6 +38547,7 @@ const TARKOV_DATA = {
         "id": "5d80cbd886f77470855c26c2",
         "name": "RB-MP13 の鍵",
         "shortName": "RB-MP13",
+        "normalizedName": "rb-mp13-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-MP13_key",
         "usedInTasks": []
       },
@@ -40392,6 +38555,7 @@ const TARKOV_DATA = {
         "id": "5d80ccac86f77470841ff452",
         "name": "RB-ORB1 の鍵",
         "shortName": "RB-ORB1",
+        "normalizedName": "rb-orb1-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB1_key",
         "usedInTasks": []
       },
@@ -40399,6 +38563,7 @@ const TARKOV_DATA = {
         "id": "5d80ccdd86f77474f7575e02",
         "name": "RB-ORB2 の鍵",
         "shortName": "RB-ORB2",
+        "normalizedName": "rb-orb2-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB2_key",
         "usedInTasks": []
       },
@@ -40406,6 +38571,7 @@ const TARKOV_DATA = {
         "id": "5d80cd1a86f77402aa362f42",
         "name": "RB-ORB3 の鍵",
         "shortName": "RB-ORB3",
+        "normalizedName": "rb-orb3-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ORB3_key",
         "usedInTasks": []
       },
@@ -40413,6 +38579,7 @@ const TARKOV_DATA = {
         "id": "5d8e0db586f7744450412a42",
         "name": "RB-KORL の鍵",
         "shortName": "RB-KORL",
+        "normalizedName": "rb-korl-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KORL_key",
         "usedInTasks": []
       },
@@ -40420,6 +38587,7 @@ const TARKOV_DATA = {
         "id": "5d8e0e0e86f774321140eb56",
         "name": "RB-KPRL の鍵",
         "shortName": "RB-KPRL",
+        "normalizedName": "rb-kprl-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KPRL_key",
         "usedInTasks": []
       },
@@ -40427,6 +38595,7 @@ const TARKOV_DATA = {
         "id": "5d8e15b686f774445103b190",
         "name": "水力発電所の保管庫の鍵",
         "shortName": "HEPS",
+        "normalizedName": "hep-station-storage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/HEP_station_storage_room_key",
         "usedInTasks": []
       },
@@ -40434,6 +38603,7 @@ const TARKOV_DATA = {
         "id": "5d8e3ecc86f774414c78d05e",
         "name": "RB-GN の鍵",
         "shortName": "RB-GN",
+        "normalizedName": "rb-gn-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-GN_key",
         "usedInTasks": []
       },
@@ -40441,6 +38611,7 @@ const TARKOV_DATA = {
         "id": "5d947d3886f774447b415893",
         "name": "RB-SMP の鍵",
         "shortName": "RB-SMP",
+        "normalizedName": "rb-smp-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-SMP_key",
         "usedInTasks": []
       },
@@ -40448,6 +38619,7 @@ const TARKOV_DATA = {
         "id": "5d947d4e86f774447b415895",
         "name": "RB-KSM の鍵",
         "shortName": "RB-KSM",
+        "normalizedName": "rb-ksm-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-KSM_key",
         "usedInTasks": []
       },
@@ -40455,6 +38627,7 @@ const TARKOV_DATA = {
         "id": "5d95d6be86f77424444eb3a7",
         "name": "RB-PSV2 の鍵",
         "shortName": "RB-PSV2",
+        "normalizedName": "rb-psv2-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSV2_key",
         "usedInTasks": []
       },
@@ -40462,6 +38635,7 @@ const TARKOV_DATA = {
         "id": "5d95d6fa86f77424484aa5e9",
         "name": "RB-PSP2 の鍵",
         "shortName": "RB-PSP2",
+        "normalizedName": "rb-psp2-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PSP2_key",
         "usedInTasks": []
       },
@@ -40469,6 +38643,7 @@ const TARKOV_DATA = {
         "id": "5d9f1fa686f774726974a992",
         "name": "RB-ST の鍵",
         "shortName": "RB-ST",
+        "normalizedName": "rb-st-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-ST_key",
         "usedInTasks": []
       },
@@ -40476,6 +38651,7 @@ const TARKOV_DATA = {
         "id": "5da46e3886f774653b7a83fe",
         "name": "RB-RS の鍵",
         "shortName": "RB-RS",
+        "normalizedName": "rb-rs-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RS_key",
         "usedInTasks": []
       },
@@ -40483,6 +38659,7 @@ const TARKOV_DATA = {
         "id": "5da5cdcd86f774529238fb9b",
         "name": "RB-RH の鍵",
         "shortName": "RB-RH",
+        "normalizedName": "rb-rh-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RH_key",
         "usedInTasks": []
       },
@@ -40490,6 +38667,7 @@ const TARKOV_DATA = {
         "id": "5da743f586f7744014504f72",
         "name": "USECの隠し倉庫の鍵",
         "shortName": "USEC",
+        "normalizedName": "usec-stash-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_stash_key",
         "usedInTasks": []
       },
@@ -40497,6 +38675,7 @@ const TARKOV_DATA = {
         "id": "5e42c71586f7747f245e1343",
         "name": "ULTRA 医薬品保管室の鍵",
         "shortName": "ULTRA med.",
+        "normalizedName": "ultra-medical-storage-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/ULTRA_medical_storage_key",
         "usedInTasks": []
       },
@@ -40504,6 +38683,7 @@ const TARKOV_DATA = {
         "id": "5e42c81886f7742a01529f57",
         "name": "オブジェクト #11SR のキーカード",
         "shortName": "#11SR",
+        "normalizedName": "object-11sr-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Object_11SR_keycard",
         "usedInTasks": []
       },
@@ -40511,6 +38691,7 @@ const TARKOV_DATA = {
         "id": "5e42c83786f7742a021fdf3c",
         "name": "オブジェクト #21WS のキーカード",
         "shortName": "#21WS",
+        "normalizedName": "object-21ws-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Object_21WS_keycard",
         "usedInTasks": []
       },
@@ -40518,6 +38699,7 @@ const TARKOV_DATA = {
         "id": "5ede7a8229445733cb4c18e2",
         "name": "マークの刻まれた RB-PKPM の鍵",
         "shortName": "RB-PKPM mrk.",
+        "normalizedName": "rb-pkpm-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PKPM_marked_key",
         "usedInTasks": []
       },
@@ -40525,6 +38707,7 @@ const TARKOV_DATA = {
         "id": "5ede7b0c6d23e5473e6e8c66",
         "name": "RB-RLSA の鍵",
         "shortName": "RB-RLSA",
+        "normalizedName": "rb-rlsa-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-RLSA_key",
         "usedInTasks": []
       },
@@ -40532,6 +38715,7 @@ const TARKOV_DATA = {
         "id": "5efde6b4f5448336730dbd61",
         "name": "青い印のついたキーカード",
         "shortName": "Keycard",
+        "normalizedName": "keycard-with-a-blue-marking",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Keycard_with_a_blue_marking",
         "usedInTasks": []
       },
@@ -40539,6 +38723,7 @@ const TARKOV_DATA = {
         "id": "5eff09cd30a7dc22fd1ddfed",
         "name": "青いテープの貼られた保養所の事務室の鍵",
         "shortName": "San tape",
+        "normalizedName": "health-resort-office-key-with-a-blue-tape",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Health_Resort_office_key_with_a_blue_tape",
         "usedInTasks": []
       },
@@ -40546,6 +38731,7 @@ const TARKOV_DATA = {
         "id": "61a64428a8c6aa1b795f0ba1",
         "name": "コンビニエンスストアの貯蔵室の鍵",
         "shortName": "Store",
+        "normalizedName": "convenience-store-storage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Convenience_store_storage_room_key",
         "usedInTasks": []
       },
@@ -40553,6 +38739,7 @@ const TARKOV_DATA = {
         "id": "61a6444b8c141d68246e2d2f",
         "name": "丘陵地の家の鍵",
         "shortName": "House",
+        "normalizedName": "hillside-house-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Hillside_house_key",
         "usedInTasks": []
       },
@@ -40560,6 +38747,7 @@ const TARKOV_DATA = {
         "id": "61a6446f4b5f8b70f451b166",
         "name": "Cold storage room key",
         "shortName": "Cold",
+        "normalizedName": "cold-storage-room-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -40567,6 +38755,7 @@ const TARKOV_DATA = {
         "id": "61a64492ba05ef10d62adcc1",
         "name": "Rogue USEC の保管庫の鍵",
         "shortName": "Stash",
+        "normalizedName": "rogue-usec-stash-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_stash_key",
         "usedInTasks": []
       },
@@ -40574,6 +38763,7 @@ const TARKOV_DATA = {
         "id": "61aa5aed32a4743c3453d319",
         "name": "護送車の車室の鍵",
         "shortName": "Police",
+        "normalizedName": "police-truck-cabin-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Police_truck_cabin_key",
         "usedInTasks": []
       },
@@ -40581,6 +38771,7 @@ const TARKOV_DATA = {
         "id": "61aa5b518f5e7a39b41416e2",
         "name": "Merin 車のトランクの鍵",
         "shortName": "Merin",
+        "normalizedName": "merin-car-trunk-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Merin_car_trunk_key",
         "usedInTasks": []
       },
@@ -40588,6 +38779,7 @@ const TARKOV_DATA = {
         "id": "61aa5b7db225ac1ead7957c1",
         "name": "USEC の1番金庫の鍵",
         "shortName": "USEC 1",
+        "normalizedName": "usec-cottage-first-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_first_safe_key",
         "usedInTasks": []
       },
@@ -40595,6 +38787,7 @@ const TARKOV_DATA = {
         "id": "61aa5ba8018e9821b7368da9",
         "name": "USEC の2番金庫の鍵",
         "shortName": "USEC 2",
+        "normalizedName": "usec-cottage-second-safe-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_second_safe_key",
         "usedInTasks": []
       },
@@ -40602,6 +38795,7 @@ const TARKOV_DATA = {
         "id": "61aa81fcb225ac1ead7957c3",
         "name": "Rogue USEC の作業小屋の鍵",
         "shortName": "Workshop",
+        "normalizedName": "rogue-usec-workshop-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_workshop_key",
         "usedInTasks": []
       },
@@ -40609,6 +38803,7 @@ const TARKOV_DATA = {
         "id": "62987c658081af308d7558c6",
         "name": "レーダー管制施設の指揮官室の鍵",
         "shortName": "Radar",
+        "normalizedName": "radar-station-commandant-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Radar_station_commandant_room_key",
         "usedInTasks": []
       },
@@ -40616,6 +38811,7 @@ const TARKOV_DATA = {
         "id": "62987cb98081af308d7558c8",
         "name": "会議室の鍵",
         "shortName": "Conf.",
+        "normalizedName": "conference-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Conference_room_key",
         "usedInTasks": []
       },
@@ -40623,6 +38819,7 @@ const TARKOV_DATA = {
         "id": "62987da96188c076bc0d8c51",
         "name": "手術室の鍵",
         "shortName": "OR",
+        "normalizedName": "operating-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Operating_room_key",
         "usedInTasks": []
       },
@@ -40630,6 +38827,7 @@ const TARKOV_DATA = {
         "id": "62987dfc402c7f69bf010923",
         "name": "マークの刻まれた共同寝室の鍵",
         "shortName": "Bedroom",
+        "normalizedName": "shared-bedroom-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shared_bedroom_marked_key",
         "usedInTasks": []
       },
@@ -40637,6 +38835,7 @@ const TARKOV_DATA = {
         "id": "62987e26a77ec735f90a2995",
         "name": "浄水場の保管室の鍵",
         "shortName": "WTP store",
+        "normalizedName": "water-treatment-plant-storage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Water_treatment_plant_storage_room_key",
         "usedInTasks": []
       },
@@ -40644,6 +38843,7 @@ const TARKOV_DATA = {
         "id": "62a09ec84f842e1bd12da3f2",
         "name": "Missam のフォークリフトの鍵",
         "shortName": "Danex",
+        "normalizedName": "missam-forklift-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Missam_forklift_key",
         "usedInTasks": [
           {
@@ -40655,6 +38855,7 @@ const TARKOV_DATA = {
         "id": "62a9cb937377a65d7b070cef",
         "name": "Rogue USEC の兵舎の鍵",
         "shortName": "Barrack",
+        "normalizedName": "rogue-usec-barrack-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rogue_USEC_barrack_key",
         "usedInTasks": []
       },
@@ -40662,6 +38863,7 @@ const TARKOV_DATA = {
         "id": "6391fcf5744e45201147080f",
         "name": "プリモルスキー通りの賃貸住宅の鍵",
         "shortName": "Primorsky",
+        "normalizedName": "primorsky-ave-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Primorsky_Ave_apartment_key",
         "usedInTasks": []
       },
@@ -40669,6 +38871,7 @@ const TARKOV_DATA = {
         "id": "6398fd8ad3de3849057f5128",
         "name": "予備の隠れ家の鍵",
         "shortName": "Hideout",
+        "normalizedName": "backup-hideout-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Backup_hideout_key",
         "usedInTasks": []
       },
@@ -40676,6 +38879,7 @@ const TARKOV_DATA = {
         "id": "63a39667c9b3aa4b61683e98",
         "name": "金融機関の執務室の鍵",
         "shortName": "Finance",
+        "normalizedName": "financial-institution-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Financial_institution_office_key",
         "usedInTasks": []
       },
@@ -40683,6 +38887,7 @@ const TARKOV_DATA = {
         "id": "63a397d3af870e651d58e65b",
         "name": "カーディーラーの立入禁止区画の鍵",
         "shortName": "LexOs sect.",
+        "normalizedName": "car-dealership-closed-section-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Car_dealership_closed_section_key",
         "usedInTasks": []
       },
@@ -40690,6 +38895,7 @@ const TARKOV_DATA = {
         "id": "63a399193901f439517cafb6",
         "name": "カーディーラーの役員室の鍵",
         "shortName": "LexOs",
+        "normalizedName": "car-dealership-directors-office-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Car_dealership_director%27s_office_room_key",
         "usedInTasks": []
       },
@@ -40697,6 +38903,7 @@ const TARKOV_DATA = {
         "id": "63a39c69af870e651d58e6aa",
         "name": "店舗責任者の鍵",
         "shortName": "Store",
+        "normalizedName": "store-managers-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Store_manager%27s_key",
         "usedInTasks": []
       },
@@ -40704,6 +38911,7 @@ const TARKOV_DATA = {
         "id": "63a39c7964283b5e9c56b280",
         "name": "コンコルディアの警備室の鍵",
         "shortName": "Conc sec.",
+        "normalizedName": "concordia-security-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_security_room_key",
         "usedInTasks": []
       },
@@ -40711,6 +38919,7 @@ const TARKOV_DATA = {
         "id": "63a39cb1c9b3aa4b61683ee2",
         "name": "建設現場の寝床の鍵",
         "shortName": "Construct.",
+        "normalizedName": "construction-site-bunkhouse-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Construction_site_bunkhouse_key",
         "usedInTasks": []
       },
@@ -40718,6 +38927,7 @@ const TARKOV_DATA = {
         "id": "63a39ce4cd6db0635c1975fa",
         "name": "供給部門責任者の事務室の鍵",
         "shortName": "Supp.",
+        "normalizedName": "supply-department-directors-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Supply_department_director%27s_office_key",
         "usedInTasks": []
       },
@@ -40725,6 +38935,7 @@ const TARKOV_DATA = {
         "id": "63a39ddda3a2b32b5f6e007a",
         "name": "Apartment locked room safe key",
         "shortName": "Apt. safe",
+        "normalizedName": "apartment-locked-room-safe-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -40732,6 +38943,7 @@ const TARKOV_DATA = {
         "id": "63a39df18a56922e82001f25",
         "name": "ズミ―スキー通り5番地のアパート20号室の鍵",
         "shortName": "Zm apt. 20",
+        "normalizedName": "zmeisky-5-apartment-20-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Zmeisky_5_apartment_20_key",
         "usedInTasks": []
       },
@@ -40739,6 +38951,7 @@ const TARKOV_DATA = {
         "id": "63a39dfe3901f439517cafba",
         "name": "ズミ―スキー通り3番地のアパート8号室の鍵",
         "shortName": "Zm apt. 8",
+        "normalizedName": "zmeisky-3-apartment-8-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Zmeisky_3_apartment_8_key",
         "usedInTasks": []
       },
@@ -40746,6 +38959,7 @@ const TARKOV_DATA = {
         "id": "63a39e1d234195315d4020bd",
         "name": "プリモルスキー通り46～48番地 スカイブリッジの鍵",
         "shortName": "Skybridge 46-48",
+        "normalizedName": "primorsky-46-48-skybridge-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Primorsky_46-48_skybridge_key",
         "usedInTasks": []
       },
@@ -40753,6 +38967,7 @@ const TARKOV_DATA = {
         "id": "63a39e49cd6db0635c1975fc",
         "name": "資料室の鍵",
         "shortName": "Archives",
+        "normalizedName": "archive-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Archive_room_key",
         "usedInTasks": []
       },
@@ -40760,6 +38975,7 @@ const TARKOV_DATA = {
         "id": "63a39e5b234195315d4020bf",
         "name": "Housing office second floor safe key",
         "shortName": "HO 2",
+        "normalizedName": "housing-office-second-floor-safe-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -40767,6 +38983,7 @@ const TARKOV_DATA = {
         "id": "63a39e6acd6db0635c1975fe",
         "name": "Housing office first floor safe key",
         "shortName": "HO 1",
+        "normalizedName": "housing-office-first-floor-safe-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -40774,6 +38991,7 @@ const TARKOV_DATA = {
         "id": "63a39f08cd6db0635c197600",
         "name": "ホテルの215号室の鍵",
         "shortName": "Pnwd 215",
+        "normalizedName": "pinewood-hotel-room-215-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pinewood_hotel_room_215_key",
         "usedInTasks": []
       },
@@ -40781,6 +38999,7 @@ const TARKOV_DATA = {
         "id": "63a39f18c2d53c2c6839c1d3",
         "name": "ホテルの206号室の鍵",
         "shortName": "Pnwd 206",
+        "normalizedName": "pinewood-hotel-room-206-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pinewood_hotel_room_206_key",
         "usedInTasks": []
       },
@@ -40788,6 +39007,7 @@ const TARKOV_DATA = {
         "id": "63a39f6e64283b5e9c56b289",
         "name": "鉄格子の扉の鍵",
         "shortName": "Iron gate",
+        "normalizedName": "iron-gate-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Iron_gate_key",
         "usedInTasks": []
       },
@@ -40795,6 +39015,7 @@ const TARKOV_DATA = {
         "id": "63a39fc0af870e651d58e6ae",
         "name": "チェカンナヤ通り15番地の賃貸住宅の鍵",
         "shortName": "Chek 15",
+        "normalizedName": "chekannaya-15-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Chekannaya_15_apartment_key",
         "usedInTasks": []
       },
@@ -40802,6 +39023,7 @@ const TARKOV_DATA = {
         "id": "63a39fd1c9b3aa4b61683efb",
         "name": "階段の踊り場の鍵",
         "shortName": "Stairs",
+        "normalizedName": "stair-landing-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Stair_landing_key",
         "usedInTasks": []
       },
@@ -40809,6 +39031,7 @@ const TARKOV_DATA = {
         "id": "63a39fdf1e21260da44a0256",
         "name": "輸送コンテナの鉄格子の扉の鍵",
         "shortName": "Container",
+        "normalizedName": "cargo-container-mesh-door-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cargo_container_mesh_door_key",
         "usedInTasks": []
       },
@@ -40816,6 +39039,7 @@ const TARKOV_DATA = {
         "id": "63a3a93f8a56922e82001f5d",
         "name": "マークの刻まれた廃工場の鍵",
         "shortName": "Aband.",
+        "normalizedName": "abandoned-factory-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Abandoned_factory_marked_key",
         "usedInTasks": []
       },
@@ -40823,6 +39047,7 @@ const TARKOV_DATA = {
         "id": "63a71e781031ac76fe773c7d",
         "name": "コンコルディア・アパート 8号室の鍵",
         "shortName": "Conc 8",
+        "normalizedName": "concordia-apartment-8-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_8_room_key",
         "usedInTasks": []
       },
@@ -40830,6 +39055,7 @@ const TARKOV_DATA = {
         "id": "63a71e86b7f4570d3a293169",
         "name": "コンコルディア・アパート 64号室の事務室の鍵",
         "shortName": "Conc off.",
+        "normalizedName": "concordia-apartment-64-office-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_64_office_room_key",
         "usedInTasks": []
       },
@@ -40837,6 +39063,7 @@ const TARKOV_DATA = {
         "id": "63a71e922b25f7513905ca20",
         "name": "コンコルディア・アパート 64号室の鍵",
         "shortName": "Conc 64",
+        "normalizedName": "concordia-apartment-64-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_64_key",
         "usedInTasks": []
       },
@@ -40844,6 +39071,7 @@ const TARKOV_DATA = {
         "id": "63a71eb5b7f4570d3a29316b",
         "name": "プリモルスキー通り48番地の集合住宅の鍵",
         "shortName": "Prim 48",
+        "normalizedName": "primorsky-48-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Primorsky_48_apartment_key",
         "usedInTasks": []
       },
@@ -40851,6 +39079,7 @@ const TARKOV_DATA = {
         "id": "63a71ed21031ac76fe773c7f",
         "name": "金融機関の事務室の鍵",
         "shortName": "Finance s",
+        "normalizedName": "financial-institution-small-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Financial_institution_small_office_key",
         "usedInTasks": []
       },
@@ -40858,6 +39087,7 @@ const TARKOV_DATA = {
         "id": "64ccc1d4a0f13c24561edf27",
         "name": "コンコルディア・アパート 34号室の鍵",
         "shortName": "Conc 34",
+        "normalizedName": "concordia-apartment-34-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_34_room_key",
         "usedInTasks": []
       },
@@ -40865,6 +39095,7 @@ const TARKOV_DATA = {
         "id": "64ccc1ec1779ad6ba200a137",
         "name": "コンコルディア・アパート 8号室のシアタールームの鍵",
         "shortName": "Cinema",
+        "normalizedName": "concordia-apartment-8-home-cinema-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_8_home_cinema_key",
         "usedInTasks": []
       },
@@ -40872,6 +39103,7 @@ const TARKOV_DATA = {
         "id": "64ccc1f4ff54fb38131acf27",
         "name": "コンコルディア・アパート 63号室の鍵",
         "shortName": "Conc. 63",
+        "normalizedName": "concordia-apartment-63-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Concordia_apartment_63_room_key",
         "usedInTasks": []
       },
@@ -40879,6 +39111,7 @@ const TARKOV_DATA = {
         "id": "64ccc1fe088064307e14a6f7",
         "name": "レストラン \"ベルーガ\" の支配人の鍵",
         "shortName": "Beluga",
+        "normalizedName": "beluga-restaurant-director-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Beluga_restaurant_director_key",
         "usedInTasks": []
       },
@@ -40886,6 +39119,7 @@ const TARKOV_DATA = {
         "id": "64ccc206793ca11c8f450a38",
         "name": "TerraGroup の会議室の鍵",
         "shortName": "TG meeting",
+        "normalizedName": "terragroup-meeting-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_meeting_room_key",
         "usedInTasks": []
       },
@@ -40893,6 +39127,7 @@ const TARKOV_DATA = {
         "id": "64ccc2111779ad6ba200a139",
         "name": "タルバンクのレジ部門の鍵",
         "shortName": "Tarbank",
+        "normalizedName": "tarbank-cash-register-department-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Tarbank_cash_register_department_key",
         "usedInTasks": []
       },
@@ -40900,6 +39135,7 @@ const TARKOV_DATA = {
         "id": "64ccc246ff54fb38131acf29",
         "name": "放射線治療室の鍵",
         "shortName": "X-ray",
+        "normalizedName": "x-ray-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/X-ray_room_key",
         "usedInTasks": []
       },
@@ -40907,6 +39143,7 @@ const TARKOV_DATA = {
         "id": "64ccc24de61ea448b507d34d",
         "name": "TerraGroup の警備用武器保管室の鍵",
         "shortName": "TG arm.",
+        "normalizedName": "terragroup-security-armory-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_security_armory_key",
         "usedInTasks": []
       },
@@ -40914,6 +39151,7 @@ const TARKOV_DATA = {
         "id": "64ccc25f95763a1ae376e447",
         "name": "マークの刻まれた怪しい部屋の鍵",
         "shortName": "Chek. 13",
+        "normalizedName": "mysterious-room-marked-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Mysterious_room_marked_key",
         "usedInTasks": []
       },
@@ -40921,6 +39159,7 @@ const TARKOV_DATA = {
         "id": "64ccc268c41e91416064ebc7",
         "name": "体育教師の事務室の鍵",
         "shortName": "PE",
+        "normalizedName": "pe-teachers-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/PE_teacher%27s_office_key",
         "usedInTasks": []
       },
@@ -40928,6 +39167,7 @@ const TARKOV_DATA = {
         "id": "64ce572331dd890873175115",
         "name": "Aspect 社オフィスの鍵",
         "shortName": "Aspect",
+        "normalizedName": "aspect-company-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Aspect_company_office_key",
         "usedInTasks": []
       },
@@ -40935,6 +39175,7 @@ const TARKOV_DATA = {
         "id": "64d4b23dc1b37504b41ac2b6",
         "name": "錆びと血の鍵",
         "shortName": "Rusted",
+        "normalizedName": "rusted-bloody-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rusted_bloody_key",
         "usedInTasks": []
       },
@@ -40942,6 +39183,7 @@ const TARKOV_DATA = {
         "id": "6581998038c79576a2569e11",
         "name": "Unity Credit 銀行レジの鍵",
         "shortName": "UC reg.",
+        "normalizedName": "unity-credit-bank-cash-register-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Unity_Credit_Bank_cash_register_key",
         "usedInTasks": []
       },
@@ -40949,6 +39191,7 @@ const TARKOV_DATA = {
         "id": "658199972dc4e60f6d556a2f",
         "name": "地下駐車場ユーティリティルームの鍵",
         "shortName": "Utility",
+        "normalizedName": "underground-parking-utility-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Underground_parking_utility_room_key",
         "usedInTasks": []
       },
@@ -40956,6 +39199,7 @@ const TARKOV_DATA = {
         "id": "658199a0490414548c0fa83b",
         "name": "Horse restaurant toilet key",
         "shortName": "Toilet",
+        "normalizedName": "horse-restaurant-toilet-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -40963,6 +39207,7 @@ const TARKOV_DATA = {
         "id": "658199aa38c79576a2569e13",
         "name": "TerraGroup 科学オフィスの鍵",
         "shortName": "Science",
+        "normalizedName": "terragroup-science-office-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_science_office_key",
         "usedInTasks": []
       },
@@ -40970,6 +39215,7 @@ const TARKOV_DATA = {
         "id": "6582dbe43a2e5248357dbe9a",
         "name": "「交渉室」の鍵",
         "shortName": "Negotiations",
+        "normalizedName": "negotiation-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/%22Negotiation%22_room_key",
         "usedInTasks": []
       },
@@ -40977,6 +39223,7 @@ const TARKOV_DATA = {
         "id": "6582dbf0b8d7830efc45016f",
         "name": "リラクゼーションルームの鍵",
         "shortName": "Relax",
+        "normalizedName": "relaxation-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Relaxation_room_key",
         "usedInTasks": []
       },
@@ -40984,6 +39231,7 @@ const TARKOV_DATA = {
         "id": "6582dc4b6ba9e979af6b79f4",
         "name": "MVD アカデミー エントランスホールの守衛室の鍵",
         "shortName": "MVD",
+        "normalizedName": "mvd-academy-entrance-hall-guard-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MVD_academy_entrance_hall_guard_room_key",
         "usedInTasks": []
       },
@@ -40991,6 +39239,7 @@ const TARKOV_DATA = {
         "id": "6582dc5740562727a654ebb1",
         "name": "不動産会社オフィスの鍵",
         "shortName": "REA",
+        "normalizedName": "real-estate-agency-office-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Real_estate_agency_office_room_key",
         "usedInTasks": []
       },
@@ -40998,6 +39247,7 @@ const TARKOV_DATA = {
         "id": "6582dc63cafcd9485374dbc5",
         "name": "Unity Credit 銀行資料室の鍵",
         "shortName": "UC arch.",
+        "normalizedName": "unity-credit-bank-archive-room-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41005,6 +39255,7 @@ const TARKOV_DATA = {
         "id": "66265d7be65f224b2e17c6aa",
         "name": "USEC コテージの部屋の鍵",
         "shortName": "USEC cott.",
+        "normalizedName": "usec-cottage-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/USEC_cottage_room_key",
         "usedInTasks": []
       },
@@ -41012,6 +39263,7 @@ const TARKOV_DATA = {
         "id": "664d3db6db5dea2bad286955",
         "name": "Shatun のハイドアウトの鍵",
         "shortName": "Shatun",
+        "normalizedName": "shatuns-hideout-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Shatun%27s_hideout_key",
         "usedInTasks": []
       },
@@ -41019,6 +39271,7 @@ const TARKOV_DATA = {
         "id": "664d3dd590294949fe2d81b7",
         "name": "Grumpy's hideout key",
         "shortName": "Grumpy",
+        "normalizedName": "grumpys-hideout-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Grumpy%27s_hideout_key",
         "usedInTasks": []
       },
@@ -41026,6 +39279,7 @@ const TARKOV_DATA = {
         "id": "664d3ddfdda2e85aca370d75",
         "name": "Voron's hideout key",
         "shortName": "Voron",
+        "normalizedName": "vorons-hideout-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Voron%27s_hideout_key",
         "usedInTasks": []
       },
@@ -41033,6 +39287,7 @@ const TARKOV_DATA = {
         "id": "664d3de85f2355673b09aed5",
         "name": "Leon's hideout key",
         "shortName": "Leon",
+        "normalizedName": "leons-hideout-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Leon%27s_hideout_key",
         "usedInTasks": []
       },
@@ -41040,6 +39295,7 @@ const TARKOV_DATA = {
         "id": "664d4b0103ef2c61246afb56",
         "name": "寮の監督の鍵",
         "shortName": "Overseer",
+        "normalizedName": "dorm-overseer-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_overseer_key",
         "usedInTasks": [
           {
@@ -41051,6 +39307,7 @@ const TARKOV_DATA = {
         "id": "66acd6702b17692df20144c0",
         "name": "TerraGroup ストレージルーム キーカード",
         "shortName": "Polikhim",
+        "normalizedName": "terragroup-storage-room-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_storage_room_keycard",
         "usedInTasks": []
       },
@@ -41058,6 +39315,7 @@ const TARKOV_DATA = {
         "id": "6711039f9e648049e50b3307",
         "name": "TerraGroup Labs 住居区画キーカード",
         "shortName": "Res. unit",
+        "normalizedName": "terragroup-labs-residential-unit-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_Labs_residential_unit_keycard",
         "usedInTasks": []
       },
@@ -41065,6 +39323,7 @@ const TARKOV_DATA = {
         "id": "6761a6ccd9bbb27ad703c48a",
         "name": "古い家の部屋の鍵",
         "shortName": "Depot",
+        "normalizedName": "old-house-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Old_house_room_key",
         "usedInTasks": []
       },
@@ -41072,6 +39331,7 @@ const TARKOV_DATA = {
         "id": "6761a6f90575f25e020816a4",
         "name": "会社役員室の鍵",
         "shortName": "Company",
+        "normalizedName": "company-directors-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Company_director%27s_room_key",
         "usedInTasks": []
       },
@@ -41079,6 +39339,7 @@ const TARKOV_DATA = {
         "id": "678fa929819ddc4c350c0317",
         "name": "バルブハンドル",
         "shortName": "handwheel",
+        "normalizedName": "valve-handwheel",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Valve_handwheel",
         "usedInTasks": []
       },
@@ -41086,6 +39347,7 @@ const TARKOV_DATA = {
         "id": "679b9716597ba2ed120c3d3f",
         "name": "Knossos LLC の施設の鍵",
         "shortName": "Knossos",
+        "normalizedName": "knossos-llc-facility-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Knossos_LLC_facility_key",
         "usedInTasks": [
           {
@@ -41097,6 +39359,7 @@ const TARKOV_DATA = {
         "id": "679b9819a2f2dd4da9023512",
         "name": "Labrys アクセスキーカード",
         "shortName": "Labrys",
+        "normalizedName": "labrys-access-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Labrys_access_keycard",
         "usedInTasks": [
           {
@@ -41111,6 +39374,7 @@ const TARKOV_DATA = {
         "id": "679baa2c61f588ae2b062a24",
         "name": "キー 01",
         "shortName": "Key 01",
+        "normalizedName": "key-01",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_01",
         "usedInTasks": []
       },
@@ -41118,6 +39382,7 @@ const TARKOV_DATA = {
         "id": "679baa4f59b8961f370dd683",
         "name": "キー 02",
         "shortName": "Key 02",
+        "normalizedName": "key-02",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_02",
         "usedInTasks": []
       },
@@ -41125,6 +39390,7 @@ const TARKOV_DATA = {
         "id": "679baa5a59b8961f370dd685",
         "name": "キー 03",
         "shortName": "Key 03",
+        "normalizedName": "key-03",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_03",
         "usedInTasks": []
       },
@@ -41132,6 +39398,7 @@ const TARKOV_DATA = {
         "id": "679baa9091966fe40408f149",
         "name": "キー 04",
         "shortName": "Key 04",
+        "normalizedName": "key-04",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Key_04",
         "usedInTasks": []
       },
@@ -41139,6 +39406,7 @@ const TARKOV_DATA = {
         "id": "679baace4e9ca6b3d80586b2",
         "name": "観測室の鍵",
         "shortName": "Observe",
+        "normalizedName": "observation-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Observation_room_key",
         "usedInTasks": []
       },
@@ -41146,6 +39414,7 @@ const TARKOV_DATA = {
         "id": "679baae891966fe40408f14c",
         "name": "拷問室の鍵",
         "shortName": "Torture",
+        "normalizedName": "torture-room-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41153,6 +39422,7 @@ const TARKOV_DATA = {
         "id": "679bab714e9ca6b3d80586b4",
         "name": "遺体安置所の鍵",
         "shortName": "Corpses",
+        "normalizedName": "corpse-room-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Corpse_room_key",
         "usedInTasks": []
       },
@@ -41160,6 +39430,7 @@ const TARKOV_DATA = {
         "id": "679bac1d61f588ae2b062a26",
         "name": "Labyrinth の鍵\n",
         "shortName": "Labyrinth",
+        "normalizedName": "labyrinth-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41167,6 +39438,7 @@ const TARKOV_DATA = {
         "id": "67ab3d4b83869afd170fdd3f",
         "name": "BBQ-S43 ガストーチ",
         "shortName": "BBQ-S43",
+        "normalizedName": "bbq-s43-gas-torch",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BBQ-S43_gas_torch",
         "usedInTasks": []
       },
@@ -41174,6 +39446,7 @@ const TARKOV_DATA = {
         "id": "67bdea8667098e658f064695",
         "name": "Kruglov's RFID keycard",
         "shortName": "Kruglov",
+        "normalizedName": "kruglovs-rfid-keycard",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41181,6 +39454,7 @@ const TARKOV_DATA = {
         "id": "67bdf04d66ca1d79a2024637",
         "name": "Activated Kruglov's RFID keycard",
         "shortName": "RFID act.",
+        "normalizedName": "activated-kruglovs-rfid-keycard",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41188,6 +39462,7 @@ const TARKOV_DATA = {
         "id": "67bdf0e67c1ef7a648043531",
         "name": "Keycard from Kruglov's safe",
         "shortName": "Kruglov",
+        "normalizedName": "keycard-from-kruglovs-safe",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41195,6 +39470,7 @@ const TARKOV_DATA = {
         "id": "67c031b79320f644db06f456",
         "name": "Blank RFID keycard",
         "shortName": "Blank RFID",
+        "normalizedName": "blank-rfid-keycard",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Blank_RFID_keycard",
         "usedInTasks": []
       },
@@ -41202,6 +39478,7 @@ const TARKOV_DATA = {
         "id": "67c033fd0610e91bea056998",
         "name": "Reprogrammed RFID keycard with Mr. Kerman's hash codes",
         "shortName": "RFID Mr.K",
+        "normalizedName": "reprogrammed-rfid-keycard-with-mr-kermans-hash-codes",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41209,6 +39486,7 @@ const TARKOV_DATA = {
         "id": "67c04a6f9152fbdfa306cc66",
         "name": "Reprogrammed RFID keycard with Prapor's hash codes",
         "shortName": "RFID Prap.",
+        "normalizedName": "reprogrammed-rfid-keycard-with-prapors-hash-codes",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41216,6 +39494,7 @@ const TARKOV_DATA = {
         "id": "67c04dac9320f644db06f45c",
         "name": "RFID keycard with unknown name",
         "shortName": "RFID L.",
+        "normalizedName": "rfid-keycard-with-unknown-name",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41223,6 +39502,7 @@ const TARKOV_DATA = {
         "id": "67e183377c6c2011970f3149",
         "name": "アリアドネーシンボルキー",
         "shortName": "Ariadne",
+        "normalizedName": "ariadne-symbol-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ariadne_symbol_key",
         "usedInTasks": []
       },
@@ -41230,6 +39510,7 @@ const TARKOV_DATA = {
         "id": "67ee7680562d5057e60ccc3a",
         "name": "TerraGroup corporate apartment key",
         "shortName": "TG apt.",
+        "normalizedName": "terragroup-corporate-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/TerraGroup_corporate_apartment_key",
         "usedInTasks": []
       },
@@ -41237,6 +39518,7 @@ const TARKOV_DATA = {
         "id": "6866ad3853330f9b83064cf9",
         "name": "Black Division keycard",
         "shortName": "BD",
+        "normalizedName": "black-division-keycard",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41244,6 +39526,7 @@ const TARKOV_DATA = {
         "id": "6866adbe09b973bf45094339",
         "name": "Pier door key",
         "shortName": "Pier",
+        "normalizedName": "pier-door-key",
         "wikiLink": "",
         "usedInTasks": []
       },
@@ -41251,6 +39534,7 @@ const TARKOV_DATA = {
         "id": "68c14b734a7e0bada00f8fd4",
         "name": "Reprogrammed keycard for A.P.'s apartment lock (Green)",
         "shortName": "A.P. Green",
+        "normalizedName": "reprogrammed-keycard-for-aps-apartment-lock-green",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Reprogrammed_keycard_for_A.P.%27s_apartment_lock_(Green)",
         "usedInTasks": []
       },
@@ -41258,6 +39542,7 @@ const TARKOV_DATA = {
         "id": "68c165f1903341d88b092b2a",
         "name": "Cardinal apartment key",
         "shortName": "Cardinal",
+        "normalizedName": "cardinal-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cardinal_apartment_key",
         "usedInTasks": []
       },
@@ -41265,6 +39550,7 @@ const TARKOV_DATA = {
         "id": "68cc09872bdcc15c010c2668",
         "name": "Station 14-4 KORD Arshavin K. pass (Restored)",
         "shortName": "14-4 rst.",
+        "normalizedName": "station-14-4-kord-arshavin-k-pass-restored",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Station_14-4_KORD_Arshavin_K._pass_(Restored)",
         "usedInTasks": []
       },
@@ -41272,6 +39558,7 @@ const TARKOV_DATA = {
         "id": "68e63b56ad8cba49190ea529",
         "name": "Rus Post car key",
         "shortName": "Rus Post",
+        "normalizedName": "rus-post-car-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Rus_Post_car_key",
         "usedInTasks": []
       },
@@ -41279,6 +39566,7 @@ const TARKOV_DATA = {
         "id": "68e7d904aded99fd1a0624f2",
         "name": "Reprogrammed keycard for A.P.'s apartment lock (Red)",
         "shortName": "A.P. Red",
+        "normalizedName": "reprogrammed-keycard-for-aps-apartment-lock-red",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Reprogrammed_keycard_for_A.P.%27s_apartment_lock_(Red)",
         "usedInTasks": []
       },
@@ -41286,6 +39574,7 @@ const TARKOV_DATA = {
         "id": "68e7d984308332889e0b5e71",
         "name": "Reprogrammed keycard for A.P.'s apartment lock (Blue)",
         "shortName": "A.P. Blue",
+        "normalizedName": "reprogrammed-keycard-for-aps-apartment-lock-blue",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Reprogrammed_keycard_for_A.P.%27s_apartment_lock_(Blue)",
         "usedInTasks": []
       },
@@ -41293,6 +39582,7 @@ const TARKOV_DATA = {
         "id": "68e95d71a3d110355b03e529",
         "name": "Elektronik's key",
         "shortName": "Elektronik",
+        "normalizedName": "elektroniks-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Elektronik%27s_key",
         "usedInTasks": []
       },
@@ -41300,6 +39590,7 @@ const TARKOV_DATA = {
         "id": "68e95f4fa4a577e907015787",
         "name": "Reshala's bunkhouse key",
         "shortName": "Reshala",
+        "normalizedName": "reshalas-bunkhouse-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Reshala%27s_bunkhouse_key",
         "usedInTasks": []
       },
@@ -41307,6 +39598,7 @@ const TARKOV_DATA = {
         "id": "68e960db934bf7b02d005dab",
         "name": "Zmeisky 3 apartment key",
         "shortName": "Zm. 3",
+        "normalizedName": "zmeisky-3-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Zmeisky_3_apartment_key",
         "usedInTasks": []
       },
@@ -41314,6 +39606,7 @@ const TARKOV_DATA = {
         "id": "68e96180901b9b10270f1eed",
         "name": "Cult victim's apartment key",
         "shortName": "Cult victim",
+        "normalizedName": "cult-victims-apartment-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Cult_victim%27s_apartment_key",
         "usedInTasks": []
       },
@@ -41321,6 +39614,7 @@ const TARKOV_DATA = {
         "id": "68e9654d72488961110dbf69",
         "name": "RB-PKPTS key",
         "shortName": "RB-PKPTS",
+        "normalizedName": "rb-pkpts-key",
         "wikiLink": "https://escapefromtarkov.fandom.com/wiki/RB-PKPTS_key",
         "usedInTasks": []
       }

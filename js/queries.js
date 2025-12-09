@@ -32,11 +32,13 @@ query GetData {
   maps(lang: ja) {
     name
     locks {
-      key { id }
+      key { 
+        id 
+        name
+      }
     }
   }
   
-  # ★変更: ここをメインの鍵データソースにします
   items(types: keys, lang: ja) {
     id
     name
