@@ -362,16 +362,13 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart (完全修正版: クリック検知 + 状態保持)
+// js/components.js の CompFlowchart
 
 const CompFlowchart = {
-    // ★修正: selectedTrader を props に追加
     props: ['taskData', 'completedTasks', 'selectedTrader'],
-    // ★修正: update:selectedTrader を emits に追加
     emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
     data() {
         return {
-            // selectedTrader: 'Prapor', ← ★削除 (propsで受け取るため不要)
             nodeMap: {} 
         };
     },
@@ -388,6 +385,9 @@ const CompFlowchart = {
         taskData() { this.renderChart(); }
     },
     mounted() {
+        // ダミー関数
+        window.emptyCallback = () => {};
+
         mermaid.initialize({ 
             startOnLoad: false, 
             theme: 'dark',
@@ -407,7 +407,6 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
-            // ■ 1. マッピングの作成 (単純な連番ID t0, t1... を使用)
             this.nodeMap = {}; 
             const nameToId = {};
             let counter = 0;
@@ -415,10 +414,9 @@ const CompFlowchart = {
             this.taskData.forEach(t => {
                 const simpleId = `t${counter++}`;
                 nameToId[t.name] = simpleId;
-                this.nodeMap[simpleId] = t; // "t0" -> タスクデータ
+                this.nodeMap[simpleId] = t;
             });
 
-            // ■ 2. 描画対象のフィルタリング
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
@@ -441,10 +439,8 @@ const CompFlowchart = {
                 }
             });
 
-            // ■ 3. Mermaid構文の生成
             let graph = 'graph LR\n';
             
-            // スタイル定義
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
             graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
@@ -461,31 +457,25 @@ const CompFlowchart = {
                     className = 'external';
                 }
 
-                // ラベルのエスケープ
                 const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");
                 
                 graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
-                
-                // ダミーのインタラクション定義 (ID付与用)
-                graph += `click ${nodeId} call void(0) "${safeLabel}"\n`;
+                graph += `click ${nodeId} call emptyCallback() "${safeLabel}"\n`;
             });
 
             edges.forEach(edge => {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
-            // ■ 4. レンダリングと後処理
             try {
                 container.innerHTML = '';
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 container.innerHTML = svg;
 
-                // 線(edge)がクリックを邪魔しないようにする
                 const edgesEl = container.querySelectorAll('.edgePath, .edgeLabel');
                 edgesEl.forEach(el => el.style.pointerEvents = 'none');
 
-                // ノードのカーソルを指にする
                 const nodesEl = container.querySelectorAll('.node');
                 nodesEl.forEach(el => el.style.cursor = 'pointer');
 
@@ -495,7 +485,6 @@ const CompFlowchart = {
             }
         },
 
-        // ■ 5. クリックハンドラ (Vue標準)
         handleChartClick(event) {
             const nodeEl = event.target.closest('.node');
             if (!nodeEl) return;
@@ -530,8 +519,8 @@ const CompFlowchart = {
             </div>
             <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
         </div>
-        <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
-             <div ref="mermaidContainer" class="p-4" 
+        <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh; position: relative;">
+             <div ref="mermaidContainer" class="p-4 mermaid" 
                   style="min-width: 100%; width: max-content;"
                   @click="handleChartClick">
                 <span class="text-secondary">Loading...</span>
@@ -623,9 +612,11 @@ const CompModal = {
     `
 };
 
-// Debug
+// js/components.js の CompDebug
+
 const CompDebug = {
-    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys'],
+    // ★修正: 'keyUserData' を props に追加
+    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData'],
     data() {
         return {
             currentView: 'tasks',
@@ -641,7 +632,9 @@ const CompDebug = {
                 case 'userProgress': return {
                     userHideout: this.userHideout,
                     completedTasks: this.completedTasks,
-                    ownedKeys: this.ownedKeys
+                    ownedKeys: this.ownedKeys,
+                    // ★追加: 鍵のメモや評価データも表示対象にする
+                    keyUserData: this.keyUserData 
                 };
                 default: return {};
             }

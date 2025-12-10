@@ -194,3 +194,35 @@ a, button, .btn, .form-check-input, .list-group-item-action, label, select,
     color: #ffd700;
     text-decoration: none !important;
 }
+
+/* --- Mermaid Flowchart Styles (Simple Hover) --- */
+
+/* 基本スタイル: トランジション（変化にかかる時間）のみ定義 */
+#app .mermaid .node rect,
+#app .mermaid .node polygon,
+#app .mermaid .node circle,
+#app .mermaid .node ellipse {
+    transition: all 0.2s ease-in-out !important;
+    transform-origin: center center !important;
+}
+
+/* ホバー時のスタイル: 拡大などはせず、色味のみ変更 */
+#app .mermaid .node:hover rect,
+#app .mermaid .node:hover polygon,
+#app .mermaid .node:hover circle,
+#app .mermaid .node:hover ellipse {
+    /* 背景色を今の色より少し明るくする (緑もグレーも自然に明るくなります) */
+    filter: brightness(1.2) !important;
+    
+    /* 枠線を黄色にして「選んでいる感」だけ出す */
+    stroke: #ffc107 !important;
+    stroke-width: 2px !important;
+    
+    cursor: pointer !important;
+}
+
+/* 矢印（線）がクリックを邪魔しないようにする */
+.edgePath path,
+.edgeLabel {
+    pointer-events: none !important;
+}
