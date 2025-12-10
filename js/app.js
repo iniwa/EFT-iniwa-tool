@@ -126,7 +126,7 @@ createApp({
         // --- データ取得 (シンプル版) ---
         const fetchData = async () => {
             const CACHE_KEY = 'eft_api_cache_v1_restored'; // 新しいキーでリセット
-            const MIN_INTERVAL = 1 * 1 * 1; 
+            const MIN_INTERVAL = 5 * 60 * 1000; 
 
             const cache = loadLS(CACHE_KEY, null);
             if (cache) {
