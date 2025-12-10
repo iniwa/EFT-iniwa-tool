@@ -1,6 +1,5 @@
 // js/key_presets.js
-// 全ての鍵を網羅したプリセットデータ
-// (詳細情報がない鍵は "仮" として枠を作成しています)
+// Wiki (https://wikiwiki.jp/eft/%E9%8D%B5) の情報を反映したプリセットデータ
 
 const KEY_PRESETS = {
   // ==========================================
@@ -8,11 +7,11 @@ const KEY_PRESETS = {
   // ==========================================
   "5448ba0b4bdc2d02308b456c": {
     "rating": "SS",
-    "memo": "【脱出】Gate 0, Cellars 【部屋】鍵部屋(武器箱, ジャケット, ルーズルート) / ショートカット"
+    "memo": "【脱出】Gate 0 / Cellars 【部屋】武器箱, ジャケット, ルーズルート (要修理キット)"
   }, // Factory emergency exit key
   "66acd6702b17692df20144c0": {
     "rating": "B",
-    "memo": "【床】インテリジェンス, 高額技術品 【箱】金庫 (Polikhim)"
+    "memo": "【箱】金庫x2, 武器ロッカー, ツールボックス, 医療バック 【床】ジャケット (Polikhim)"
   }, // TerraGroup storage room keycard
 
   // ==========================================
@@ -20,43 +19,43 @@ const KEY_PRESETS = {
   // ==========================================
   "5780cf7f2459777de4559322": {
     "rating": "SS",
-    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 高ランク武器, 貴重品"
+    "memo": "【床】Marked: 武器, 弾薬, ケース類, 貴重品, 各種キーカード (寮314)"
   }, // Dorm room 314 marked key
   "5780d0532459777a5108b9a2": {
     "rating": "A",
-    "memo": "【床】インテリジェンス, 貴重品 【箱】金庫, PCx3, ジャケット, 医療バッグ (タスク: Delivery from the Past)"
+    "memo": "【箱】金庫, PCx3, ジャケット, スポーツバッグ 【床】インテリジェンス (Tarcone)"
   }, // Tarcone Director's Office key
   "59136e1e86f774432f15d133": {
     "rating": "A",
-    "memo": "【床】貴重品(ベッド上), スマホ, フラッシュドライブ 【箱】金庫"
+    "memo": "【箱】金庫 【床】情報系アイテム(ベッド横), 貴重品 (寮110)"
   }, // Dorm room 110 key
   "59387a4986f77401cc236e62": {
     "rating": "A",
-    "memo": "【床】水, 食料 【箱】金庫, PC, 医療ケース (タスク: Pharmacist)"
+    "memo": "【箱】金庫, PC, 医療ケース 【床】水, 食料 (寮114 / タスク: Pharmacist)"
   }, // Dorm room 114 key
   "59148c8a86f774197930e983": {
     "rating": "A",
-    "memo": "【箱】金庫, 武器ロッカー"
+    "memo": "【箱】金庫, 武器ロッカー (寮204)"
   }, // Dorm room 204 key
   "5780cfa52459777dfb276eb1": {
     "rating": "A",
-    "memo": "【床】貴重品, 本 【箱】金庫, 武器ボックス (タスク: Chemical - Part 1)"
+    "memo": "【箱】金庫, 武器ボックス 【床】貴重品 (寮220 / タスク: Chemical 1)"
   }, // Dorm room 220 key
   "5938504186f7740991483f30": {
     "rating": "B",
-    "memo": "【床】貴重品, 弾薬 【箱】スポーツバッグ (214号室と連結) (タスク: Shaking up the Teller)"
+    "memo": "【箱】スポーツバッグ (214と連結) 【床】貴重品, 弾薬 (寮203 / タスク: Shaking up the Teller)"
   }, // Dorm room 203 key
   "5780cf942459777df90dcb72": {
     "rating": "B",
-    "memo": "【箱】金庫 (203号室と連結)"
+    "memo": "【箱】金庫 (203と連結) (寮214)"
   }, // Dorm room 214 key
   "5780d0652459777df90dcb74": {
     "rating": "B",
-    "memo": "【床】鍵, 医療品 【箱】金庫, 医療バッグ"
+    "memo": "【箱】金庫, 医療バッグ 【床】鍵, 医療品 (新ガス事務室)"
   }, // Gas station office key
   "5913877a86f774432f15d444": {
     "rating": "D",
-    "memo": "【箱】金庫, 医療バッグ (※入るにはOfficeキーが必要) (タスク: Trust Regain)"
+    "memo": "【箱】金庫, 医療バッグ (※要Officeキー) (タスク: Trust Regain)"
   }, // Gas station storage room key
   "5913915886f774123603c392": {
     "rating": "C",
@@ -64,19 +63,23 @@ const KEY_PRESETS = {
   }, // Military checkpoint key
   "59136a4486f774447a1ed172": {
     "rating": "C",
-    "memo": "【箱】武器箱x2, 弾薬箱"
+    "memo": "【箱】武器箱(6x3), 弾薬箱x2 (寮・守衛室)"
   }, // Dorm guard desk key
   "591382d986f774465a6413a7": {
     "rating": "C",
-    "memo": "【箱】金庫, ジャケット 【床】食料"
+    "memo": "【箱】金庫, ジャケット 【床】食料 (寮105)"
   }, // Dorm room 105 key
   "591383f186f7744a4c5edcf3": {
     "rating": "C",
-    "memo": "【箱】道具箱, ジャケットx2"
+    "memo": "【箱】ツールボックス, ジャケットx2 (寮104)"
   }, // Dorm room 104 key
+  "5914578086f774123569ffa4": {
+    "rating": "E",
+    "memo": "【箱】ドロワー, PC (寮108)"
+  }, // Dorm room 108 key
   "5da743f586f7744014504f72": {
     "rating": "C",
-    "memo": "【床】武器パーツ, 弾薬, 医療品 (リペアショップ地下)"
+    "memo": "【箱】武器箱x2, 木箱 【床】武器(AUG, MCX等), パーツ (リペアショップ地下)"
   }, // USEC stash key
   "5937ee6486f77408994ba448": {
     "rating": "C",
@@ -84,7 +87,7 @@ const KEY_PRESETS = {
   }, // Machinery key
   "5780d07a2459777de4559324": {
     "rating": "C",
-    "memo": "【タスク】Golden Swag (ライターケース) 【床】武器パーツ"
+    "memo": "【タスク】Golden Swag (ライターケース) 【床】ジャケットx3"
   }, // Portable cabin key
   "5938144586f77473c2087145": {
     "rating": "C",
@@ -96,7 +99,7 @@ const KEY_PRESETS = {
   }, // Unknown key
   "593aa4be86f77457f56379f8": {
     "rating": "C",
-    "memo": "【箱】武器箱, 木箱 (タスク: Trust Regain)"
+    "memo": "【箱】木箱 (寮303 / タスク: Trust Regain)"
   }, // Dorm room 303 key
   "5780cda02459777b272ede61": {
     "rating": "D",
@@ -112,7 +115,7 @@ const KEY_PRESETS = {
   }, // Dorm room 308 key
   "5780cf9e2459777df90dcb73": {
     "rating": "D",
-    "memo": "【箱】武器箱 (寮218)"
+    "memo": "【床】武器パーツ (寮218)"
   }, // Dorm room 218 key
   "5913611c86f77479e0084092": {
     "rating": "E",
@@ -124,104 +127,111 @@ const KEY_PRESETS = {
   }, // Dorm room 206 key
   "5938994586f774523a425196": {
     "rating": "E",
-    "memo": "【床】食料, 椅子 (寮103 / ハズレ部屋)"
+    "memo": "【床】食料 (寮103 / ハズレ部屋)"
   }, // Dorm room 103 key
   "664d4b0103ef2c61246afb56": {
     "rating": "B",
-    "memo": "【タスク】Against the Conscience 【箱】武器箱"
+    "memo": "【タスク】Against the Conscience 【床】貴重品, 装備品, カスタム武器"
   }, // Dorm overseer key
-  // --- Customs 追加 (仮) ---
-  "5672c92d4bdc2d180f8b4567": { "rating": "-", "memo": "Dorm 118: " },
-  "57a349b2245977762b199ec7": { "rating": "-", "memo": "Pump room front: ガスアナライザー等" },
-  "593858c486f774253a24cb52": { "rating": "-", "memo": "Pump room back: " },
-  "5914578086f774123569ffa4": { "rating": "-", "memo": "Dorm 108: PC, 弾薬" },
+  "6761a6f90575f25e020816a4": {
+    "rating": "C",
+    "memo": "【箱】金庫x2, 武器箱x0-2, ダッフルバッグ, ドロワー 【床】情報書類 (Company Director)"
+  }, // Company director's room key
+  "68e95f4fa4a577e907015787": {
+    "rating": "C",
+    "memo": "【床】貴重品, 興奮剤, 武器(VSS等) (Reshala)"
+  }, // Reshala's bunkhouse key
+  "5672c92d4bdc2d180f8b4567": {
+    "rating": "-",
+    "memo": "【箱】ジャケットx2 【床】武器, 食料 (寮118)"
+  }, // Dorm room 118 key
 
   // ==========================================
   // Shoreline (ショアライン)
   // ==========================================
   "5eff09cd30a7dc22fd1ddfed": {
     "rating": "SS",
-    "memo": "【床】LEDX, 医療品(大量), インテリジェンス 【箱】PC, スーツケース"
+    "memo": "【床】LEDX, 医療品(大量), インテリジェンス 【箱】PC, スーツケース (Sanitar部屋)"
   }, // Key with tape (East 110)
   "5a13f24186f77410e57c5626": {
     "rating": "SS",
-    "memo": "【床】LEDX, グラボ, テトリス, 貴重品 (222/226は連結)"
+    "memo": "【床】LEDX, グラボ, テトリス, 貴重品 (E222/226は連結)"
   }, // East Wing Room 222
   "5a13f35286f77413ef1436b0": {
     "rating": "SS",
-    "memo": "【床】LEDX, グラボ, テトリス, 貴重品 (222と同じ)"
+    "memo": "【床】LEDX, グラボ, テトリス, 貴重品 (E222と同じ)"
   }, // East Wing Room 226
   "5a0eec9686f77402ac5c39f2": {
     "rating": "S",
-    "memo": "【床】高額貴重品(ライオン, 金時計, 花瓶等) ※箱なし"
+    "memo": "【床】高額貴重品(ライオン, 金時計, 花瓶等) ※箱なし (E310)"
   }, // East Wing Room 310
   "5a13ef7e86f7741290491063": {
     "rating": "SS",
-    "memo": "【床】LEDX, グラボ, 貴重品 【箱】PCx2 (304と連結)"
+    "memo": "【床】LEDX, グラボ, 貴重品 【箱】PCx2 (W304と連結) (W301)"
   }, // West Wing Room 301
   "5a0ee30786f774023b6ee08f": {
     "rating": "A",
-    "memo": "【床】LEDX, グラボ, テトリス 【箱】武器箱x2, グレネード箱"
+    "memo": "【床】LEDX, グラボ, テトリス 【箱】武器箱x2, グレネード箱 (W216)"
   }, // West Wing Room 216
   "5a13eebd86f7746fd639aa93": {
     "rating": "A",
-    "memo": "【床】レッドキーカード, 弾薬, 食料 【箱】武器箱"
+    "memo": "【床】レッドキーカード, 弾薬, 食料 【箱】武器箱 (W218)"
   }, // West Wing Room 218
   "5a0ec6d286f7742c0b518fb5": {
     "rating": "A",
-    "memo": "【床】レッドキーカード, LEDX, 医療品 (203と連結)" 
+    "memo": "【床】レッドキーカード, LEDX, 医療品 (203と連結) (W205)" 
   }, // West Wing Room 205
   "5a0eb6ac86f7743124037a28": {
     "rating": "S",
-    "memo": "【床】高額武器パーツ, 貴重品 【箱】金庫, PC, 武器ロッカー"
+    "memo": "【箱】金庫, PC, 武器ラック, ダッフルバッグ 【床】武器, カードキー(Yellow), 貴重品 (コテージ)"
   }, // Cottage back door key
   "5a0f068686f7745b0d4ea242": {
     "rating": "B",
-    "memo": "【箱】金庫, PC ※コテージ裏口の鍵が必要"
+    "memo": "【箱】金庫, PC (※要コテージ鍵)"
   }, // Cottage safe key
   "5a0f08bc86f77478f33b84c2": {
     "rating": "SS",
-    "memo": "【床】レッドキーカード, 貴重品 【箱】金庫"
+    "memo": "【床】レッドキーカード, 貴重品 【箱】金庫 (管理棟2F)"
   }, // Health Resort management office safe key
   "5a0f0f5886f7741c4e32a472": {
     "rating": "A",
-    "memo": "【床】レアアイテム 【箱】金庫"
+    "memo": "【床】レアアイテム 【箱】金庫 (管理棟倉庫)"
   }, // Health Resort management warehouse safe key
   "5a145d4786f7744cbb6f4a12": {
     "rating": "A",
-    "memo": "【床】LEDX, 貴重品 【箱】PCx4 (308と連結)"
+    "memo": "【床】LEDX, 貴重品 【箱】PCx4 (308と連結) (E306)"
   }, // East Wing Room 306
   "5a145d7b86f7744cbb6f4a13": {
     "rating": "A",
-    "memo": "【床】LEDX, 貴重品 【箱】PCx4 (306と連結)"
+    "memo": "【床】LEDX, 貴重品 【箱】PCx4 (306と連結) (E308)"
   }, // East Wing Room 308
   "5a0eed4386f77405112912aa": {
     "rating": "A",
-    "memo": "【床】LEDX, 武器パーツ, 医療品 (313と連結)"
+    "memo": "【床】LEDX, 武器パーツ, 医療品 (313と連結) (E314)"
   }, // East Wing Room 314
   "5a0eecf686f7740350630097": {
     "rating": "A",
-    "memo": "【床】LEDX, 武器パーツ (314と連結)"
+    "memo": "【床】LEDX, 武器パーツ (314と連結) (E313)"
   }, // East Wing Room 313
   "5a0eee1486f77402aa773226": {
     "rating": "A",
-    "memo": "【床】テトリス, グラボ, 武器 【箱】PC"
+    "memo": "【床】テトリス, グラボ, 武器 【箱】PC (E328)"
   }, // East Wing Room 328
   "5a0ea64786f7741707720468": {
     "rating": "C",
-    "memo": "【床】医療品, 書類, お金"
+    "memo": "【箱】医療バッグ, 医療ケース, ダッフルバッグ 【床】LEDX, 医療品, 書類, お金 (E107)"
   }, // East Wing Room 107
   "5a0dc45586f7742f6b0b73e3": {
     "rating": "B",
-    "memo": "【床】ブルーキーカード湧き, 医療品, 鎮痛剤"
+    "memo": "【床】ブルーキーカード湧き, 医療品, 鎮痛剤 (W104)"
   }, // West Wing Room 104
   "5a0dc95c86f77452440fc675": {
     "rating": "B",
-    "memo": "【床】ブルーキーカード湧き, ビタミン (タスク: Vitamins)"
+    "memo": "【床】ブルーキーカード湧き, ビタミン (タスク: Vitamins) (W112)"
   }, // West Wing Room 112
   "5a0ea79b86f7741d4a35298e": {
     "rating": "C",
-    "memo": "【床】電子機器, 道具"
+    "memo": "【床】電子機器, 道具 (E2階・保管室)"
   }, // Health Resort universal utility room key
   "5a0f006986f7741ffd2fe484": {
     "rating": "A",
@@ -245,7 +255,7 @@ const KEY_PRESETS = {
   }, // SMW car key
   "5d8e15b686f774445103b190": {
     "rating": "C",
-    "memo": "【箱】武器箱x4, 弾薬箱 (水力発電所)"
+    "memo": "【箱】武器箱x4, 弾薬箱 【床】インテリジェンス (水力発電所)"
   }, // HEP station storage room key
   "5a0ea69f86f7741cd5406619": {
     "rating": "E",
@@ -257,7 +267,7 @@ const KEY_PRESETS = {
   }, // W221
   "5a0ee4b586f7743698200d22": {
     "rating": "C",
-    "memo": "【床】レアアイテム 【箱】武器箱x3 (E205と連結)"
+    "memo": "【箱】武器箱x3 【床】レアアイテム (E205と連結) (E206)"
   }, // E206
   "5a0ee62286f774369454a7ac": {
     "rating": "E",
@@ -301,157 +311,159 @@ const KEY_PRESETS = {
   }, // W219
   "5a144bdb86f7741d374bbde0": {
     "rating": "C",
-    "memo": "【箱】武器箱, 医療バッグ (E206と連結)"
+    "memo": "【箱】武器箱, 医療バッグ (E206と連結) (E205)"
   }, // E205
   "5a144dfd86f77445cb5a0982": {
     "rating": "C",
-    "memo": "【床】レッドカード湧き, 医療品 (W205と連結)"
+    "memo": "【床】レッドカード湧き, 医療品 (W205と連結) (W203)"
   }, // W203
   "5a1452ee86f7746f33111763": {
     "rating": "C",
-    "memo": "【箱】武器箱, 弾薬箱 (W221/218へ移動可)"
+    "memo": "【箱】武器箱, 弾薬箱 (W221/218へ移動可) (W222)"
   }, // W222
   "5a145ebb86f77458f1796f05": {
     "rating": "B",
-    "memo": "【箱】武器箱x2, アイテムケース"
+    "memo": "【箱】武器箱x2, アイテムケース (E316)"
   }, // E316
   "5a13f46386f7741dd7384b04": {
     "rating": "B",
-    "memo": "【床】医療品, 死体(ルート可) (タスク: Cargo X - Part 2)"
+    "memo": "【床】医療品, 死体(ルート可) (タスク: Cargo X - Part 2) (W306)"
   }, // W306
-  // --- Shoreline 追加 (仮) ---
-  "5a0ec70e86f7742c0b518fba": { "rating": "-", "memo": "W207: " },
+  "664d3ddfdda2e85aca370d75": {
+    "rating": "B",
+    "memo": "【箱】ダッフルバッグx1～2 【床】カスタム武器 (水力発電所 Voron)"
+  }, // Voron's hideout key
 
   // ==========================================
   // Reserve (リザーブ)
   // ==========================================
   "5d80c60f86f77440373c4ece": {
     "rating": "SS",
-    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器"
+    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器 (RB-BK)"
   }, // RB-BK marked key
   "5d80c62a86f7744036212b3f": {
     "rating": "SS",
-    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器"
+    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器 (RB-VO)"
   }, // RB-VO marked key
   "5ede7a8229445733cb4c18e2": {
     "rating": "S",
-    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器"
+    "memo": "【床】Marked: ドキュメントケース, キーマツ, 弾薬箱, 武器 (RB-PKPM)"
   }, // RB-PKPM marked key
   "5d9f1fa686f774726974a992": {
     "rating": "S",
-    "memo": "【床】戦車バッテリー, OFZ砲弾, AESA, 高額パーツ 【箱】武器箱"
+    "memo": "【床】戦車バッテリー, OFZ砲弾, AESA, 高額パーツ 【箱】武器箱 (RB-ST)"
   }, // RB-ST
   "5d8e0e0e86f774321140eb56": {
     "rating": "A",
-    "memo": "【床】インテリジェンス 【箱】金庫x2, 武器箱"
+    "memo": "【床】インテリジェンス 【箱】金庫x2, 武器箱 (RB-KPRL)"
   }, // RB-KPRL
   "5d80c88d86f77440556dbf07": {
     "rating": "A",
-    "memo": "【床】インテリジェンス, MP7等, 貴重品 【箱】武器箱x3, ジャケット"
+    "memo": "【床】インテリジェンス, MP7等, 貴重品 【箱】武器箱x3, ジャケット (RB-AM)"
   }, // RB-AM
   "5d80c8f586f77440373c4ed0": {
     "rating": "B",
-    "memo": "【床】インテリジェンス, SSD, 貴重品 【箱】ドロワー"
+    "memo": "【床】インテリジェンス, SSD, 貴重品 【箱】ドロワー (RB-OP)"
   }, // RB-OP
   "5ede7b0c6d23e5473e6e8c66": {
     "rating": "B",
-    "memo": "【床】インテリジェンス, 軍用技術品 【箱】PCx5 (RB-RSと連結)"
+    "memo": "【床】インテリジェンス, 軍用技術品 【箱】PCx5 (RB-RSと連結) (RB-RLSA)"
   }, // RB-RLSA
   "5d80cb3886f77440556dbf09": {
     "rating": "B",
-    "memo": "【箱】技術サプライクレートx2, 医療サプライクレートx2 (地下ケージ)"
+    "memo": "【箱】技術サプライクレートx2, 医療サプライクレートx2 (地下ケージ) (RB-PSP1)"
   }, // RB-PSP1
   "5d80cb5686f77440545d1286": {
     "rating": "B",
-    "memo": "【箱】技術サプライクレートx2, 食料サプライクレートx2 (地下ケージ)"
+    "memo": "【箱】技術サプライクレートx2, 食料サプライクレートx2 (地下ケージ) (RB-PSV1)"
   }, // RB-PSV1
   "5d95d6be86f77424444eb3a7": {
     "rating": "B",
-    "memo": "【箱】技術サプライクレートx2, 医療サプライクレートx2 (地下ケージ)"
+    "memo": "【箱】技術サプライクレートx2, 医療サプライクレートx2 (地下ケージ) (RB-PSV2)"
   }, // RB-PSV2
   "5d95d6fa86f77424484aa5e9": {
     "rating": "B",
-    "memo": "【箱】技術サプライクレートx2, 食料サプライクレートx2 (地下ケージ)"
+    "memo": "【箱】技術サプライクレートx2, 食料サプライクレートx2 (地下ケージ) (RB-PSP2)"
   }, // RB-PSP2
   "5da46e3886f774653b7a83fe": {
     "rating": "B",
-    "memo": "【箱】ツールセット, 武器パーツ (RB-RLSAと連結)"
+    "memo": "【箱】ツールセット, 武器パーツ (RB-RLSAと連結) (RB-RS)"
   }, // RB-RS
   "5d8e3ecc86f774414c78d05e": {
     "rating": "B",
-    "memo": "【箱】武器箱, ツールセット (RB-STの奥)"
+    "memo": "【箱】武器箱, ツールセット (RB-STの奥) (RB-GN)"
   }, // RB-GN
   "5d947d3886f774447b415893": {
     "rating": "C",
-    "memo": "【床】医療品, 鎮痛剤, 検眼鏡"
+    "memo": "【床】医療品, 鎮痛剤, 検眼鏡 (RB-SMP)"
   }, // RB-SMP
   "5d947d4e86f774447b415895": {
     "rating": "C",
-    "memo": "【床】医療品 (SMPの向かい)"
+    "memo": "【床】医療品 (SMPの向かい) (RB-KSM)"
   }, // RB-KSM
   "68e9654d72488961110dbf69": {
     "rating": "B",
-    "memo": "【箱】技術クレートx2, 医療クレートx2 (地下バンカー)"
+    "memo": "【箱】技術クレートx2, 医療クレートx2 (地下バンカー) (RB-PKPTS)"
   }, // RB-PKPTS
   "5d80c66d86f774405611c7d6": {
     "rating": "C",
-    "memo": "【箱】武器ラック, 武器箱x2"
+    "memo": "【箱】武器ラック, 武器箱x2 (RB-AO)"
   }, // RB-AO
   "5d80c6c586f77440351beef1": {
     "rating": "D",
-    "memo": "【床】インテリジェンス(低確率)"
+    "memo": "【床】インテリジェンス(低確率) (RB-OB)"
   }, // RB-OB
   "5d80c6fc86f774403a401e3c": {
     "rating": "B",
-    "memo": "【箱】武器ラック, 武器箱 (RB-BKの隣)"
+    "memo": "【箱】武器ラック, 武器箱 (RB-BKの隣) (RB-TB)"
   }, // RB-TB
   "5d80c78786f774403a401e3e": {
     "rating": "C",
-    "memo": "【箱】PC, 武器ラック"
+    "memo": "【箱】PC, 武器ラック (RB-AK)"
   }, // RB-AK
   "5d80c93086f7744036212b41": {
     "rating": "D",
-    "memo": "【箱】ドロワー, ジャケット"
+    "memo": "【箱】ドロワー, ジャケット (RB-MP11)"
   }, // RB-MP11
   "5d80c95986f77440351beef3": {
     "rating": "D",
-    "memo": "【箱】ドロワー, 書類"
+    "memo": "【箱】ドロワー, 書類 (RB-MP12)"
   }, // RB-MP12
   "5d80ca9086f774403a401e40": {
     "rating": "D",
-    "memo": "【箱】ドロワー, インテリジェンス(低確率)"
+    "memo": "【箱】ドロワー, インテリジェンス(低確率) (RB-MP21)"
   }, // RB-MP21
   "5d80cab086f77440535be201": {
     "rating": "C",
-    "memo": "【箱】武器ラック, 弾薬, 戦車バッテリー(稀)"
+    "memo": "【箱】武器ラック, 弾薬, 戦車バッテリー(稀) (RB-MP22)"
   }, // RB-MP22
   "5d80cb8786f774405611c7d9": {
     "rating": "E",
-    "memo": "【床】ルーズルート, 椅子"
+    "memo": "【床】ルーズルート, 椅子 (RB-PP)"
   }, // RB-PP
   "5d80cbd886f77470855c26c2": {
     "rating": "D",
-    "memo": "【床】インテリジェンス(低確率)"
+    "memo": "【床】インテリジェンス(低確率) (RB-MP13)"
   }, // RB-MP13
   "5d80ccac86f77470841ff452": {
     "rating": "C",
-    "memo": "【箱】武器ラック, 弾薬"
+    "memo": "【箱】武器ラック, 弾薬 (RB-ORB1)"
   }, // RB-ORB1
   "5d80ccdd86f77474f7575e02": {
     "rating": "C",
-    "memo": "【箱】武器ラック, 弾薬"
+    "memo": "【箱】武器ラック, 弾薬 (RB-ORB2)"
   }, // RB-ORB2
   "5d80cd1a86f77402aa362f42": {
     "rating": "C",
-    "memo": "【箱】武器ラック, 弾薬, 武器箱"
+    "memo": "【箱】武器ラック, 弾薬, 武器箱 (RB-ORB3)"
   }, // RB-ORB3
   "5d8e0db586f7744450412a42": {
     "rating": "C",
-    "memo": "【床】インテリジェンス"
+    "memo": "【床】インテリジェンス (RB-KORL)"
   }, // RB-KORL
   "5da5cdcd86f774529238fb9b": {
     "rating": "C",
-    "memo": "【箱】武器ラック, ドロワー"
+    "memo": "【箱】武器ラック, ドロワー (RB-RH)"
   }, // RB-RH
 
   // ==========================================
@@ -459,7 +471,7 @@ const KEY_PRESETS = {
   // ==========================================
   "5e42c71586f7747f245e1343": {
     "rating": "SS",
-    "memo": "【床】LEDX, 除細動器, 検眼鏡, 携帯用組織マトリックス (要電源)"
+    "memo": "【床】LEDX, 除細動器, 検眼鏡, 携帯用組織マトリックス (要電源) (ULTRA)"
   }, // Ultra medical storage key
   "5ad5d7d286f77450166e0a89": {
     "rating": "S",
@@ -471,19 +483,19 @@ const KEY_PRESETS = {
   }, // KIBA Arms inner door key
   "5e42c81886f7742a01529f57": {
     "rating": "SS",
-    "memo": "【床】ビットコイン, GPコイン, 貴重品, 武器 【脱出】セーフルーム (要電源)"
+    "memo": "【床】ビットコイン, GPコイン, 貴重品, 武器 【脱出】セーフルーム (要電源) (#11SR)"
   }, // Object #11SR keycard
   "5e42c83786f7742a021fdf3c": {
     "rating": "A",
-    "memo": "【箱】武器箱x3, 装備品類 (コンテナの中)"
+    "memo": "【箱】武器箱x3, 装備品類 (コンテナの中) (#21WS)"
   }, // Object #21WS keycard
   "5ad5d64486f774079b080af8": {
     "rating": "C",
-    "memo": "【床】食料, 輸液, 医療品"
+    "memo": "【床】食料, 輸液, 医療品 (Pharmacy)"
   }, // Pharmacy key
   "5ad5db3786f7743568421cce": {
     "rating": "B",
-    "memo": "【床】医療品 (稀にLEDX) 【箱】医療バッグ, ジャケット"
+    "memo": "【床】医療品 (稀にLEDX) 【箱】医療バッグ, ジャケット (EMERCOM)"
   }, // Emercom medical unit key
   "5ad5ccd186f774446d5706e9": {
     "rating": "D",
@@ -495,7 +507,7 @@ const KEY_PRESETS = {
   }, // OLI logistics department office key
   "5ad5d49886f77455f9731921": {
     "rating": "D",
-    "memo": "【箱】武器箱, 道具箱"
+    "memo": "【箱】武器箱, 道具箱 (変電所)"
   }, // Power substation utility cabin key
   "5ad5d20586f77449be26d877": {
     "rating": "D",
@@ -527,11 +539,11 @@ const KEY_PRESETS = {
   }, // Hillside house key
   "61aa5b518f5e7a39b41416e2": {
     "rating": "A",
-    "memo": "【床】ビットコイン, ユーロ, ドル, 貴重品 (トランク内)"
+    "memo": "【床】ビットコイン, ユーロ, ドル, 貴重品 (トランク内) (Merin)"
   }, // Merin car trunk key
   "62987dfc402c7f69bf010923": {
     "rating": "SS",
-    "memo": "【床】Marked: 高ランク武器, 貴重品, ドキュメントケース"
+    "memo": "【床】Marked: 高ランク武器, 貴重品, ドキュメントケース (灯台)"
   }, // Shared bedroom marked key
   "62987cb98081af308d7558c8": {
     "rating": "A",
@@ -563,19 +575,19 @@ const KEY_PRESETS = {
   // ==========================================
   "64d4b23dc1b37504b41ac2b6": {
     "rating": "SS",
-    "memo": "【床】Marked Key(全種類からランダム), 貴重品"
+    "memo": "【床】Marked Key(全種類からランダム), 貴重品 (Rusted)"
   }, // Rusted bloody key
   "6582dbf0b8d7830efc45016f": {
     "rating": "SS",
-    "memo": "【床】ムーンシャイン, ウイスキー, ビットコイン, 貴重品(大量)"
+    "memo": "【床】ムーンシャイン, ウイスキー, ビットコイン, 貴重品(大量) (Relax)"
   }, // Relaxation room key
   "63a3a93f8a56922e82001f5d": {
     "rating": "SS",
-    "memo": "【床】Marked: SICCケース, キーマツ, ドキュメントケース, 高額武器"
+    "memo": "【床】Marked: SICCケース, キーマツ, ドキュメントケース, 高額武器 (Abandoned)"
   }, // Abandoned factory marked key
   "63a39fc0af870e651d58e6ae": {
     "rating": "S",
-    "memo": "【床】ビットコイン, ロレックス, 貴重品, 武器, 死体"
+    "memo": "【床】ビットコイン, ロレックス, 貴重品, 武器, 死体 (Chek 15)"
   }, // Chekannaya 15 apartment key
   "63a397d3af870e651d58e65b": {
     "rating": "S",
@@ -583,11 +595,11 @@ const KEY_PRESETS = {
   }, // Car dealership closed section key
   "63a71e922b25f7513905ca20": {
     "rating": "A",
-    "memo": "【床】ビットコイン, GPコイン 【箱】金庫, PC"
+    "memo": "【床】ビットコイン, GPコイン 【箱】金庫, PC (Conc 64)"
   }, // Concordia apartment 64 key
   "63a39c7964283b5e9c56b280": {
     "rating": "B",
-    "memo": "【箱】金庫, PC 【床】貴重品"
+    "memo": "【箱】金庫, PC 【床】貴重品 (Conc Security)"
   }, // Concordia security room key
   "63a39667c9b3aa4b61683e98": {
     "rating": "B",
@@ -755,7 +767,7 @@ const KEY_PRESETS = {
   }, // Backup hideout key
   "6761a6f90575f25e020816a4": {
     "rating": "C",
-    "memo": "【箱】金庫 (Company Director)"
+    "memo": "【箱】金庫, 武器箱, ダッフルバッグ (Company Director)"
   }, // Company director's room key
   "68e63b56ad8cba49190ea529": {
     "rating": "E",
@@ -879,33 +891,19 @@ const KEY_PRESETS = {
   }, // Yotota car key
 
   // ==========================================
-  // Others / Task / Event / Unsorted (その他・仮)
+  // Others / Task / Event (その他・未分類)
   // ==========================================
   "62a09ec84f842e1bd12da3f2": { "rating": "E", "memo": "【タスク】Collector用 (Missam)" },
-  "5671446a4bdc2d97058b4569": { "rating": "-", "memo": "Pistol case key: " },
-  "590de4a286f77423d9312a32": { "rating": "-", "memo": "Folding car key (Yellow): " },
-  "5913611c86f77479e0084092": { "rating": "E", "memo": "【タスク】Golden Swag (Portable Cabin)" },
-  "5913651986f774432f15d132": { "rating": "-", "memo": "VAZ car key: " },
-  "59136f6f86f774447a1ed173": { "rating": "-", "memo": "Folding car key (Brown): " },
-  "59148f8286f7741b951ea113": { "rating": "-", "memo": "Weapon safe key: " },
-  "593858c486f774253a24cb52": { "rating": "-", "memo": "Pump room back: " },
-  "5a0eb38b86f774153b320eb0": { "rating": "D", "memo": "SMW car key: 武器, 弾薬" },
-  "5ad5d20586f77449be26d877": { "rating": "D", "memo": "OLI utility: 医療品" },
-  "5efde6b4f5448336730dbd61": { "rating": "-", "memo": "Blue marking keycard: Sanitar部屋用 (単回)" },
-  "61a6446f4b5f8b70f451b166": { "rating": "-", "memo": "Cold storage: " },
-  "61aa5aed32a4743c3453d319": { "rating": "-", "memo": "Police truck: " },
-  "678fa929819ddc4c350c0317": { "rating": "-", "memo": "Valve handwheel" },
-  "679b9716597ba2ed120c3d3f": { "rating": "-", "memo": "Knossos (Task: Hidden Layer)" },
-  "679b9819a2f2dd4da9023512": { "rating": "-", "memo": "Labrys (Task: Forced Alliance)" },
-  "679baa2c61f588ae2b062a24": { "rating": "-", "memo": "Key 01 (Labyrinth)" },
-  "679baa4f59b8961f370dd683": { "rating": "-", "memo": "Key 02 (Labyrinth)" },
-  "679baa5a59b8961f370dd685": { "rating": "-", "memo": "Key 03 (Labyrinth)" },
-  "679baa9091966fe40408f149": { "rating": "-", "memo": "Key 04 (Labyrinth)" },
-  "679baace4e9ca6b3d80586b2": { "rating": "-", "memo": "Observation (Labyrinth)" },
-  "679baae891966fe40408f14c": { "rating": "-", "memo": "Torture (Labyrinth)" },
-  "679bab714e9ca6b3d80586b4": { "rating": "-", "memo": "Corpse (Labyrinth)" },
-  "679bac1d61f588ae2b062a26": { "rating": "-", "memo": "Labyrinth key" },
-  "67ab3d4b83869afd170fdd3f": { "rating": "-", "memo": "BBQ Gas torch" },
+  "679b9716597ba2ed120c3d3f": { "rating": "-", "memo": "【タスク】Hidden Layer (Knossos)" },
+  "679b9819a2f2dd4da9023512": { "rating": "-", "memo": "【タスク】Forced Alliance (Labrys)" },
+  "67ee7680562d5057e60ccc3a": { "rating": "C", "memo": "【箱】武器箱 (TG Apt)" },
+  "68c165f1903341d88b092b2a": { "rating": "C", "memo": "【床】貴重品 (Cardinal)" },
+  "68e95d71a3d110355b03e529": { "rating": "B", "memo": "【床】電子機器 (Elektronik)" },
+  "68e7d904aded99fd1a0624f2": { "rating": "A", "memo": "【タスク】A.P. Red" },
+  "68e7d984308332889e0b5e71": { "rating": "A", "memo": "【タスク】A.P. Blue" },
+  "68c14b734a7e0bada00f8fd4": { "rating": "A", "memo": "【タスク】A.P. Green" },
+  "678fa929819ddc4c350c0317": { "rating": "-", "memo": "バルブハンドル (Valve)" },
+  "67ab3d4b83869afd170fdd3f": { "rating": "-", "memo": "ガストーチ (BBQ)" },
   "67bdea8667098e658f064695": { "rating": "-", "memo": "Kruglov RFID" },
   "67bdf04d66ca1d79a2024637": { "rating": "-", "memo": "Activated RFID" },
   "67bdf0e67c1ef7a648043531": { "rating": "-", "memo": "Safe Keycard" },
@@ -914,13 +912,22 @@ const KEY_PRESETS = {
   "67c04a6f9152fbdfa306cc66": { "rating": "-", "memo": "Prapor RFID" },
   "67c04dac9320f644db06f45c": { "rating": "-", "memo": "RFID L." },
   "67e183377c6c2011970f3149": { "rating": "-", "memo": "Ariadne" },
-  "67ee7680562d5057e60ccc3a": { "rating": "C", "memo": "TG apartment: 武器箱" },
-  "6866adbe09b973bf45094339": { "rating": "-", "memo": "Pier door" },
-  "68c14b734a7e0bada00f8fd4": { "rating": "A", "memo": "A.P. Green (Task)" },
-  "68c165f1903341d88b092b2a": { "rating": "C", "memo": "Cardinal: 貴重品" },
   "68cc09872bdcc15c010c2668": { "rating": "-", "memo": "14-4 Pass" },
-  "68e7d904aded99fd1a0624f2": { "rating": "A", "memo": "A.P. Red (Task)" },
-  "68e7d984308332889e0b5e71": { "rating": "A", "memo": "A.P. Blue (Task)" },
-  "68e95d71a3d110355b03e529": { "rating": "B", "memo": "Elektronik: 電子機器" },
-  "68e95f4fa4a577e907015787": { "rating": "C", "memo": "Reshala: 食料" }
+  "61a6446f4b5f8b70f451b166": { "rating": "-", "memo": "Cold storage: " },
+  "6866adbe09b973bf45094339": { "rating": "-", "memo": "Pier door" },
+  "5671446a4bdc2d97058b4569": { "rating": "-", "memo": "Pistol case key" },
+  "590de4a286f77423d9312a32": { "rating": "-", "memo": "Folding car key (Yellow)" },
+  "5913651986f774432f15d132": { "rating": "-", "memo": "VAZ car key" },
+  "59136f6f86f774447a1ed173": { "rating": "-", "memo": "Folding car key (Brown)" },
+  "59148f8286f7741b951ea113": { "rating": "-", "memo": "Weapon safe key" },
+  "5efde6b4f5448336730dbd61": { "rating": "-", "memo": "Blue marking keycard (Sanitar)" },
+  "61aa5aed32a4743c3453d319": { "rating": "-", "memo": "Police truck" },
+  "679baa2c61f588ae2b062a24": { "rating": "-", "memo": "Key 01 (Labyrinth)" },
+  "679baa4f59b8961f370dd683": { "rating": "-", "memo": "Key 02 (Labyrinth)" },
+  "679baa5a59b8961f370dd685": { "rating": "-", "memo": "Key 03 (Labyrinth)" },
+  "679baa9091966fe40408f149": { "rating": "-", "memo": "Key 04 (Labyrinth)" },
+  "679baace4e9ca6b3d80586b2": { "rating": "-", "memo": "Observation (Labyrinth)" },
+  "679baae891966fe40408f14c": { "rating": "-", "memo": "Torture (Labyrinth)" },
+  "679bab714e9ca6b3d80586b4": { "rating": "-", "memo": "Corpse (Labyrinth)" },
+  "679bac1d61f588ae2b062a26": { "rating": "-", "memo": "Labyrinth key" }
 };
