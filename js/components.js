@@ -154,8 +154,7 @@ const CompResult = {
     `
 };
 
-// js/components.js の CompKeys 部分
-
+// Keys
 const CompKeys = {
     props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data'],
@@ -327,8 +326,181 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompModal を書き換えてください
+// js/components.js の CompFlowchart (クリック検知 完全修正版)
 
+const CompFlowchart = {
+    props: ['taskData', 'completedTasks'],
+    emits: ['toggle-task', 'open-task-details'],
+    data() {
+        return {
+            selectedTrader: 'Prapor',
+            // マッピングデータをコンポーネント内で保持
+            nodeMap: {} 
+        };
+    },
+    computed: {
+        traderList() {
+            if (!this.taskData) return [];
+            const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
+            return Array.from(traders).sort();
+        }
+    },
+    watch: {
+        selectedTrader() { this.renderChart(); },
+        completedTasks: { deep: true, handler() { this.renderChart(); } },
+        taskData() { this.renderChart(); }
+    },
+    mounted() {
+        mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: { 
+                useMaxWidth: false, 
+                htmlLabels: true 
+            }
+        });
+        this.renderChart();
+    },
+    methods: {
+        async renderChart() {
+            if (!this.taskData || this.taskData.length === 0) return;
+            await Vue.nextTick();
+
+            const container = this.$refs.mermaidContainer;
+            if (!container) return;
+
+            // ■ 1. 単純な連番IDでマッピングを作成 (記号トラブルを回避)
+            this.nodeMap = {}; 
+            const nameToSimpleId = {};
+            let counter = 0;
+
+            this.taskData.forEach(t => {
+                const simpleId = `task${counter++}`;
+                nameToSimpleId[t.name] = simpleId;
+                this.nodeMap[simpleId] = t; // ID -> タスク情報の辞書
+            });
+
+            // ■ 2. 表示対象の抽出
+            const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
+            const nodesToRender = new Set();
+            const edges = [];
+
+            currentTraderTasks.forEach(task => {
+                const myId = nameToSimpleId[task.name];
+                if (!myId) return;
+
+                nodesToRender.add(task.name);
+
+                if (task.taskRequirements) {
+                    task.taskRequirements.forEach(req => {
+                        const reqName = req.task.name;
+                        const reqId = nameToSimpleId[reqName];
+                        if (reqId) {
+                            nodesToRender.add(reqName);
+                            edges.push({ from: reqId, to: myId });
+                        }
+                    });
+                }
+            });
+
+            // ■ 3. Mermaid構文の生成
+            let graph = 'graph LR\n';
+            
+            // スタイル定義 (カーソルを指にする)
+            graph += 'classDef default cursor:pointer;\n';
+            graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
+            graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
+            graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
+
+            nodesToRender.forEach(taskName => {
+                const nodeId = nameToSimpleId[taskName];
+                const isCompleted = this.completedTasks.includes(taskName);
+                const task = this.taskData.find(t => t.name === taskName);
+                
+                let className = isCompleted ? 'done' : 'todo';
+                if (task && task.trader.name !== this.selectedTrader) className = 'external';
+
+                // ラベルのエスケープ処理
+                const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");
+                
+                // ノード定義 (clickコマンドは書かない)
+                graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
+            });
+
+            edges.forEach(edge => {
+                graph += `${edge.from} --> ${edge.to}\n`;
+            });
+
+            // ■ 4. レンダリング
+            try {
+                container.innerHTML = '';
+                const id = `mermaid-${Date.now()}`;
+                const { svg } = await mermaid.render(id, graph);
+                container.innerHTML = svg;
+                
+                // 線のクリック判定を無効化 (ノードをクリックしやすくする)
+                const paths = container.querySelectorAll('path, .edgeLabel');
+                paths.forEach(p => p.style.pointerEvents = 'none');
+
+            } catch (e) {
+                console.error('Mermaid Render Error:', e);
+                container.innerHTML = '<div class="alert alert-warning">描画エラー</div>';
+            }
+        },
+
+        // ■ 5. Vue標準のクリックハンドラ (一番確実な方法)
+        onChartClick(event) {
+            // クリックされた要素から親をたどり、IDを持つグループ要素(g.node)を探す
+            // MermaidのノードIDは "flowchart-task123-..." のような形式になるため "task..." を探す
+            const targetNode = event.target.closest('.node');
+            
+            if (!targetNode) return; // ノード以外をクリックした場合は無視
+
+            // IDから "task123" の部分を抽出
+            // 例: id="mermaid-173...-task10" -> "task10" を探す
+            const match = targetNode.id.match(/(task\d+)/);
+            if (!match) return;
+
+            const simpleId = match[1];
+            const task = this.nodeMap[simpleId];
+
+            if (task) {
+                if (event.shiftKey) {
+                    // Shift + Click
+                    this.$emit('toggle-task', task.name);
+                } else {
+                    // Click
+                    this.$emit('open-task-details', task);
+                }
+            }
+        }
+    },
+    template: `
+    <div class="card h-100 border-secondary">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <span>🗺️ タスクフローチャート</span>
+                <select class="form-select form-select-sm bg-dark text-white border-secondary" 
+                        style="width: 200px;" 
+                        v-model="selectedTrader">
+                    <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
+                </select>
+            </div>
+            <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
+        </div>
+        <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
+             <div ref="mermaidContainer" class="p-4" 
+                  style="min-width: 100%; width: max-content; cursor: default;"
+                  @click="onChartClick">
+                <span class="text-secondary">Loading...</span>
+             </div>
+        </div>
+    </div>
+    `
+};
+
+// Modal (Craft info added)
 const CompModal = {
     props: ['selectedTask', 'completedTasks'],
     emits: ['close', 'toggle-task'],
@@ -409,8 +581,7 @@ const CompModal = {
     `
 };
 
-// js/components.js の末尾 (CompDebug全体を書き換え)
-
+// Debug
 const CompDebug = {
     props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys'],
     data() {
@@ -480,189 +651,7 @@ const CompDebug = {
     `
 };
 
-const CompFlowchart = {
-    props: ['taskData', 'completedTasks'],
-    emits: ['toggle-task', 'open-task-details'],
-    data() {
-        return {
-            selectedTrader: 'Prapor',
-            renderTrigger: 0
-        };
-    },
-    computed: {
-        traderList() {
-            if (!this.taskData) return [];
-            const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
-            return Array.from(traders).sort();
-        }
-    },
-    watch: {
-        selectedTrader() { this.renderChart(); },
-        completedTasks: { deep: true, handler() { this.renderChart(); } },
-        taskData() { this.renderChart(); }
-    },
-    mounted() {
-        // Mermaid設定: セキュリティレベルをlooseにし、HTMLラベルを有効化
-        mermaid.initialize({ 
-            startOnLoad: false, 
-            theme: 'dark',
-            securityLevel: 'loose',
-            flowchart: { 
-                useMaxWidth: false, 
-                htmlLabels: true 
-            }
-        });
-        this.renderChart();
-    },
-    methods: {
-        async renderChart() {
-            if (!this.taskData || this.taskData.length === 0) return;
-            await Vue.nextTick();
-
-            const container = this.$refs.mermaidContainer;
-            if (!container) return;
-
-            // 1. 全タスクのIDマッピングを作成 (前提タスクが別トレーダーの場合に対応するため)
-            // また、クリックイベント用に ID -> タスク名 のマップをグローバルに保存
-            const nameToId = {};
-            window.mermaidTaskMap = {}; // グローバルマップのリセット
-
-            this.taskData.forEach(t => {
-                // IDは英数字のみにする (Mermaidの制限回避)
-                const safeId = 't_' + t.id.replace(/[^a-zA-Z0-9]/g, '');
-                nameToId[t.name] = safeId;
-                window.mermaidTaskMap[safeId] = t.name; // 逆引き用
-            });
-
-            // 2. 選択されたトレーダーのタスクを抽出
-            const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
-            
-            // 3. グラフに含めるべきノード（タスク）を収集
-            // 現在のトレーダーのタスク + それらの前提となっている外部タスク
-            const nodesToRender = new Set();
-            const edges = [];
-
-            currentTraderTasks.forEach(task => {
-                const myId = nameToId[task.name];
-                if (!myId) return;
-
-                // 自分自身を追加
-                nodesToRender.add(task.name);
-
-                // 前提タスクのリンクを作成
-                if (task.taskRequirements) {
-                    task.taskRequirements.forEach(req => {
-                        const reqName = req.task.name;
-                        const reqId = nameToId[reqName];
-                        if (reqId) {
-                            // 前提タスクもノードとして追加（別トレーダーでも表示するため）
-                            nodesToRender.add(reqName);
-                            edges.push({ from: reqId, to: myId });
-                        }
-                    });
-                }
-            });
-
-            // 4. Mermaid記法の生成
-            let graph = 'graph LR\n';
-            
-            // スタイル定義
-            // 完了済み(緑)
-            graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
-            // 未完了(黒/グレー)
-            graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
-            // 外部タスク(別トレーダー等) - 少し薄く表示
-            graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
-
-            // ノード定義
-            nodesToRender.forEach(taskName => {
-                const nodeId = nameToId[taskName];
-                const task = this.taskData.find(t => t.name === taskName);
-                if (!task) return;
-
-                const isCompleted = this.completedTasks.includes(taskName);
-                let className = isCompleted ? 'done' : 'todo';
-
-                // 現在のトレーダーでない場合はスタイルを変える
-                if (task.trader.name !== this.selectedTrader) {
-                    className = 'external';
-                }
-
-                // ノード記述: ID["表示名"]:::クラス名
-                // ラベル内のダブルクォート等はエスケープが必要だが、今回は単純化
-                const safeLabel = taskName.replace(/"/g, "'");
-                graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
-
-                // クリックイベント定義: 引数なしで関数名を指定 (IDが自動で渡される)
-                graph += `click ${nodeId} onMermaidTaskClick\n`;
-            });
-
-            // エッジ（矢印）定義
-            edges.forEach(edge => {
-                graph += `${edge.from} --> ${edge.to}\n`;
-            });
-
-            // 5. レンダリング
-            try {
-                container.innerHTML = '';
-                const id = `mermaid-${Date.now()}`;
-                
-                // SVG生成とイベントバインド関数の取得
-                const { svg, bindFunctions } = await mermaid.render(id, graph);
-                container.innerHTML = svg;
-                
-                // クリックイベントを有効化
-                if (bindFunctions) {
-                    bindFunctions(container);
-                }
-
-            } catch (e) {
-                console.error('Mermaid Render Error:', e);
-                container.innerHTML = '<div class="alert alert-warning">図の生成エラー: データ構造を確認してください。</div>';
-            }
-        }
-    },
-    template: `
-    <div class="card h-100 border-secondary">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-3">
-                <span>🗺️ タスクフローチャート</span>
-                <select class="form-select form-select-sm bg-dark text-white border-secondary" 
-                        style="width: 200px;" 
-                        v-model="selectedTrader">
-                    <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
-                </select>
-            </div>
-            <small class="text-muted">※タスクをクリックで詳細表示 / ドラッグでスクロール</small>
-        </div>
-        <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
-             <div ref="mermaidContainer" class="p-4" style="min-width: 100%; width: max-content;">
-                <span class="text-secondary">Loading...</span>
-             </div>
-        </div>
-    </div>
-    `
-};
-
-// グローバル関数: クリック時に呼ばれる
-// Mermaidからは nodeID が渡されるので、Mapを使ってタスク名を復元する
-window.mermaidTaskMap = {}; // 初期化
-
-window.onMermaidTaskClick = (nodeId) => {
-    const taskName = window.mermaidTaskMap[nodeId];
-    if (taskName) {
-        // app.js と連携するためのカスタムイベントを発火
-        const event = new CustomEvent('mermaid-task-click', { detail: taskName });
-        window.dispatchEvent(event);
-    } else {
-        console.warn("Task name not found for ID:", nodeId);
-    }
-};
-
-// js/components.js の CompChat コンポーネント (全体上書き用)
-
-// js/components.js の CompChat コンポーネント (Markdown対応版)
-
+// Chat
 const CompChat = {
     props: ['taskData', 'hideoutData', 'itemsData'],
     data() {
@@ -679,11 +668,8 @@ const CompChat = {
         }
     },
     methods: {
-        // ★追加: MarkdownをHTMLに変換するメソッド
         renderMarkdown(text) {
             if (!text) return '';
-            // markedライブラリを使って変換
-            // (改行を<br>にするオプションなどを簡易的に有効化)
             return marked.parse(text, { breaks: true });
         },
 
@@ -700,7 +686,6 @@ const CompChat = {
             this.isSending = true;
 
             try {
-                // 1. データをAIが理解しやすい形に軽量化
                 const contextData = {
                     tasks: this.taskData.map(t => ({
                         name: t.name,
@@ -723,7 +708,6 @@ const CompChat = {
 ${JSON.stringify(contextData)}
 `;
 
-                // 3. Gemini APIへのリクエスト (gemini-2.5-flash)
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`;
                 
                 const response = await fetch(url, {
