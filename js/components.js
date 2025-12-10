@@ -661,6 +661,8 @@ window.onMermaidTaskClick = (nodeId) => {
 
 // js/components.js の CompChat コンポーネント (全体上書き用)
 
+// js/components.js の CompChat コンポーネント (Markdown対応版)
+
 const CompChat = {
     props: ['taskData', 'hideoutData', 'itemsData'],
     data() {
@@ -677,6 +679,14 @@ const CompChat = {
         }
     },
     methods: {
+        // ★追加: MarkdownをHTMLに変換するメソッド
+        renderMarkdown(text) {
+            if (!text) return '';
+            // markedライブラリを使って変換
+            // (改行を<br>にするオプションなどを簡易的に有効化)
+            return marked.parse(text, { breaks: true });
+        },
+
         async sendMessage() {
             if (!this.userMessage.trim()) return;
             if (!this.apiKey) {
@@ -707,7 +717,7 @@ const CompChat = {
                 const systemPrompt = `
 あなたはEscape from Tarkovのデータ分析アシスタントです。
 以下のJSONデータを参照して、ユーザーの質問に日本語で答えてください。
-データにないことは「わかりません」と答えてください。
+回答にはMarkdown記法（太字、リスト、表など）を積極的に使用して見やすく整形してください。
 
 【データ】
 ${JSON.stringify(contextData)}
@@ -738,7 +748,7 @@ ${JSON.stringify(contextData)}
 
             } catch (err) {
                 console.error(err);
-                this.chatHistory.push({ role: 'model', text: `エラーが発生しました: ${err.message}` });
+                this.chatHistory.push({ role: 'model', text: `**エラーが発生しました:** \n${err.message}` });
             } finally {
                 this.isSending = false;
             }
@@ -764,12 +774,15 @@ ${JSON.stringify(contextData)}
                 
                 <div v-for="(msg, idx) in chatHistory" :key="idx" class="mb-3">
                     <div v-if="msg.role === 'user'" class="text-end">
-                        <span class="d-inline-block bg-primary text-white rounded p-2" style="max-width: 80%;">
+                        <span class="d-inline-block bg-primary text-white rounded p-2 text-start" style="max-width: 80%;">
                             {{ msg.text }}
                         </span>
                     </div>
                     <div v-else class="text-start">
-                        <div class="d-inline-block bg-secondary text-white rounded p-2" style="max-width: 80%; white-space: pre-wrap;">{{ msg.text }}</div>
+                        <div class="d-inline-block bg-secondary text-white rounded p-3 markdown-body" 
+                             style="max-width: 90%; overflow-x: auto;" 
+                             v-html="renderMarkdown(msg.text)">
+                        </div>
                     </div>
                 </div>
 
