@@ -30,32 +30,61 @@ const CompHeader = {
     `
 };
 
-// Input
+// js/components.js の CompInput (上書き用)
+
 const CompInput = {
-    props: ['hideoutData', 'userHideout', 'forceHideoutFir', 'filteredTasksList', 'completedTasks', 'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap'],
-    emits: ['update:forceHideoutFir', 'update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 'open-task-details', 'toggle-task'],
+    // ★削除: forceHideoutFir, update:forceHideoutFir
+    props: ['hideoutData', 'userHideout', 'filteredTasksList', 'completedTasks', 'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap', 'showMaxedHideout'],
+    emits: ['update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 'open-task-details', 'toggle-task', 'update:showMaxedHideout'],
+    
+    computed: {
+        visibleHideoutStations() {
+            if (!this.hideoutData) return [];
+            if (this.showMaxedHideout) return this.hideoutData;
+            return this.hideoutData.filter(station => {
+                const currentLevel = this.userHideout[station.name] || 0;
+                const maxLevel = station.levels.length;
+                return currentLevel < maxLevel;
+            });
+        }
+    },
+
     template: `
     <div class="row">
         <div class="col-md-4 mb-3">
             <div class="card h-100">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>🏠 ハイドアウト</span>
-                    <div class="form-check form-switch m-0">
-                        <input class="form-check-input" type="checkbox" :checked="forceHideoutFir" @change="$emit('update:forceHideoutFir', $event.target.checked)">
-                        <label class="form-check-label small" style="color:#aaa;">全FIR強制</label>
+                <div class="card-header py-2">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span>🏠 ハイドアウト</span>
+                        </div>
+                    
+                    <div class="d-grid">
+                        <button class="btn btn-sm" :class="showMaxedHideout ? 'btn-warning' : 'btn-outline-secondary'" 
+                                @click="$emit('update:showMaxedHideout', !showMaxedHideout)">
+                            {{ showMaxedHideout ? '完了済みを隠す' : '完了済みを表示' }}
+                        </button>
                     </div>
                 </div>
+
                 <div class="card-body overflow-auto" style="max-height: 70vh;">
-                    <div v-for="station in hideoutData" :key="station.name" class="mb-3">
+                    <div v-for="station in visibleHideoutStations" :key="station.name" class="mb-3">
                         <label class="form-label d-flex justify-content-between small mb-1">
                             <span>{{ station.name }}</span>
-                            <span class="text-warning">Lv {{ userHideout[station.name] || 0 }}</span>
+                            <span class="text-warning">
+                                Lv {{ userHideout[station.name] || 0 }} 
+                                <span class="text-muted" style="font-size:0.8em;">/ {{ station.levels.length }}</span>
+                            </span>
                         </label>
                         <input type="range" class="form-range" min="0" :max="station.levels.length" v-model.number="userHideout[station.name]">
+                    </div>
+                    
+                    <div v-if="visibleHideoutStations.length === 0" class="text-center text-muted small py-4">
+                        全ての設備がレベルMAXです 🎉
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="col-md-8 mb-3">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
@@ -333,16 +362,17 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart (上書き)
+// js/components.js の CompFlowchart (完全修正版: クリック検知 + 状態保持)
 
 const CompFlowchart = {
-    // ★修正: 'selectedTrader' を props に追加
+    // ★修正: selectedTrader を props に追加
     props: ['taskData', 'completedTasks', 'selectedTrader'],
-    // ★修正: 'update:selectedTrader' を emits に追加
+    // ★修正: update:selectedTrader を emits に追加
     emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
     data() {
         return {
-            // selectedTrader: 'Prapor' ← ★削除 (propsで貰うため)
+            // selectedTrader: 'Prapor', ← ★削除 (propsで受け取るため不要)
+            nodeMap: {} 
         };
     },
     computed: {
@@ -358,13 +388,10 @@ const CompFlowchart = {
         taskData() { this.renderChart(); }
     },
     mounted() {
-        // グローバルイベントを受け取るリスナーを設定
-        window.addEventListener('flowchart-clicked', this.handleGlobalClick);
-
         mermaid.initialize({ 
             startOnLoad: false, 
             theme: 'dark',
-            securityLevel: 'loose', // HTMLクリックを許可
+            securityLevel: 'loose',
             flowchart: { 
                 useMaxWidth: false, 
                 htmlLabels: true 
@@ -372,22 +399,7 @@ const CompFlowchart = {
         });
         this.renderChart();
     },
-    beforeUnmount() {
-        window.removeEventListener('flowchart-clicked', this.handleGlobalClick);
-    },
     methods: {
-        // ... (handleGlobalClick, renderChart は以前の修正内容のままでOKですが、念のため全文載せます)
-        handleGlobalClick(e) {
-            const { taskName, isShift } = e.detail;
-            if (!taskName) return;
-
-            if (isShift) {
-                this.$emit('toggle-task', taskName);
-            } else {
-                this.$emit('open-task-details', this.taskData.find(t => t.name === taskName));
-            }
-        },
-
         async renderChart() {
             if (!this.taskData || this.taskData.length === 0) return;
             await Vue.nextTick();
@@ -395,17 +407,18 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
-            window.flowchartTaskMap = {};
+            // ■ 1. マッピングの作成 (単純な連番ID t0, t1... を使用)
+            this.nodeMap = {}; 
             const nameToId = {};
             let counter = 0;
 
             this.taskData.forEach(t => {
-                const id = `node_${counter++}`;
-                nameToId[t.name] = id;
-                window.flowchartTaskMap[id] = t.name;
+                const simpleId = `t${counter++}`;
+                nameToId[t.name] = simpleId;
+                this.nodeMap[simpleId] = t; // "t0" -> タスクデータ
             });
 
-            // this.selectedTrader は props から参照される
+            // ■ 2. 描画対象のフィルタリング
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
@@ -428,42 +441,78 @@ const CompFlowchart = {
                 }
             });
 
+            // ■ 3. Mermaid構文の生成
             let graph = 'graph LR\n';
             
-            graph += 'classDef default cursor:pointer;\n';
+            // スタイル定義
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
             graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
 
             nodesToRender.forEach(taskName => {
                 const nodeId = nameToId[taskName];
-                const isCompleted = this.completedTasks.includes(taskName);
                 const task = this.taskData.find(t => t.name === taskName);
-                
-                let className = isCompleted ? 'done' : 'todo';
-                if (task && task.trader.name !== this.selectedTrader) className = 'external';
+                if (!task) return;
 
+                const isCompleted = this.completedTasks.includes(taskName);
+                let className = isCompleted ? 'done' : 'todo';
+
+                if (task.trader.name !== this.selectedTrader) {
+                    className = 'external';
+                }
+
+                // ラベルのエスケープ
                 const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");
+                
                 graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
-                graph += `click ${nodeId} onFlowchartNodeClick\n`;
+                
+                // ダミーのインタラクション定義 (ID付与用)
+                graph += `click ${nodeId} call void(0) "${safeLabel}"\n`;
             });
 
             edges.forEach(edge => {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
+            // ■ 4. レンダリングと後処理
             try {
                 container.innerHTML = '';
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 container.innerHTML = svg;
-                
-                const pathElements = container.querySelectorAll('.edgePath path, .edgeLabel');
-                pathElements.forEach(el => el.style.pointerEvents = 'none');
+
+                // 線(edge)がクリックを邪魔しないようにする
+                const edgesEl = container.querySelectorAll('.edgePath, .edgeLabel');
+                edgesEl.forEach(el => el.style.pointerEvents = 'none');
+
+                // ノードのカーソルを指にする
+                const nodesEl = container.querySelectorAll('.node');
+                nodesEl.forEach(el => el.style.cursor = 'pointer');
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
                 container.innerHTML = '<div class="alert alert-warning">図の生成エラー</div>';
+            }
+        },
+
+        // ■ 5. クリックハンドラ (Vue標準)
+        handleChartClick(event) {
+            const nodeEl = event.target.closest('.node');
+            if (!nodeEl) return;
+
+            const rawId = nodeEl.id;
+            const match = rawId.match(/(t\d+)/);
+            if (!match) return;
+
+            const simpleId = match[1];
+            const task = this.nodeMap[simpleId];
+
+            if (task) {
+                if (event.shiftKey) {
+                    this.$emit('toggle-task', task.name);
+                } else {
+                    this.$emit('open-task-details', task);
+                }
             }
         }
     },
@@ -482,7 +531,9 @@ const CompFlowchart = {
             <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
         </div>
         <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
-             <div ref="mermaidContainer" class="p-4" style="min-width: 100%; width: max-content;">
+             <div ref="mermaidContainer" class="p-4" 
+                  style="min-width: 100%; width: max-content;"
+                  @click="handleChartClick">
                 <span class="text-secondary">Loading...</span>
              </div>
         </div>
