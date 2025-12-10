@@ -95,7 +95,9 @@
                 :shopping-list="shoppingList"
                 :owned-keys="ownedKeys"
                 :items-data="itemsData"
-                :key-user-data="keyUserData" 
+                :key-user-data="keyUserData"
+                :view-mode="keysViewMode"
+                @update:view-mode="keysViewMode = $event"
                 @toggle-owned-key="toggleOwnedKey"
                 @open-task-from-name="openTaskFromName"
                 @update-key-user-data="updateKeyUserData"
@@ -106,6 +108,8 @@
             <comp-flowchart
                 :task-data="taskData"
                 :completed-tasks="completedTasks"
+                :selected-trader="flowchartTrader"
+                @update:selected-trader="flowchartTrader = $event"
                 @toggle-task="toggleTask"
                 @open-task-details="openTaskDetails"
             ></comp-flowchart>

@@ -5,6 +5,8 @@ const { createApp, ref, computed, onMounted, watch } = Vue;
 createApp({
     setup() {
         // --- 状態変数 ---
+        const keysViewMode = ref(localStorage.getItem('eft_keys_view_mode') || 'needed');
+        const flowchartTrader = ref(localStorage.getItem('eft_flowchart_trader') || 'Prapor');
         const currentTab = ref('input');
         const taskViewMode = ref('list'); 
         const showCompleted = ref(false);
@@ -29,6 +31,7 @@ createApp({
         const expandedItems = ref({});
         const selectedTask = ref(null);
         const fileInput = ref(null);
+
 
         // --- ヘルパー関数 ---
         const loadLS = (key, def) => {
@@ -349,8 +352,10 @@ createApp({
             collector: { title: '👑 Collector (FIR)', items: shoppingList.value.collector, borderClass: 'border-danger', headerClass: 'bg-dark text-danger border-danger', badgeClass: 'bg-danger' },
             taskNormal: { title: '📦 Task (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
         }));
+        watch(keysViewMode, (val) => localStorage.setItem('eft_keys_view_mode', val));
+        watch(flowchartTrader, (val) => localStorage.setItem('eft_flowchart_trader', val));
 
-        return {
+        return { keysViewMode, flowchartTrader, 
             currentTab, taskViewMode, showCompleted, showFuture, forceHideoutFir,
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,

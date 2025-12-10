@@ -154,13 +154,16 @@ const CompResult = {
     `
 };
 
-// Keys
+// js/components.js の CompKeys (上書き)
+
 const CompKeys = {
-    props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData'], 
-    emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data'],
+    // ★修正: 'viewMode' を props に追加
+    props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData', 'viewMode'], 
+    // ★修正: 'update:viewMode' を emits に追加
+    emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode'],
     data() {
         return {
-            viewMode: 'needed', 
+            // viewMode: 'needed', ← ★削除 (propsで貰うため)
             searchQuery: '',
             collapsedMaps: {},
             ratings: ['-', 'S', 'A', 'B', 'C', 'D', 'F', 'SS']
@@ -170,6 +173,7 @@ const CompKeys = {
         filteredKeys() {
             let source = this.shoppingList.keys || [];
             
+            // ★this.viewMode (prop) を参照
             if (this.viewMode === 'needed') {
                 source = source.filter(k => 
                     k.sources && 
@@ -177,7 +181,7 @@ const CompKeys = {
                     k.sources.some(s => s.name && s.name !== '')
                 );
             }
-
+            // ... (以下同じ)
             const query = this.searchQuery.toLowerCase();
             return source.filter(k => {
                 if (!query) return true;
@@ -185,8 +189,8 @@ const CompKeys = {
                        (k.shortName && k.shortName.toLowerCase().includes(query));
             });
         },
-
         groupedKeys() {
+            // ... (変更なし)
             const groups = {};
             this.filteredKeys.forEach(k => {
                 const map = k.mapName || 'Unknown / Other';
@@ -204,6 +208,7 @@ const CompKeys = {
         }
     },
     methods: {
+        // ... (toggleMap等は変更なし)
         toggleMap(mapName) {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
         },
@@ -229,8 +234,10 @@ const CompKeys = {
             
             <div class="d-flex gap-2 align-items-center">
                 <div class="btn-group btn-group-sm">
-                    <button class="btn" :class="viewMode==='needed' ? 'btn-info' : 'btn-outline-secondary'" @click="viewMode='needed'">タスクで使用</button>
-                    <button class="btn" :class="viewMode==='all' ? 'btn-info' : 'btn-outline-secondary'" @click="viewMode='all'">全ての鍵</button>
+                    <button class="btn" :class="viewMode==='needed' ? 'btn-info' : 'btn-outline-secondary'" 
+                            @click="$emit('update:viewMode', 'needed')">タスクで使用</button>
+                    <button class="btn" :class="viewMode==='all' ? 'btn-info' : 'btn-outline-secondary'" 
+                            @click="$emit('update:viewMode', 'all')">全ての鍵</button>
                 </div>
                 <input type="text" class="form-control form-control-sm" style="width: 200px;" placeholder="鍵名で検索..." v-model="searchQuery">
             </div>
@@ -326,16 +333,16 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart (クリック検知 完全修正版)
+// js/components.js の CompFlowchart (上書き)
 
 const CompFlowchart = {
-    props: ['taskData', 'completedTasks'],
-    emits: ['toggle-task', 'open-task-details'],
+    // ★修正: 'selectedTrader' を props に追加
+    props: ['taskData', 'completedTasks', 'selectedTrader'],
+    // ★修正: 'update:selectedTrader' を emits に追加
+    emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
     data() {
         return {
-            selectedTrader: 'Prapor',
-            // マッピングデータをコンポーネント内で保持
-            nodeMap: {} 
+            // selectedTrader: 'Prapor' ← ★削除 (propsで貰うため)
         };
     },
     computed: {
@@ -351,10 +358,13 @@ const CompFlowchart = {
         taskData() { this.renderChart(); }
     },
     mounted() {
+        // グローバルイベントを受け取るリスナーを設定
+        window.addEventListener('flowchart-clicked', this.handleGlobalClick);
+
         mermaid.initialize({ 
             startOnLoad: false, 
             theme: 'dark',
-            securityLevel: 'loose',
+            securityLevel: 'loose', // HTMLクリックを許可
             flowchart: { 
                 useMaxWidth: false, 
                 htmlLabels: true 
@@ -362,7 +372,22 @@ const CompFlowchart = {
         });
         this.renderChart();
     },
+    beforeUnmount() {
+        window.removeEventListener('flowchart-clicked', this.handleGlobalClick);
+    },
     methods: {
+        // ... (handleGlobalClick, renderChart は以前の修正内容のままでOKですが、念のため全文載せます)
+        handleGlobalClick(e) {
+            const { taskName, isShift } = e.detail;
+            if (!taskName) return;
+
+            if (isShift) {
+                this.$emit('toggle-task', taskName);
+            } else {
+                this.$emit('open-task-details', this.taskData.find(t => t.name === taskName));
+            }
+        },
+
         async renderChart() {
             if (!this.taskData || this.taskData.length === 0) return;
             await Vue.nextTick();
@@ -370,24 +395,23 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
-            // ■ 1. 単純な連番IDでマッピングを作成 (記号トラブルを回避)
-            this.nodeMap = {}; 
-            const nameToSimpleId = {};
+            window.flowchartTaskMap = {};
+            const nameToId = {};
             let counter = 0;
 
             this.taskData.forEach(t => {
-                const simpleId = `task${counter++}`;
-                nameToSimpleId[t.name] = simpleId;
-                this.nodeMap[simpleId] = t; // ID -> タスク情報の辞書
+                const id = `node_${counter++}`;
+                nameToId[t.name] = id;
+                window.flowchartTaskMap[id] = t.name;
             });
 
-            // ■ 2. 表示対象の抽出
+            // this.selectedTrader は props から参照される
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
 
             currentTraderTasks.forEach(task => {
-                const myId = nameToSimpleId[task.name];
+                const myId = nameToId[task.name];
                 if (!myId) return;
 
                 nodesToRender.add(task.name);
@@ -395,7 +419,7 @@ const CompFlowchart = {
                 if (task.taskRequirements) {
                     task.taskRequirements.forEach(req => {
                         const reqName = req.task.name;
-                        const reqId = nameToSimpleId[reqName];
+                        const reqId = nameToId[reqName];
                         if (reqId) {
                             nodesToRender.add(reqName);
                             edges.push({ from: reqId, to: myId });
@@ -404,75 +428,42 @@ const CompFlowchart = {
                 }
             });
 
-            // ■ 3. Mermaid構文の生成
             let graph = 'graph LR\n';
             
-            // スタイル定義 (カーソルを指にする)
             graph += 'classDef default cursor:pointer;\n';
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
             graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
 
             nodesToRender.forEach(taskName => {
-                const nodeId = nameToSimpleId[taskName];
+                const nodeId = nameToId[taskName];
                 const isCompleted = this.completedTasks.includes(taskName);
                 const task = this.taskData.find(t => t.name === taskName);
                 
                 let className = isCompleted ? 'done' : 'todo';
                 if (task && task.trader.name !== this.selectedTrader) className = 'external';
 
-                // ラベルのエスケープ処理
                 const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");
-                
-                // ノード定義 (clickコマンドは書かない)
                 graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
+                graph += `click ${nodeId} onFlowchartNodeClick\n`;
             });
 
             edges.forEach(edge => {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
-            // ■ 4. レンダリング
             try {
                 container.innerHTML = '';
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 container.innerHTML = svg;
                 
-                // 線のクリック判定を無効化 (ノードをクリックしやすくする)
-                const paths = container.querySelectorAll('path, .edgeLabel');
-                paths.forEach(p => p.style.pointerEvents = 'none');
+                const pathElements = container.querySelectorAll('.edgePath path, .edgeLabel');
+                pathElements.forEach(el => el.style.pointerEvents = 'none');
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
-                container.innerHTML = '<div class="alert alert-warning">描画エラー</div>';
-            }
-        },
-
-        // ■ 5. Vue標準のクリックハンドラ (一番確実な方法)
-        onChartClick(event) {
-            // クリックされた要素から親をたどり、IDを持つグループ要素(g.node)を探す
-            // MermaidのノードIDは "flowchart-task123-..." のような形式になるため "task..." を探す
-            const targetNode = event.target.closest('.node');
-            
-            if (!targetNode) return; // ノード以外をクリックした場合は無視
-
-            // IDから "task123" の部分を抽出
-            // 例: id="mermaid-173...-task10" -> "task10" を探す
-            const match = targetNode.id.match(/(task\d+)/);
-            if (!match) return;
-
-            const simpleId = match[1];
-            const task = this.nodeMap[simpleId];
-
-            if (task) {
-                if (event.shiftKey) {
-                    // Shift + Click
-                    this.$emit('toggle-task', task.name);
-                } else {
-                    // Click
-                    this.$emit('open-task-details', task);
-                }
+                container.innerHTML = '<div class="alert alert-warning">図の生成エラー</div>';
             }
         }
     },
@@ -483,22 +474,22 @@ const CompFlowchart = {
                 <span>🗺️ タスクフローチャート</span>
                 <select class="form-select form-select-sm bg-dark text-white border-secondary" 
                         style="width: 200px;" 
-                        v-model="selectedTrader">
+                        :value="selectedTrader"
+                        @change="$emit('update:selectedTrader', $event.target.value)">
                     <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
                 </select>
             </div>
             <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
         </div>
         <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
-             <div ref="mermaidContainer" class="p-4" 
-                  style="min-width: 100%; width: max-content; cursor: default;"
-                  @click="onChartClick">
+             <div ref="mermaidContainer" class="p-4" style="min-width: 100%; width: max-content;">
                 <span class="text-secondary">Loading...</span>
              </div>
         </div>
     </div>
     `
 };
+
 
 // Modal (Craft info added)
 const CompModal = {
