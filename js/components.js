@@ -469,3 +469,182 @@ const CompDebug = {
     </div>
     `
 };
+
+const CompFlowchart = {
+    props: ['taskData', 'completedTasks'],
+    emits: ['toggle-task', 'open-task-details'],
+    data() {
+        return {
+            selectedTrader: 'Prapor',
+            renderTrigger: 0
+        };
+    },
+    computed: {
+        traderList() {
+            if (!this.taskData) return [];
+            const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
+            return Array.from(traders).sort();
+        }
+    },
+    watch: {
+        selectedTrader() { this.renderChart(); },
+        completedTasks: { deep: true, handler() { this.renderChart(); } },
+        taskData() { this.renderChart(); }
+    },
+    mounted() {
+        // Mermaid設定: セキュリティレベルをlooseにし、HTMLラベルを有効化
+        mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: { 
+                useMaxWidth: false, 
+                htmlLabels: true 
+            }
+        });
+        this.renderChart();
+    },
+    methods: {
+        async renderChart() {
+            if (!this.taskData || this.taskData.length === 0) return;
+            await Vue.nextTick();
+
+            const container = this.$refs.mermaidContainer;
+            if (!container) return;
+
+            // 1. 全タスクのIDマッピングを作成 (前提タスクが別トレーダーの場合に対応するため)
+            // また、クリックイベント用に ID -> タスク名 のマップをグローバルに保存
+            const nameToId = {};
+            window.mermaidTaskMap = {}; // グローバルマップのリセット
+
+            this.taskData.forEach(t => {
+                // IDは英数字のみにする (Mermaidの制限回避)
+                const safeId = 't_' + t.id.replace(/[^a-zA-Z0-9]/g, '');
+                nameToId[t.name] = safeId;
+                window.mermaidTaskMap[safeId] = t.name; // 逆引き用
+            });
+
+            // 2. 選択されたトレーダーのタスクを抽出
+            const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
+            
+            // 3. グラフに含めるべきノード（タスク）を収集
+            // 現在のトレーダーのタスク + それらの前提となっている外部タスク
+            const nodesToRender = new Set();
+            const edges = [];
+
+            currentTraderTasks.forEach(task => {
+                const myId = nameToId[task.name];
+                if (!myId) return;
+
+                // 自分自身を追加
+                nodesToRender.add(task.name);
+
+                // 前提タスクのリンクを作成
+                if (task.taskRequirements) {
+                    task.taskRequirements.forEach(req => {
+                        const reqName = req.task.name;
+                        const reqId = nameToId[reqName];
+                        if (reqId) {
+                            // 前提タスクもノードとして追加（別トレーダーでも表示するため）
+                            nodesToRender.add(reqName);
+                            edges.push({ from: reqId, to: myId });
+                        }
+                    });
+                }
+            });
+
+            // 4. Mermaid記法の生成
+            let graph = 'graph LR\n';
+            
+            // スタイル定義
+            // 完了済み(緑)
+            graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
+            // 未完了(黒/グレー)
+            graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
+            // 外部タスク(別トレーダー等) - 少し薄く表示
+            graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
+
+            // ノード定義
+            nodesToRender.forEach(taskName => {
+                const nodeId = nameToId[taskName];
+                const task = this.taskData.find(t => t.name === taskName);
+                if (!task) return;
+
+                const isCompleted = this.completedTasks.includes(taskName);
+                let className = isCompleted ? 'done' : 'todo';
+
+                // 現在のトレーダーでない場合はスタイルを変える
+                if (task.trader.name !== this.selectedTrader) {
+                    className = 'external';
+                }
+
+                // ノード記述: ID["表示名"]:::クラス名
+                // ラベル内のダブルクォート等はエスケープが必要だが、今回は単純化
+                const safeLabel = taskName.replace(/"/g, "'");
+                graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
+
+                // クリックイベント定義: 引数なしで関数名を指定 (IDが自動で渡される)
+                graph += `click ${nodeId} onMermaidTaskClick\n`;
+            });
+
+            // エッジ（矢印）定義
+            edges.forEach(edge => {
+                graph += `${edge.from} --> ${edge.to}\n`;
+            });
+
+            // 5. レンダリング
+            try {
+                container.innerHTML = '';
+                const id = `mermaid-${Date.now()}`;
+                
+                // SVG生成とイベントバインド関数の取得
+                const { svg, bindFunctions } = await mermaid.render(id, graph);
+                container.innerHTML = svg;
+                
+                // クリックイベントを有効化
+                if (bindFunctions) {
+                    bindFunctions(container);
+                }
+
+            } catch (e) {
+                console.error('Mermaid Render Error:', e);
+                container.innerHTML = '<div class="alert alert-warning">図の生成エラー: データ構造を確認してください。</div>';
+            }
+        }
+    },
+    template: `
+    <div class="card h-100 border-secondary">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <span>🗺️ タスクフローチャート</span>
+                <select class="form-select form-select-sm bg-dark text-white border-secondary" 
+                        style="width: 200px;" 
+                        v-model="selectedTrader">
+                    <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
+                </select>
+            </div>
+            <small class="text-muted">※タスクをクリックで詳細表示 / ドラッグでスクロール</small>
+        </div>
+        <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh;">
+             <div ref="mermaidContainer" class="p-4" style="min-width: 100%; width: max-content;">
+                <span class="text-secondary">Loading...</span>
+             </div>
+        </div>
+    </div>
+    `
+};
+
+// グローバル関数: クリック時に呼ばれる
+// Mermaidからは nodeID が渡されるので、Mapを使ってタスク名を復元する
+window.mermaidTaskMap = {}; // 初期化
+
+window.onMermaidTaskClick = (nodeId) => {
+    const taskName = window.mermaidTaskMap[nodeId];
+    if (taskName) {
+        // app.js と連携するためのカスタムイベントを発火
+        const event = new CustomEvent('mermaid-task-click', { detail: taskName });
+        window.dispatchEvent(event);
+    } else {
+        console.warn("Task name not found for ID:", nodeId);
+    }
+};

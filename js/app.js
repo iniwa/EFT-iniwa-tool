@@ -222,6 +222,11 @@ createApp({
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
             }
+            // Mermaidクリック連携
+            window.addEventListener('mermaid-task-click', (e) => {
+                const taskName = e.detail;
+                openTaskFromName(taskName);
+            });
         });
 
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, forceHideoutFir], () => {
@@ -310,5 +315,6 @@ createApp({
 .component('comp-result', CompResult)
 .component('comp-keys', CompKeys)
 .component('comp-modal', CompModal)
-.component('comp-debug', CompDebug) // ★この行を追加！
+.component('comp-debug', CompDebug)
+.component('comp-flowchart', CompFlowchart)
 .mount('#app');
