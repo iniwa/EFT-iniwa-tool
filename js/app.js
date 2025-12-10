@@ -368,4 +368,5 @@ createApp({
 .component('comp-modal', CompModal)
 .component('comp-debug', CompDebug)
 .component('comp-flowchart', CompFlowchart)
+.component('comp-chat', CompChat)
 .mount('#app');

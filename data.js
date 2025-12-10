@@ -1,6 +1,5 @@
 // data.js
 const TARKOV_DATA = {
-  "data": {{
   "data": {
     "tasks": [
       {

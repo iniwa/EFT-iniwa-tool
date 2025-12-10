@@ -30,6 +30,7 @@
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'result'}" @click="currentTab = 'result'" href="#">2. 必要なアイテム ({{ totalItemsNeeded }})</a></li>
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'keys'}" @click="currentTab = 'keys'" href="#">3. 鍵管理 ({{ totalKeysNeeded }})</a></li>
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'flowchart'}" @click="currentTab = 'flowchart'" href="#">4. 🗺️ Flowchart</a></li>
+            <li class="nav-item"><a class="nav-link text-info" :class="{active: currentTab === 'chat'}" @click="currentTab = 'chat'" href="#">6. 🤖 Chat</a></li>
             <li class="nav-item"><a class="nav-link text-secondary" :class="{active: currentTab === 'debug'}" @click="currentTab = 'debug'" href="#">5. 🐞 Debug</a></li>
         </ul>
 
@@ -93,6 +94,14 @@
                 :completed-tasks="completedTasks"
                 :owned-keys="ownedKeys"
             ></comp-debug>
+        </div>
+
+        <div v-if="currentTab === 'chat'">
+            <comp-chat
+                :task-data="taskData"
+                :hideout-data="hideoutData"
+                :items-data="itemsData"
+            ></comp-chat>
         </div>
 
         <comp-modal
