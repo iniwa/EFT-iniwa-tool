@@ -75,16 +75,22 @@ createApp({
             keyUserData.value = currentData;
         };
 
+// js/app.js の processTasks 関数を修正
+
         const processTasks = (tasks) => {
             if (!tasks) return [];
             return tasks.map(t => {
                 const rewards = [];
                 const r = t.finishRewards || {};
+                
+                // アイテム報酬
                 if (r.items) {
                     r.items.forEach(entry => {
                         if(entry.item) rewards.push({ type: 'item', name: entry.item.name, count: entry.count || 1, id: entry.item.id });
                     });
                 }
+                
+                // 販売アンロック報酬
                 if (r.offerUnlock) {
                     r.offerUnlock.forEach(entry => {
                         if(entry.item && entry.trader) {
@@ -92,15 +98,35 @@ createApp({
                         }
                     });
                 }
+
+                // ★修正: クラフトアンロック報酬 (craftUnlock)
+                if (r.craftUnlock) {
+                    r.craftUnlock.forEach(entry => {
+                        // ステーション名とアイテム名を取得
+                        const stationName = entry.station ? entry.station.name : "Unknown";
+                        // 作成されるアイテムは rewardItems 配列の1つ目を取得
+                        const craftedItemName = (entry.rewardItems && entry.rewardItems.length > 0) 
+                                            ? entry.rewardItems[0].item.name 
+                                            : "Unknown Item";
+
+                        rewards.push({ 
+                            type: 'craftUnlock', 
+                            station: stationName, 
+                            level: entry.level, 
+                            itemName: craftedItemName 
+                        });
+                    });
+                }
+
                 const finalWikiLink = t.wikiLink || `https://tarkov.dev/task/${t.id}`;
                 return { ...t, finishRewardsList: rewards, wikiLink: finalWikiLink };
-            });
-        };
+            })};
+            
 
         // --- データ取得 (シンプル版) ---
         const fetchData = async () => {
             const CACHE_KEY = 'eft_api_cache_v1_restored'; // 新しいキーでリセット
-            const MIN_INTERVAL = 5 * 60 * 1000; 
+            const MIN_INTERVAL = 1 * 1 * 1; 
 
             const cache = loadLS(CACHE_KEY, null);
             if (cache) {

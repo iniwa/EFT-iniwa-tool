@@ -327,7 +327,7 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompModal
+// js/components.js の CompModal を書き換えてください
 
 const CompModal = {
     props: ['selectedTask', 'completedTasks'],
@@ -388,12 +388,19 @@ const CompModal = {
                 <h6 class="border-bottom pb-1 mb-2 text-success">報酬 (Rewards)</h6>
                 <ul class="list-group">
                     <li v-for="(reward, idx) in selectedTask.finishRewardsList" :key="'r'+idx" class="list-group-item bg-dark text-light border-secondary py-1">
+                        
                         <div v-if="reward.type === 'item'">
                             📦 {{ reward.name }} <span class="text-warning">x{{ reward.count }}</span>
                         </div>
+                        
                         <div v-else-if="reward.type === 'offerUnlock'">
-                            🔓 アンロック: {{ reward.itemName }} ({{ reward.trader }} Lv{{ reward.level }})
+                            🔓 販売: {{ reward.itemName }} ({{ reward.trader }} Lv{{ reward.level }})
                         </div>
+
+                        <div v-else-if="reward.type === 'craftUnlock'" class="text-info">
+                            🔨 生成: {{ reward.itemName }} ({{ reward.station }} Lv{{ reward.level }})
+                        </div>
+
                     </li>
                 </ul>
             </div>

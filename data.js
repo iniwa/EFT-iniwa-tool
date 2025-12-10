@@ -1,5 +1,6 @@
 // data.js
 const TARKOV_DATA = {
+  "data": {{
   "data": {
     "tasks": [
       {
@@ -56,7 +57,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -109,7 +111,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -149,7 +152,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -208,7 +212,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -279,7 +284,8 @@ const TARKOV_DATA = {
                 "name": "Kalashnikov AKS-74UB 5.45x39 アサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -354,7 +360,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -420,7 +427,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -486,7 +494,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -554,7 +563,8 @@ const TARKOV_DATA = {
                 "name": "AR-15 Windham Weaponry Rail Gas Block"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -612,7 +622,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -676,7 +687,8 @@ const TARKOV_DATA = {
                 "name": "Mosin Rifle AIM Sports MNG rail mount"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -746,7 +758,8 @@ const TARKOV_DATA = {
                 "name": "Mosin Rifle AIM Sports Recoil Pad"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -816,7 +829,8 @@ const TARKOV_DATA = {
                 "name": "Mosin Rifle Tacfire pistol grip"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -879,7 +893,8 @@ const TARKOV_DATA = {
                 "name": "Mosin Rifle Texas Precision Products 7.62x54R muzzle brake"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -940,7 +955,8 @@ const TARKOV_DATA = {
                 "name": "Mosin Rifle ATI Monte Carlo stock"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -1000,6 +1016,21 @@ const TARKOV_DATA = {
               "item": {
                 "name": "Mosin Rifle Witt Machine 7.62x54R muzzle brake"
               }
+            }
+          ],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "7.62x54mm R BT gzh"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -1080,7 +1111,8 @@ const TARKOV_DATA = {
                 "name": "Vortex Razor HD Gen.2 1-6x24 30mm riflescope"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -1125,7 +1157,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1196,7 +1229,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1249,7 +1283,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1349,7 +1384,8 @@ const TARKOV_DATA = {
                 "name": "イスクラ レーションパック"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -1403,7 +1439,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1450,7 +1487,8 @@ const TARKOV_DATA = {
                 "name": "Benelli M3 Super 90 デュアルモード 12ゲージ ショットガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -1503,7 +1541,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1540,7 +1579,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1584,7 +1624,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1621,7 +1662,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1708,7 +1750,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1759,7 +1802,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1803,7 +1847,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1861,7 +1906,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1914,7 +1960,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -1974,7 +2021,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2020,7 +2068,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2067,7 +2116,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2117,7 +2167,8 @@ const TARKOV_DATA = {
                 "name": "トリップワイヤー設置キット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -2173,7 +2224,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2246,7 +2298,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2318,7 +2371,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2364,7 +2418,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2443,7 +2498,8 @@ const TARKOV_DATA = {
                 "name": "6B5-16 Zh-86 Uley アーマーリグ (カーキー)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -2543,7 +2599,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2597,7 +2654,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2662,7 +2720,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2706,7 +2765,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2757,7 +2817,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2824,7 +2885,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2884,7 +2946,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -2949,7 +3012,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3007,7 +3071,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3065,7 +3130,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3150,7 +3216,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3197,7 +3264,8 @@ const TARKOV_DATA = {
                 "name": "APOK Tactical Wasteland Gladius"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3255,7 +3323,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3302,7 +3371,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3354,7 +3424,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3442,7 +3513,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3515,7 +3587,8 @@ const TARKOV_DATA = {
                 "name": "カー ファーストエイドキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3595,7 +3668,8 @@ const TARKOV_DATA = {
                 "name": "7.62x54mm R SP BT"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3664,7 +3738,8 @@ const TARKOV_DATA = {
                 "name": "NPP KlASS Kora-Kulon ボディアーマー (デジタルフローラ)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3735,7 +3810,8 @@ const TARKOV_DATA = {
                 "name": "5.45x39mm FMJ"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3803,7 +3879,8 @@ const TARKOV_DATA = {
                 "name": "AK-100 series polymer handguard"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -3882,7 +3959,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -3965,7 +4043,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4030,7 +4109,8 @@ const TARKOV_DATA = {
                 "name": "PP-9 Klin 9x18PMM サブマシンガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -4076,7 +4156,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4146,7 +4227,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4234,7 +4316,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4326,7 +4409,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4411,7 +4495,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4462,7 +4547,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4518,7 +4604,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4614,7 +4701,8 @@ const TARKOV_DATA = {
                 "name": "SSSh-94 SFERA-S helmet"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -4677,7 +4765,8 @@ const TARKOV_DATA = {
                 "name": "軍用 救急包帯"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -4738,7 +4827,8 @@ const TARKOV_DATA = {
                 "name": "Glock 17 9x19 ピストル Tac 3"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -4824,7 +4914,8 @@ const TARKOV_DATA = {
                 "name": "Remington Model 870 12ゲージ ポンプアクションショットガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -4885,7 +4976,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -4939,7 +5031,8 @@ const TARKOV_DATA = {
                 "name": "Chiappa Rhino 50DS .357 リボルバー Tactical"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5014,7 +5107,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5096,7 +5190,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5169,7 +5264,8 @@ const TARKOV_DATA = {
                 "name": "VOMZ Pilad P1x42 Weaver reflex sight"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5237,7 +5333,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5330,7 +5427,8 @@ const TARKOV_DATA = {
                 "name": "AK-74 5.45x39 6L31 60-round magazine"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5376,7 +5474,8 @@ const TARKOV_DATA = {
                 "name": "TDI KRISS ヴェクター Gen.2 .45 ACP サブマシンガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5458,7 +5557,8 @@ const TARKOV_DATA = {
                 "name": "PP-19-01 \"ヴィチャズ\" 9x19 サブマシンガン Zenit"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5534,7 +5634,8 @@ const TARKOV_DATA = {
                 "name": "9x21mm PS gzh"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5587,7 +5688,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5649,7 +5751,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5721,7 +5824,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5780,7 +5884,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -5865,7 +5970,8 @@ const TARKOV_DATA = {
                 "name": "Springfield Armory M1A 7.62x51 ライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5919,7 +6025,8 @@ const TARKOV_DATA = {
                 "name": "弾薬ケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -5966,7 +6073,8 @@ const TARKOV_DATA = {
                 "name": "Salewa ファーストエイドキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -6041,7 +6149,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6136,7 +6245,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6196,7 +6306,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6268,7 +6379,8 @@ const TARKOV_DATA = {
                 "name": "SOK-12 12ga SAI-02 10-round magazine"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -6346,7 +6458,8 @@ const TARKOV_DATA = {
                 "name": "B&T MP9 9x19 サブマシンガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -6424,7 +6537,8 @@ const TARKOV_DATA = {
                 "name": "5.7x28mm SS197SR"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -6473,7 +6587,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6529,7 +6644,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6607,7 +6723,8 @@ const TARKOV_DATA = {
                 "name": "SIG MPX 9x19 サブマシンガン Silenced"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -6656,7 +6773,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6705,7 +6823,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6761,7 +6880,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6867,7 +6987,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6903,7 +7024,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -6949,7 +7071,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7046,7 +7169,8 @@ const TARKOV_DATA = {
                 "name": "AK-74 Hexagon 5.45x39 sound suppressor"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -7093,7 +7217,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7163,7 +7288,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7215,7 +7341,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7271,7 +7398,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7338,7 +7466,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7387,7 +7516,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7446,7 +7576,8 @@ const TARKOV_DATA = {
                 "name": "M67 ハンドグレネード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -7548,7 +7679,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7600,7 +7732,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7649,7 +7782,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7685,7 +7819,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7809,7 +7944,8 @@ const TARKOV_DATA = {
                 "name": "Crye Precision AirFrame helmet (Tan)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -7872,7 +8008,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -7941,7 +8078,8 @@ const TARKOV_DATA = {
                 "name": "KAC QDSS NT4 5.56x45 sound suppressor (Black)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -7990,7 +8128,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8098,7 +8237,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8212,7 +8352,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8330,7 +8471,8 @@ const TARKOV_DATA = {
                 "name": "OLOLO マルチビタミン"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -8388,7 +8530,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8437,7 +8580,8 @@ const TARKOV_DATA = {
                 "name": "Ops-Core FAST MT Super High Cut helmet (Urban Tan)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -8500,7 +8644,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8566,7 +8711,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8642,7 +8788,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8728,7 +8875,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8774,7 +8922,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8833,7 +8982,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8920,7 +9070,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -8969,7 +9120,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9036,7 +9188,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9095,7 +9248,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9144,7 +9298,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9215,7 +9370,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9264,7 +9420,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9356,7 +9513,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9408,7 +9566,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9445,7 +9604,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9560,7 +9720,8 @@ const TARKOV_DATA = {
                 "name": "Remington Model 700 7.62x51 ボルトアクション スナイパーライフル MRS"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -9628,7 +9789,8 @@ const TARKOV_DATA = {
                 "name": "AK GP-25 accessory kit recoil pad"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -9707,7 +9869,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9753,7 +9916,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": ".300 Blackout M62 Tracer"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -9805,7 +9983,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9854,7 +10033,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -9922,7 +10102,8 @@ const TARKOV_DATA = {
                 "name": "MSA ACH TC-2001 MICH Series helmet (Olive Drab)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -9981,7 +10162,8 @@ const TARKOV_DATA = {
                 "name": "HK 416A5 5.56x45 アサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10040,7 +10222,8 @@ const TARKOV_DATA = {
                 "name": "MDR 7.62x51 アサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10108,7 +10291,8 @@ const TARKOV_DATA = {
                 "name": "AFAK ファーストエイドキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10169,7 +10353,8 @@ const TARKOV_DATA = {
                 "name": "FN40GL Mk2 grenade launcher デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10264,7 +10449,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10369,7 +10555,8 @@ const TARKOV_DATA = {
                 "name": "マガジンケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10405,7 +10592,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10461,7 +10649,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10517,7 +10706,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10584,7 +10774,8 @@ const TARKOV_DATA = {
                 "name": "FN Five-seveN MK2 5.7x28 ピストル (FDE) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10622,7 +10813,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10674,7 +10866,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10713,7 +10906,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10790,7 +10984,8 @@ const TARKOV_DATA = {
                 "name": "Hexagon 12K 12ga sound suppressor"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -10872,7 +11067,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -10941,7 +11137,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11007,7 +11204,8 @@ const TARKOV_DATA = {
                 "name": "9x18mm PM SP7 gzh"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -11060,7 +11258,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11119,7 +11318,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11168,7 +11368,8 @@ const TARKOV_DATA = {
                 "name": "DS Arms SA-58 7.62x51 アサルトライフル AUT"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -11231,7 +11432,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11284,7 +11486,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11345,7 +11548,8 @@ const TARKOV_DATA = {
                 "name": "MK12 ロープロファイル ガスブロック"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -11389,7 +11593,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11469,7 +11674,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11534,7 +11740,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11595,7 +11802,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11662,7 +11870,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11721,7 +11930,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11777,7 +11987,22 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "医療ステーション"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "2A2-(b-TG) の注射器"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -11838,7 +12063,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11882,7 +12108,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -11945,7 +12172,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12011,7 +12239,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12082,7 +12311,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12136,7 +12366,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12200,7 +12431,8 @@ const TARKOV_DATA = {
                 "name": "Labrys アクセスキーカード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -12264,7 +12496,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12318,7 +12551,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12403,7 +12637,8 @@ const TARKOV_DATA = {
                 "name": "Labrys アクセスキーカード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -12442,7 +12677,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12512,7 +12748,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12592,7 +12829,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12665,7 +12903,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12728,7 +12967,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12781,7 +13021,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12903,7 +13144,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -12962,7 +13204,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13038,7 +13281,8 @@ const TARKOV_DATA = {
                 "name": "Kalashnikov AK-104 7.62x39 アサルトライフル RPKT mod.1"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13102,7 +13346,8 @@ const TARKOV_DATA = {
                 "name": "Galvion Caiman Hybrid helmet (Grey)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13167,7 +13412,8 @@ const TARKOV_DATA = {
                 "name": "SV-98 7.62x54R ボルトアクション スナイパーライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13225,7 +13471,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13271,7 +13518,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13332,7 +13580,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13392,7 +13641,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13444,7 +13694,8 @@ const TARKOV_DATA = {
                 "name": "アルミスプリント"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13496,7 +13747,8 @@ const TARKOV_DATA = {
                 "name": "6B13 アサルトアーマー (フローラ) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13545,7 +13797,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13598,7 +13851,8 @@ const TARKOV_DATA = {
                 "name": "防弾プレートケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13686,7 +13940,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13745,7 +14000,8 @@ const TARKOV_DATA = {
                 "name": "6B3TM-01M アーマーリグ (カーキ)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13825,7 +14081,8 @@ const TARKOV_DATA = {
                 "name": "Camelbak Tri-Zip アサルトバックパック (MultiCam)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -13874,7 +14131,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13923,7 +14181,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -13987,7 +14246,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14051,7 +14311,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14100,7 +14361,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14149,7 +14411,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14232,7 +14495,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14309,7 +14573,8 @@ const TARKOV_DATA = {
                 "name": "Armasight Zeus-Pro 640 2-8x50 30Hz thermal scope"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -14383,7 +14648,8 @@ const TARKOV_DATA = {
                 "name": "プロピタルの注射器"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -14450,7 +14716,8 @@ const TARKOV_DATA = {
                 "name": "Hazard 4 Takedown スリングバックパック (マルチカム)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -14540,7 +14807,8 @@ const TARKOV_DATA = {
                 "name": "NFM THOR Concealable Reinforced Vest ボディアーマー デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -14649,7 +14917,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14702,7 +14971,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14755,7 +15025,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14828,7 +15099,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14884,7 +15156,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -14933,7 +15206,8 @@ const TARKOV_DATA = {
                 "name": "AK 7.62x39 Molot Arms 75-round drum magazine"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -15005,7 +15279,8 @@ const TARKOV_DATA = {
                 "name": "Korund-VM ballistic plates (Front)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -15080,7 +15355,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15143,7 +15419,8 @@ const TARKOV_DATA = {
                 "name": "5.7x28mm R37.F"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -15189,7 +15466,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "5.45x39mm PP gs"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -15287,7 +15579,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15353,7 +15646,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "VOG-17 Khattabka グレネード"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -15405,7 +15713,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15467,7 +15776,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15512,7 +15822,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15582,7 +15893,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15631,7 +15943,8 @@ const TARKOV_DATA = {
                 "name": "Lobaev Arms DVL-10 7.62x51 ボルトアクション スナイパーライフル Urbana"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -15693,7 +16006,8 @@ const TARKOV_DATA = {
                 "name": "IFAK ファーストエイドキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -15759,7 +16073,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15825,7 +16140,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15891,7 +16207,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15943,7 +16260,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -15995,7 +16313,8 @@ const TARKOV_DATA = {
                 "name": "サーヴ12 フィールド サージカルキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -16054,7 +16373,8 @@ const TARKOV_DATA = {
                 "name": "6B5-15 Zh-86 Uley アーマーリグ (フローラ)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -16123,7 +16443,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16177,7 +16498,8 @@ const TARKOV_DATA = {
                 "name": "弾薬ケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -16295,7 +16617,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16347,7 +16670,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16419,7 +16743,8 @@ const TARKOV_DATA = {
                 "name": "モルヒネの注射器"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -16470,7 +16795,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16526,7 +16852,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16579,7 +16906,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16615,7 +16943,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16682,7 +17011,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16731,7 +17061,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16793,7 +17124,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16846,7 +17178,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16897,7 +17230,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -16964,7 +17298,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17007,7 +17342,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17068,7 +17404,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17139,7 +17476,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17202,7 +17540,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17270,7 +17609,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17328,7 +17668,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17390,7 +17731,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17439,7 +17781,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17500,7 +17843,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17561,7 +17905,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17620,7 +17965,8 @@ const TARKOV_DATA = {
                 "name": "Aklys Defense Velociraptor .300 Blackout アサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -17707,7 +18053,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17753,7 +18100,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17799,7 +18147,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17860,7 +18209,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -17935,7 +18285,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18011,7 +18362,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18062,7 +18414,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18125,7 +18478,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18193,7 +18547,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18247,7 +18602,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18335,7 +18691,8 @@ const TARKOV_DATA = {
                 "name": "グラフィックボード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -18423,7 +18780,8 @@ const TARKOV_DATA = {
                 "name": "グラフィックボード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -18484,7 +18842,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18546,7 +18905,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18612,7 +18972,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18686,7 +19047,8 @@ const TARKOV_DATA = {
                 "name": "7.62x54mm R PS gzh"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -18748,7 +19110,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18835,7 +19198,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -18905,7 +19269,8 @@ const TARKOV_DATA = {
                 "name": "Serdyukov SR-1MP Gyurza 9x21 ピストル Tactical 2"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -18975,7 +19340,8 @@ const TARKOV_DATA = {
                 "name": "SR-2M \"Veresk\" 9x21 サブマシンガン FSB"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19037,6 +19403,21 @@ const TARKOV_DATA = {
               "item": {
                 "name": "Kalashnikov AK-12 5.45x39 アサルトライフル Silenced"
               }
+            }
+          ],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "5.45x39mm BP gs"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -19250,7 +19631,8 @@ const TARKOV_DATA = {
                 "name": "Team Wendy EXFIL Ballistic Helmet (Black)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19289,7 +19671,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "12/70 AP-20 スラグ"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -19355,7 +19752,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -19431,7 +19829,8 @@ const TARKOV_DATA = {
                 "name": "Tokarev AVT-40 7.62x54R オートマチックライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19470,7 +19869,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -19533,7 +19933,8 @@ const TARKOV_DATA = {
                 "name": "M4A1 5.56x45 アサルトライフル SAI"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19631,7 +20032,8 @@ const TARKOV_DATA = {
                 "name": "TDI KRISS ヴェクター Gen.2 9x19 サブマシンガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19770,7 +20172,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -19843,7 +20246,8 @@ const TARKOV_DATA = {
                 "name": "AK CSS knurled charging handle"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19916,7 +20320,8 @@ const TARKOV_DATA = {
                 "name": "Zenit RK-1 tactical foregrip on B-25U mount"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -19982,7 +20387,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20053,7 +20459,8 @@ const TARKOV_DATA = {
                 "name": "T H I C C ウェポンケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -20123,7 +20530,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20172,7 +20580,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20237,7 +20646,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20310,7 +20720,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20391,7 +20802,8 @@ const TARKOV_DATA = {
                 "name": "Mesa Tactical Crosshair Hydraulic バッファーチューブ"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -20452,6 +20864,21 @@ const TARKOV_DATA = {
               "item": {
                 "name": "Interceptor OTV ボディアーマー (UCP) デフォルト"
               }
+            }
+          ],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "FirstSpear Strandhogg プレートキャリア (レンジャーグリーン)"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -20538,7 +20965,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20619,7 +21047,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20696,7 +21125,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20735,7 +21165,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20774,7 +21205,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -20833,7 +21265,8 @@ const TARKOV_DATA = {
                 "name": "Saiga-12K 12ga オートマチックショットガン COMP M4"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21138,7 +21571,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -21219,7 +21653,8 @@ const TARKOV_DATA = {
                 "name": "ORSIS T-5000M 7.62x51 ボルトアクション スナイパーライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21310,7 +21745,8 @@ const TARKOV_DATA = {
                 "name": "ASh-12 12.7x55 アサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21378,7 +21814,8 @@ const TARKOV_DATA = {
                 "name": "SAPI level III+ ballistic plate"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21463,7 +21900,8 @@ const TARKOV_DATA = {
                 "name": "SCAR-L 5.56x45 アサルトライフル (FDE) Contract Wars"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21551,7 +21989,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 1,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "6B23-2 ボディアーマー (マウンテンフローラ)"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -21649,7 +22102,8 @@ const TARKOV_DATA = {
                 "name": "サーヴ12 フィールド サージカルキット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21710,7 +22164,8 @@ const TARKOV_DATA = {
                 "name": "KAC PRS/QDC 7.62x51 sound suppressor"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21807,7 +22262,8 @@ const TARKOV_DATA = {
                 "name": "Kiba Arms Titan ballistic plate"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -21895,7 +22351,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -21966,7 +22423,8 @@ const TARKOV_DATA = {
                 "name": "6Sh118 レイド バックパック (デジタルフローラ)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22054,7 +22512,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "5.11 Tactical TacTec プレートキャリア (レンジャーグリーン)"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -22127,7 +22600,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22183,7 +22657,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22236,7 +22711,8 @@ const TARKOV_DATA = {
                 "name": "40x46mm M386 (HE) grenade"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22290,7 +22766,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22349,7 +22826,8 @@ const TARKOV_DATA = {
                 "name": "FORT Redut-M ボディアーマー デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22422,7 +22900,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "Ars Arma A18 Skanda プレートキャリア (マルチカム)"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -22475,7 +22968,8 @@ const TARKOV_DATA = {
                 "name": "40mm VOG-25 grenade"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22549,7 +23043,8 @@ const TARKOV_DATA = {
                 "name": "CQC Osprey MK4A プレートキャリア (Assault, MTP) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22601,7 +23096,8 @@ const TARKOV_DATA = {
                 "name": "Grizzly 応急処置キット"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22656,7 +23152,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22700,7 +23197,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22770,7 +23268,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22830,7 +23329,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -22889,7 +23389,8 @@ const TARKOV_DATA = {
                 "name": ".45 ACP RIP"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -22950,7 +23451,8 @@ const TARKOV_DATA = {
                 "name": "AR-15 Magpul PRS GEN3 ストック (ブラック)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -23024,7 +23526,8 @@ const TARKOV_DATA = {
                 "name": "Armasight Zeus-Pro 640 2-8x50 30Hz thermal scope"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -23068,7 +23571,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23126,7 +23630,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23182,7 +23687,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23235,7 +23741,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23279,7 +23786,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23342,7 +23850,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23420,7 +23929,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23483,7 +23993,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23644,7 +24155,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23722,7 +24234,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23771,7 +24284,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -23936,7 +24450,8 @@ const TARKOV_DATA = {
                 "name": "IOTV Gen4 ボディアーマー (ハイモビリティバージョン、マルチカム) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -23995,7 +24510,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -24076,7 +24592,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -24144,7 +24661,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -24208,7 +24726,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -24291,7 +24810,8 @@ const TARKOV_DATA = {
                 "name": "Mystery Ranch ブラックジャック 50 バックパック (マルチカム)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24345,7 +24865,8 @@ const TARKOV_DATA = {
                 "name": "VSS/VAL TOZ 6P29M mount"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24392,7 +24913,8 @@ const TARKOV_DATA = {
                 "name": "クラッシュアックス"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24472,7 +24994,8 @@ const TARKOV_DATA = {
                 "name": "23x75mm Zvezda flashbang round"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24563,7 +25086,8 @@ const TARKOV_DATA = {
                 "name": "HK USP .45 ACP ピストル Match"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24628,7 +25152,8 @@ const TARKOV_DATA = {
                 "name": "Granit Br4 ballistic plate"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24679,7 +25204,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "9x39mm PAB-9 gs"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -24747,7 +25287,8 @@ const TARKOV_DATA = {
                 "name": "アドレナリンの注射器"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24820,7 +25361,8 @@ const TARKOV_DATA = {
                 "name": "Magpul MOE Carbine rubber buttpad"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24886,7 +25428,8 @@ const TARKOV_DATA = {
                 "name": "23x75mm Zvezda flashbang round"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24945,7 +25488,8 @@ const TARKOV_DATA = {
                 "name": "MP-155 Ultima thermal camera"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -24992,7 +25536,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -25094,7 +25639,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -25156,7 +25702,8 @@ const TARKOV_DATA = {
                 "name": "HighCom Trooper TFO ボディアーマー (マルチカム) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25224,7 +25771,8 @@ const TARKOV_DATA = {
                 "name": "Lone Star TX-15 DML 5.56x45 カービン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25300,7 +25848,8 @@ const TARKOV_DATA = {
                 "name": "Cult Locust ballistic plate"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25377,7 +25926,8 @@ const TARKOV_DATA = {
                 "name": "9x21mm BT gzh"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25437,7 +25987,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -25487,7 +26038,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -25589,7 +26141,8 @@ const TARKOV_DATA = {
                 "name": "RPK-16 5.45×39 ライトマシンガン 6L26"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25729,7 +26282,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "NPP KlASS Bagariy プレートキャリア (EMR)"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -25771,7 +26339,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -25859,7 +26428,8 @@ const TARKOV_DATA = {
                 "name": "AKM/AK-74 Hera Arms CQR47 pistol grip/buttstock"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25929,7 +26499,8 @@ const TARKOV_DATA = {
                 "name": "Accuracy International AXMC .338 LM ボルトアクション スナイパーライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -25998,7 +26569,8 @@ const TARKOV_DATA = {
                 "name": "SWORD International Mk-18 .338 LM マークスマンライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -26064,7 +26636,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26118,7 +26691,8 @@ const TARKOV_DATA = {
                 "name": "RShG-2 72.5mm ロケットランチャー デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -26195,7 +26769,8 @@ const TARKOV_DATA = {
                 "name": "AKM 7.62x39 Kiba Arms .308 muzzle device adapter"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -26244,7 +26819,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26284,7 +26860,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26315,7 +26892,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26355,7 +26933,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26416,7 +26995,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26500,7 +27080,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26534,7 +27115,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26581,7 +27163,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26617,7 +27200,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26653,7 +27237,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26705,7 +27290,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26752,7 +27338,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -26807,7 +27394,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "インテリジェンスセンター"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "Virtex プログラマブルプロセッサ"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -26862,7 +27464,8 @@ const TARKOV_DATA = {
                 "name": "マイコンボード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -26934,6 +27537,21 @@ const TARKOV_DATA = {
               "item": {
                 "name": "Atomic Defense CQCM up armored ballistic mask (Black)"
               }
+            }
+          ],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "インテリジェンスセンター"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "UHF RFID リーダー"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -27014,7 +27632,8 @@ const TARKOV_DATA = {
                 "name": "DevTac Ronin Respirator"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -27073,7 +27692,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27152,7 +27772,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "FLIR RS-32 2.25-9x 35mm 60Hz サーマルライフルスコープ"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -27211,7 +27846,8 @@ const TARKOV_DATA = {
                 "name": "GPS 信号増幅器"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -27276,7 +27912,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "マイコンボード"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -27323,7 +27974,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "Trijicon REAP-IR thermal scope"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -27411,7 +28077,8 @@ const TARKOV_DATA = {
                 "name": "電圧コンバータ"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -27450,7 +28117,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27489,7 +28157,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27557,7 +28226,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27588,7 +28258,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27633,7 +28304,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27669,7 +28341,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27707,7 +28380,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27752,7 +28426,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27823,7 +28498,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -27889,7 +28565,8 @@ const TARKOV_DATA = {
                 "name": "Sako TRG M10 .338 LM ボルトアクションスナイパーライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28015,7 +28692,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28058,7 +28736,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28100,7 +28779,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "5.56x45mm M855A1"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -28150,7 +28844,8 @@ const TARKOV_DATA = {
                 "name": "Kalashnikov AK-104 7.62x39 アサルトライフル T-SAW"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28255,7 +28950,8 @@ const TARKOV_DATA = {
                 "name": "4.6x30mm FMJ SX"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28327,7 +29023,8 @@ const TARKOV_DATA = {
                 "name": "SR-3M 9x39 コンパクトアサルトライフル デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28371,7 +29068,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28459,7 +29157,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28520,7 +29219,8 @@ const TARKOV_DATA = {
                 "name": "Miller Bros. Blades M-2 タクティカルソード"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28571,7 +29271,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28719,7 +29420,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28763,7 +29465,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28799,7 +29502,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -28851,7 +29555,8 @@ const TARKOV_DATA = {
                 "name": "MPS Auto Assault-12 Gen1 12ga オートマチックショットガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28898,7 +29603,8 @@ const TARKOV_DATA = {
                 "name": "MPS Auto Assult-12 Gen2 12ga オートマチックショットガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -28942,7 +29648,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29023,7 +29730,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29088,7 +29796,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29149,7 +29858,8 @@ const TARKOV_DATA = {
                 "name": "AK Custom Arms AGS-74 PRO + Sniper Kit pistol grip"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29219,7 +29929,8 @@ const TARKOV_DATA = {
                 "name": "Magpul MOE Carbine rubber buttpad"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29285,7 +29996,8 @@ const TARKOV_DATA = {
                 "name": "AR-15 Strike Industries Advanced Receiver Extension buffer tube"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29355,7 +30067,8 @@ const TARKOV_DATA = {
                 "name": "SilencerCo Saker ASR 556 5.56x45 sound suppressor"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29409,7 +30122,8 @@ const TARKOV_DATA = {
                 "name": "Mk47 409mm barrel"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29479,7 +30193,8 @@ const TARKOV_DATA = {
                 "name": "Stark SE-5 Express Forward foregrip (FDE)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29542,7 +30257,8 @@ const TARKOV_DATA = {
                 "name": "Kalashnikov PKM 7.62x54R マシンガン デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29655,6 +30371,21 @@ const TARKOV_DATA = {
                 "name": "AR-15 Vltor MUR-1S 5.56x45 upper receiver"
               }
             }
+          ],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "4.6x30mm AP SX"
+                  }
+                }
+              ]
+            }
           ]
         }
       },
@@ -29715,7 +30446,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29775,7 +30507,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29821,7 +30554,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -29897,7 +30631,8 @@ const TARKOV_DATA = {
                 "name": "SOG Voodoo Hawk タクティカル トマホーク"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -29980,7 +30715,8 @@ const TARKOV_DATA = {
                 "name": "FORT Redut-T5 ボディアーマー (スモッグ) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30061,7 +30797,8 @@ const TARKOV_DATA = {
                 "name": "9x39mm SP-6 gs"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30171,7 +30908,8 @@ const TARKOV_DATA = {
                 "name": "IOTV Gen4 ボディアーマー (アサルトバージョン、マルチカム) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30281,7 +31019,8 @@ const TARKOV_DATA = {
                 "name": "IOTV Gen4 ボディアーマー (アサルトバージョン、マルチカム) デフォルト"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30382,7 +31121,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -30483,7 +31223,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -30609,7 +31350,8 @@ const TARKOV_DATA = {
                 "name": "AK-50 .50 BMG 24 inch barrel"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30645,7 +31387,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -30682,7 +31425,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -30711,7 +31455,22 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "7.62x39mm BP gzh"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -30750,7 +31509,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "ワークベンチ"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": ".300 AAC Blackout AP"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -30796,7 +31570,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -30859,7 +31634,8 @@ const TARKOV_DATA = {
                 "name": "Altyn bulletproof helmet (Olive Drab)"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -30993,7 +31769,35 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "医療ステーション"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "M.U.L.E.の注射器"
+                  }
+                }
+              ]
+            },
+            {
+              "station": {
+                "name": "医療ステーション"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "eTG-チェンジの注射器"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -31779,7 +32583,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -31833,7 +32638,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "医療ステーション"
+              },
+              "level": 2,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "xTG-12 の注射器"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -31877,7 +32697,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -31930,7 +32751,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32051,7 +32873,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32107,7 +32930,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32187,7 +33011,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32262,7 +33087,22 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": [
+            {
+              "station": {
+                "name": "洗面所"
+              },
+              "level": 3,
+              "rewardItems": [
+                {
+                  "item": {
+                    "name": "Rys-T bulletproof helmet (Black)"
+                  }
+                }
+              ]
+            }
+          ]
         }
       },
       {
@@ -32420,7 +33260,8 @@ const TARKOV_DATA = {
                 "name": "T H I C C アイテムケース"
               }
             }
-          ]
+          ],
+          "craftUnlock": []
         }
       },
       {
@@ -32450,7 +33291,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32506,7 +33348,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32562,7 +33405,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32668,7 +33512,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32714,7 +33559,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32770,7 +33616,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32804,7 +33651,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32895,7 +33743,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32935,7 +33784,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32958,7 +33808,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -32998,7 +33849,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33028,7 +33880,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33072,7 +33925,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33116,7 +33970,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33337,7 +34192,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33381,7 +34237,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33462,7 +34319,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33493,7 +34351,8 @@ const TARKOV_DATA = {
               }
             }
           ],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       },
       {
@@ -33523,7 +34382,8 @@ const TARKOV_DATA = {
         ],
         "finishRewards": {
           "items": [],
-          "offerUnlock": []
+          "offerUnlock": [],
+          "craftUnlock": []
         }
       }
     ],

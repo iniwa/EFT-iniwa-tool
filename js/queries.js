@@ -20,6 +20,15 @@ query GetData {
     finishRewards {
       items { count item { id name } }
       offerUnlock { level trader { name } item { name } }
+      
+      # ★修正: 正しいフィールド名 craftUnlock を使用
+      craftUnlock {
+        station { name }
+        level
+        rewardItems {
+          item { name }
+        }
+      }
     }
   }
   
