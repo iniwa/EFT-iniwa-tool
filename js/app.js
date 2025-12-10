@@ -269,7 +269,7 @@ createApp({
             
             const rawItems = itemsData.value.items || [];
             const rawMaps = itemsData.value.maps || [];
-            KeyLogic.calculate(rawItems, rawMaps, visibleTasks.value, addItem);
+            KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
             
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
             const toArrKeys = (o) => Object.values(o).sort((a,b) => {
@@ -297,16 +297,18 @@ createApp({
         return {
             currentTab, taskViewMode, showCompleted, showFuture, forceHideoutFir,
             isLoading, loadError, lastUpdated, fetchData,
-            hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,
+            taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,
             filteredTasksList, tasksByTrader, tasksByMap, shoppingList, totalItemsNeeded, totalKeysNeeded,
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
             toggleCollected, toggleOwnedKey, updateKeyUserData, displayLists,
             exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData
         };
     }
-}).component('comp-header', CompHeader)
+})
+.component('comp-header', CompHeader)
 .component('comp-input', CompInput)
 .component('comp-result', CompResult)
 .component('comp-keys', CompKeys)
 .component('comp-modal', CompModal)
+.component('comp-debug', CompDebug) // ★この行を追加！
 .mount('#app');

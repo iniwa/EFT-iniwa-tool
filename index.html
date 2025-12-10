@@ -28,6 +28,7 @@
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'input'}" @click="currentTab = 'input'" href="#">1. 進捗入力</a></li>
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'result'}" @click="currentTab = 'result'" href="#">2. 必要なアイテム ({{ totalItemsNeeded }})</a></li>
             <li class="nav-item"><a class="nav-link" :class="{active: currentTab === 'keys'}" @click="currentTab = 'keys'" href="#">3. 鍵管理 ({{ totalKeysNeeded }})</a></li>
+            <li class="nav-item"><a class="nav-link text-secondary" :class="{active: currentTab === 'debug'}" @click="currentTab = 'debug'" href="#">4. 🐞 Debug</a></li>
         </ul>
 
         <div v-if="currentTab === 'input'">
@@ -72,8 +73,21 @@
             ></comp-keys>
         </div>
 
+        <div v-if="currentTab === 'debug'">
+            <comp-debug
+                :task-data="taskData"
+                :hideout-data="hideoutData"
+                :items-data="itemsData"
+                :user-hideout="userHideout"
+                :completed-tasks="completedTasks"
+                :owned-keys="ownedKeys"
+            ></comp-debug>
+        </div>
+
         <comp-modal
             :selected-task="selectedTask"
+            :completed-tasks="completedTasks" 
+            @toggle-task="toggleTask"
             @close="selectedTask = null"
         ></comp-modal>
 

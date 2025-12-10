@@ -13,6 +13,7 @@ query GetData {
     kappaRequired
     lightkeeperRequired
     objectives { 
+      description
       ... on TaskObjectiveItem { type count foundInRaid item { id name } } 
     }
     finishRewards {

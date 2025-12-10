@@ -324,15 +324,30 @@ const CompKeys = {
     `
 };
 
-// Modal
+// js/components.js の CompModal
+
 const CompModal = {
-    props: ['selectedTask'],
-    emits: ['close'],
+    // ★ props に 'completedTasks' を追加
+    props: ['selectedTask', 'completedTasks'],
+    // ★ emits に 'toggle-task' を追加
+    emits: ['close', 'toggle-task'],
     template: `
     <div v-if="selectedTask" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-content-custom">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="m-0 text-warning">{{ selectedTask.name }}</h4>
+            <div class="d-flex justify-content-between align-items-start mb-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="form-check m-0">
+                        <input class="form-check-input fs-4" type="checkbox" 
+                               :checked="completedTasks.includes(selectedTask.name)" 
+                               @change="$emit('toggle-task', selectedTask.name)"
+                               style="cursor: pointer;">
+                    </div>
+                    <div>
+                        <h4 class="m-0 text-warning" :class="{'text-decoration-line-through text-muted': completedTasks.includes(selectedTask.name)}">
+                            {{ selectedTask.name }}
+                        </h4>
+                    </div>
+                </div>
                 <button type="button" class="btn-close btn-close-white" @click="$emit('close')"></button>
             </div>
             
@@ -349,14 +364,19 @@ const CompModal = {
             <div v-if="selectedTask.objectives.length > 0" class="mb-4">
                 <h6 class="border-bottom pb-1 mb-2 text-info">目標 (Objectives)</h6>
                 <ul class="list-group">
-                    <li v-for="(obj, idx) in selectedTask.objectives" :key="idx" class="list-group-item bg-dark text-light border-secondary py-1">
+                    <li v-for="(obj, idx) in selectedTask.objectives" :key="idx" class="list-group-item bg-dark text-light border-secondary py-2">
                         <div v-if="obj.item">
-                            <span class="text-warning">{{ obj.item.name }}</span> x {{ obj.count }}
-                            <span v-if="obj.foundInRaid" class="badge bg-warning text-dark ms-2">FIR</span>
-                            <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary ms-2">Find</span>
-                            <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark ms-2">Give</span>
+                            <span class="text-warning fw-bold">{{ obj.item.name }}</span> x {{ obj.count }}
+                            <div class="mt-1">
+                                <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>
+                                <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary me-1">Find</span>
+                                <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark me-1">Give</span>
+                            </div>
                         </div>
-                        <div v-else class="text-muted small">(アクション目標)</div>
+                        <div v-else>
+                            <span v-if="obj.description">{{ obj.description }}</span>
+                            <span v-else class="text-muted small">(アクション目標)</span>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -373,6 +393,77 @@ const CompModal = {
                         </div>
                     </li>
                 </ul>
+            </div>
+        </div>
+    </div>
+    `
+};
+
+// js/components.js の末尾 (CompDebug全体を書き換え)
+
+const CompDebug = {
+    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys'],
+    data() {
+        return {
+            currentView: 'tasks',
+            copyButtonText: 'クリップボードにコピー'
+        }
+    },
+    computed: {
+        displayData() {
+            switch (this.currentView) {
+                case 'tasks': return this.taskData;
+                case 'hideout': return this.hideoutData;
+                case 'items': return this.itemsData;
+                case 'userProgress': return {
+                    userHideout: this.userHideout,
+                    completedTasks: this.completedTasks,
+                    ownedKeys: this.ownedKeys
+                };
+                default: return {};
+            }
+        },
+        formattedJson() {
+            return JSON.stringify(this.displayData, null, 2);
+        }
+    },
+    methods: {
+        copyToClipboard() {
+            navigator.clipboard.writeText(this.formattedJson).then(() => {
+                this.copyButtonText = 'コピーしました！';
+                setTimeout(() => this.copyButtonText = 'クリップボードにコピー', 2000);
+            });
+        }
+    },
+    template: `
+    <div class="card h-100 border-secondary">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <span>🐞 デバッグ / データ確認</span>
+            <button class="btn btn-sm btn-outline-light" @click="copyToClipboard">{{ copyButtonText }}</button>
+        </div>
+        <div class="card-body p-0">
+            <div class="row g-0 h-100">
+                <div class="col-md-2 border-end border-secondary bg-dark">
+                    <div class="list-group list-group-flush">
+                        <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
+                                :class="{active: currentView==='tasks'}" 
+                                @click="currentView='tasks'">Tasks (API)</button>
+                        <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
+                                :class="{active: currentView==='hideout'}" 
+                                @click="currentView='hideout'">Hideout (API)</button>
+                        <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
+                                :class="{active: currentView==='items'}" 
+                                @click="currentView='items'">Items/Keys (API)</button>
+                        <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
+                                :class="{active: currentView==='userProgress'}" 
+                                @click="currentView='userProgress'">User Save Data</button>
+                    </div>
+                </div>
+                <div class="col-md-10 bg-dark">
+                    <textarea class="form-control bg-dark text-white font-monospace border-0" 
+                              style="height: 75vh; font-size: 12px; resize: none;" 
+                              readonly :value="formattedJson"></textarea>
+                </div>
             </div>
         </div>
     </div>
