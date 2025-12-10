@@ -4,6 +4,7 @@ const { createApp, ref, computed, onMounted, watch } = Vue;
 
 createApp({
     setup() {
+        // --- 状態変数 ---
         const currentTab = ref('input');
         const taskViewMode = ref('list'); 
         const showCompleted = ref(false);
@@ -29,43 +30,40 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        const CURRENCY_IDS = ["5449016a4bdc2d6f028b456f", "5696686a4bdc2da3298b456a", "569668774bdc2da2298b4568"];
-
+        // --- ヘルパー関数 ---
         const loadLS = (key, def) => {
-            const val = localStorage.getItem(key);
-            return val ? JSON.parse(val) : def;
+            try {
+                const val = localStorage.getItem(key);
+                return val ? JSON.parse(val) : def;
+            } catch (e) {
+                return def;
+            }
         };
 
         const openTaskFromName = (taskName) => {
             if (!taskData.value) return;
             const task = taskData.value.find(t => t.name === taskName);
-            if (task) {
-                selectedTask.value = task;
-            } else {
-                alert("タスク詳細が見つかりませんでした");
-            }
+            if (task) selectedTask.value = task;
+            else alert("タスク詳細が見つかりませんでした");
         };
 
         const updateKeyUserData = (id, field, value) => {
-            if (!keyUserData.value[id]) {
-                keyUserData.value[id] = { rating: '-', memo: '' };
-            }
+            if (!keyUserData.value[id]) keyUserData.value[id] = { rating: '-', memo: '' };
             keyUserData.value[id][field] = value;
         };
 
         const applyKeyPresets = (allItems) => {
-            if (!allItems) return;
-            if (typeof KEY_PRESETS === 'undefined') return;
-
-            const currentData = keyUserData.value;
+            if (!allItems || typeof KEY_PRESETS === 'undefined') return;
+            
+            // 既存のユーザーデータとプリセットをマージ
+            const currentData = { ...keyUserData.value };
+            
             allItems.forEach(item => {
-                // ★修正: IDを使ってプリセットを検索
                 const preset = KEY_PRESETS[item.id]; 
-                
                 if (preset) {
                     if (!currentData[item.id]) currentData[item.id] = { rating: '-', memo: '' };
                     
-                    // 既存のデータがない場合のみプリセットを適用 (ユーザー入力を優先)
+                    // ユーザーがまだ何も設定していない場合のみプリセットを適用
                     if (!currentData[item.id].rating || currentData[item.id].rating === '-') {
                         currentData[item.id].rating = preset.rating || '-';
                     }
@@ -74,7 +72,7 @@ createApp({
                     }
                 }
             });
-            keyUserData.value = { ...currentData };
+            keyUserData.value = currentData;
         };
 
         const processTasks = (tasks) => {
@@ -99,28 +97,30 @@ createApp({
             });
         };
 
+        // --- データ取得 (シンプル版) ---
         const fetchData = async () => {
-            const CACHE_KEY_V13 = 'eft_api_cache_v13';
-            const MIN_INTERVAL = 5 * 60 * 1000; // 5分 (ミリ秒)
+            const CACHE_KEY = 'eft_api_cache_v1_restored'; // 新しいキーでリセット
+            const MIN_INTERVAL = 5 * 60 * 1000; 
 
-            const cache = localStorage.getItem(CACHE_KEY_V13);
+            const cache = loadLS(CACHE_KEY, null);
             if (cache) {
                 try {
-                    const parsedCache = JSON.parse(cache);
-                    // 保存時に lastFetchTime (ミリ秒) を保存している前提、なければ現在時刻比較でパスさせる
-                    const lastTime = parsedCache.lastFetchTime || 0;
+                    const lastTime = cache.lastFetchTime || 0;
                     const nowTime = Date.now();
 
-                    // 5分未満かつ、データが空でない場合はAPIを叩かせない
-                    if ((nowTime - lastTime < MIN_INTERVAL) && parsedCache.tasks && parsedCache.tasks.length > 0) {
+                    if ((nowTime - lastTime < MIN_INTERVAL) && cache.tasks && cache.tasks.length > 0) {
                         const remainSec = Math.ceil((MIN_INTERVAL - (nowTime - lastTime)) / 1000);
-                        alert(`データは最新です。\nサーバー負荷軽減のため、更新は5分に1回に制限されています。\n(あと ${remainSec} 秒お待ちください)`);
-                        return; // ここで処理を中断
+                        alert(`データは最新です (あと ${remainSec} 秒)。`);
+                        
+                        hideoutData.value = cache.hideoutStations;
+                        taskData.value = cache.tasks;
+                        itemsData.value = cache.items;
+                        lastUpdated.value = cache.timestamp;
+                        return; 
                     }
-                } catch (e) {
-                    console.error("Cache check error", e);
-                }
+                } catch (e) { console.error("Cache check error", e); }
             }
+
             isLoading.value = true;
             loadError.value = null;
             const query = GRAPHQL_QUERY;
@@ -143,14 +143,15 @@ createApp({
                     maps: result.data.maps || []
                 };
                 
+                // プリセット(手書きメモ)を適用
                 applyKeyPresets(result.data.items);
                 
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
-                // ★キャッシュv13
-                localStorage.setItem(CACHE_KEY_V13, JSON.stringify({
+                
+                localStorage.setItem(CACHE_KEY, JSON.stringify({
                     timestamp: now,
-                    lastFetchTime: Date.now(), // これを追加して次回判定に使用
+                    lastFetchTime: Date.now(),
                     hideoutStations: hideoutData.value, 
                     tasks: taskData.value, 
                     items: itemsData.value
@@ -168,6 +169,7 @@ createApp({
             }
         };
 
+        // --- その他機能 (そのまま) ---
         const exportData = () => {
             const data = {
                 userHideout: userHideout.value,
@@ -217,7 +219,7 @@ createApp({
         };
 
         onMounted(() => {
-            const cache = loadLS('eft_api_cache_v13', null); // ★v13
+            const cache = loadLS('eft_api_cache_v1_restored', null);
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
@@ -241,13 +243,13 @@ createApp({
             playerLevel.value = parseInt(localStorage.getItem('eft_level') || 1, 10);
             forceHideoutFir.value = loadLS('eft_force_fir', false);
             
+            // プリセット適用
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
             }
-            // Mermaidクリック連携
+            
             window.addEventListener('mermaid-task-click', (e) => {
-                const taskName = e.detail;
-                openTaskFromName(taskName);
+                openTaskFromName(e.detail);
             });
         });
 
@@ -269,13 +271,14 @@ createApp({
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
             
+            // 引数をシンプルに戻しました
             const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
-            const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
+                const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
                 if (!res[cat][uid]) {
                     res[cat][uid] = { 
                         id, uid, name, count: 0, sources: [], 
                         mapName, wikiLink: wiki, 
-                        shortName, normalizedName 
+                        shortName, normalizedName
                     };
                 }
                 

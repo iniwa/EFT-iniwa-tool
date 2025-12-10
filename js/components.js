@@ -154,7 +154,8 @@ const CompResult = {
     `
 };
 
-// Keys Component (★7列表示・Devリンク追加)
+// js/components.js の CompKeys 部分
+
 const CompKeys = {
     props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data'],
@@ -232,7 +233,7 @@ const CompKeys = {
                     <button class="btn" :class="viewMode==='needed' ? 'btn-info' : 'btn-outline-secondary'" @click="viewMode='needed'">タスクで使用</button>
                     <button class="btn" :class="viewMode==='all' ? 'btn-info' : 'btn-outline-secondary'" @click="viewMode='all'">全ての鍵</button>
                 </div>
-                <input type="text" class="form-control form-control-sm" style="width: 200px;" placeholder="鍵名で検索(逆引き)..." v-model="searchQuery">
+                <input type="text" class="form-control form-control-sm" style="width: 200px;" placeholder="鍵名で検索..." v-model="searchQuery">
             </div>
         </div>
         
@@ -246,27 +247,28 @@ const CompKeys = {
                 </div>
 
                 <div v-if="!collapsedMaps[mapName]">
-                    <table class="table table-dark table-hover mb-0 key-table table-sm">
+                    <table class="table table-dark table-hover mb-0 key-table table-sm" style="table-layout: fixed;">
                         <thead>
                             <tr>
-                                <th style="width: 40px;" class="text-center">所持</th>
-                                <th style="width: 60px;" class="text-center">Rate</th>
-                                <th style="width: 100px;">ShortName</th>
+                                <th style="width: 50px;" class="text-center">所持</th>
+                                <th style="width: 70px;" class="text-center">Rate</th>
+                                <th style="width: 120px;">ShortName</th>
                                 <th>Name / Memo</th>
-                                <th style="width: 20%;">使用Task</th>
-                                <th style="width: 50px;">Wiki</th>
-                                <th style="width: 50px;">Dev</th>
+                                <th style="width: 200px;">使用Task</th>
+                                <th style="width: 50px;" class="text-center">Wiki</th>
+                                <th style="width: 50px;" class="text-center">Dev</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="item in keys" :key="item.id" class="key-row" :class="{'key-owned': ownedKeys.includes(item.id)}">
                                 <td class="text-center align-middle">
                                     <input type="checkbox" class="form-check-input" 
-                                           :checked="ownedKeys.includes(item.id)" 
-                                           @change="$emit('toggle-owned-key', item.id)">
+                                        style="cursor: pointer;"
+                                        :checked="ownedKeys.includes(item.id)" 
+                                        @change="$emit('toggle-owned-key', item.id)">
                                 </td>
                                 
-                                <td class="align-middle">
+                                <td class="align-middle text-center">
                                     <select class="form-select form-select-sm p-0 text-center" 
                                             style="height: 24px; background-color: #222; color: gold; border: 1px solid #555;"
                                             :value="getRating(item.id)"
@@ -275,28 +277,29 @@ const CompKeys = {
                                     </select>
                                 </td>
 
-                                <td class="align-middle text-info small">
+                                <td class="align-middle text-info small text-truncate" :title="item.shortName">
                                     {{ item.shortName || '-' }}
                                 </td>
 
                                 <td class="align-middle">
-                                    <div :class="{'item-collected': ownedKeys.includes(item.id)}" class="fw-bold small">{{ item.name }}</div>
+                                    <div :class="{'item-collected': ownedKeys.includes(item.id)}" class="fw-bold small text-truncate" :title="item.name">
+                                        {{ item.name }}
+                                    </div>
                                     <input type="text" class="form-control form-control-sm mt-1 py-0" 
-                                           style="background: transparent; border: none; border-bottom: 1px solid #444; color: #aaa; font-size: 0.8em;"
-                                           placeholder="メモ..." 
-                                           :value="getMemo(item.id)"
-                                           @input="onMemoChange(item.id, $event)">
+                                        style="background: transparent; border: none; border-bottom: 1px solid #444; color: #aaa; font-size: 0.8em;"
+                                        placeholder="メモ..." 
+                                        :value="getMemo(item.id)"
+                                        @input="onMemoChange(item.id, $event)">
                                 </td>
 
                                 <td class="align-middle small">
                                     <div v-if="item.sources && item.sources.length > 0 && item.sources[0].name !== ''">
-                                        <span v-for="(source, idx) in item.sources" :key="idx">
+                                        <div v-for="(source, idx) in item.sources" :key="idx" class="text-truncate">
                                             <span v-if="source.type === 'task'" class="source-task-link text-info" @click="$emit('open-task-from-name', source.name)">
                                                 {{ source.name }}
                                             </span>
                                             <span v-else>{{ source.name }}</span>
-                                            <span v-if="idx < item.sources.length - 1">, </span>
-                                        </span>
+                                        </div>
                                     </div>
                                     <span v-else class="text-muted">-</span>
                                 </td>

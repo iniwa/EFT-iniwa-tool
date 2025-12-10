@@ -18,8 +18,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "Ground Zero で Emercom station を見つける"
+          },
+          {
+            "description": "レイド中に見つけた 医薬品 を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -72,9 +75,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Ground Zero で Utyos マシンガン を見つける"
+          },
+          {
+            "description": "Ground Zero で AGS グレネードランチャー を見つける"
+          },
+          {
+            "description": "Ground Zero で任意の目標を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -119,7 +128,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Use the paid vehicle extraction on Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -157,11 +168,21 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Ground Zero にある TerraGroup 複合施設の駐車場で USEC PMC を探す"
+          },
+          {
+            "description": "Ground Zero で Lab の科学者 を見つける"
+          },
+          {
+            "description": "Scientist's office に入る"
+          },
+          {
+            "description": "Scientist's hard drive を手に入れる"
+          },
+          {
+            "description": "Hard drive を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -210,8 +231,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "タルコフ市内のいずれかで Scav を殺す"
+          },
+          {
+            "description": "MP-133 12ga ショットガン を入手して渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": false,
@@ -279,6 +303,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Salewa ファーストエイドキット をレイド中に見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -288,6 +313,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Salewa を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -353,9 +379,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Ground Zero で liquor store を見つける"
+          },
+          {
+            "description": "店の中にある wine bottle を手に入れる"
+          },
+          {
+            "description": "wine bottle を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -413,9 +445,14 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Customs で チェーンの付いた青銅の懐中時計 を手に入れる"
+          },
+          {
+            "description": "懐中時計 を渡す"
+          },
+          {
+            "description": "タンクローリー の鍵を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -472,7 +509,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "MP-133 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -538,7 +577,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs from over 40 meters away while using a bolt-action rifle with iron sights"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -594,8 +635,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoot any target in the legs from over 40 meters away while using a bolt-action rifle"
+          },
+          {
+            "description": "Shoot any target in the head from over 40 meters away while using a bolt-action rifle"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -654,7 +699,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from less than 25 meters away while using a bolt-action rifle"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -722,7 +769,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from over 80 meters away while using a bolt-action rifle"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -792,7 +841,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs while using a bolt-action rifle in the time period of 21:00-05:00 on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -851,7 +902,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Sniper Scavs while using a bolt-action rifle"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -910,7 +963,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from over 45 meters away while using a suppressed bolt-action rifle"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -969,7 +1024,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "1回も死なずにボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1048,9 +1105,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Find Jaeger's camp at the specified spot on Woods"
+          },
+          {
+            "description": "Obtain Jaeger's encrypted message"
+          },
+          {
+            "description": "Hand over the message"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1086,6 +1149,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に見つけた Iskra レーションパック を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -1095,6 +1159,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた インスタント ヌードル を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -1104,6 +1169,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた ビーフシチューの缶詰 (大) を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -1155,7 +1221,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Woods でボディアーマーを装備せずに Scavs を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1207,6 +1275,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Woods にあるバンカー \"ZB-016\" に イスクラ レーションパック を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -1216,6 +1285,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "バンカー \"ZB-016\" に 水の入ったボトル (0.6L) を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -1225,6 +1295,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Woods にあるバンカー \"ZB-014\" に イスクラ レーションパック を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -1234,6 +1305,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "バンカー \"ZB-014\" に 水の入ったボトル (0.6L) を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -1300,8 +1372,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Survive for 5 minutes while suffering from complete dehydration (excluding Factory)"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1350,7 +1426,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs while suffering from the pain effect"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1397,7 +1475,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs in a single raid without using any medicine on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1446,7 +1526,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives with headshots while suffering from the tremor effect"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1481,7 +1563,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs in the time period of 21:00-04:00 without using any NVGs or thermal sights (Excluding Factory)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1523,7 +1607,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach the required Vitality skill level"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1560,8 +1646,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Reshala を殺す"
+          },
+          {
+            "description": "Find Reshala's Golden TT in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -1571,6 +1660,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over Reshala's Golden TT pistol",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -1641,7 +1731,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs all over the Tarkov territory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1690,7 +1782,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while they are suffering from the stun effect"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1732,7 +1826,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs dressed in police uniform (Reshala's bodyguards)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1790,7 +1886,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives in the Dorms area on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1841,7 +1939,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs while under any stimulant effect on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1899,7 +1999,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target in the old cellars while using a shotgun on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1941,8 +2043,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the heavily mined area on Woods"
+          },
+          {
+            "description": "Locate the Claymore mine on Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -1984,8 +2090,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate a good tripwire installation spot on Factory"
+          },
+          {
+            "description": "Locate a good tripwire installation spot on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2033,6 +2143,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Obtain the special item to extract through the secret exfil",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -2041,7 +2152,9 @@ const TARKOV_DATA = {
               "name": "コードワード \"Voron\" のメモ"
             }
           },
-          {}
+          {
+            "description": "Locate the secret exfil on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2085,9 +2198,14 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Eliminate Scavs at the old gas station on Customs"
+          },
+          {
+            "description": "Eliminate Scavs at the new gas station on Customs"
+          },
+          {
+            "description": "Hand over the found in raid item: Metal fuel tank",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -2158,7 +2276,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives in the office area (any floor) on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2224,6 +2344,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Plant the Bison vs Undertaker poster in the living quarters at the Scav base on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -2268,7 +2389,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Woods で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2346,6 +2469,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Install the first WI-FI Camera inside the industrial plant on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -2355,6 +2479,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install the second WI-FI Camera inside the industrial plant on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -2364,6 +2489,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install the third WI-FI Camera inside the industrial plant on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -2373,6 +2499,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install the fourth WI-FI Camera inside the industrial plant on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -2381,7 +2508,9 @@ const TARKOV_DATA = {
               "name": "Wi-Fi カメラ"
             }
           },
-          {}
+          {
+            "description": "Eliminate any target inside the industrial plant on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2438,6 +2567,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid items from the Drinks category",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -2447,6 +2577,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Bottle of Pevko Light beer",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -2489,7 +2620,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs while using a Steyr AUG on any location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2552,7 +2685,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while wearing a PACA Soft Armor on any location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2595,6 +2730,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid items: Class 4 or higher ballistic plates",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -2647,6 +2783,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Plant TP-200 TNT bricks on the second floor of the cafe on Ground Zero",
             "type": "plantItem",
             "count": 3,
             "foundInRaid": false,
@@ -2712,7 +2849,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Kaban's or Kollontay's guards on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2768,7 +2907,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Win a match in CheckPoint or LastHero mode in Arena"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2831,7 +2972,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Win a match in TeamFight, BlastGang, or CheckPoint mode in Arena"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2887,7 +3030,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Win a match while claiming at least 3rd place in TeamFight, BlastGang, or CheckPoint mode in Arena"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -2944,6 +3089,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over Roubles from the EFT balance",
             "type": "giveItem",
             "count": 1000000,
             "foundInRaid": false,
@@ -2952,8 +3098,12 @@ const TARKOV_DATA = {
               "name": "ルーブル紙幣"
             }
           },
-          {},
-          {}
+          {
+            "description": "Win three out of six matches in TeamFight, BlastGang, or CheckPoint mode in Arena"
+          },
+          {
+            "description": "Failure Condition: Lose 5 matches"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3023,7 +3173,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Win two matches in a row in TeamFight, BlastGang, or CheckPoint mode in Arena"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3068,7 +3220,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate enemies in any game mode in Arena"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3124,8 +3278,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the compromising information on Ref"
+          },
+          {
+            "description": "Hand over the found info"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3169,9 +3327,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Return to the old champion's hideout on Customs"
+          },
+          {
+            "description": "Locate and obtain the compromising information on Ref"
+          },
+          {
+            "description": "Hand over the found info"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3220,10 +3384,17 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
           {
+            "description": "Locate the old champion's room on Customs"
+          },
+          {
+            "description": "Find out what happened to the champion"
+          },
+          {
+            "description": "Survive and extract from the location"
+          },
+          {
+            "description": "Locate and obtain the key at the smugglers' base on Shoreline",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -3297,6 +3468,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に ガスアナライザー を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -3306,6 +3478,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ガスアナライザー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -3366,6 +3539,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に見つけた BNTI Module-3M ボディアーマー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -3375,6 +3549,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた TOZ-106 ショットガン を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -3445,9 +3620,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Woods で行方不明になった Prapor の輸送隊を見つける"
+          },
+          {
+            "description": "USEC の仮設キャンプを見つける"
+          },
+          {
+            "description": "Woods から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3506,8 +3687,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs の物流倉庫内にある Tarcone 管理事務室 で 機密文書の入ったケース を手に入れる"
+          },
+          {
+            "description": "Factory の 休憩所 (Gate 3 付近、2F) に荷物を隠す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3573,7 +3758,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AKS-74U を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3641,11 +3828,20 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
           {
+            "description": "Scout the Shestyorochka store at Nikitskaya street"
+          },
+          {
+            "description": "Scout the Sparja store at Primorsky ave"
+          },
+          {
+            "description": "Scout the Sparja store in Pinewood hotel"
+          },
+          {
+            "description": "Scout the Goshan store in Concordia"
+          },
+          {
+            "description": "Hand over the found in raid Salty Dog beef sausage",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -3711,10 +3907,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Scout the command bunker offices on Reserve"
+          },
+          {
+            "description": "Scout the medical building commander's office on Reserve"
+          },
+          {
+            "description": "Scout the educational building offices on Reserve"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3786,10 +3990,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Customs で 燃料を積んだタンクローリー を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "2台目の タンクローリー に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "3台目の タンクローリー に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "4台目の タンクローリー に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3843,7 +4055,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Survive and extract from Customs through Railroad Passage"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3887,8 +4101,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain anything that could help with the investigation at the Health Resort on Shoreline"
+          },
+          {
+            "description": "Hand over the found info"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -3951,8 +4169,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Scavs"
+          },
+          {
+            "description": "Obtain any information on the diary from the Scavs",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -3961,8 +4182,12 @@ const TARKOV_DATA = {
               "name": "Map piece"
             }
           },
-          {},
-          {}
+          {
+            "description": "Locate and obtain Mechanic friend's diary"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4033,6 +4258,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid item: PC CPU",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -4042,6 +4268,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: RAM stick",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -4051,6 +4278,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Printed circuit board or Microcontroller board",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -4122,6 +4350,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Figure out the cipher and hand over the found item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -4130,8 +4359,12 @@ const TARKOV_DATA = {
               "name": "Disk with unknown data"
             }
           },
-          {},
-          {}
+          {
+            "description": "Locate the place mentioned in the cipher"
+          },
+          {
+            "description": "Stash the copy of the diary in the specified location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4201,7 +4434,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Modify an IWI UZI to comply with the given specifications"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4252,8 +4487,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs の社員寮の中から水が備蓄されている部屋を探す"
+          },
+          {
+            "description": "Customs から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4302,8 +4541,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "Factory 3階の事務室がある廊下から 鍵の掛った部屋 に入る"
+          },
+          {
+            "description": "可搬式の詰所の鍵 を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -4312,9 +4554,15 @@ const TARKOV_DATA = {
               "name": "可搬式の詰所の鍵"
             }
           },
-          {},
-          {},
-          {}
+          {
+            "description": "Customs にある詰所で 機密文書 0031 のケース を手に入れる"
+          },
+          {
+            "description": "機密文書の入ったケース を渡す"
+          },
+          {
+            "description": "Customs から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4391,7 +4639,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Customs で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4450,7 +4700,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "MP5 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4511,10 +4763,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Customs で貴重な荷物を入手する"
+          },
+          {
+            "description": "貴重な荷物を渡す"
+          },
+          {
+            "description": "運び屋の死体を見つける"
+          },
+          {
+            "description": "運び屋が荷物を隠した場所を見つける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4588,6 +4848,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に ガスアナライザー を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -4597,6 +4858,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ガスアナライザー を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -4646,7 +4908,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "ピストルを使用して PMC オペレーター を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4699,6 +4963,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に USB フラッシュドライブ を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -4708,6 +4973,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "USB フラッシュドライブ を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -4772,6 +5038,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に モルヒネのオートインジェクター を探す",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -4781,6 +5048,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "オートインジェクター を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -4853,8 +5121,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs で 金メッキの Zibbo ライター を見つける"
+          },
+          {
+            "description": "Customs のトレーラーパークにある 可搬式の詰所 にライターを置いてくる"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -4920,8 +5192,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "USEC の PMC オペレーター を殺す"
+          },
+          {
+            "description": "ドッグタグ を渡す",
             "type": "giveItem",
             "count": 7,
             "foundInRaid": false,
@@ -4988,6 +5263,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に AK-74 5.45x39 6L30 60発マガジン を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -4997,6 +5273,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "AK-74 5.45x39 6L30 60発マガジン を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -5006,6 +5283,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Terragroup の従業員寮でバンカーの鍵を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -5014,7 +5292,9 @@ const TARKOV_DATA = {
               "name": "ZB-014 の鍵"
             }
           },
-          {}
+          {
+            "description": "Woods で鍵のかかったバンカーを探す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5074,6 +5354,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "ドル紙幣 で支払う",
             "type": "giveItem",
             "count": 5000,
             "foundInRaid": false,
@@ -5123,7 +5404,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "OP-SKS を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5200,9 +5483,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Reserve にある 地下壕 を見つける"
+          },
+          {
+            "description": "Reserve の 地下壕 にある 司令室 の位置を特定する"
+          },
+          {
+            "description": "Reserve から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5270,7 +5559,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Survive and extract from Streets of Tarkov through Klimov Street"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5321,10 +5612,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "﻿Customs で 医療機器の入ったケース を手に入れる"
+          },
+          {
+            "description": "ケース を渡す"
+          },
+          {
+            "description": "Customs で 救急救命士の車 を見つける"
+          },
+          {
+            "description": "Customs で 2階建ての社員寮 114号室 に入る方法を見つける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5375,9 +5674,14 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
           {
+            "description": "警備副主任の過去の生活に関する情報を Customs で手に入れる"
+          },
+          {
+            "description": "手に入れた情報を渡す"
+          },
+          {
+            "description": "調査に役立つアイテムを手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -5387,6 +5691,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "手に入れたアイテムを渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -5395,7 +5700,9 @@ const TARKOV_DATA = {
               "name": "社員寮220号室の鍵"
             }
           },
-          {}
+          {
+            "description": "警備副主任の寝床を Customs で見つける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5439,9 +5746,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Factory で死亡したメッセンジャーを発見し手紙を手に入れる"
+          },
+          {
+            "description": "Factory から生還する"
+          },
+          {
+            "description": "Therapist に手紙を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5492,8 +5805,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "Shorelineの防波堤の横に隠されたボートの位置を特定する"
+          },
+          {
+            "description": "SV-98 スナイパーライフル をボートに隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -5503,6 +5819,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "マルチツール をボートに隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -5571,7 +5888,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Remington Model 870 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5623,7 +5942,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Prapor のメッセンジャーが持っていた手紙 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5669,6 +5990,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に ビーフシチューの缶詰 (小) を見つける",
             "type": "findItem",
             "count": 15,
             "foundInRaid": true,
@@ -5678,6 +6000,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "缶詰 を渡す",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": true,
@@ -5742,6 +6065,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に カーバッテリー を見つける",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -5751,6 +6075,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に スパークプラグ を見つける",
             "type": "findItem",
             "count": 8,
             "foundInRaid": true,
@@ -5760,6 +6085,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "カーバッテリー を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -5769,6 +6095,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "スパークプラグ を渡す",
             "type": "giveItem",
             "count": 8,
             "foundInRaid": true,
@@ -5834,7 +6161,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Customs で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5892,10 +6221,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "調査に役立ちそうな証拠を Customs で見つける"
+          },
+          {
+            "description": "手に入れた証拠を渡す"
+          },
+          {
+            "description": "調査に役立ちそうな情報を Customs で見つける"
+          },
+          {
+            "description": "手に入れた情報を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -5956,9 +6293,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "1台目の \"ティーグル\" に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "2台目の \"ティーグル\" に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "3台目の \"ティーグル\" に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6028,9 +6371,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline で T-90 戦車を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "2台目の T-90 戦車に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "3台目の T-90 戦車に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6100,8 +6449,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the helicopter logbook on Factory"
+          },
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6145,8 +6498,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Factory に隠されている 試薬の入った注射器 を手に入れる"
+          },
+          {
+            "description": "注射器を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6197,12 +6554,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline で1つ目の UAV の墜落現場を探す"
+          },
+          {
+            "description": "1機目の墜落した UAV から SASディスク を手に入れる"
+          },
+          {
+            "description": "1つ目の SAS ディスク を渡す"
+          },
+          {
+            "description": "Shoreline で2つ目の UAV の墜落現場を探す"
+          },
+          {
+            "description": "2機目の墜落した UAV から SASディスク を手に入れる"
+          },
+          {
+            "description": "2つ目の SAS ディスク を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6263,8 +6632,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs で 試薬 が入った輸送用の木箱を見つける"
+          },
+          {
+            "description": "車両に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6308,8 +6681,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs で 試薬 が入った輸送用の木箱を見つける"
+          },
+          {
+            "description": "車両に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6353,8 +6730,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Customs で 試薬 が入った輸送用の木箱を見つける"
+          },
+          {
+            "description": "車両に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6404,6 +6785,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "社員寮303号室の鍵 を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -6413,6 +6795,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ZB-014 の鍵 を手に入れる　",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -6422,6 +6805,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "軍の検問所の鍵 を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -6431,6 +6815,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ガソリンスタンドの物置の鍵 を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -6440,6 +6825,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "社員寮303号室の鍵 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -6449,6 +6835,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ZB-014の鍵 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -6458,6 +6845,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "軍の検問所の鍵 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -6467,6 +6855,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ガソリンスタンドの物置の鍵 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -6502,6 +6891,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "ルーブル紙幣 で支払う",
             "type": "giveItem",
             "count": 1000000,
             "foundInRaid": false,
@@ -6537,6 +6927,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "M67 ハンドグレネード を手に入れる",
             "type": "findItem",
             "count": 10,
             "foundInRaid": false,
@@ -6546,6 +6937,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "グレネード を渡す",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": false,
@@ -6582,9 +6974,14 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
           {
+            "description": "1台目の UN トラック に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "2台目の UN トラック に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "MRE レーションパック を手に入れる",
             "type": "findItem",
             "count": 5,
             "foundInRaid": false,
@@ -6594,6 +6991,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レーションパック を渡す",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": false,
@@ -6602,9 +7000,15 @@ const TARKOV_DATA = {
               "name": "MRE レーションパック"
             }
           },
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline で UN ユニフォーム (MF-UNTAR ボディアーマー と UNTAR ヘルメット) を装備して Scav を殺す"
+          },
+          {
+            "description": "Shoreline で 1台目の UN トラック を探す"
+          },
+          {
+            "description": "Shoreline で 2台目の UN トラック を探す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6665,8 +7069,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Use the transit from Customs to Shoreline"
+          },
+          {
+            "description": "Survive and extract from Shoreline"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6711,6 +7119,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Factory でツールセットを使用して一つ目の制御盤を修理する",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -6720,6 +7129,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Factory でツールセットを使用して二つ目の制御盤を修理する",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -6778,9 +7188,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "1つめの信号発信源を見つける"
+          },
+          {
+            "description": "2つめの信号発信源を見つける"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6824,8 +7240,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the journal containing resident details on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the journal"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6876,7 +7296,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Shoreline で 12ゲージ の ショットガン を使用してヘッドショットで Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6941,8 +7363,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で行方不明になった情報提供者を探す"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -6986,8 +7412,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline の保養所 で ヘリコプター を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Shoreline で 安全なルート を見つけて MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7040,6 +7470,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に見つけた WD-40 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -7049,6 +7480,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた クリン ウィンドウクリーナー を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7058,6 +7490,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた コルゲートチューブ を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7067,6 +7500,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた Ox 漂白剤 を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7139,9 +7573,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline の保養所東棟にある発電機を探す"
+          },
+          {
+            "description": "Shoreline の保養所西棟にある 発電機 を探す"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7185,8 +7625,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で 保養所の閉鎖区域への鍵 を手に入れる"
+          },
+          {
+            "description": "鍵 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7229,6 +7673,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "ドル紙幣 で支払う",
             "type": "giveItem",
             "count": 8000,
             "foundInRaid": false,
@@ -7264,6 +7709,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に モルヒネの注射器 を見つける",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -7273,6 +7719,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "モルヒネの注射器 を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -7282,6 +7729,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に アルカリクリーナー を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -7291,6 +7739,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "アルカリクリーナー を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7300,6 +7749,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に コルゲートチューブ を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -7309,6 +7759,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "コルゲートチューブ を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7318,6 +7769,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に プロパンタンク (5L) を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -7327,6 +7779,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "プロパンタンク を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7381,8 +7834,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline の保養所東棟のパソコン室にある データ を手に入れる"
+          },
+          {
+            "description": "手に入れたデータを渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7440,9 +7897,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline の保養所にある 貯水タンクのある部屋 を探す"
+          },
+          {
+            "description": "2つ目の物資の情報 を手に入れる"
+          },
+          {
+            "description": "手に入れた情報を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7503,8 +7966,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline に隠された Terragroup の貨物を探す"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7547,6 +8014,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "レイド中に 電源ケーブル を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -7556,6 +8024,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "電源ケーブル を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7565,6 +8034,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に T型プラグ を見つける",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -7574,6 +8044,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "T型プラグ を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -7583,6 +8054,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に プリント基板 を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -7592,6 +8064,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "プリント基板 を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -7649,6 +8122,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に CPU を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -7658,6 +8132,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "CPU を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -7667,6 +8142,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に 充電式バッテリー を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -7676,6 +8152,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "充電式バッテリー を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -7685,6 +8162,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に プリント基板 を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -7694,6 +8172,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "プリント基板 を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -7703,6 +8182,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に 壊れた GPhone を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -7712,6 +8192,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "壊れた GPhone を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -7755,6 +8236,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に マルボロ シガレット を見つける",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -7764,6 +8246,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "マルボロ シガレット を渡す",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -7773,6 +8256,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に ストライク シガレット を見つける",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -7782,6 +8266,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ストライク シガレット を渡す",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -7791,6 +8276,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に ウィルストン シガレット を見つける",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -7800,6 +8286,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ウィルストン シガレット を渡す",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -7868,11 +8355,21 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Factory で1つ目の脱出地点を探す"
+          },
+          {
+            "description": "Factory で2つ目の脱出地点を探す"
+          },
+          {
+            "description": "Factory で3つ目の脱出地点を探す"
+          },
+          {
+            "description": "Factory で4つ目の脱出地点を探す"
+          },
+          {
+            "description": "Factory から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7916,7 +8413,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Locate and mark the TerraGroup cargo with an MS2000 Marker on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -7963,8 +8462,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "Locate the hidden recording studio on Lighthouse"
+          },
+          {
+            "description": "Place a Signal Jammer inside the studio",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8023,9 +8525,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and scout the vet clinic on Streets of Tarkov"
+          },
+          {
+            "description": "Locate and scout the x-ray technician's room on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8083,10 +8591,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the first pharmacy on Primorsky Ave on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the second pharmacy on Primorsky Ave on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the third pharmacy at Cardinal apartment complex on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8151,18 +8667,42 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the first forklift on Factory"
+          },
+          {
+            "description": "Locate the second forklift on Factory"
+          },
+          {
+            "description": "Locate the third forklift on Factory"
+          },
+          {
+            "description": "Locate the fourth forklift on Factory"
+          },
+          {
+            "description": "Locate the fifth forklift on Factory"
+          },
+          {
+            "description": "Locate the sixth forklift on Factory"
+          },
+          {
+            "description": "Locate the seventh forklift on Factory"
+          },
+          {
+            "description": "Locate the eighth forklift on Factory"
+          },
+          {
+            "description": "Locate the ninth forklift on Factory"
+          },
+          {
+            "description": "Locate the tenth forklift on Factory"
+          },
+          {
+            "description": "Locate the eleventh forklift on Factory"
+          },
+          {
+            "description": "Locate the twelfth forklift on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8213,7 +8753,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Survive and extract from Factory through the main exit"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8257,9 +8799,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first heat exchanger with an MS2000 Marker on Factory"
+          },
+          {
+            "description": "Locate and mark the second heat exchanger with an MS2000 Marker on Factory"
+          },
+          {
+            "description": "Locate and mark the third heat exchanger with an MS2000 Marker on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8311,6 +8859,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Install a WI-FI Camera in the first crane's cockpit on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8320,6 +8869,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera in the second crane's cockpit on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8329,6 +8879,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera in the third crane's cockpit on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8394,8 +8945,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Take a sample of the chemicals from the damaged tank container on Factory"
+          },
+          {
+            "description": "Hand over the collected sample"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8437,10 +8992,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain the precision tools package in the laboratory on Customs"
+          },
+          {
+            "description": "Use the transit from Customs to Factory (In one raid)"
+          },
+          {
+            "description": "Eliminate Scavs on Factory (In one raid)"
+          },
+          {
+            "description": "Stash the package at the laboratory storage room on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8496,12 +9059,24 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the passage leading to The Lab on Streets of Tarkov (In one raid)"
+          },
+          {
+            "description": "Use the transit from Streets of Tarkov to The Lab (In one raid)"
+          },
+          {
+            "description": "Scout the server room in The Lab (In one raid)"
+          },
+          {
+            "description": "Scout the hazard dome in The Lab (In one raid)"
+          },
+          {
+            "description": "Scout the control room in The Lab (In one raid)"
+          },
+          {
+            "description": "Locate the passage leading to Streets of Tarkov in The Lab (In one raid)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8545,8 +9120,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the customized tool set at the garage complex on Customs"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8595,8 +9174,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Tagilla を殺す"
+          },
+          {
+            "description": "Find Tagilla's BOSS cap in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -8606,6 +9188,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the BOSS cap",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -8660,7 +9243,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Praporからの信頼度をレベル3にする"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8710,6 +9295,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Fix the first reactor mixer with a Toolset on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8719,6 +9305,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Fix the second reactor mixer with a Toolset on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8728,6 +9315,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Fix the third reactor mixer with a Toolset on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -8793,9 +9381,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Woods の製材所で 機密文書 0052 のケース を手に入れる"
+          },
+          {
+            "description": "Woods から生還する"
+          },
+          {
+            "description": "機密文書の入ったケース を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8837,7 +9431,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Skier に 機密文書 0052 のケース を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -8879,8 +9475,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Shturman を殺す"
+          },
+          {
+            "description": "Find Shturman's stash key in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -8890,6 +9489,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over Shturman's stash key",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -8983,7 +9583,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AKM を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9051,18 +9653,42 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Reserveで1台目のBMP-2を発見し調査する"
+          },
+          {
+            "description": "1台目のBMP-2にマーカーを設置する"
+          },
+          {
+            "description": "Reserveで2台目のBMP-2を発見し調査する"
+          },
+          {
+            "description": "2台目のBMP-2にマーカーを設置する"
+          },
+          {
+            "description": "Reserveで3台目のBMP-2を発見し調査する"
+          },
+          {
+            "description": "3台目のBMP-2にマーカーを設置する"
+          },
+          {
+            "description": "Reserveで4台目のBMP-2を発見し調査する"
+          },
+          {
+            "description": "4台目のBMP-2にマーカーを設置する"
+          },
+          {
+            "description": "Locate and inspect the first LAV III on Reserve"
+          },
+          {
+            "description": "Mark the first LAV III with an MS2000 Marker"
+          },
+          {
+            "description": "Locate and inspect the second LAV III on Reserve"
+          },
+          {
+            "description": "Locate and inspect the T-90 tank on Reserve"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9106,7 +9732,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "サプレッサーを付けた M4A1, ADAR, TX-15 を使用して Shoreline で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9150,9 +9778,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Customs で 押収品倉庫 を見つける"
+          },
+          {
+            "description": "グラフィックボードの入った荷物 を手に入れる"
+          },
+          {
+            "description": "荷物 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9196,8 +9830,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Reserveで電源の入っていない秘密の出口を見つける"
+          },
+          {
+            "description": "その出口から脱出する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9241,8 +9879,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で 漁師の棲み家 を探す"
+          },
+          {
+            "description": "フィッシングテーブルに MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9305,8 +9947,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で Artyom の車 を探す"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9360,8 +10006,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で 保養所の入居者リスト を手に入れる"
+          },
+          {
+            "description": "見つけたアイテムを渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9415,8 +10065,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Shoreline で Artyom の仕事についての情報を手に入れる"
+          },
+          {
+            "description": "手に入れた情報を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9477,7 +10131,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "必要なボルトアクションライフルのスキルレベルに到達する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9537,6 +10193,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に グラフィックボード を見つける",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -9546,6 +10203,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "グラフィックボード を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -9555,6 +10213,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に CPU ファン を見つける",
             "type": "findItem",
             "count": 15,
             "foundInRaid": true,
@@ -9564,6 +10223,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "CPU ファン を渡す",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": true,
@@ -9627,14 +10287,30 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Woods でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Reserve でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Shoreline でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Customs でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Lighthouse でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す "
+          },
+          {
+            "description": "Streets of Tarkov でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Interchange でボルトアクションライフルを使用してヘッドショットで PMC オペレーターを殺す"
+          },
+          {
+            "description": "Eliminate PMC operatives with a headshot while using a bolt-action rifle on Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9717,6 +10393,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over EUR",
             "type": "giveItem",
             "count": 50000,
             "foundInRaid": false,
@@ -9753,8 +10430,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "ReserveのT-90Mの車長用コントロールパネルからパッケージを入手する"
+          },
+          {
+            "description": "パッケージを渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9805,8 +10486,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the MBT Integrated Navigation System on Reserve"
+          },
+          {
+            "description": "ナビゲーション装置を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9857,10 +10542,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first BRDM with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the second BRDM with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the first Stryker with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the second Stryker with an MS2000 Marker on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9908,7 +10601,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Ragmanからの信頼度をレベル2にする"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9952,9 +10647,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Ground Zero で Knossos LLC のシニアマネージャーの車を見つける"
+          },
+          {
+            "description": "マネージャーの日記 を手に入れる"
+          },
+          {
+            "description": "日記 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -9998,7 +10699,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs in the time period of 22:00-07:00 on Shoreline"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10041,9 +10744,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Customs にある寮で 貴重な荷物 を手に入れる"
+          },
+          {
+            "description": "貴重な荷物 を渡す"
+          },
+          {
+            "description": "Customs 寮の214号室に入る"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10106,12 +10815,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the hermetic door leading to the hospital (White Bishop) on Reserve"
+          },
+          {
+            "description": "Locate one of the two hermetic doors leading to the academy building (Black Bishop) on Reserve"
+          },
+          {
+            "description": "Locate one of the two hermetic doors leading to barracks №1 (Black Pawn)"
+          },
+          {
+            "description": "Locate one of the two hermetic doors leading to barracks №2 (White Pawn)"
+          },
+          {
+            "description": "航空管制センター（ホワイトキング）につながる気密扉の位置を特定する"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10176,10 +10897,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Obtain Medical record #1 on Reserve"
+          },
+          {
+            "description": "Obtain Medical record #2 on Reserve"
+          },
+          {
+            "description": "1つ目の日誌を渡す"
+          },
+          {
+            "description": "2つ目の日誌を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10237,8 +10966,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the registered mail on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the letter"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10299,7 +11032,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reserve の地下倉庫で Scav を排除する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10350,9 +11085,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline の指定された1つ目の場所に シグナルジャマー を設置する"
+          },
+          {
+            "description": "Shoreline の指定された2つ目の場所に シグナルジャマー を設置する"
+          },
+          {
+            "description": "Shoreline の指定された3つ目の場所に シグナルジャマー を設置する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10403,7 +11144,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs around the chalet area on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10450,8 +11193,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the place of bloody broadcast inside the grocery store on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10509,7 +11256,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Survive and extract from Streets of Tarkov through Primorsky Ave Taxi V-Ex"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10558,7 +11307,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "M4A1 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10617,7 +11368,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "注意力 のスキルレベルが必要な値に達する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10661,8 +11414,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate the cause of the signal jamming on Streets of Tarkov"
+          },
+          {
+            "description": "Install a WI-FI Camera to watch the door",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -10672,6 +11428,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera to watch the stairwell",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -10737,11 +11494,21 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Mark the first weather station with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Mark the second weather station with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Mark the third weather station with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Mark the fourth weather station with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Mark the fifth weather station with an MS2000 Marker on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10791,6 +11558,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Propane tanks (5L) in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -10800,6 +11568,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the items",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -10849,8 +11618,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate the specified stash spot on Woods"
+          },
+          {
+            "description": "Stash the first Propane tank (5L)",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -10859,8 +11631,11 @@ const TARKOV_DATA = {
               "name": "プロパンタンク (5L)"
             }
           },
-          {},
           {
+            "description": "Locate the specified stash spot on Customs"
+          },
+          {
+            "description": "Stash the second Propane tank (5L)",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -10912,9 +11687,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate any information about Thirsty on Shoreline"
+          },
+          {
+            "description": "Obtain the information in Thirsty's hideout"
+          },
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -10964,6 +11745,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid item: Adrenaline injector",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -10973,6 +11755,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Bottle of OLOLO Multivitamins",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -10982,6 +11765,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Bottle of saline solution",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -11016,8 +11800,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the lab journal on Factory"
+          },
+          {
+            "description": "Stash the journal at the old sawmill on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11073,7 +11861,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Hand over the lab journal"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11117,8 +11907,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the chemical container at the TerraGroup warehouse on Factory"
+          },
+          {
+            "description": "Hand over the chemical container"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11174,12 +11968,24 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Ground Zero で TerraGroup 本社の中庭公園を調査する"
+          },
+          {
+            "description": "Interchange でカートコースを調査する"
+          },
+          {
+            "description": "Interchange で子どもの遊び場を調査する"
+          },
+          {
+            "description": "Streets of Tarkov でコンコルディアの子どもの遊び場を調査する"
+          },
+          {
+            "description": "Shoreline で海岸沿いの工事現場を調査する"
+          },
+          {
+            "description": "Shoreline で保養所近くの子どもの遊び場を調査する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11228,9 +12034,14 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Knossos LLC に関連するいい手がかりを見つける"
+          },
+          {
+            "description": "Knossos LLC の施設内に入る方法を探す"
+          },
+          {
+            "description": "Knossos LLC の施設の鍵 を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -11295,6 +12106,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find a way to get behind the Health Resort bunker door on Shoreline",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -11303,7 +12115,9 @@ const TARKOV_DATA = {
               "name": "Labrys アクセスキーカード"
             }
           },
-          {}
+          {
+            "description": "Assist Therapist with her investigation"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11345,8 +12159,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Ground Zero で 薬品容器 を手に入れる"
+          },
+          {
+            "description": "Shoreline のコテージのそばにある救急車の車内に容器を隠す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11406,6 +12224,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "密造酒 \"フィアス ハッチリング\" を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -11414,8 +12233,12 @@ const TARKOV_DATA = {
               "name": "密造酒 \"フィアス ハッチリング\""
             }
           },
-          {},
-          {}
+          {
+            "description": "Woods か Streets of Tarkov に行く"
+          },
+          {
+            "description": "BTR ドライバーに 密造酒 \"フィアス ハッチリング\" を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11465,6 +12288,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find a Bottle of Fierce Hatchling moonshine",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -11474,6 +12298,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "密造酒 \"フィアス ハッチリング\" を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -11517,6 +12342,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash the Zulu Nylon Gear M4 RSCR chest rigs at the new gas station on Customs",
             "type": "plantItem",
             "count": 12,
             "foundInRaid": false,
@@ -11526,6 +12352,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the class 4 ballistic plates on the roof of the specified repair workshop on Reserve",
             "type": "plantItem",
             "count": 12,
             "foundInRaid": false,
@@ -11599,8 +12426,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Find out what is behind the Health Resort bunker door on Shoreline"
+          },
+          {
+            "description": "Obtain the Labrys access keycard",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -11637,8 +12467,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate the lab area with the prototype weapon inside The Labyrinth"
+          },
+          {
+            "description": "Hand over the found in raid item: Labrys research notes",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -11704,8 +12537,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate and obtain the special storage module inside The Labyrinth"
+          },
+          {
+            "description": "Plant a hand grenade in the assembly workshop inside The Labyrinth",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -11714,7 +12550,9 @@ const TARKOV_DATA = {
               "name": "V40 ミニグレネード"
             }
           },
-          {}
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11779,9 +12617,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the torture room inside The Labyrinth"
+          },
+          {
+            "description": "Locate and obtain any evidence of torture"
+          },
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11846,8 +12690,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and neutralize the \"Minotaur\" inside The Labyrinth"
+          },
+          {
+            "description": "Eliminate the \"Minotaur's\" guards inside The Labyrinth"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11905,7 +12753,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target inside The Labyrinth"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -11992,6 +12842,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Cultist knife in the first special place inside The Labyrinth",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -12001,6 +12852,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Cultist knife in the second special place inside The Labyrinth",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -12010,6 +12862,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Cultist knife in the third special place inside The Labyrinth",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -12075,9 +12928,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the chemical laboratory on Streets of Tarkov"
+          },
+          {
+            "description": "Obtain the container with drug samples"
+          },
+          {
+            "description": "Hand over the container"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12128,10 +12987,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Find the data on the water pump operation on Lighthouse"
+          },
+          {
+            "description": "Hand over the extracted data"
+          },
+          {
+            "description": "Find the data on the pumping station operation on Lighthouse"
+          },
+          {
+            "description": "Hand over the extracted data"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12196,9 +13063,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first LAV III with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Locate and mark the Stryker with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Locate and mark the second LAV III with an MS2000 Marker on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12254,7 +13127,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AKM シリーズの武器 を使用して Shoreline で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12315,7 +13190,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AKS-74N を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12373,7 +13250,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Interchage で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12417,12 +13296,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Interchange で AVOCADO ストア を探す"
+          },
+          {
+            "description": "Interchange で KOSTIN ストア を探す"
+          },
+          {
+            "description": "Interchange で tRend ストア を探す"
+          },
+          {
+            "description": "Interchange で DINO CLOTHES ストア を探す"
+          },
+          {
+            "description": "Interchange で TOP BRAND ストア を探す"
+          },
+          {
+            "description": "Interchange から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12466,7 +13357,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "ReserveのコマンドバンカーでRaidersを排除する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12524,8 +13417,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Find the informant's briefcase on Lighthouse"
+          },
+          {
+            "description": "Hand over the found package"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12572,8 +13469,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the financial records on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the journal"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12620,8 +13521,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the apartment of Prapor's friend on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12663,9 +13568,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Modify a T-5000M to comply with the given specifications"
+          },
+          {
+            "description": "Modify a PP-19-01 to comply with the given specifications"
+          },
+          {
+            "description": "Modify a Glock 17 to comply with the given specifications"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12711,6 +13622,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に カウボーイハット を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -12720,6 +13632,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に ウシャンカ を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -12729,6 +13642,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ウシャンカ を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -12738,6 +13652,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "カウボーイハット を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -12796,8 +13711,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the OLI cargo route documents on Interchange"
+          },
+          {
+            "description": "Hand over the documents"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12851,12 +13770,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Reserve 東側の兵舎（ブラックポーン）にある1つ目の武器庫を調べる"
+          },
+          {
+            "description": "Reserve 東側の兵舎（ブラックポーン）にある待機部屋を調べる"
+          },
+          {
+            "description": "Reserve 東側の兵舎（ブラックポーン）にある2つ目の武器庫を調べる"
+          },
+          {
+            "description": "Reserve 南側の兵舎（ホワイトポーン）にある1つ目の武器庫を調べる"
+          },
+          {
+            "description": "Reserve 南側の兵舎（ホワイトポーン）にある2つ目の武器庫を調べる"
+          },
+          {
+            "description": "この地域から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12919,8 +13850,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Reserve の 1つ目の燃料タンク群に MS2000 マーカー を設置する"
+          },
+          {
+            "description": "Reserve の 2つ目の燃料タンク群に MS2000 マーカー を設置する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -12964,8 +13899,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate Ragman's SUV on Shoreline"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13007,9 +13946,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Scout the intersection of Mira Ave and the overpass on Ground Zero (In one raid)"
+          },
+          {
+            "description": "Locate the passage leading to Streets of Tarkov on Ground Zero (In one raid)"
+          },
+          {
+            "description": "Use the transit from Ground Zero to Streets of Tarkov (In one raid)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13067,13 +14012,27 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the second special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the third special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the fourth special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the fifth special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the sixth special TerraGroup cargo with an MS2000 Marker on Customs"
+          },
+          {
+            "description": "Locate and mark the seventh special TerraGroup cargo with an MS2000 Marker on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13117,8 +14076,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the TerraGroup shipment lists on Customs"
+          },
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13162,8 +14125,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the delivery crew's shipment notes on Customs"
+          },
+          {
+            "description": "Hand over the found information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13208,6 +14175,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a DVL-10 sniper rifle at the specified spot on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13217,6 +14185,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a DVL-10 magazine at the specified spot on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13226,6 +14195,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash an ELCAN SpecterDR scope at the specified spot on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13235,6 +14205,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a pack of any 7.62x51 ammo at the specified spot on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13291,10 +14262,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and neutralize Kaban"
+          },
+          {
+            "description": "Eliminate Kaban's guards at the car dealership on Streets of Tarkov"
+          },
+          {
+            "description": "Eliminate Basmach"
+          },
+          {
+            "description": "Eliminate Gus"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13360,9 +14339,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain the ambulance paramedic's smartphone on Streets of Tarkov"
+          },
+          {
+            "description": "Extract from Streets of Tarkov through Primorsky Ave Taxi V-Ex"
+          },
+          {
+            "description": "Hand over the smartphone"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13428,9 +14413,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Interchange で 1台目の燃料を積んだタンクローリー を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Interchange で 2台目の燃料を積んだタンクローリー を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Interchange で 3台目の燃料を積んだタンクローリー を見つけて MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13489,12 +14480,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Interchange で Goshan の在庫管理表 を発見し手に入れる"
+          },
+          {
+            "description": "Goshan の在庫管理表 を渡す"
+          },
+          {
+            "description": "Interchange で OLI の在庫管理表 を手に入れる"
+          },
+          {
+            "description": "OLI の在庫管理表 を渡す"
+          },
+          {
+            "description": "Interchange で IDEA の在庫管理表 を手に入れる"
+          },
+          {
+            "description": "IDEA の在庫管理表 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13568,6 +14571,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Ghost balaclava at the sawmill docks on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13577,6 +14581,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Shemagh (Green) at the sawmill docks on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13586,6 +14591,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash RayBench Hipster Reserve sunglasses at the sawmill docks on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13595,6 +14601,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash Round frame sunglasses at the sawmill docks on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -13667,7 +14674,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "指定された装備を着用して Customs で PMC オペレーター を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13716,10 +14725,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Woods で 儀式の場所 を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Customs で 儀式の場所 を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Woods で2つ目の 儀式の場所 を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "Shoreline で 儀式の場所 を見つけて MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13763,8 +14780,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "サプレッサーを付けた武器 を使用して Reserve で Scav を殺す"
+          },
+          {
+            "description": "レイド中に ハーフマスク を手に入れる",
             "type": "findItem",
             "count": 7,
             "foundInRaid": true,
@@ -13774,6 +14794,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ハーフマスク を渡す",
             "type": "giveItem",
             "count": 7,
             "foundInRaid": true,
@@ -13832,8 +14853,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the helicopter at the water treatment plant on Lighthouse"
+          },
+          {
+            "description": "Mark the helicopter with an MS2000 Marker"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13884,7 +14909,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target around the helicopter area at the water treatment plant on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13931,10 +14958,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Recon the roof of the first water treatment plant facility on Lighthouse"
+          },
+          {
+            "description": "Recon the roof of the second water treatment plant facility on Lighthouse"
+          },
+          {
+            "description": "Recon the roof of the third water treatment plant facility on Lighthouse"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -13995,12 +15030,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Obtain the first folder with military documents in the command bunker offices on Reserve"
+          },
+          {
+            "description": "Obtain the second folder with military documents in the command bunker offices on Reserve"
+          },
+          {
+            "description": "Obtain the third folder with military documents in the command bunker offices on Reserve"
+          },
+          {
+            "description": "1つ目の書類を渡す"
+          },
+          {
+            "description": "2つ目の書類を渡す"
+          },
+          {
+            "description": "3つ目の書類を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14056,7 +15103,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "P226R を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14119,7 +15168,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AKS-74U を使用して Customs で Scav を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14162,6 +15213,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Military cable at the boulder next to RUAF gate on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -14171,6 +15223,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Bulbex cable cutter at the boulder next to RUAF gate on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -14179,8 +15232,11 @@ const TARKOV_DATA = {
               "name": "Bulbex ラチェットケーブルカッター"
             }
           },
-          {},
           {
+            "description": "Use the transit from Woods to Reserve"
+          },
+          {
+            "description": "Stash a Military cable at the sandbags next to LAV III above the storage warehouse on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -14190,6 +15246,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Bulbex cable cutter at the sandbags next to LAV III above the storage warehouse on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -14247,7 +15304,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "ハンドグレネードを使用して PMC オペレーター を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14319,9 +15378,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain Prapor's package on Woods"
+          },
+          {
+            "description": "Survive and extract from the location"
+          },
+          {
+            "description": "Complete the task Shipping Delay - Part 1"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14365,10 +15430,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the chairman's house in the abandoned village on Shoreline"
+          },
+          {
+            "description": "Locate the fisherman's house in the abandoned village on Shoreline"
+          },
+          {
+            "description": "Locate the priest's house in the abandoned village on Shoreline"
+          },
+          {
+            "description": "Survive and extract from the location with the \"Survived\" exit status"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14419,9 +15492,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the hideout of Jaeger's friend on Lighthouse"
+          },
+          {
+            "description": "Find and obtain the message for Jaeger"
+          },
+          {
+            "description": "Hand over the message"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14458,8 +15537,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the food storage location on Reserve"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14524,7 +15607,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs along the shore and the main road on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14571,9 +15656,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline で 救急車 を見つけて MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "2台目の 救急車 に MS2000 マーカー を取り付ける"
+          },
+          {
+            "description": "3台目の 救急車 に MS2000 マーカー を取り付ける"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14631,6 +15722,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Secure Flash drives in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -14640,6 +15732,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the Flash drives",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -14691,9 +15784,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the cargo convoy on Streets of Tarkov"
+          },
+          {
+            "description": "Determine the ambush spot"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14751,9 +15850,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the cargo convoy on Streets of Tarkov"
+          },
+          {
+            "description": "Determine the ambush spot"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14811,9 +15916,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the surveillance spot on Streets of Tarkov"
+          },
+          {
+            "description": "Obtain the observation results"
+          },
+          {
+            "description": "Hand over the data"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14857,8 +15968,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the place of bloody broadcast inside the old house on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14905,8 +16020,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the balletmeister's apartment on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -14960,9 +16079,14 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Lighthouse で 12ゲージのショットガン を使用して Scav を殺す"
+          },
+          {
+            "description": "Scav ベスト と バラクラバ を着用して Lighthouse で PMC オペレーター を殺す"
+          },
+          {
+            "description": "レイド中に Bars A-2607 95Kh18 knives を見つける",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -14972,6 +16096,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ナイフ を渡す",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -15021,7 +16146,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "AK-105 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15074,6 +16201,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に Kalashnikov AK-74 アサルトライフル を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -15083,6 +16211,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "AK-74 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -15092,6 +16221,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に M4A1 5.56x45 アサルトライフル を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -15101,6 +16231,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "M4A1 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -15110,6 +16241,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に Makarov PM ピストル を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -15119,6 +16251,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "ピストル を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -15127,7 +16260,9 @@ const TARKOV_DATA = {
               "name": "Makarov PM 9x18PM ピストル"
             }
           },
-          {}
+          {
+            "description": "PACA ボディアーマー と 6B47 ヘルメット を着用して PMC オペレーター を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15185,9 +16320,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline の保養所西棟で TerraGroup の研究についての情報を手に入れる"
+          },
+          {
+            "description": "手に入れた情報を渡す"
+          },
+          {
+            "description": "Shoreline から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15231,10 +16372,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Wood で保養所の医療サービス責任者のバンを探す"
+          },
+          {
+            "description": "血液サンプル を採取する"
+          },
+          {
+            "description": "血液サンプル を渡す"
+          },
+          {
+            "description": "Woods から生還する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15293,7 +16442,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "体力 のスキルレベルが必要な値に達する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15344,8 +16495,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "夜の Factory で指定された場所を探す"
+          },
+          {
+            "description": "ガンパウダー \"カイト\" を3つ手に入れ指定された場所に隠す",
             "type": "plantItem",
             "count": 3,
             "foundInRaid": false,
@@ -15397,7 +16551,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Glukhar を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15447,6 +16603,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over RUB",
             "type": "giveItem",
             "count": 400000,
             "foundInRaid": false,
@@ -15483,7 +16640,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reserveの兵舎エリアでScavsを排除する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15548,8 +16707,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the dead worker and take their blood sample on Factory"
+          },
+          {
+            "description": "Hand over the blood sample"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15593,10 +16756,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and scout the warehouses at the depot on Woods"
+          },
+          {
+            "description": "Locate and scout the office at the depot on Woods"
+          },
+          {
+            "description": "Locate and scout the garages at the depot on Woods"
+          },
+          {
+            "description": "Complete the task A Helping Hand"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15647,7 +16818,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Hand over the package from the depot on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15697,6 +16870,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Locate and mark the spare BTR wheels with an MS2000 Marker",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -15749,6 +16923,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Locate and mark the spare BTR wheels with an MS2000 Marker on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -15812,9 +16987,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate Scavs on Woods"
+          },
+          {
+            "description": "Use the transit from Woods to Reserve"
+          },
+          {
+            "description": "Eliminate Scavs on Reserve"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15849,8 +17030,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the electronic jammer at the electromechanical warehouse on Reserve"
+          },
+          {
+            "description": "Stash the device at the specified location on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -15907,6 +17092,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Sell any items to Ragman",
             "type": "sellItem",
             "count": 50,
             "foundInRaid": false,
@@ -15916,6 +17102,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Sell any items to Prapor",
             "type": "sellItem",
             "count": 50,
             "foundInRaid": false,
@@ -15925,6 +17112,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Sell any items to Peacekeeper",
             "type": "sellItem",
             "count": 50,
             "foundInRaid": false,
@@ -15977,6 +17165,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash the first metal fuel tank at the smugglers' base on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -15986,6 +17175,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the second metal fuel tank at the smugglers' base on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16036,6 +17226,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid military electronic items",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -16045,6 +17236,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid PC component items",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -16101,7 +17293,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target on any location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16159,10 +17353,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first section of the cliff path with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the second section of the cliff path with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the third section of the cliff path with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Locate and mark the fourth section of the cliff path with an MS2000 Marker on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16213,8 +17415,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Eliminate Scavs in one raid on Ground Zero"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16257,6 +17463,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find the item: 6-STEN-140-M military battery",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -16266,6 +17473,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: 6-STEN-140-M military battery",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -16316,6 +17524,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find the item: 6-STEN-140-M military battery",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -16325,6 +17534,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: 6-STEN-140-M military battery",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -16376,8 +17586,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the package in the specified spot on Woods"
+          },
+          {
+            "description": "Hand over the package"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16432,6 +17646,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a VOG-25 Khattabka grenade at the first RPG ammo crate on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16441,6 +17656,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a VOG-25 Khattabka grenade at the second RPG ammo crate on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16450,6 +17666,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a VOG-25 Khattabka grenade at the third RPG ammo crate on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16515,7 +17732,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16559,7 +17778,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16601,8 +17822,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain Lightkeeper's cargo crate on the roof of the military hospital on Reserve"
+          },
+          {
+            "description": "Stash the cargo at the Scav house on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16660,12 +17885,24 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Mark the Collapsed Crane BTR stop with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Mark the Old Scav Checkpoint BTR stop with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Mark the Pinewood Hotel BTR stop with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Mark the City Center BTR stop with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Mark the Tram BTR stop with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Mark the Rodina Cinema BTR stop with an MS2000 Marker on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16723,8 +17960,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate the bunker under the mountain on Woods"
+          },
+          {
+            "description": "Stash the first Russian armor-piercing ammo pack inside the bunker",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16734,6 +17974,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the second Russian armor-piercing ammo pack inside the bunker",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16743,6 +17984,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the third Russian armor-piercing ammo pack inside the bunker",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -16793,6 +18035,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Sell any items to Peacekeeper",
             "type": "sellItem",
             "count": 75,
             "foundInRaid": false,
@@ -16844,8 +18087,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the package with RPG ammo on Woods"
+          },
+          {
+            "description": "Hand over the package"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16908,8 +18155,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain Prapor's cargo on Shoreline"
+          },
+          {
+            "description": "Hand over the found cargo"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -16972,8 +18223,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the missing courier crew on Woods"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17020,16 +18275,36 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain the incriminating letter on Customs"
+          },
+          {
+            "description": "Use the transit from Customs to Reserve"
+          },
+          {
+            "description": "Stash the letter on the third floor of the military headquarters on Reserve"
+          },
+          {
+            "description": "Use the transit from Reserve to Woods"
+          },
+          {
+            "description": "Eliminate any target on Woods"
+          },
+          {
+            "description": "Use the transit from Woods to Lighthouse"
+          },
+          {
+            "description": "Launch a yellow signal flare at the train station warehouse on Lighthouse"
+          },
+          {
+            "description": "Launch a yellow signal flare at the pier on Lighthouse"
+          },
+          {
+            "description": "Eliminate Scavs while completing the other objectives"
+          },
+          {
+            "description": "Survive and extract from Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17088,16 +18363,36 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain the incriminating letter on Customs"
+          },
+          {
+            "description": "Use the transit from Customs to Reserve"
+          },
+          {
+            "description": "Stash the letter on the third floor of the military headquarters on Reserve"
+          },
+          {
+            "description": "Use the transit from Reserve to Woods"
+          },
+          {
+            "description": "Eliminate any target on Woods"
+          },
+          {
+            "description": "Use the transit from Woods to Lighthouse"
+          },
+          {
+            "description": "Launch a yellow signal flare at the train station warehouse on Lighthouse"
+          },
+          {
+            "description": "Launch a yellow signal flare at the pier on Lighthouse"
+          },
+          {
+            "description": "Eliminate Scavs while completing the other objectives"
+          },
+          {
+            "description": "Survive and extract from Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17156,11 +18451,21 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Use the transit from Customs to Reserve"
+          },
+          {
+            "description": "Use the transit from Reserve to Woods"
+          },
+          {
+            "description": "Use the transit from Woods to Lighthouse"
+          },
+          {
+            "description": "Survive and extract from Lighthouse"
+          },
+          {
+            "description": "Eliminate PMC operatives while completing the other objectives"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17204,10 +18509,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the group that was sent to the Health Resort on Shoreline"
+          },
+          {
+            "description": "埠頭に派遣されたグループを探す"
+          },
+          {
+            "description": "コテージに派遣されたグループを探す"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17258,9 +18571,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Mark the first trading post with an MS2000 Marker on Shoreline"
+          },
+          {
+            "description": "Mark the second trading post with an MS2000 Marker on Shoreline"
+          },
+          {
+            "description": "Mark the third trading post with an MS2000 Marker on Shoreline"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17316,8 +18635,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "SVD スナイパーライフルを使用して PMC オペレーターを殺す (Factoy を除く)"
+          },
+          {
+            "description": "BEAR ドックタグ を渡す",
             "type": "giveItem",
             "count": 7,
             "foundInRaid": false,
@@ -17327,6 +18649,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "USECドックタグ を渡す",
             "type": "giveItem",
             "count": 7,
             "foundInRaid": false,
@@ -17388,10 +18711,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain Sanitar's surgery kit marked with a blue symbol on Shoreline"
+          },
+          {
+            "description": "Hand over Sanitar's surgery kit"
+          },
+          {
+            "description": "Locate and obtain Sanitar's ophthalmoscope on Shoreline"
+          },
+          {
+            "description": "Hand over Sanitar's ophthalmoscope"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17443,6 +18774,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Mark the medical container at the Health Resort with an MS2000 Marker on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -17452,6 +18784,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Mark the medical container by cottages with an MS2000 Marker on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -17461,6 +18794,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Mark the medical container at the river pier with an MS2000 Marker on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -17526,7 +18860,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target at the stylobate building while using Pistols on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17594,7 +18930,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target at the Rodina cinema while using SMGs on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17662,7 +19000,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target at the Cardinal apartment complex while using Assault rifles or Assault carbines on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17727,6 +19067,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find M.U.L.E. stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17736,6 +19077,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17745,6 +19087,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find \"Obdolbos\" cocktail injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17754,6 +19097,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17763,6 +19107,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Meldonin stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17772,6 +19117,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17781,6 +19127,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find AHF1-M stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17790,6 +19137,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17799,6 +19147,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find P22 stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17808,6 +19157,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17817,6 +19167,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find L1 (Norepinephrine) stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17826,6 +19177,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17835,6 +19187,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find 3-(b-TG) stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -17844,6 +19197,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -17921,7 +19275,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Rogues on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -17956,12 +19312,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Shoreline で最初の 薬品容器 を手に入れる"
+          },
+          {
+            "description": "最初の 薬品容器 を渡す"
+          },
+          {
+            "description": "Interchange で 2つ目の 薬品容器 を手に入れる"
+          },
+          {
+            "description": "2つ目の 薬品容器 を渡す"
+          },
+          {
+            "description": "Interchange で 3つ目の 薬品容器 を手に入れる"
+          },
+          {
+            "description": "3つ目の 薬品容器 を渡す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18012,9 +19380,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the place of work of Prapor's friend on Streets of Tarkov"
+          },
+          {
+            "description": "Obtain any information on the fate of Prapor's friend"
+          },
+          {
+            "description": "Hand over the found data"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18082,7 +19456,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate rooftop Sniper Scavs on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18117,7 +19493,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "KRISS Vector 9x19mm を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18179,6 +19557,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "防毒マスク を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -18188,6 +19567,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に 防毒マスク を手に入れる",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -18197,6 +19577,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に 輸血セット を手に入れる",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -18206,6 +19587,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "輸血セット を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -18272,8 +19654,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Do not kill Sanitar"
+          },
+          {
+            "description": "Find TerraGroup Labs access keycards in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -18283,6 +19668,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the keycards",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -18292,6 +19678,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find AHF1-M stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -18301,6 +19688,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -18310,6 +19698,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find 3-(b-TG) stimulant injector in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -18319,6 +19708,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -18405,8 +19795,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain information on culinary secrets at the Beluga restaurant on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the found data"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18474,8 +19868,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the secret ingredient at the TerraGroup office on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the chemical additive"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18543,9 +19941,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the real estate fund on Streets of Tarkov"
+          },
+          {
+            "description": "Locate and obtain the Tarkov real estate transactions document"
+          },
+          {
+            "description": "Hand over the obtained information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18608,8 +20012,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate Sanitar's office in the health resort"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18680,7 +20088,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Sanitar を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18738,8 +20148,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Eliminate any target at the Pinewood hotel on Streets of Tarkov"
+          },
+          {
+            "description": "Shoot a yellow signal flare in the hotel's courtyard"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18781,7 +20195,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "MPX を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18846,9 +20262,14 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Locate and neutralize Kollontay"
+          },
+          {
+            "description": "Eliminate Kollontay's guards"
+          },
+          {
+            "description": "Hand over the found in raid Kollontay's police baton",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -18919,9 +20340,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "The LabでSanitarの仕事場を見つける"
+          },
+          {
+            "description": "Obtain information about Sanitar's work"
+          },
+          {
+            "description": "Hand over the Flash drive marked with blue tape"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -18989,9 +20416,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first yellow minibus with an MS2000 Marker on Interchange"
+          },
+          {
+            "description": "Locate and mark the second yellow minibus with an MS2000 Marker on Interchange"
+          },
+          {
+            "description": "Locate and mark the third yellow minibus with an MS2000 Marker on Interchange"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19044,6 +20477,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Woods の 製材所 にある桟橋を監視するための Wi-Fi カメラ を設置する",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19053,6 +20487,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Customs から港に向かう道路を監視するための Wi-Fi カメラ を設置する",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19062,6 +20497,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Interchange にある KIBA の入口を監視するための Wi-Fi カメラ を設置する",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19126,6 +20562,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Interchange の装甲車がある GENERIC SHOP のベッドに 金のチェーンネックレス を隠す",
             "type": "plantItem",
             "count": 3,
             "foundInRaid": false,
@@ -19135,6 +20572,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Customs の社員寮 3階 にあるキッチンの電子レンジに 金のチェーンネックレス を隠す",
             "type": "plantItem",
             "count": 3,
             "foundInRaid": false,
@@ -19144,6 +20582,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Woods の製材所にある 2 と書かれた木製の小屋に 金のチェーンネックレス を隠す",
             "type": "plantItem",
             "count": 3,
             "foundInRaid": false,
@@ -19152,7 +20591,9 @@ const TARKOV_DATA = {
               "name": "金のチェーンネックレス"
             }
           },
-          {}
+          {
+            "description": "Interchange で 22:00～10:00 の間に PMC オペレーター を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19203,8 +20644,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the smugglers' base on Shoreline"
+          },
+          {
+            "description": "Eliminate any target in the base area"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19274,8 +20719,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Raiders"
+          },
+          {
+            "description": "Hand over the found in raid WARTECH brand equipment",
             "type": "giveItem",
             "count": 50,
             "foundInRaid": true,
@@ -19310,8 +20758,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Raiders"
+          },
+          {
+            "description": "Hand over the found in raid WARTECH brand equipment",
             "type": "giveItem",
             "count": 50,
             "foundInRaid": true,
@@ -19348,8 +20799,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain Skier's wallet on Customs"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19396,6 +20851,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Install a WI-FI Camera at the amphibian pizza lovers' hideout on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19405,6 +20861,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the burned girl's sickroom on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19414,6 +20871,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the barbed wire body on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19423,6 +20881,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the really scary hole in the wall on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19432,6 +20891,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the high rise where one die-hard guy kicked ass on Ground Zero",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19441,6 +20901,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the computer with a joke for programmers on Ground Zero",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19450,6 +20911,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the little chair surrounded by big black chairs on Ground Zero",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19459,6 +20921,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera by your friend Wilson on Lighthouse",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19468,6 +20931,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the kindled rest place on Lighthouse",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19477,6 +20941,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the ominous welcome sign on Lighthouse",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19486,6 +20951,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the megagenius scientist's seat on Lighthouse",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19495,6 +20961,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the place where conscripts did a very important task on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19504,6 +20971,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the two chair riddle on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19513,6 +20981,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at every tank driver's first videogame on Reserve",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19522,6 +20991,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the bucket-head villain on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19531,6 +21001,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at Anvil 3-4 crew member's execution site on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19540,6 +21011,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at every indie developer's worst nightmare on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19549,6 +21021,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera in the room where the firefighter burned the books to become happy on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19558,6 +21031,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the place where some valve technicians couldn't finish their third project on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19567,6 +21041,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the dangerous Russian chocolate beauty on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19576,6 +21051,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera in the conspiracy theorist's room on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19585,6 +21061,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera near where someone thought he'd get transported to the magic school on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19594,6 +21071,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the mother of all strategy games on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19603,6 +21081,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the stairway to the skies on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19612,6 +21091,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the bear who sat into a flaming car on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19621,6 +21101,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the upside-down chair on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19630,6 +21111,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the not-so-lonely bathroom on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -19679,16 +21161,36 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Obtain the first motor controller on Woods"
+          },
+          {
+            "description": "Hand over the first controller"
+          },
+          {
+            "description": "Obtain the second motor controller on Shoreline"
+          },
+          {
+            "description": "Hand over the second controller"
+          },
+          {
+            "description": "Obtain the third motor controller on Shoreline"
+          },
+          {
+            "description": "Hand over the third controller"
+          },
+          {
+            "description": "Obtain the first single-axis fiber optic gyroscope on Woods"
+          },
+          {
+            "description": "Hand over the first gyroscope"
+          },
+          {
+            "description": "Obtain the second single-axis fiber optic gyroscope on Shoreline"
+          },
+          {
+            "description": "Hand over the second gyroscope"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19741,6 +21243,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find 6-Sten-140-M military battery in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -19750,6 +21253,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the military battery",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -19759,6 +21263,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find OFZ 30x165mm shells in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -19768,6 +21273,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the OFZ shells",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -19827,7 +21333,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives in the time period of 21:00-06:00 (excluding Factory and The Lab)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19895,10 +21403,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Find and mark the group of fuel tanks with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Find and mark the first tanker truck with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Find and mark the second tanker truck with an MS2000 Marker on Lighthouse"
+          },
+          {
+            "description": "Find and mark the third tanker truck with an MS2000 Marker on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -19971,6 +21487,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に 目出しスキー帽 を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -19980,6 +21497,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "スキー帽 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -19989,6 +21507,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に Pilgrim ツーリストバックパック を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -19998,6 +21517,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "バックパック を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -20055,6 +21575,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the defibrillator",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -20064,6 +21585,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find CMS surgical kits in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -20073,6 +21595,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Portable defibrillator in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -20082,6 +21605,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the CMS kits",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -20148,7 +21672,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "R11 RSASS を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20209,8 +21735,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Customs の指定された場所で 偽情報の入ったフラッシュドライブ を手に入れる "
+          },
+          {
+            "description": "社員寮 3階 にある階段の向かい側のごみ置き場に SV-98 スナイパーライフル を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -20220,6 +21749,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "社員寮 3階 にある階段の向かい側のごみ置き場に Roler サブマリーナー を隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -20228,7 +21758,9 @@ const TARKOV_DATA = {
               "name": "Roler サブマリーナー"
             }
           },
-          {}
+          {
+            "description": "社員寮 3階 にある階段の向かい側のごみ置き場に 偽情報の入ったフラッシュドライブ を隠す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20299,6 +21831,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "耐久値が 0-50% の BNTI Gzhel-K ボディーアーマー を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -20308,6 +21841,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "アーマー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -20317,6 +21851,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "耐久値が 50-100% の BNTI Gzhel-K ボディーアーマー を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -20326,6 +21861,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "アーマー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -20383,6 +21919,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "耐久値が 0-75% の 6B13 アサルトアーマー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -20392,6 +21929,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "耐久値が 75-100% の 6B13 アサルトアーマー を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -20452,6 +21990,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find WARTECH TV-109 + TV-106 chest rigs in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -20461,6 +22000,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the chest rigs",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -20470,6 +22010,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find BlackRock chest rigs in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -20479,6 +22020,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the chest rigs",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -20537,9 +22079,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the IT firm office on Streets of Tarkov"
+          },
+          {
+            "description": "Unravel the secret of the firm's success"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20604,8 +22152,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Unravel the secret of the IT firm's employees' high morale on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20659,7 +22211,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target from over 100 meters away while using AR-15 platform weapons"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -20712,8 +22266,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the data on vehicle movement at the Concordia residential complex parking lot on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the information"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20760,7 +22318,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach the required Charisma skill level"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -20818,6 +22378,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "レイド中に フューエルコンディショナー を見つける",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -20827,6 +22388,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "フューエルコンディショナー を渡す",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -20888,7 +22450,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target from over 100 meters away while using AK-74 series weapons"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -20941,9 +22505,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the musician gathering spot on Streets of Tarkov"
+          },
+          {
+            "description": "Obtain the engraved guitar pick"
+          },
+          {
+            "description": "Hand over the guitar pick"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21004,8 +22574,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Find the lost group in the chalet area on Lighthouse"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21052,10 +22626,18 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and obtain the first book of clothes design on Interchange"
+          },
+          {
+            "description": "Hand over the first book"
+          },
+          {
+            "description": "Locate and obtain the second book of clothes design on Interchange"
+          },
+          {
+            "description": "Hand over the second book"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21097,7 +22679,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach level 3 loyalty with Therapist"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21141,8 +22725,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate the hidden drug lab on Lighthouse"
+          },
+          {
+            "description": "Stash a WI-FI Camera in the drug lab",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -21208,7 +22795,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while using Colt M4A1, 6B43 body armor, and Kiver-M helmet on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21266,8 +22855,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate the cultist meeting spot on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21319,7 +22912,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "HK 416A5 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21378,9 +22973,14 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
           {
+            "description": "Locate and neutralize Priest"
+          },
+          {
+            "description": "Locate the ritual spot on Chekannaya st. on Streets of Tarkov"
+          },
+          {
+            "description": "Stash a Cultist knife at the ritual spot",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -21447,7 +23047,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Modify an MP-43-1C shotgun to comply with the given specifications"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21489,7 +23091,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate the hooded men while using the double barrel shotgun"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21547,8 +23151,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the special version of the LEDX Skin Transilluminator in The Lab"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21599,7 +23207,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Launch a red signal flare at the old sawmill on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21648,7 +23258,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using the golden TT-33 pistol"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21692,8 +23304,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the special edition of the gaming magazine on Interchange"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21750,6 +23366,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Install a WI-FI Camera on the mountain ledge on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -21759,6 +23376,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Install a WI-FI Camera at the pier tower on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -21768,6 +23386,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": " Install a WI-FI Camera at the office corridor on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -21826,8 +23445,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the hard drive at the old house on Shoreline"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -21884,6 +23507,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid item: SSD drive",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21893,6 +23517,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: USB Adapter",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21902,6 +23527,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Portable Powerbank",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21911,6 +23537,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Rechargeable battery",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21920,6 +23547,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: PC CPU",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21929,6 +23557,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Electronic components",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21938,6 +23567,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Bundle of wires",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21947,6 +23577,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Capacitors",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21956,6 +23587,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: NIXXOR lens",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21965,6 +23597,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: RAM stick",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21974,6 +23607,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Working LCD",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -21983,6 +23617,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Light bulb",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -22033,6 +23668,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -22042,6 +23678,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -22051,6 +23688,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Golden rooster figurine at Prapor's WI-FI Camera on Factory",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -22109,8 +23747,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the souvenir key to the city on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the found item"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22158,6 +23800,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Bronze lion figurines in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -22167,6 +23810,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the figurines",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -22176,6 +23820,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Horse figurines in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -22185,6 +23830,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the figurines",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -22194,6 +23840,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Cat figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -22203,6 +23850,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -22212,6 +23860,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Roler Submariner gold wrist watch in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -22221,6 +23870,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the wrist watch",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -22230,6 +23880,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Golden egg in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -22239,6 +23890,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -22309,9 +23961,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate Jaeger's Health Resort room with a view of the bay on Shoreline"
+          },
+          {
+            "description": "Obtain Jaeger's photo album"
+          },
+          {
+            "description": "Hand over the photo album"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22362,21 +24020,51 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the first ATM on Nizhnaya Sadovaya Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the second ATM on Nizhnaya Sadovaya Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the ATM on Razvedchikov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the first group of ATMs on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the first ATM on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the group of ATMs on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the second ATM on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the fourth group of ATMs on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the fifth group of ATMs on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the third ATM on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the fourth ATM on Klimov Street on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the first ATM on Primorsky Ave on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the second ATM on Primorsky Ave on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the third ATM on Primorsky Ave on Streets of Tarkov"
+          },
+          {
+            "description": "Locate the ATM at the expo on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22412,6 +24100,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find TerraGroup Labs access keycards in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -22421,6 +24110,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the access keycards",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -22477,9 +24167,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate Scavs at the village on Lighthouse (In one raid)"
+          },
+          {
+            "description": "Use the transit from Lighthouse to Shoreline (In one raid)"
+          },
+          {
+            "description": "Eliminate Scavs at the village on Shoreline (In one raid)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22538,6 +24234,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash the ComTac II headsets in the specified place on Interchange",
             "type": "plantItem",
             "count": 2,
             "foundInRaid": false,
@@ -22547,6 +24244,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the 6B47 helmets (Olive Drab) in the specified place on Interchange",
             "type": "plantItem",
             "count": 2,
             "foundInRaid": false,
@@ -22556,6 +24254,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash the Gzhel-K body armor in the specified place on Interchange",
             "type": "plantItem",
             "count": 2,
             "foundInRaid": false,
@@ -22615,7 +24314,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "AS VAL を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22667,7 +24368,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach the required Search skill level"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22714,8 +24417,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate BEAR PMC operatives on Lighthouse"
+          },
+          {
+            "description": "Hand over the found in raid BEAR PMC dogtags",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": true,
@@ -22790,6 +24496,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Bundles of wires in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -22799,6 +24506,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Capacitors in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -22808,6 +24516,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the wires",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -22817,6 +24526,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the capacitors",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -22878,7 +24588,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Survive and extract from Interchange"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22939,7 +24651,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from over 60 meters away while using an M1A rifle with Hybrid 46 suppressor and Schmidt & Bender PM II 1-8x24 scope"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -22988,7 +24702,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach the required Health skill level"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23056,9 +24772,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the crashed helicopter on Lighthouse"
+          },
+          {
+            "description": "Find the informant's intelligence folder"
+          },
+          {
+            "description": "Hand over the folder"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23123,8 +24845,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate USEC PMC operatives on Lighthouse"
+          },
+          {
+            "description": "Hand over the found in raid USEC PMC dogtags",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": false,
@@ -23189,7 +24914,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Raiders"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23241,8 +24968,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "サプレッサーを付けた 12ゲージ の ショットガン を使用して Scav を殺す"
+          },
+          {
+            "description": "サプレッサーを付けた 12ゲージ の ショットガン を使用して PMC を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23285,6 +25016,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Virtex programmable processors in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -23294,6 +25026,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Military COFDM Wireless Signal Transmitter in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -23303,6 +25036,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the processors",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -23312,6 +25046,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the transmitter",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -23384,9 +25119,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first fuel stash with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Locate and mark the second fuel stash with an MS2000 Marker on Woods"
+          },
+          {
+            "description": "Locate and mark the third fuel stash with an MS2000 Marker on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23438,7 +25179,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "DVL-10 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23504,12 +25247,24 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Woods"
+          },
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Customs"
+          },
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Interchange"
+          },
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Shoreline"
+          },
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Streets of Tarkov"
+          },
+          {
+            "description": "Eliminate Scavs while wearing a UN uniform (UNTAR helmet, MF-UNTAR body armor, M4A1 rifle) on Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23570,7 +25325,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while using an SR-2M with a suppressor and KP-SR2 sight on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23645,7 +25402,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while using an AK-12 with a suppressor and Valday PS-320 1/6x scope on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23701,9 +25460,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate any target on Streets of Tarkov (In one raid)"
+          },
+          {
+            "description": "Use the transit from Streets of Tarkov to Interchange (In one raid)"
+          },
+          {
+            "description": "Eliminate any target on Interchange (In one raid)"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -23752,8 +25517,11 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Killa を殺す"
+          },
+          {
+            "description": "レイド中 に Killa の \"Maska-1SCh\" bulletproof helmet を手に入れる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -23763,6 +25531,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Killa の ヘルメット を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -23849,6 +25618,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Antique teapots in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -23858,6 +25628,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Antique vases in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -23867,6 +25638,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Axel parrot figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -23876,6 +25648,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Raven figurines in raid",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -23885,6 +25658,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the teapots",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -23894,6 +25668,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the vases",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -23903,6 +25678,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the Axel parrot figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -23912,6 +25688,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the Raven figurines",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -23977,8 +25754,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Find the debtor on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24013,7 +25794,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "AK-102 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24101,7 +25884,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "M700 と指定のスコープを使用し 75m 以上離れた位置からのヘッドショットで Shturman を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24175,7 +25960,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Shturman を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24236,8 +26023,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate any target while wearing a Bomber beanie and RayBench Hipster Reserve sunglasses on Streets of Tarkov"
+          },
+          {
+            "description": "Stash a Bomber beanie inside the barber shop on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -24247,6 +26037,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash RayBench Hipster Reserve sunglasses inside the barber shop on Streets of Tarkov",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -24296,7 +26087,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using grenades or grenade launchers"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24348,7 +26141,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "AKMN を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24425,8 +26220,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate where the missing group was held captive on Streets of Tarkov"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24470,10 +26269,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Set up the radio repeater inside the MI-8 helicopter at the water treatment plant on Lighthouse"
+          },
+          {
+            "description": "Set up the radio repeater inside the abandoned USEC cottage on Lighthouse"
+          },
+          {
+            "description": "Set up the radio repeater at a high elevation overlooking the peninsula on Lighthouse"
+          },
+          {
+            "description": "Set up the radio repeater on the roof of the sunken building at the shore on Lighthouse"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24502,7 +26309,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives near the Lighthouse peninsula"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24531,10 +26340,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and mark the first bunker with an MS2000 marker on Woods"
+          },
+          {
+            "description": "Locate and mark the second bunker with an MS2000 marker on Woods"
+          },
+          {
+            "description": "Locate and mark the third bunker with an MS2000 marker on Woods"
+          },
+          {
+            "description": "Locate and mark the fourth bunker with an MS2000 marker on Woods"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24563,8 +26380,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Raiders in The Lab"
+          },
+          {
+            "description": "Hand over the found in raid SJ1 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": true,
@@ -24574,6 +26394,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid SJ6 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -24583,6 +26404,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid SJ9 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -24620,6 +26442,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Hand over the found in raid Piece of plexiglass",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -24629,6 +26452,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Insulating tape",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -24638,6 +26462,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Military circuit board",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -24647,6 +26472,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Military COFDM Wireless Signal Transmitter",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -24656,6 +26482,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Working LCD",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -24664,8 +26491,12 @@ const TARKOV_DATA = {
               "name": "液晶パネル"
             }
           },
-          {},
-          {}
+          {
+            "description": "Obtain the Radio transmitter body on Lighthouse"
+          },
+          {
+            "description": "Hand over the Radio transmitter body"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24694,8 +26525,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": true,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Check if the radio transmitter works near the Lighthouse peninsula"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24724,8 +26559,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Obtain the V3 Flash drive on Lighthouse"
+          },
+          {
+            "description": "Reflash the Radio transmitter",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -24734,8 +26572,12 @@ const TARKOV_DATA = {
               "name": "暗号化機能付 DSP 無線送信機"
             }
           },
-          {},
-          {}
+          {
+            "description": "Hand over the flash drive"
+          },
+          {
+            "description": "Visit the Lighthouse building"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24763,6 +26605,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over RUB",
             "type": "giveItem",
             "count": 1000000,
             "foundInRaid": false,
@@ -24798,6 +26641,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid SVDS sniper rifles",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -24834,9 +26678,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the improvised jail warden's apartment on Streets of Tarkov"
+          },
+          {
+            "description": "Find out what happened to the warden"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24880,8 +26730,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Obtain the V3 Flash drive on Lighthouse"
+          },
+          {
+            "description": "Reflash the Radio transmitter",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -24890,8 +26743,12 @@ const TARKOV_DATA = {
               "name": "暗号化機能付 DSP 無線送信機"
             }
           },
-          {},
-          {}
+          {
+            "description": "Hand over the flash drive"
+          },
+          {
+            "description": "Visit the Lighthouse building"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -24918,13 +26775,27 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Survive and extract from Woods through Bridge V-Ex"
+          },
+          {
+            "description": "Survive and extract from Customs through Dorms V-Ex"
+          },
+          {
+            "description": "Survive and extract from Interchange through Power Station V-Ex"
+          },
+          {
+            "description": "Survive and extract from Streets of Tarkov through Primorsky Ave Taxi V-Ex"
+          },
+          {
+            "description": "Survive and extract from Ground Zero through Police Cordon V-Ex"
+          },
+          {
+            "description": "Locate and mark the first Patrol-A armored vehicle with an MS2000 Marker on Streets of Tarkov"
+          },
+          {
+            "description": "Locate and mark the second Patrol-A armored vehicle with an MS2000 Marker on Streets of Tarkov"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -24961,9 +26832,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the informant's backup hideout on Streets of Tarkov"
+          },
+          {
+            "description": "Obtain the informant's journal"
+          },
+          {
+            "description": "Bring the information to Lightkeeper"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25008,11 +26885,21 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Extract from Lighthouse"
+          },
+          {
+            "description": "Obtain the forged intelligence at the Rogue base on Lighthouse"
+          },
+          {
+            "description": "Obtain the original intelligence in the repair station on Reserve"
+          },
+          {
+            "description": "Stash the forged intelligence under the BMP-2 in place of the original"
+          },
+          {
+            "description": "Bring the original intelligence to Lightkeeper"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25073,10 +26960,18 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and neutralize Glukhar"
+          },
+          {
+            "description": "Eliminate Glukhar's guards"
+          },
+          {
+            "description": "Shoot a yellow signal flare at the radar station"
+          },
+          {
+            "description": "Survive and extract from Reserve through Cliff Descent"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25144,8 +27039,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate PMC operatives around the mountain area on Woods"
+          },
+          {
+            "description": "TerraGroupの \"Blue Folders\" を USEC キャンプ内の黒い SUV の中に隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25155,6 +27053,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "TerraGroupの \"ブルーフォルダー\" を USEC キャンプ内の衛星アンテナ付近の木箱に隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25199,8 +27098,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate any target around the Kiba Arms store while using an ASh-12 on Interchange"
+          },
+          {
+            "description": "Stash a Salty Dog beef sausage inside the Kiba Arms store",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25210,6 +27112,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Bottle of Fierce Hatchling moonshine inside the secret secure hideout",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25219,6 +27122,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Toilet paper inside the secret container stash",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25227,7 +27131,9 @@ const TARKOV_DATA = {
               "name": "トイレットペーパー"
             }
           },
-          {}
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25269,11 +27175,21 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate Raiders"
+          },
+          {
+            "description": "Search the weapon testing area in The Lab"
+          },
+          {
+            "description": "Search the human experiment room in The Lab"
+          },
+          {
+            "description": "Obtain the secured tape inside the manager's office in The Lab"
+          },
+          {
+            "description": "Bring the tape to Lightkeeper"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25320,8 +27236,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Locate a good sniping position in Concordia overlooking the construction site"
+          },
+          {
+            "description": "Hide AI Tactical Sound Moderator .338 LM near the red table",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25330,8 +27249,11 @@ const TARKOV_DATA = {
               "name": "AI .338 LM Tactical Sound Moderator"
             }
           },
-          {},
           {
+            "description": "Locate a good sniping position at Primorsky overlooking the movie theater"
+          },
+          {
+            "description": "Hide Trijicon REAP-IR thermal scope under Makhors' bed",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25340,7 +27262,9 @@ const TARKOV_DATA = {
               "name": "Trijicon REAP-IR thermal scope"
             }
           },
-          {}
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25375,8 +27299,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Reach the required Bolt-action Rifles skill level"
+          },
+          {
+            "description": "Eliminate Sniper Scavs from over 350 meters away"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25420,11 +27348,21 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the transport holding the cargo on Streets of Tarkov"
+          },
+          {
+            "description": "Secure the area from hostile PMC operatives"
+          },
+          {
+            "description": "Mark the cargo area with an MS2000 Marker"
+          },
+          {
+            "description": "Launch a yellow flare near the armored convoy to confirm that the job is done"
+          },
+          {
+            "description": "Survive and extract from the location"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25496,8 +27434,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Rogues"
+          },
+          {
+            "description": "Hand over the found in raid LBT brand equipment",
             "type": "giveItem",
             "count": 50,
             "foundInRaid": true,
@@ -25532,8 +27473,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Eliminate Rogues"
+          },
+          {
+            "description": "Hand over the found in raid LBT brand equipment",
             "type": "giveItem",
             "count": 50,
             "foundInRaid": true,
@@ -25571,6 +27515,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Place a WI-FI Camera at the yellow bus on the southern bridge approaching the water treatment plant",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25580,6 +27525,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Place a WI-FI Camera at the yellow bulldozer in the south-eastern part of the water treatment plant",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25589,6 +27535,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Place a WI-FI Camera at the police truck in the western part of the water treatment plant",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25598,6 +27545,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Place a WI-FI Camera at the army truck near the industrial zone in the northern part of the water treatment plant",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25634,7 +27582,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Raiders on Reserve"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -25661,8 +27611,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Obtain the V3 Flash drive on Lighthouse"
+          },
+          {
+            "description": "Reflash the Radio transmitter",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -25671,8 +27624,12 @@ const TARKOV_DATA = {
               "name": "暗号化機能付 DSP 無線送信機"
             }
           },
-          {},
-          {}
+          {
+            "description": "Hand over the flash drive"
+          },
+          {
+            "description": "Visit the Lighthouse building"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -25700,6 +27657,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid Secure Flash drives",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": true,
@@ -25737,6 +27695,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Place a WI-FI Camera inside the quarantine zone in The Lab",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -25771,8 +27730,11 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
           {
+            "description": "Obtain the V3 Flash drive on Lighthouse"
+          },
+          {
+            "description": "Reflash the Radio transmitter",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -25781,8 +27743,12 @@ const TARKOV_DATA = {
               "name": "暗号化機能付 DSP 無線送信機"
             }
           },
-          {},
-          {}
+          {
+            "description": "Hand over the flash drive"
+          },
+          {
+            "description": "Visit the Lighthouse building"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -25816,9 +27782,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate the radar station commandant's office on Lighthouse"
+          },
+          {
+            "description": "Obtain the military HDD with archived flight routes"
+          },
+          {
+            "description": "Hand over the drive"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25879,7 +27851,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from over 40 meters away while using a bolt-action rifle with night or thermal scope"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -25999,6 +27973,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": true,
         "objectives": [
           {
+            "description": "Hand over the found in raid Electronic components",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -26008,6 +27983,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Military COFDM Wireless Signal Transmitters",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -26017,6 +27993,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Gas analyzers",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -26026,6 +28003,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Broken GPhone smartphones",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -26060,9 +28038,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Return to the old champion's hideout on Customs"
+          },
+          {
+            "description": "Locate and obtain the compromising information on Ref"
+          },
+          {
+            "description": "Hand over the found info"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26099,8 +28083,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Obtain the digital storage device from the car dealership manager's office on Streets of Tarkov"
+          },
+          {
+            "description": "Hand over the storage device"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26135,8 +28123,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Reach the required Bolt-action Rifles skill level"
+          },
+          {
+            "description": "1回も死なずにボルトアクションライフルを使用して PMC オペレーターを殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26182,6 +28174,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find UHF RFID Reader in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26191,6 +28184,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find VPX Flash Storage Module in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26200,6 +28194,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the reader",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26209,6 +28204,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the storage module",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26282,13 +28278,27 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Reach level 4 loyalty with Ragman"
+          },
+          {
+            "description": "Reach level 4 loyalty with Skier"
+          },
+          {
+            "description": "Reach level 4 loyalty with Mechanic"
+          },
+          {
+            "description": "Reach level 4 loyalty with Peacekeeper"
+          },
+          {
+            "description": "Reach level 4 loyalty with Prapor"
+          },
+          {
+            "description": "Reach level 4 loyalty with Therapist"
+          },
+          {
+            "description": "Reach level 4 loyalty with Jaeger"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26340,7 +28350,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target that is using a 20+ container size backpack"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26383,6 +28395,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find an Ophthalmoscope in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26392,6 +28405,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に LEDX 静脈発見器 を見つける",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26401,6 +28415,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the Ophthalmoscope",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26410,6 +28425,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "LEDX 静脈発見器 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26466,7 +28482,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "ストレス耐性 のスキルレベルが必要な値に達する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26526,6 +28544,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Sell Ragman any backpacks or tactical rigs",
             "type": "sellItem",
             "count": 250,
             "foundInRaid": false,
@@ -26576,6 +28595,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Sanitar's bag in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26585,6 +28605,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the equipment",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26594,6 +28615,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find the Crye Precision AVS plate carrier (Tagilla Edition) in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26603,6 +28625,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the equipment",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26612,6 +28635,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find the LBT-1961A Load Bearing Chest Rig (Goons Edition) in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26621,6 +28645,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the equipment",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26630,6 +28655,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find the Mystery Ranch NICE COMM 3 BVS frame system (Coyote) in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26639,6 +28665,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the equipment",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26648,6 +28675,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find the Crye Precision CPC plate carrier (Goons Edition) in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -26657,6 +28685,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the equipment",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -26713,7 +28742,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Locate and neutralize any Boss (excluding The Goons and Partisan) while using any Goons Edition tactical rig"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26756,6 +28787,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over Physical Bitcoin",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -26792,8 +28824,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Locate and obtain the lost weapon crate on Interchange"
+          },
+          {
+            "description": "Hand over the retrieved cargo"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26838,7 +28874,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using the MPS Auto Assault-12 shotgun"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -26884,6 +28922,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: Lega Medal",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -26936,9 +28975,15 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Locate and neutralize Knight"
+          },
+          {
+            "description": "Locate and neutralize Big Pipe"
+          },
+          {
+            "description": "Locate and neutralize Birdeye"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27008,7 +29053,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs from less than 60 meters away while wearing a gas mask or respirator on Interchange"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27064,7 +29111,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "SVDS を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27123,7 +29172,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "M1A を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27191,8 +29242,12 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "M700 を指定された仕様に改造する"
+          },
+          {
+            "description": "M1911 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27253,7 +29308,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "M4A1 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27321,7 +29378,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "CMMG Mk47 Mutant を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27373,7 +29432,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "KAC SR-25 を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27441,7 +29502,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "PKP を指定された仕様に改造する"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27502,16 +29565,36 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Survive and extract from Woods with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Customs with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Interchange with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Shoreline with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Factory with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from The Lab with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Reserve with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Lighthouse with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Streets of Tarkov with the \"Survived\" exit status"
+          },
+          {
+            "description": "Survive and extract from Ground Zero with the \"Survived\" exit status"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27597,7 +29680,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using an RPDN machine gun with 1P78-1 scope on Shoreline"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27655,7 +29740,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using an UZI PRO with 240mm barrel, SBR stock, and BOSS Xe reflex sight on Factory"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27713,7 +29800,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any target while using an Aklys Defense Velociraptor on Customs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27760,15 +29849,33 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate Scavs while using melee weapons on daytime Factory"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Streets of Tarkov"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Lighthouse"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Woods"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Shoreline"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Interchange"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Customs"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Reserve"
+          },
+          {
+            "description": "Eliminate Scavs while using melee weapons on Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27819,6 +29926,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Obtain the Goshan cash register key",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -27828,6 +29936,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the key",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -27894,9 +30003,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate PMC operatives at the Scav base on Customs"
+          },
+          {
+            "description": "Eliminate PMC operatives at the Scav base on Woods"
+          },
+          {
+            "description": "Shoreline にある保養所で PMC オペレーターを殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -27976,6 +30091,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Aramid fabrics in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -27985,6 +30101,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -27994,6 +30111,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Ripstop fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28003,6 +30121,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28012,6 +30131,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Paracords in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -28021,6 +30141,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the paracords",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -28080,6 +30201,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Aramid fabrics in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -28089,6 +30211,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -28098,6 +30221,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Ripstop fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28107,6 +30231,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28116,6 +30241,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Paracords in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -28125,6 +30251,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the paracords",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -28178,6 +30305,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Fleece fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28187,6 +30315,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28196,6 +30325,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Cordura polyamide fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28205,6 +30335,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28214,6 +30345,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find KEKTAPE duct tapes in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -28223,6 +30355,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the duct tapes",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -28273,6 +30406,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Fleece fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28282,6 +30416,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28291,6 +30426,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Cordura polyamide fabrics in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28300,6 +30436,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the fabrics",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -28309,6 +30446,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find KEKTAPE duct tapes in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -28318,6 +30456,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the duct tapes",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -28367,11 +30506,20 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
           {
+            "description": "Reserve で AK-50 の barrel を手に入れる"
+          },
+          {
+            "description": "Tarkov's security checkpoints の1つで AK-50 dust cover を手に入れる"
+          },
+          {
+            "description": "押収された貨物 がある checkpoint を見つける"
+          },
+          {
+            "description": "Reserve で Glukhar のワークショップを見つける"
+          },
+          {
+            "description": "AK-50 を Customs の特定の場所に隠す",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -28380,10 +30528,17 @@ const TARKOV_DATA = {
               "name": "TheAKGuy AK-50 .50 BMG スナイパーライフル"
             }
           },
-          {},
-          {},
-          {},
           {
+            "description": "AK-50 handguard を Customs の特定の場所に隠す"
+          },
+          {
+            "description": "AK-50 barrel を Customs の特定の場所に隠す"
+          },
+          {
+            "description": "AK-50 dust cover を Customs の特定の場所に隠す"
+          },
+          {
+            "description": "AK-50 の本体を組み立てる",
             "type": "findItem",
             "count": 1,
             "foundInRaid": false,
@@ -28478,6 +30633,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "ユーロ紙幣 で支払う",
             "type": "giveItem",
             "count": 50000,
             "foundInRaid": false,
@@ -28514,9 +30670,15 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {}
+          {
+            "description": "隠し場所をを見つける"
+          },
+          {
+            "description": "Woods の製材所で AK-50 handguard を手に入れる"
+          },
+          {
+            "description": "Hobby Club のタスクを完了する"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -28543,7 +30705,9 @@ const TARKOV_DATA = {
         "kappaRequired": true,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Scavs with headshots"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -28572,7 +30736,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate Raiders on Reserve"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -28609,7 +30775,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives inside the ULTRA mall on Interchange"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -28651,7 +30819,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives from over 100 meters away"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -28713,6 +30883,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Portable defibrillators in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -28722,6 +30893,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Ophthalmoscopes in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -28731,6 +30903,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に LEDX 静脈発見器 を見つける",
             "type": "findItem",
             "count": 2,
             "foundInRaid": true,
@@ -28740,6 +30913,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Piles of meds in raid",
             "type": "findItem",
             "count": 20,
             "foundInRaid": true,
@@ -28749,6 +30923,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Bottles of OLOLO Multivitamins in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -28758,6 +30933,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the defibrillators",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -28767,6 +30943,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the ophthalmoscopes",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -28776,6 +30953,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "LEDX を渡す",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -28785,6 +30963,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the Piles of meds",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": true,
@@ -28794,6 +30973,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the multivitamins",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -29192,6 +31372,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid item: Old firesteel",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29201,6 +31382,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Antique axe",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29210,6 +31392,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "レイド中に見つけた アンティークの本 を渡す",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29219,6 +31402,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: #FireKlean gun lube",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29228,6 +31412,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Golden rooster figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29237,6 +31422,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Silver Badge",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29246,6 +31432,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Deadlyslob's beard oil",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29255,6 +31442,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Golden 1GPhone smartphone",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29264,6 +31452,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Jar of DevilDog mayo",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29273,6 +31462,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Can of sprats",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29282,6 +31472,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Fake mustache",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29291,6 +31482,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Kotton beanie",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29300,6 +31492,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Raven figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29309,6 +31502,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Pestily plague mask",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29318,6 +31512,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Shroud half-mask",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29327,6 +31522,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Can of Dr. Lupo's coffee beans",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29336,6 +31532,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: 42 Signature Blend English Tea",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29345,6 +31542,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Veritas guitar pick",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29354,6 +31552,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Evasion armband",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29363,6 +31562,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Can of RatCola soda",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29372,6 +31572,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Loot Lord plushie",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29381,6 +31582,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Smoke balaclava",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29390,6 +31592,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: WZ Wallet",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29399,6 +31602,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: LVNDMARK's rat poison",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29408,6 +31612,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Missam forklift key",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29417,6 +31622,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Video cassette with the Cyborg Killer movie",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29426,6 +31632,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: BakeEzy cook book",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29435,6 +31642,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: JohnB Liquid DNB glasses",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29444,6 +31652,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Baddie's red beard",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29453,6 +31662,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: DRD body armor",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29462,6 +31672,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Gingy keychain",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29471,6 +31682,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Golden egg",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29480,6 +31692,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Press pass (issued for NoiceGuy)",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29489,6 +31702,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Axel parrot figurine",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29498,6 +31712,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: BEAR Buddy plush toy",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29507,6 +31722,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Glorious E lightweight armored mask",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29516,6 +31732,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Inseq gas pipe wrench",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29525,6 +31742,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Viibiin sneaker",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29534,6 +31752,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: Tamatthi kunai knife replica",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -29584,6 +31803,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find the unusual knives in raid",
             "type": "findItem",
             "count": 12,
             "foundInRaid": true,
@@ -29593,6 +31813,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the knives",
             "type": "giveItem",
             "count": 12,
             "foundInRaid": true,
@@ -29636,6 +31857,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over Secure container Epsilon",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": false,
@@ -29680,7 +31902,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives without using any armor or helmets on Woods"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -29730,6 +31954,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find Bottles of Tarkovskaya vodka in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -29739,6 +31964,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Bottles of Dan Jackiel whiskey in raid",
             "type": "findItem",
             "count": 10,
             "foundInRaid": true,
@@ -29748,6 +31974,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Canisters with purified water in raid",
             "type": "findItem",
             "count": 3,
             "foundInRaid": true,
@@ -29757,6 +31984,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Bottles of Pevko Light beer in raid",
             "type": "findItem",
             "count": 20,
             "foundInRaid": true,
@@ -29766,6 +31994,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the vodka",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -29775,6 +32004,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the whiskey",
             "type": "giveItem",
             "count": 10,
             "foundInRaid": true,
@@ -29784,6 +32014,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the superwater",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -29793,6 +32024,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the beer",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": true,
@@ -29845,6 +32077,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Trijicon REAP-IR scope under the base of the yellow crane at the construction site on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -29854,6 +32087,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Trijicon REAP-IR scope behind the trash containers at the \"new\" gas station on Customs",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -29902,6 +32136,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid item: BEAR PMC dogtag (Level 50+)",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": true,
@@ -29911,6 +32146,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid item: USEC PMC dogtag (Level 50+)",
             "type": "giveItem",
             "count": 20,
             "foundInRaid": true,
@@ -29974,15 +32210,33 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Eliminate PMC operatives on daytime Factory"
+          },
+          {
+            "description": "Eliminate PMC operatives on Customs"
+          },
+          {
+            "description": "Eliminate PMC operatives on Shoreline"
+          },
+          {
+            "description": "Eliminate PMC operatives on Reserve"
+          },
+          {
+            "description": "Eliminate PMC operatives on Woods"
+          },
+          {
+            "description": "Eliminate PMC operatives on Interchange"
+          },
+          {
+            "description": "Eliminate PMC operatives in The Lab"
+          },
+          {
+            "description": "Eliminate PMC operatives on Ground Zero"
+          },
+          {
+            "description": "Eliminate PMC operatives in Ground Zero"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -30032,6 +32286,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find VPX Flash Storage Modules in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -30041,6 +32296,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find UHF RFID Readers in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -30050,6 +32306,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Virtex programmable processors in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -30059,6 +32316,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Military COFDM Wireless Signal Transmitters in raid",
             "type": "findItem",
             "count": 5,
             "foundInRaid": true,
@@ -30068,6 +32326,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find Military flash drives in raid",
             "type": "findItem",
             "count": 4,
             "foundInRaid": true,
@@ -30077,6 +32336,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the flash storage modules",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30086,6 +32346,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the RFID readers",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30095,6 +32356,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the programmable processors",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30104,6 +32366,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the signal transmitters",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30113,6 +32376,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the flash drives",
             "type": "giveItem",
             "count": 4,
             "foundInRaid": true,
@@ -30174,6 +32438,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: Trijicon REAP-IR thermal scope",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30209,6 +32474,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: BNTI Zhuk body armor (EMR)",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30218,6 +32484,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Vulkan-5 LShZ-5 bulletproof helmet",
             "type": "giveItem",
             "count": 12,
             "foundInRaid": false,
@@ -30227,6 +32494,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Maska-1SCh face shield (Killa Edition) を渡す",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": false,
@@ -30262,6 +32530,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: HK 416A5 5.56x45 assault rifle",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30271,6 +32540,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: 5.56x45mm MK 318 Mod 0 (SOST)",
             "type": "giveItem",
             "count": 4500,
             "foundInRaid": false,
@@ -30280,6 +32550,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: UVSR Taiga-1 survival machete",
             "type": "giveItem",
             "count": 8,
             "foundInRaid": false,
@@ -30315,6 +32586,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: SJ6 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30324,6 +32596,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Obdolbos 2 cocktail injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30333,6 +32606,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Propital regenerative stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30342,6 +32616,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: M.U.L.E. stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30351,6 +32626,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: eTG-change regenerative stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30360,6 +32636,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: SJ9 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30369,6 +32646,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: SJ12 TGLabs combat stimulant injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30378,6 +32656,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Meldonin injector",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30413,6 +32692,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: Graphics card",
             "type": "giveItem",
             "count": 30,
             "foundInRaid": false,
@@ -30422,6 +32702,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Physical Bitcoin",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30457,6 +32738,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the item: Bottle of Tarkovskaya vodka",
             "type": "giveItem",
             "count": 8,
             "foundInRaid": false,
@@ -30466,6 +32748,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Bottle of Dan Jackiel whiskey",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30475,6 +32758,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item: Bottle of Fierce Hatchling moonshine",
             "type": "giveItem",
             "count": 15,
             "foundInRaid": false,
@@ -30511,8 +32795,12 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {}
+          {
+            "description": "Survive and extract from The Lab"
+          },
+          {
+            "description": "Eliminate Raiders in The Lab"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -30564,12 +32852,24 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {},
-          {},
-          {},
-          {},
-          {},
-          {}
+          {
+            "description": "Tagilla を殺す"
+          },
+          {
+            "description": "Killa を殺す"
+          },
+          {
+            "description": "Reshala を殺す"
+          },
+          {
+            "description": "Shturman を殺す"
+          },
+          {
+            "description": "Glukhar を殺す"
+          },
+          {
+            "description": "Sanitar を殺す"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -30613,6 +32913,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid BEAR PMC dogtags",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30622,6 +32923,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid USEC PMC dogtags",
             "type": "giveItem",
             "count": 5,
             "foundInRaid": true,
@@ -30650,7 +32952,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives while using any AK-series assault rifle"
+          }
         ],
         "finishRewards": {
           "items": [],
@@ -30672,6 +32976,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid Bottle of Dan Jackiel whiskey",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30681,6 +32986,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the found in raid Cans of TarCola soda",
             "type": "giveItem",
             "count": 3,
             "foundInRaid": true,
@@ -30710,6 +33016,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over the found in raid Colt M4A1 assault rifles",
             "type": "giveItem",
             "count": 2,
             "foundInRaid": true,
@@ -30744,7 +33051,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate PMC operatives without killing Scavs"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -30786,7 +33095,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Extract from the location with the \"Unknown toxin\" status effect"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -30829,6 +33140,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Find a Ded Moroz figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30838,6 +33150,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30847,6 +33160,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Politician Mutkevich figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30856,6 +33170,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30865,6 +33180,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Killa figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30874,6 +33190,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30883,6 +33200,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Reshala figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30892,6 +33210,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30901,6 +33220,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Ryzhy figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30910,6 +33230,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30919,6 +33240,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Scav figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30928,6 +33250,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30937,6 +33260,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Tagilla figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30946,6 +33270,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30955,6 +33280,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Cultist figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30964,6 +33290,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -30973,6 +33300,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Find a Den figurine in raid",
             "type": "findItem",
             "count": 1,
             "foundInRaid": true,
@@ -30982,6 +33310,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Hand over the item",
             "type": "giveItem",
             "count": 1,
             "foundInRaid": true,
@@ -31031,7 +33360,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Eliminate any Scav Boss guards without killing the Bosses"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -31074,6 +33405,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Stash a Cultist knife at the sunken village marked circle on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -31083,6 +33415,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Cultist knife at the Health Resort east wing marked circle on Shoreline",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -31092,6 +33425,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Cultist knife at the river village marked circle on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -31101,6 +33435,7 @@ const TARKOV_DATA = {
             }
           },
           {
+            "description": "Stash a Cultist knife at the sawmill marked circle on Woods",
             "type": "plantItem",
             "count": 1,
             "foundInRaid": false,
@@ -31144,7 +33479,9 @@ const TARKOV_DATA = {
         "kappaRequired": false,
         "lightkeeperRequired": false,
         "objectives": [
-          {}
+          {
+            "description": "Reach 5.0 standing with Fence"
+          }
         ],
         "finishRewards": {
           "items": [
@@ -31174,6 +33511,7 @@ const TARKOV_DATA = {
         "lightkeeperRequired": false,
         "objectives": [
           {
+            "description": "Hand over RUB",
             "type": "giveItem",
             "count": 1000000,
             "foundInRaid": false,
@@ -35784,22 +38122,34 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "66acd6702b17692df20144c0"
+              "id": "66acd6702b17692df20144c0",
+              "name": "TerraGroup ストレージルーム キーカード",
+              "shortName": "Polikhim",
+              "normalizedName": "terragroup-storage-room-keycard"
             }
           }
         ]
@@ -35809,172 +38159,274 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5da743f586f7744014504f72"
+              "id": "5da743f586f7744014504f72",
+              "name": "USECの隠し倉庫の鍵",
+              "shortName": "USEC",
+              "normalizedName": "usec-stash-key"
             }
           },
           {
             "key": {
-              "id": "5da743f586f7744014504f72"
+              "id": "5da743f586f7744014504f72",
+              "name": "USECの隠し倉庫の鍵",
+              "shortName": "USEC",
+              "normalizedName": "usec-stash-key"
             }
           },
           {
             "key": {
-              "id": "5780d0532459777a5108b9a2"
+              "id": "5780d0532459777a5108b9a2",
+              "name": "Tarcone 管理事務室の鍵",
+              "shortName": "Director's",
+              "normalizedName": "tarcone-directors-office-key"
             }
           },
           {
             "key": {
-              "id": "5913611c86f77479e0084092"
+              "id": "5913611c86f77479e0084092",
+              "name": "トレーラーパークの可搬式詰所の鍵",
+              "shortName": "Cabin",
+              "normalizedName": "trailer-park-portable-cabin-key"
             }
           },
           {
             "key": {
-              "id": "5780d07a2459777de4559324"
+              "id": "5780d07a2459777de4559324",
+              "name": "ポータブルキャビンの鍵",
+              "shortName": "Cabin",
+              "normalizedName": "portable-cabin-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "593962ca86f774068014d9af"
+              "id": "593962ca86f774068014d9af",
+              "name": "用途不明の鍵",
+              "shortName": "Unknown",
+              "normalizedName": "unknown-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5938603e86f77435642354f4"
+              "id": "5938603e86f77435642354f4",
+              "name": "社員寮206号室の鍵",
+              "shortName": "Dorm 206",
+              "normalizedName": "dorm-room-206-key"
             }
           },
           {
             "key": {
-              "id": "591382d986f774465a6413a7"
+              "id": "591382d986f774465a6413a7",
+              "name": "社員寮105号室の鍵",
+              "shortName": "Dorm 105",
+              "normalizedName": "dorm-room-105-key"
             }
           },
           {
             "key": {
-              "id": "59136e1e86f774432f15d133"
+              "id": "59136e1e86f774432f15d133",
+              "name": "社員寮110号室の鍵",
+              "shortName": "Dorm 110",
+              "normalizedName": "dorm-room-110-key"
             }
           },
           {
             "key": {
-              "id": "591383f186f7744a4c5edcf3"
+              "id": "591383f186f7744a4c5edcf3",
+              "name": "社員寮104号室の鍵",
+              "shortName": "Dorm 104",
+              "normalizedName": "dorm-room-104-key"
             }
           },
           {
             "key": {
-              "id": "59387a4986f77401cc236e62"
+              "id": "59387a4986f77401cc236e62",
+              "name": "社員寮114号室の鍵",
+              "shortName": "Dorm 114",
+              "normalizedName": "dorm-room-114-key"
             }
           },
           {
             "key": {
-              "id": "59136a4486f774447a1ed172"
+              "id": "59136a4486f774447a1ed172",
+              "name": "寮の守衛室の鍵",
+              "shortName": "GDesk",
+              "normalizedName": "dorm-guard-desk-key"
             }
           },
           {
             "key": {
-              "id": "5780cf692459777de4559321"
+              "id": "5780cf692459777de4559321",
+              "name": "社員寮315号室の鍵",
+              "shortName": "Dorm 315",
+              "normalizedName": "dorm-room-315-key"
             }
           },
           {
             "key": {
-              "id": "5780cf722459777a5108b9a1"
+              "id": "5780cf722459777a5108b9a1",
+              "name": "社員寮308号室の鍵",
+              "shortName": "Dorm 308",
+              "normalizedName": "dorm-room-308-key"
             }
           },
           {
             "key": {
-              "id": "5780cf7f2459777de4559322"
+              "id": "5780cf7f2459777de4559322",
+              "name": "マークの刻まれた社員寮314号室の鍵",
+              "shortName": "Dorm mrk.",
+              "normalizedName": "dorm-room-314-marked-key"
             }
           },
           {
             "key": {
-              "id": "5672c92d4bdc2d180f8b4567"
+              "id": "5672c92d4bdc2d180f8b4567",
+              "name": "社員寮118号室の鍵",
+              "shortName": "Dorm 118",
+              "normalizedName": "dorm-room-118-key"
             }
           },
           {
             "key": {
-              "id": "5780cfa52459777dfb276eb1"
+              "id": "5780cfa52459777dfb276eb1",
+              "name": "社員寮220号室の鍵",
+              "shortName": "Dorm 220",
+              "normalizedName": "dorm-room-220-key"
             }
           },
           {
             "key": {
-              "id": "5938504186f7740991483f30"
+              "id": "5938504186f7740991483f30",
+              "name": "社員寮203号室の鍵",
+              "shortName": "Dorm 203",
+              "normalizedName": "dorm-room-203-key"
             }
           },
           {
             "key": {
-              "id": "59148c8a86f774197930e983"
+              "id": "59148c8a86f774197930e983",
+              "name": "社員寮204号室の鍵",
+              "shortName": "Dorm 204",
+              "normalizedName": "dorm-room-204-key"
             }
           },
           {
             "key": {
-              "id": "593aa4be86f77457f56379f8"
+              "id": "593aa4be86f77457f56379f8",
+              "name": "社員寮303号室の鍵",
+              "shortName": "Dorm 303",
+              "normalizedName": "dorm-room-303-key"
             }
           },
           {
             "key": {
-              "id": "5914578086f774123569ffa4"
+              "id": "5914578086f774123569ffa4",
+              "name": "社員寮108号室の鍵",
+              "shortName": "Dorm 108",
+              "normalizedName": "dorm-room-108-key"
             }
           },
           {
             "key": {
-              "id": "5780cda02459777b272ede61"
+              "id": "5780cda02459777b272ede61",
+              "name": "社員寮306号室の鍵",
+              "shortName": "Dorm 306",
+              "normalizedName": "dorm-room-306-key"
             }
           },
           {
             "key": {
-              "id": "664d4b0103ef2c61246afb56"
+              "id": "664d4b0103ef2c61246afb56",
+              "name": "寮の監督の鍵",
+              "shortName": "Overseer",
+              "normalizedName": "dorm-overseer-key"
             }
           },
           {
             "key": {
-              "id": "5938994586f774523a425196"
+              "id": "5938994586f774523a425196",
+              "name": "社員寮103号室の鍵",
+              "shortName": "Dorm 103",
+              "normalizedName": "dorm-room-103-key"
             }
           },
           {
             "key": {
-              "id": "5780cf942459777df90dcb72"
+              "id": "5780cf942459777df90dcb72",
+              "name": "社員寮214号室の鍵",
+              "shortName": "Dorm 214",
+              "normalizedName": "dorm-room-214-key"
             }
           },
           {
             "key": {
-              "id": "5780cf9e2459777df90dcb73"
+              "id": "5780cf9e2459777df90dcb73",
+              "name": "社員寮218号室の鍵",
+              "shortName": "Dorm 218",
+              "normalizedName": "dorm-room-218-key"
             }
           },
           {
             "key": {
-              "id": "5913877a86f774432f15d444"
+              "id": "5913877a86f774432f15d444",
+              "name": "ガソリンスタンドの物置の鍵",
+              "shortName": "Gas store",
+              "normalizedName": "gas-station-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "5780d0652459777df90dcb74"
+              "id": "5780d0652459777df90dcb74",
+              "name": "ガソリンスタンドの事務室の鍵",
+              "shortName": "Gas office",
+              "normalizedName": "gas-station-office-key"
             }
           },
           {
             "key": {
-              "id": "6761a6f90575f25e020816a4"
+              "id": "6761a6f90575f25e020816a4",
+              "name": "会社役員室の鍵",
+              "shortName": "Company",
+              "normalizedName": "company-directors-room-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5938144586f77473c2087145"
+              "id": "5938144586f77473c2087145",
+              "name": "可搬式の詰所の鍵",
+              "shortName": "Bunkhouse",
+              "normalizedName": "portable-bunkhouse-key"
             }
           },
           {
             "key": {
-              "id": "5937ee6486f77408994ba448"
+              "id": "5937ee6486f77408994ba448",
+              "name": "特殊車両の鍵",
+              "shortName": "Machinery",
+              "normalizedName": "machinery-key"
             }
           }
         ]
@@ -35984,22 +38436,34 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "664d3db6db5dea2bad286955"
+              "id": "664d3db6db5dea2bad286955",
+              "name": "Shatun のハイドアウトの鍵",
+              "shortName": "Shatun",
+              "normalizedName": "shatuns-hideout-key"
             }
           },
           {
             "key": {
-              "id": "591afe0186f77431bd616a11"
+              "id": "591afe0186f77431bd616a11",
+              "name": "ZB-014 の鍵",
+              "shortName": "ZB-014",
+              "normalizedName": "zb-014-key"
             }
           },
           {
             "key": {
-              "id": "6761a6ccd9bbb27ad703c48a"
+              "id": "6761a6ccd9bbb27ad703c48a",
+              "name": "古い家の部屋の鍵",
+              "shortName": "Depot",
+              "normalizedName": "old-house-room-key"
             }
           },
           {
             "key": {
-              "id": "5d08d21286f774736e7c94c3"
+              "id": "5d08d21286f774736e7c94c3",
+              "name": "Shturman の保管庫の鍵",
+              "shortName": "SSK",
+              "normalizedName": "shturmans-stash-key"
             }
           }
         ]
@@ -36009,132 +38473,210 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "61a64428a8c6aa1b795f0ba1"
+              "id": "61a64428a8c6aa1b795f0ba1",
+              "name": "コンビニエンスストアの貯蔵室の鍵",
+              "shortName": "Store",
+              "normalizedName": "convenience-store-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "62987cb98081af308d7558c8"
+              "id": "62987cb98081af308d7558c8",
+              "name": "会議室の鍵",
+              "shortName": "Conf.",
+              "normalizedName": "conference-room-key"
             }
           },
           {
             "key": {
-              "id": "62987dfc402c7f69bf010923"
+              "id": "62987dfc402c7f69bf010923",
+              "name": "マークの刻まれた共同寝室の鍵",
+              "shortName": "Bedroom",
+              "normalizedName": "shared-bedroom-marked-key"
             }
           },
           {
             "key": {
-              "id": "62987c658081af308d7558c6"
+              "id": "62987c658081af308d7558c6",
+              "name": "レーダー管制施設の指揮官室の鍵",
+              "shortName": "Radar",
+              "normalizedName": "radar-station-commandant-room-key"
             }
           },
           {
             "key": {
-              "id": "61aa5b7db225ac1ead7957c1"
+              "id": "61aa5b7db225ac1ead7957c1",
+              "name": "USEC の1番金庫の鍵",
+              "shortName": "USEC 1",
+              "normalizedName": "usec-cottage-first-safe-key"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9"
+              "id": "61aa5ba8018e9821b7368da9",
+              "name": "USEC の2番金庫の鍵",
+              "shortName": "USEC 2",
+              "normalizedName": "usec-cottage-second-safe-key"
             }
           },
           {
             "key": {
-              "id": "66265d7be65f224b2e17c6aa"
+              "id": "66265d7be65f224b2e17c6aa",
+              "name": "USEC コテージの部屋の鍵",
+              "shortName": "USEC cott.",
+              "normalizedName": "usec-cottage-room-key"
             }
           },
           {
             "key": {
-              "id": "61a6446f4b5f8b70f451b166"
+              "id": "61a6446f4b5f8b70f451b166",
+              "name": "Cold storage room key",
+              "shortName": "Cold",
+              "normalizedName": "cold-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "664d3de85f2355673b09aed5"
+              "id": "664d3de85f2355673b09aed5",
+              "name": "Leon's hideout key",
+              "shortName": "Leon",
+              "normalizedName": "leons-hideout-key"
             }
           },
           {
             "key": {
-              "id": "61a6444b8c141d68246e2d2f"
+              "id": "61a6444b8c141d68246e2d2f",
+              "name": "丘陵地の家の鍵",
+              "shortName": "House",
+              "normalizedName": "hillside-house-key"
             }
           },
           {
             "key": {
-              "id": "62987da96188c076bc0d8c51"
+              "id": "62987da96188c076bc0d8c51",
+              "name": "手術室の鍵",
+              "shortName": "OR",
+              "normalizedName": "operating-room-key"
             }
           },
           {
             "key": {
-              "id": "62987e26a77ec735f90a2995"
+              "id": "62987e26a77ec735f90a2995",
+              "name": "浄水場の保管室の鍵",
+              "shortName": "WTP store",
+              "normalizedName": "water-treatment-plant-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "62a9cb937377a65d7b070cef"
+              "id": "62a9cb937377a65d7b070cef",
+              "name": "Rogue USEC の兵舎の鍵",
+              "shortName": "Barrack",
+              "normalizedName": "rogue-usec-barrack-key"
             }
           },
           {
             "key": {
-              "id": "61a64492ba05ef10d62adcc1"
+              "id": "61a64492ba05ef10d62adcc1",
+              "name": "Rogue USEC の保管庫の鍵",
+              "shortName": "Stash",
+              "normalizedName": "rogue-usec-stash-key"
             }
           },
           {
             "key": {
-              "id": "61aa81fcb225ac1ead7957c3"
+              "id": "61aa81fcb225ac1ead7957c3",
+              "name": "Rogue USEC の作業小屋の鍵",
+              "shortName": "Workshop",
+              "normalizedName": "rogue-usec-workshop-key"
             }
           },
           {
             "key": {
-              "id": "61aa5aed32a4743c3453d319"
+              "id": "61aa5aed32a4743c3453d319",
+              "name": "護送車の車室の鍵",
+              "shortName": "Police",
+              "normalizedName": "police-truck-cabin-key"
             }
           },
           {
             "key": {
-              "id": "61aa5b518f5e7a39b41416e2"
+              "id": "61aa5b518f5e7a39b41416e2",
+              "name": "Merin 車のトランクの鍵",
+              "shortName": "Merin",
+              "normalizedName": "merin-car-trunk-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           }
         ]
@@ -36144,192 +38686,306 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5a0eb38b86f774153b320eb0"
+              "id": "5a0eb38b86f774153b320eb0",
+              "name": "SMW 車の鍵",
+              "shortName": "SMW",
+              "normalizedName": "smw-car-key"
             }
           },
           {
             "key": {
-              "id": "5d8e15b686f774445103b190"
+              "id": "5d8e15b686f774445103b190",
+              "name": "水力発電所の保管庫の鍵",
+              "shortName": "HEPS",
+              "normalizedName": "hep-station-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "664d3ddfdda2e85aca370d75"
+              "id": "664d3ddfdda2e85aca370d75",
+              "name": "Voron's hideout key",
+              "shortName": "Voron",
+              "normalizedName": "vorons-hideout-key"
             }
           },
           {
             "key": {
-              "id": "5a0eb6ac86f7743124037a28"
+              "id": "5a0eb6ac86f7743124037a28",
+              "name": "コテージの裏口の鍵",
+              "shortName": "Cottage",
+              "normalizedName": "cottage-back-door-key"
             }
           },
           {
             "key": {
-              "id": "5d8e15b686f774445103b190"
+              "id": "5d8e15b686f774445103b190",
+              "name": "水力発電所の保管庫の鍵",
+              "shortName": "HEPS",
+              "normalizedName": "hep-station-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "5eff09cd30a7dc22fd1ddfed"
+              "id": "5eff09cd30a7dc22fd1ddfed",
+              "name": "青いテープの貼られた保養所の事務室の鍵",
+              "shortName": "San tape",
+              "normalizedName": "health-resort-office-key-with-a-blue-tape"
             }
           },
           {
             "key": {
-              "id": "5a0dc95c86f77452440fc675"
+              "id": "5a0dc95c86f77452440fc675",
+              "name": "保養所 西棟休憩室112号室の鍵",
+              "shortName": "W112 San",
+              "normalizedName": "health-resort-west-wing-office-room-112-key"
             }
           },
           {
             "key": {
-              "id": "5a0ea64786f7741707720468"
+              "id": "5a0ea64786f7741707720468",
+              "name": "保養所 東棟診療室107号室の鍵",
+              "shortName": "E107 San",
+              "normalizedName": "health-resort-east-wing-office-room-107-key"
             }
           },
           {
             "key": {
-              "id": "5a0dc45586f7742f6b0b73e3"
+              "id": "5a0dc45586f7742f6b0b73e3",
+              "name": "保養所 西棟診療室104号室の鍵",
+              "shortName": "W104 San",
+              "normalizedName": "health-resort-west-wing-office-room-104-key"
             }
           },
           {
             "key": {
-              "id": "5a145d4786f7744cbb6f4a12"
+              "id": "5a145d4786f7744cbb6f4a12",
+              "name": "保養所 東棟306号室の鍵",
+              "shortName": "E306 San",
+              "normalizedName": "health-resort-east-wing-room-306-key"
             }
           },
           {
             "key": {
-              "id": "5a144dfd86f77445cb5a0982"
+              "id": "5a144dfd86f77445cb5a0982",
+              "name": "保養所 西棟203号室の鍵",
+              "shortName": "W203 San",
+              "normalizedName": "health-resort-west-wing-room-203-key"
             }
           },
           {
             "key": {
-              "id": "5a0ea79b86f7741d4a35298e"
+              "id": "5a0ea79b86f7741d4a35298e",
+              "name": "保養所 保管室の鍵",
+              "shortName": "San util.",
+              "normalizedName": "health-resort-universal-utility-room-key"
             }
           },
           {
             "key": {
-              "id": "5a13ef7e86f7741290491063"
+              "id": "5a13ef7e86f7741290491063",
+              "name": "保養所 西棟301号室の鍵",
+              "shortName": "W301 San",
+              "normalizedName": "health-resort-west-wing-room-301-key"
             }
           },
           {
             "key": {
-              "id": "5a0ee37f86f774023657a86f"
+              "id": "5a0ee37f86f774023657a86f",
+              "name": "保養所 西棟221号室の鍵",
+              "shortName": "W221 San",
+              "normalizedName": "health-resort-west-wing-room-221-key"
             }
           },
           {
             "key": {
-              "id": "5a0eec9686f77402ac5c39f2"
+              "id": "5a0eec9686f77402ac5c39f2",
+              "name": "保養所 東棟310号室の鍵",
+              "shortName": "E310 San",
+              "normalizedName": "health-resort-east-wing-room-310-key"
             }
           },
           {
             "key": {
-              "id": "5a0ee4b586f7743698200d22"
+              "id": "5a0ee4b586f7743698200d22",
+              "name": "保養所 東棟206号室の鍵",
+              "shortName": "E206 San",
+              "normalizedName": "health-resort-east-wing-room-206-key"
             }
           },
           {
             "key": {
-              "id": "5a0ee34586f774023b6ee092"
+              "id": "5a0ee34586f774023b6ee092",
+              "name": "保養所 西棟220号室の鍵",
+              "shortName": "W220 San",
+              "normalizedName": "health-resort-west-wing-room-220-key"
             }
           },
           {
             "key": {
-              "id": "5a0eecf686f7740350630097"
+              "id": "5a0eecf686f7740350630097",
+              "name": "保養所 東棟313号室の鍵",
+              "shortName": "E313 San",
+              "normalizedName": "health-resort-east-wing-room-313-key"
             }
           },
           {
             "key": {
-              "id": "5a0ee30786f774023b6ee08f"
+              "id": "5a0ee30786f774023b6ee08f",
+              "name": "保養所 西棟216号室の鍵",
+              "shortName": "W216 San",
+              "normalizedName": "health-resort-west-wing-room-216-key"
             }
           },
           {
             "key": {
-              "id": "5a13f35286f77413ef1436b0"
+              "id": "5a13f35286f77413ef1436b0",
+              "name": "保養所 東棟226号室の鍵",
+              "shortName": "E226 San",
+              "normalizedName": "health-resort-east-wing-room-226-key"
             }
           },
           {
             "key": {
-              "id": "5a0eee1486f77402aa773226"
+              "id": "5a0eee1486f77402aa773226",
+              "name": "保養所 東棟328号室の鍵",
+              "shortName": "E328 San",
+              "normalizedName": "health-resort-east-wing-room-328-key"
             }
           },
           {
             "key": {
-              "id": "5a0eed4386f77405112912aa"
+              "id": "5a0eed4386f77405112912aa",
+              "name": "保養所 東棟314号室の鍵",
+              "shortName": "E314 San",
+              "normalizedName": "health-resort-east-wing-room-314-key"
             }
           },
           {
             "key": {
-              "id": "5a145d7b86f7744cbb6f4a13"
+              "id": "5a145d7b86f7744cbb6f4a13",
+              "name": "保養所 東棟308号室の鍵",
+              "shortName": "E308 San",
+              "normalizedName": "health-resort-east-wing-room-308-key"
             }
           },
           {
             "key": {
-              "id": "5a145ebb86f77458f1796f05"
+              "id": "5a145ebb86f77458f1796f05",
+              "name": "保養所 東棟316号室の鍵",
+              "shortName": "E316 San",
+              "normalizedName": "health-resort-east-wing-room-316-key"
             }
           },
           {
             "key": {
-              "id": "5a13f46386f7741dd7384b04"
+              "id": "5a13f46386f7741dd7384b04",
+              "name": "保養所 西棟306号室の鍵",
+              "shortName": "W306 San",
+              "normalizedName": "health-resort-west-wing-room-306-key"
             }
           },
           {
             "key": {
-              "id": "5a13f24186f77410e57c5626"
+              "id": "5a13f24186f77410e57c5626",
+              "name": "保養所 東棟222号室の鍵",
+              "shortName": "E222 San",
+              "normalizedName": "health-resort-east-wing-room-222-key"
             }
           },
           {
             "key": {
-              "id": "5a0ea79b86f7741d4a35298e"
+              "id": "5a0ea79b86f7741d4a35298e",
+              "name": "保養所 保管室の鍵",
+              "shortName": "San util.",
+              "normalizedName": "health-resort-universal-utility-room-key"
             }
           },
           {
             "key": {
-              "id": "5a13eebd86f7746fd639aa93"
+              "id": "5a13eebd86f7746fd639aa93",
+              "name": "保養所 西棟218号室の鍵",
+              "shortName": "W218 San",
+              "normalizedName": "health-resort-west-wing-room-218-key"
             }
           },
           {
             "key": {
-              "id": "5a0ec6d286f7742c0b518fb5"
+              "id": "5a0ec6d286f7742c0b518fb5",
+              "name": "保養所 西棟205号室の鍵",
+              "shortName": "W205 San",
+              "normalizedName": "health-resort-west-wing-room-205-key"
             }
           },
           {
             "key": {
-              "id": "5a1452ee86f7746f33111763"
+              "id": "5a1452ee86f7746f33111763",
+              "name": "保養所 西棟222号室の鍵",
+              "shortName": "W222 San",
+              "normalizedName": "health-resort-west-wing-room-222-key"
             }
           },
           {
             "key": {
-              "id": "5a13ef0686f7746e5a411744"
+              "id": "5a13ef0686f7746e5a411744",
+              "name": "保養所 西棟219号室の鍵",
+              "shortName": "W219 San",
+              "normalizedName": "health-resort-west-wing-room-219-key"
             }
           },
           {
             "key": {
-              "id": "5a144bdb86f7741d374bbde0"
+              "id": "5a144bdb86f7741d374bbde0",
+              "name": "保養所 東棟205号室の鍵",
+              "shortName": "E205 San",
+              "normalizedName": "health-resort-east-wing-room-205-key"
             }
           },
           {
             "key": {
-              "id": "679b9716597ba2ed120c3d3f"
+              "id": "679b9716597ba2ed120c3d3f",
+              "name": "Knossos LLC の施設の鍵",
+              "shortName": "Knossos",
+              "normalizedName": "knossos-llc-facility-key"
             }
           },
           {
             "key": {
-              "id": "5a0f08bc86f77478f33b84c2"
+              "id": "5a0f08bc86f77478f33b84c2",
+              "name": "保養所 管理事務室の金庫の鍵",
+              "shortName": "Safe",
+              "normalizedName": "health-resort-management-office-safe-key"
             }
           },
           {
             "key": {
-              "id": "5a0f068686f7745b0d4ea242"
+              "id": "5a0f068686f7745b0d4ea242",
+              "name": "コテージの金庫の鍵",
+              "shortName": "Safe",
+              "normalizedName": "cottage-safe-key"
             }
           },
           {
             "key": {
-              "id": "5a0f0f5886f7741c4e32a472"
+              "id": "5a0f0f5886f7741c4e32a472",
+              "name": "保養所 管理棟倉庫の金庫の鍵",
+              "shortName": "Safe",
+              "normalizedName": "health-resort-management-warehouse-safe-key"
             }
           },
           {
             "key": {
-              "id": "5a0eff2986f7741fd654e684"
+              "id": "5a0eff2986f7741fd654e684",
+              "name": "保養所 西棟321号室の金庫の鍵",
+              "shortName": "W321 safe",
+              "normalizedName": "health-resort-west-wing-room-321-safe-key"
             }
           }
         ]
@@ -36339,167 +38995,266 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5d80c66d86f774405611c7d6"
+              "id": "5d80c66d86f774405611c7d6",
+              "name": "RB-AO の鍵",
+              "shortName": "RB-AO",
+              "normalizedName": "rb-ao-key"
             }
           },
           {
             "key": {
-              "id": "5d80c62a86f7744036212b3f"
+              "id": "5d80c62a86f7744036212b3f",
+              "name": "マークの刻まれた RB-VO の鍵",
+              "shortName": "RB-VO mrk.",
+              "normalizedName": "rb-vo-marked-key"
             }
           },
           {
             "key": {
-              "id": "5d8e0e0e86f774321140eb56"
+              "id": "5d8e0e0e86f774321140eb56",
+              "name": "RB-KPRL の鍵",
+              "shortName": "RB-KPRL",
+              "normalizedName": "rb-kprl-key"
             }
           },
           {
             "key": {
-              "id": "5d8e0e0e86f774321140eb56"
+              "id": "5d8e0e0e86f774321140eb56",
+              "name": "RB-KPRL の鍵",
+              "shortName": "RB-KPRL",
+              "normalizedName": "rb-kprl-key"
             }
           },
           {
             "key": {
-              "id": "5d9f1fa686f774726974a992"
+              "id": "5d9f1fa686f774726974a992",
+              "name": "RB-ST の鍵",
+              "shortName": "RB-ST",
+              "normalizedName": "rb-st-key"
             }
           },
           {
             "key": {
-              "id": "5d947d4e86f774447b415895"
+              "id": "5d947d4e86f774447b415895",
+              "name": "RB-KSM の鍵",
+              "shortName": "RB-KSM",
+              "normalizedName": "rb-ksm-key"
             }
           },
           {
             "key": {
-              "id": "5d947d3886f774447b415893"
+              "id": "5d947d3886f774447b415893",
+              "name": "RB-SMP の鍵",
+              "shortName": "RB-SMP",
+              "normalizedName": "rb-smp-key"
             }
           },
           {
             "key": {
-              "id": "5d95d6be86f77424444eb3a7"
+              "id": "5d95d6be86f77424444eb3a7",
+              "name": "RB-PSV2 の鍵",
+              "shortName": "RB-PSV2",
+              "normalizedName": "rb-psv2-key"
             }
           },
           {
             "key": {
-              "id": "5d80cb5686f77440545d1286"
+              "id": "5d80cb5686f77440545d1286",
+              "name": "RB-PSV1 の鍵",
+              "shortName": "RB-PSV1",
+              "normalizedName": "rb-psv1-key"
             }
           },
           {
             "key": {
-              "id": "5d80cb3886f77440556dbf09"
+              "id": "5d80cb3886f77440556dbf09",
+              "name": "RB-PSP1 の鍵",
+              "shortName": "RB-PSP1",
+              "normalizedName": "rb-psp1-key"
             }
           },
           {
             "key": {
-              "id": "5d95d6be86f77424444eb3a7"
+              "id": "5d95d6be86f77424444eb3a7",
+              "name": "RB-PSV2 の鍵",
+              "shortName": "RB-PSV2",
+              "normalizedName": "rb-psv2-key"
             }
           },
           {
             "key": {
-              "id": "5d80cb3886f77440556dbf09"
+              "id": "5d80cb3886f77440556dbf09",
+              "name": "RB-PSP1 の鍵",
+              "shortName": "RB-PSP1",
+              "normalizedName": "rb-psp1-key"
             }
           },
           {
             "key": {
-              "id": "5d95d6fa86f77424484aa5e9"
+              "id": "5d95d6fa86f77424484aa5e9",
+              "name": "RB-PSP2 の鍵",
+              "shortName": "RB-PSP2",
+              "normalizedName": "rb-psp2-key"
             }
           },
           {
             "key": {
-              "id": "5d80c88d86f77440556dbf07"
+              "id": "5d80c88d86f77440556dbf07",
+              "name": "RB-AM の鍵",
+              "shortName": "RB-AM",
+              "normalizedName": "rb-am-key"
             }
           },
           {
             "key": {
-              "id": "5d80c78786f774403a401e3e"
+              "id": "5d80c78786f774403a401e3e",
+              "name": "RB-AK の鍵",
+              "shortName": "RB-AK",
+              "normalizedName": "rb-ak-key"
             }
           },
           {
             "key": {
-              "id": "5d80c60f86f77440373c4ece"
+              "id": "5d80c60f86f77440373c4ece",
+              "name": "マークの刻まれた RB-BK の鍵",
+              "shortName": "RB-BK mrk.",
+              "normalizedName": "rb-bk-marked-key"
             }
           },
           {
             "key": {
-              "id": "5d80ccac86f77470841ff452"
+              "id": "5d80ccac86f77470841ff452",
+              "name": "RB-ORB1 の鍵",
+              "shortName": "RB-ORB1",
+              "normalizedName": "rb-orb1-key"
             }
           },
           {
             "key": {
-              "id": "5d80c6fc86f774403a401e3c"
+              "id": "5d80c6fc86f774403a401e3c",
+              "name": "RB-TB の鍵",
+              "shortName": "RB-TB",
+              "normalizedName": "rb-tb-key"
             }
           },
           {
             "key": {
-              "id": "5d80ccdd86f77474f7575e02"
+              "id": "5d80ccdd86f77474f7575e02",
+              "name": "RB-ORB2 の鍵",
+              "shortName": "RB-ORB2",
+              "normalizedName": "rb-orb2-key"
             }
           },
           {
             "key": {
-              "id": "5d80cd1a86f77402aa362f42"
+              "id": "5d80cd1a86f77402aa362f42",
+              "name": "RB-ORB3 の鍵",
+              "shortName": "RB-ORB3",
+              "normalizedName": "rb-orb3-key"
             }
           },
           {
             "key": {
-              "id": "5d80c6c586f77440351beef1"
+              "id": "5d80c6c586f77440351beef1",
+              "name": "RB-OB の鍵",
+              "shortName": "RB-OB",
+              "normalizedName": "rb-ob-key"
             }
           },
           {
             "key": {
-              "id": "5d8e3ecc86f774414c78d05e"
+              "id": "5d8e3ecc86f774414c78d05e",
+              "name": "RB-GN の鍵",
+              "shortName": "RB-GN",
+              "normalizedName": "rb-gn-key"
             }
           },
           {
             "key": {
-              "id": "5d80c8f586f77440373c4ed0"
+              "id": "5d80c8f586f77440373c4ed0",
+              "name": "RB-OP の鍵",
+              "shortName": "RB-OP",
+              "normalizedName": "rb-op-key"
             }
           },
           {
             "key": {
-              "id": "5da5cdcd86f774529238fb9b"
+              "id": "5da5cdcd86f774529238fb9b",
+              "name": "RB-RH の鍵",
+              "shortName": "RB-RH",
+              "normalizedName": "rb-rh-key"
             }
           },
           {
             "key": {
-              "id": "5d80c95986f77440351beef3"
+              "id": "5d80c95986f77440351beef3",
+              "name": "RB-MP12 の鍵",
+              "shortName": "RB-MP12",
+              "normalizedName": "rb-mp12-key"
             }
           },
           {
             "key": {
-              "id": "5d80ca9086f774403a401e40"
+              "id": "5d80ca9086f774403a401e40",
+              "name": "RB-MP21 の鍵",
+              "shortName": "RB-MP21",
+              "normalizedName": "rb-mp21-key"
             }
           },
           {
             "key": {
-              "id": "5d80c93086f7744036212b41"
+              "id": "5d80c93086f7744036212b41",
+              "name": "RB-MP11 の鍵",
+              "shortName": "RB-MP11",
+              "normalizedName": "rb-mp11-key"
             }
           },
           {
             "key": {
-              "id": "5d80cab086f77440535be201"
+              "id": "5d80cab086f77440535be201",
+              "name": "RB-MP22の鍵",
+              "shortName": "RB-MP22",
+              "normalizedName": "rb-mp22-key"
             }
           },
           {
             "key": {
-              "id": "5d80cbd886f77470855c26c2"
+              "id": "5d80cbd886f77470855c26c2",
+              "name": "RB-MP13 の鍵",
+              "shortName": "RB-MP13",
+              "normalizedName": "rb-mp13-key"
             }
           },
           {
             "key": {
-              "id": "5d8e0db586f7744450412a42"
+              "id": "5d8e0db586f7744450412a42",
+              "name": "RB-KORL の鍵",
+              "shortName": "RB-KORL",
+              "normalizedName": "rb-korl-key"
             }
           },
           {
             "key": {
-              "id": "5ede7b0c6d23e5473e6e8c66"
+              "id": "5ede7b0c6d23e5473e6e8c66",
+              "name": "RB-RLSA の鍵",
+              "shortName": "RB-RLSA",
+              "normalizedName": "rb-rlsa-key"
             }
           },
           {
             "key": {
-              "id": "5da46e3886f774653b7a83fe"
+              "id": "5da46e3886f774653b7a83fe",
+              "name": "RB-RS の鍵",
+              "shortName": "RB-RS",
+              "normalizedName": "rb-rs-key"
             }
           },
           {
             "key": {
-              "id": "5ede7a8229445733cb4c18e2"
+              "id": "5ede7a8229445733cb4c18e2",
+              "name": "マークの刻まれた RB-PKPM の鍵",
+              "shortName": "RB-PKPM mrk.",
+              "normalizedName": "rb-pkpm-marked-key"
             }
           }
         ]
@@ -36509,507 +39264,810 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5ad5d49886f77455f9731921"
+              "id": "5ad5d49886f77455f9731921",
+              "name": "変電所の作業小屋の鍵",
+              "shortName": "Power",
+              "normalizedName": "power-substation-utility-cabin-key"
             }
           },
           {
             "key": {
-              "id": "664d3dd590294949fe2d81b7"
+              "id": "664d3dd590294949fe2d81b7",
+              "name": "Grumpy's hideout key",
+              "shortName": "Grumpy",
+              "normalizedName": "grumpys-hideout-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5ad5d64486f774079b080af8"
+              "id": "5ad5d64486f774079b080af8",
+              "name": "薬局 NecrusPharm の鍵",
+              "shortName": "Pharmacy",
+              "normalizedName": "necruspharm-pharmacy-key"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce"
+              "id": "5ad5db3786f7743568421cce",
+              "name": "EMERCOM の仮設診療所の鍵",
+              "shortName": "EMC",
+              "normalizedName": "emercom-medical-unit-key"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce"
+              "id": "5ad5db3786f7743568421cce",
+              "name": "EMERCOM の仮設診療所の鍵",
+              "shortName": "EMC",
+              "normalizedName": "emercom-medical-unit-key"
             }
           },
           {
             "key": {
-              "id": "5ad5db3786f7743568421cce"
+              "id": "5ad5db3786f7743568421cce",
+              "name": "EMERCOM の仮設診療所の鍵",
+              "shortName": "EMC",
+              "normalizedName": "emercom-medical-unit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5ad5cfbd86f7742c825d6104"
+              "id": "5ad5cfbd86f7742c825d6104",
+              "name": "OLI 物流部事務室の鍵",
+              "shortName": "OLI Log.",
+              "normalizedName": "oli-logistics-department-office-key"
             }
           },
           {
             "key": {
-              "id": "5ad5d20586f77449be26d877"
+              "id": "5ad5d20586f77449be26d877",
+              "name": "OLI 備品保管室の鍵",
+              "shortName": "OLI util.",
+              "normalizedName": "oli-outlet-utility-room-key"
             }
           },
           {
             "key": {
-              "id": "5ad5ccd186f774446d5706e9"
+              "id": "5ad5ccd186f774446d5706e9",
+              "name": "OLI 管理事務室の鍵",
+              "shortName": "OLI Office",
+              "normalizedName": "oli-administration-office-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7217186f7746744498875"
+              "id": "5ad7217186f7746744498875",
+              "name": "OLI のレジの鍵",
+              "shortName": "OLI reg.",
+              "normalizedName": "oli-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7242b86f7740a6a3abd43"
+              "id": "5ad7242b86f7740a6a3abd43",
+              "name": "IDEA のレジの鍵",
+              "shortName": "IDEA reg.",
+              "normalizedName": "idea-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5e42c71586f7747f245e1343"
+              "id": "5e42c71586f7747f245e1343",
+              "name": "ULTRA 医薬品保管室の鍵",
+              "shortName": "ULTRA med.",
+              "normalizedName": "ultra-medical-storage-key"
             }
           },
           {
             "key": {
-              "id": "5addaffe86f77470b455f900"
+              "id": "5addaffe86f77470b455f900",
+              "name": "Kiba Arms の鉄格子の鍵",
+              "shortName": "KIBA inner",
+              "normalizedName": "kiba-arms-inner-grate-door-key"
             }
           },
           {
             "key": {
-              "id": "5ad5d7d286f77450166e0a89"
+              "id": "5ad5d7d286f77450166e0a89",
+              "name": "Kiba Arms の外部扉の鍵",
+              "shortName": "KIBA outer",
+              "normalizedName": "kiba-arms-outer-door-key"
             }
           },
           {
             "key": {
-              "id": "5e42c81886f7742a01529f57"
+              "id": "5e42c81886f7742a01529f57",
+              "name": "オブジェクト #11SR のキーカード",
+              "shortName": "#11SR",
+              "normalizedName": "object-11sr-keycard"
             }
           },
           {
             "key": {
-              "id": "5e42c83786f7742a021fdf3c"
+              "id": "5e42c83786f7742a021fdf3c",
+              "name": "オブジェクト #21WS のキーカード",
+              "shortName": "#21WS",
+              "normalizedName": "object-21ws-keycard"
             }
           }
         ]
@@ -37019,292 +40077,466 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "6582dc4b6ba9e979af6b79f4"
+              "id": "6582dc4b6ba9e979af6b79f4",
+              "name": "MVD アカデミー エントランスホールの守衛室の鍵",
+              "shortName": "MVD",
+              "normalizedName": "mvd-academy-entrance-hall-guard-room-key"
             }
           },
           {
             "key": {
-              "id": "63a39f08cd6db0635c197600"
+              "id": "63a39f08cd6db0635c197600",
+              "name": "ホテルの215号室の鍵",
+              "shortName": "Pnwd 215",
+              "normalizedName": "pinewood-hotel-room-215-key"
             }
           },
           {
             "key": {
-              "id": "6582dbf0b8d7830efc45016f"
+              "id": "6582dbf0b8d7830efc45016f",
+              "name": "リラクゼーションルームの鍵",
+              "shortName": "Relax",
+              "normalizedName": "relaxation-room-key"
             }
           },
           {
             "key": {
-              "id": "63a3a93f8a56922e82001f5d"
+              "id": "63a3a93f8a56922e82001f5d",
+              "name": "マークの刻まれた廃工場の鍵",
+              "shortName": "Aband.",
+              "normalizedName": "abandoned-factory-marked-key"
             }
           },
           {
             "key": {
-              "id": "63a71ed21031ac76fe773c7f"
+              "id": "63a71ed21031ac76fe773c7f",
+              "name": "金融機関の事務室の鍵",
+              "shortName": "Finance s",
+              "normalizedName": "financial-institution-small-office-key"
             }
           },
           {
             "key": {
-              "id": "63a39667c9b3aa4b61683e98"
+              "id": "63a39667c9b3aa4b61683e98",
+              "name": "金融機関の執務室の鍵",
+              "shortName": "Finance",
+              "normalizedName": "financial-institution-office-key"
             }
           },
           {
             "key": {
-              "id": "6398fd8ad3de3849057f5128"
+              "id": "6398fd8ad3de3849057f5128",
+              "name": "予備の隠れ家の鍵",
+              "shortName": "Hideout",
+              "normalizedName": "backup-hideout-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "6582dc5740562727a654ebb1"
+              "id": "6582dc5740562727a654ebb1",
+              "name": "不動産会社オフィスの鍵",
+              "shortName": "REA",
+              "normalizedName": "real-estate-agency-office-room-key"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289"
+              "id": "63a39f6e64283b5e9c56b289",
+              "name": "鉄格子の扉の鍵",
+              "shortName": "Iron gate",
+              "normalizedName": "iron-gate-key"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289"
+              "id": "63a39f6e64283b5e9c56b289",
+              "name": "鉄格子の扉の鍵",
+              "shortName": "Iron gate",
+              "normalizedName": "iron-gate-key"
             }
           },
           {
             "key": {
-              "id": "63a39f6e64283b5e9c56b289"
+              "id": "63a39f6e64283b5e9c56b289",
+              "name": "鉄格子の扉の鍵",
+              "shortName": "Iron gate",
+              "normalizedName": "iron-gate-key"
             }
           },
           {
             "key": {
-              "id": "63a39fd1c9b3aa4b61683efb"
+              "id": "63a39fd1c9b3aa4b61683efb",
+              "name": "階段の踊り場の鍵",
+              "shortName": "Stairs",
+              "normalizedName": "stair-landing-key"
             }
           },
           {
             "key": {
-              "id": "63a39fc0af870e651d58e6ae"
+              "id": "63a39fc0af870e651d58e6ae",
+              "name": "チェカンナヤ通り15番地の賃貸住宅の鍵",
+              "shortName": "Chek 15",
+              "normalizedName": "chekannaya-15-apartment-key"
             }
           },
           {
             "key": {
-              "id": "63a39e1d234195315d4020bd"
+              "id": "63a39e1d234195315d4020bd",
+              "name": "プリモルスキー通り46～48番地 スカイブリッジの鍵",
+              "shortName": "Skybridge 46-48",
+              "normalizedName": "primorsky-46-48-skybridge-key"
             }
           },
           {
             "key": {
-              "id": "63a71eb5b7f4570d3a29316b"
+              "id": "63a71eb5b7f4570d3a29316b",
+              "name": "プリモルスキー通り48番地の集合住宅の鍵",
+              "shortName": "Prim 48",
+              "normalizedName": "primorsky-48-apartment-key"
             }
           },
           {
             "key": {
-              "id": "64ccc2111779ad6ba200a139"
+              "id": "64ccc2111779ad6ba200a139",
+              "name": "タルバンクのレジ部門の鍵",
+              "shortName": "Tarbank",
+              "normalizedName": "tarbank-cash-register-department-key"
             }
           },
           {
             "key": {
-              "id": "64ccc2111779ad6ba200a139"
+              "id": "64ccc2111779ad6ba200a139",
+              "name": "タルバンクのレジ部門の鍵",
+              "shortName": "Tarbank",
+              "normalizedName": "tarbank-cash-register-department-key"
             }
           },
           {
             "key": {
-              "id": "63a39dfe3901f439517cafba"
+              "id": "63a39dfe3901f439517cafba",
+              "name": "ズミ―スキー通り3番地のアパート8号室の鍵",
+              "shortName": "Zm apt. 8",
+              "normalizedName": "zmeisky-3-apartment-8-key"
             }
           },
           {
             "key": {
-              "id": "63a39e49cd6db0635c1975fc"
+              "id": "63a39e49cd6db0635c1975fc",
+              "name": "資料室の鍵",
+              "shortName": "Archives",
+              "normalizedName": "archive-room-key"
             }
           },
           {
             "key": {
-              "id": "63a39df18a56922e82001f25"
+              "id": "63a39df18a56922e82001f25",
+              "name": "ズミ―スキー通り5番地のアパート20号室の鍵",
+              "shortName": "Zm apt. 20",
+              "normalizedName": "zmeisky-5-apartment-20-key"
             }
           },
           {
             "key": {
-              "id": "64ccc25f95763a1ae376e447"
+              "id": "64ccc25f95763a1ae376e447",
+              "name": "マークの刻まれた怪しい部屋の鍵",
+              "shortName": "Chek. 13",
+              "normalizedName": "mysterious-room-marked-key"
             }
           },
           {
             "key": {
-              "id": "64d4b23dc1b37504b41ac2b6"
+              "id": "64d4b23dc1b37504b41ac2b6",
+              "name": "錆びと血の鍵",
+              "shortName": "Rusted",
+              "normalizedName": "rusted-bloody-key"
             }
           },
           {
             "key": {
-              "id": "64ccc268c41e91416064ebc7"
+              "id": "64ccc268c41e91416064ebc7",
+              "name": "体育教師の事務室の鍵",
+              "shortName": "PE",
+              "normalizedName": "pe-teachers-office-key"
             }
           },
           {
             "key": {
-              "id": "64ccc246ff54fb38131acf29"
+              "id": "64ccc246ff54fb38131acf29",
+              "name": "放射線治療室の鍵",
+              "shortName": "X-ray",
+              "normalizedName": "x-ray-room-key"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9"
+              "id": "61aa5ba8018e9821b7368da9",
+              "name": "USEC の2番金庫の鍵",
+              "shortName": "USEC 2",
+              "normalizedName": "usec-cottage-second-safe-key"
             }
           },
           {
             "key": {
-              "id": "6582dbe43a2e5248357dbe9a"
+              "id": "6582dbe43a2e5248357dbe9a",
+              "name": "「交渉室」の鍵",
+              "shortName": "Negotiations",
+              "normalizedName": "negotiation-room-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "63a39cb1c9b3aa4b61683ee2"
+              "id": "63a39cb1c9b3aa4b61683ee2",
+              "name": "建設現場の寝床の鍵",
+              "shortName": "Construct.",
+              "normalizedName": "construction-site-bunkhouse-key"
             }
           },
           {
             "key": {
-              "id": "63a399193901f439517cafb6"
+              "id": "63a399193901f439517cafb6",
+              "name": "カーディーラーの役員室の鍵",
+              "shortName": "LexOs",
+              "normalizedName": "car-dealership-directors-office-room-key"
             }
           },
           {
             "key": {
-              "id": "63a397d3af870e651d58e65b"
+              "id": "63a397d3af870e651d58e65b",
+              "name": "カーディーラーの立入禁止区画の鍵",
+              "shortName": "LexOs sect.",
+              "normalizedName": "car-dealership-closed-section-key"
             }
           },
           {
             "key": {
-              "id": "63a39fdf1e21260da44a0256"
+              "id": "63a39fdf1e21260da44a0256",
+              "name": "輸送コンテナの鉄格子の扉の鍵",
+              "shortName": "Container",
+              "normalizedName": "cargo-container-mesh-door-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "64ce572331dd890873175115"
+              "id": "64ce572331dd890873175115",
+              "name": "Aspect 社オフィスの鍵",
+              "shortName": "Aspect",
+              "normalizedName": "aspect-company-office-key"
             }
           },
           {
             "key": {
-              "id": "63a39ce4cd6db0635c1975fa"
+              "id": "63a39ce4cd6db0635c1975fa",
+              "name": "供給部門責任者の事務室の鍵",
+              "shortName": "Supp.",
+              "normalizedName": "supply-department-directors-office-key"
             }
           },
           {
             "key": {
-              "id": "63a71e922b25f7513905ca20"
+              "id": "63a71e922b25f7513905ca20",
+              "name": "コンコルディア・アパート 64号室の鍵",
+              "shortName": "Conc 64",
+              "normalizedName": "concordia-apartment-64-key"
             }
           },
           {
             "key": {
-              "id": "64ccc1ec1779ad6ba200a137"
+              "id": "64ccc1ec1779ad6ba200a137",
+              "name": "コンコルディア・アパート 8号室のシアタールームの鍵",
+              "shortName": "Cinema",
+              "normalizedName": "concordia-apartment-8-home-cinema-key"
             }
           },
           {
             "key": {
-              "id": "63a71e781031ac76fe773c7d"
+              "id": "63a71e781031ac76fe773c7d",
+              "name": "コンコルディア・アパート 8号室の鍵",
+              "shortName": "Conc 8",
+              "normalizedName": "concordia-apartment-8-room-key"
             }
           },
           {
             "key": {
-              "id": "63a71e86b7f4570d3a293169"
+              "id": "63a71e86b7f4570d3a293169",
+              "name": "コンコルディア・アパート 64号室の事務室の鍵",
+              "shortName": "Conc off.",
+              "normalizedName": "concordia-apartment-64-office-room-key"
             }
           },
           {
             "key": {
-              "id": "64ccc1f4ff54fb38131acf27"
+              "id": "64ccc1f4ff54fb38131acf27",
+              "name": "コンコルディア・アパート 63号室の鍵",
+              "shortName": "Conc. 63",
+              "normalizedName": "concordia-apartment-63-room-key"
             }
           },
           {
             "key": {
-              "id": "64ccc1d4a0f13c24561edf27"
+              "id": "64ccc1d4a0f13c24561edf27",
+              "name": "コンコルディア・アパート 34号室の鍵",
+              "shortName": "Conc 34",
+              "normalizedName": "concordia-apartment-34-room-key"
             }
           },
           {
             "key": {
-              "id": "63a39c7964283b5e9c56b280"
+              "id": "63a39c7964283b5e9c56b280",
+              "name": "コンコルディアの警備室の鍵",
+              "shortName": "Conc sec.",
+              "normalizedName": "concordia-security-room-key"
             }
           },
           {
             "key": {
-              "id": "63a39c69af870e651d58e6aa"
+              "id": "63a39c69af870e651d58e6aa",
+              "name": "店舗責任者の鍵",
+              "shortName": "Store",
+              "normalizedName": "store-managers-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "64ccc24de61ea448b507d34d"
+              "id": "64ccc24de61ea448b507d34d",
+              "name": "TerraGroup の警備用武器保管室の鍵",
+              "shortName": "TG arm.",
+              "normalizedName": "terragroup-security-armory-key"
             }
           },
           {
             "key": {
-              "id": "64ccc206793ca11c8f450a38"
+              "id": "64ccc206793ca11c8f450a38",
+              "name": "TerraGroup の会議室の鍵",
+              "shortName": "TG meeting",
+              "normalizedName": "terragroup-meeting-room-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "64ccc1fe088064307e14a6f7"
+              "id": "64ccc1fe088064307e14a6f7",
+              "name": "レストラン \"ベルーガ\" の支配人の鍵",
+              "shortName": "Beluga",
+              "normalizedName": "beluga-restaurant-director-key"
             }
           },
           {
             "key": {
-              "id": "64ccc1fe088064307e14a6f7"
+              "id": "64ccc1fe088064307e14a6f7",
+              "name": "レストラン \"ベルーガ\" の支配人の鍵",
+              "shortName": "Beluga",
+              "normalizedName": "beluga-restaurant-director-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9"
+              "id": "61aa5ba8018e9821b7368da9",
+              "name": "USEC の2番金庫の鍵",
+              "shortName": "USEC 2",
+              "normalizedName": "usec-cottage-second-safe-key"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9"
+              "id": "61aa5ba8018e9821b7368da9",
+              "name": "USEC の2番金庫の鍵",
+              "shortName": "USEC 2",
+              "normalizedName": "usec-cottage-second-safe-key"
             }
           },
           {
             "key": {
-              "id": "61aa5ba8018e9821b7368da9"
+              "id": "61aa5ba8018e9821b7368da9",
+              "name": "USEC の2番金庫の鍵",
+              "shortName": "USEC 2",
+              "normalizedName": "usec-cottage-second-safe-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "5ad7247386f7747487619dc3"
+              "id": "5ad7247386f7747487619dc3",
+              "name": "Goshan のレジの鍵",
+              "shortName": "Goshan reg.",
+              "normalizedName": "goshan-cash-register-key"
             }
           }
         ]
@@ -37314,22 +40546,34 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "66acd6702b17692df20144c0"
+              "id": "66acd6702b17692df20144c0",
+              "name": "TerraGroup ストレージルーム キーカード",
+              "shortName": "Polikhim",
+              "normalizedName": "terragroup-storage-room-keycard"
             }
           }
         ]
@@ -37339,72 +40583,114 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "5c1e2a1e86f77431ea0ea84c"
+              "id": "5c1e2a1e86f77431ea0ea84c",
+              "name": "TerraGroup Labs 所長室の鍵",
+              "shortName": "TGL MO",
+              "normalizedName": "terragroup-labs-managers-office-room-key"
             }
           },
           {
             "key": {
-              "id": "5c1e2a1e86f77431ea0ea84c"
+              "id": "5c1e2a1e86f77431ea0ea84c",
+              "name": "TerraGroup Labs 所長室の鍵",
+              "shortName": "TGL MO",
+              "normalizedName": "terragroup-labs-managers-office-room-key"
             }
           },
           {
             "key": {
-              "id": "5c1e2d1f86f77431e9280bee"
+              "id": "5c1e2d1f86f77431e9280bee",
+              "name": "TerraGroup Labs 武器試験場の鍵",
+              "shortName": "TGL WT",
+              "normalizedName": "terragroup-labs-weapon-testing-area-key"
             }
           },
           {
             "key": {
-              "id": "5c1e2d1f86f77431e9280bee"
+              "id": "5c1e2d1f86f77431e9280bee",
+              "name": "TerraGroup Labs 武器試験場の鍵",
+              "shortName": "TGL WT",
+              "normalizedName": "terragroup-labs-weapon-testing-area-key"
             }
           },
           {
             "key": {
-              "id": "5c1d0c5f86f7744bb2683cf0"
+              "id": "5c1d0c5f86f7744bb2683cf0",
+              "name": "TerraGroup Labs キーカード (ブルー)",
+              "shortName": "Blue",
+              "normalizedName": "terragroup-labs-keycard-blue"
             }
           },
           {
             "key": {
-              "id": "5efde6b4f5448336730dbd61"
+              "id": "5efde6b4f5448336730dbd61",
+              "name": "青い印のついたキーカード",
+              "shortName": "Keycard",
+              "normalizedName": "keycard-with-a-blue-marking"
             }
           },
           {
             "key": {
-              "id": "5c1d0dc586f7744baf2e7b79"
+              "id": "5c1d0dc586f7744baf2e7b79",
+              "name": "TerraGroup Labs キーカード (グリーン)",
+              "shortName": "Green",
+              "normalizedName": "terragroup-labs-keycard-green"
             }
           },
           {
             "key": {
-              "id": "5c1d0d6d86f7744bb2683e1f"
+              "id": "5c1d0d6d86f7744bb2683e1f",
+              "name": "TerraGroup Labs キーカード (イエロー)",
+              "shortName": "Yellow",
+              "normalizedName": "terragroup-labs-keycard-yellow"
             }
           },
           {
             "key": {
-              "id": "5c1d0f4986f7744bb01837fa"
+              "id": "5c1d0f4986f7744bb01837fa",
+              "name": "TerraGroup Labs キーカード (ブラック)",
+              "shortName": "Black",
+              "normalizedName": "terragroup-labs-keycard-black"
             }
           },
           {
             "key": {
-              "id": "5c1d0f4986f7744bb01837fa"
+              "id": "5c1d0f4986f7744bb01837fa",
+              "name": "TerraGroup Labs キーカード (ブラック)",
+              "shortName": "Black",
+              "normalizedName": "terragroup-labs-keycard-black"
             }
           },
           {
             "key": {
-              "id": "5c1e495a86f7743109743dfb"
+              "id": "5c1e495a86f7743109743dfb",
+              "name": "TerraGroup Labs キーカード (ヴァイオレット)",
+              "shortName": "Violet",
+              "normalizedName": "terragroup-labs-keycard-violet"
             }
           },
           {
             "key": {
-              "id": "5c1d0efb86f7744baf2e7b7b"
+              "id": "5c1d0efb86f7744baf2e7b7b",
+              "name": "TerraGroup Labs キーカード (レッド)",
+              "shortName": "Red",
+              "normalizedName": "terragroup-labs-keycard-red"
             }
           },
           {
             "key": {
-              "id": "5c1f79a086f7746ed066fb8f"
+              "id": "5c1f79a086f7746ed066fb8f",
+              "name": "TerraGroup Labs 保管室の鍵",
+              "shortName": "TGL ASR",
+              "normalizedName": "terragroup-labs-arsenal-storage-room-key"
             }
           },
           {
             "key": {
-              "id": "6711039f9e648049e50b3307"
+              "id": "6711039f9e648049e50b3307",
+              "name": "TerraGroup Labs 住居区画キーカード",
+              "shortName": "Res. unit",
+              "normalizedName": "terragroup-labs-residential-unit-keycard"
             }
           }
         ]
@@ -37414,32 +40700,50 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "658199972dc4e60f6d556a2f"
+              "id": "658199972dc4e60f6d556a2f",
+              "name": "地下駐車場ユーティリティルームの鍵",
+              "shortName": "Utility",
+              "normalizedName": "underground-parking-utility-room-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "6581998038c79576a2569e11"
+              "id": "6581998038c79576a2569e11",
+              "name": "Unity Credit 銀行レジの鍵",
+              "shortName": "UC reg.",
+              "normalizedName": "unity-credit-bank-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "658199a0490414548c0fa83b"
+              "id": "658199a0490414548c0fa83b",
+              "name": "Horse restaurant toilet key",
+              "shortName": "Toilet",
+              "normalizedName": "horse-restaurant-toilet-key"
             }
           },
           {
             "key": {
-              "id": "658199aa38c79576a2569e13"
+              "id": "658199aa38c79576a2569e13",
+              "name": "TerraGroup 科学オフィスの鍵",
+              "shortName": "Science",
+              "normalizedName": "terragroup-science-office-key"
             }
           }
         ]
@@ -37449,32 +40753,50 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "658199972dc4e60f6d556a2f"
+              "id": "658199972dc4e60f6d556a2f",
+              "name": "地下駐車場ユーティリティルームの鍵",
+              "shortName": "Utility",
+              "normalizedName": "underground-parking-utility-room-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "5448ba0b4bdc2d02308b456c"
+              "id": "5448ba0b4bdc2d02308b456c",
+              "name": "Factory 非常口の鍵",
+              "shortName": "Factory",
+              "normalizedName": "factory-emergency-exit-key"
             }
           },
           {
             "key": {
-              "id": "6581998038c79576a2569e11"
+              "id": "6581998038c79576a2569e11",
+              "name": "Unity Credit 銀行レジの鍵",
+              "shortName": "UC reg.",
+              "normalizedName": "unity-credit-bank-cash-register-key"
             }
           },
           {
             "key": {
-              "id": "658199a0490414548c0fa83b"
+              "id": "658199a0490414548c0fa83b",
+              "name": "Horse restaurant toilet key",
+              "shortName": "Toilet",
+              "normalizedName": "horse-restaurant-toilet-key"
             }
           },
           {
             "key": {
-              "id": "658199aa38c79576a2569e13"
+              "id": "658199aa38c79576a2569e13",
+              "name": "TerraGroup 科学オフィスの鍵",
+              "shortName": "Science",
+              "normalizedName": "terragroup-science-office-key"
             }
           }
         ]
@@ -37484,57 +40806,90 @@ const TARKOV_DATA = {
         "locks": [
           {
             "key": {
-              "id": "679baa2c61f588ae2b062a24"
+              "id": "679baa2c61f588ae2b062a24",
+              "name": "キー 01",
+              "shortName": "Key 01",
+              "normalizedName": "key-01"
             }
           },
           {
             "key": {
-              "id": "679baa4f59b8961f370dd683"
+              "id": "679baa4f59b8961f370dd683",
+              "name": "キー 02",
+              "shortName": "Key 02",
+              "normalizedName": "key-02"
             }
           },
           {
             "key": {
-              "id": "679baa5a59b8961f370dd685"
+              "id": "679baa5a59b8961f370dd685",
+              "name": "キー 03",
+              "shortName": "Key 03",
+              "normalizedName": "key-03"
             }
           },
           {
             "key": {
-              "id": "679baa9091966fe40408f149"
+              "id": "679baa9091966fe40408f149",
+              "name": "キー 04",
+              "shortName": "Key 04",
+              "normalizedName": "key-04"
             }
           },
           {
             "key": {
-              "id": "679bab714e9ca6b3d80586b4"
+              "id": "679bab714e9ca6b3d80586b4",
+              "name": "遺体安置所の鍵",
+              "shortName": "Corpses",
+              "normalizedName": "corpse-room-key"
             }
           },
           {
             "key": {
-              "id": "679baae891966fe40408f14c"
+              "id": "679baae891966fe40408f14c",
+              "name": "拷問室の鍵",
+              "shortName": "Torture",
+              "normalizedName": "torture-room-key"
             }
           },
           {
             "key": {
-              "id": "679bac1d61f588ae2b062a26"
+              "id": "679bac1d61f588ae2b062a26",
+              "name": "Labyrinth の鍵\n",
+              "shortName": "Labyrinth",
+              "normalizedName": "labyrinth-key"
             }
           },
           {
             "key": {
-              "id": "679baace4e9ca6b3d80586b2"
+              "id": "679baace4e9ca6b3d80586b2",
+              "name": "観測室の鍵",
+              "shortName": "Observe",
+              "normalizedName": "observation-room-key"
             }
           },
           {
             "key": {
-              "id": "67ab3d4b83869afd170fdd3f"
+              "id": "67ab3d4b83869afd170fdd3f",
+              "name": "BBQ-S43 ガストーチ",
+              "shortName": "BBQ-S43",
+              "normalizedName": "bbq-s43-gas-torch"
             }
           },
           {
             "key": {
-              "id": "67ab3d4b83869afd170fdd3f"
+              "id": "67ab3d4b83869afd170fdd3f",
+              "name": "BBQ-S43 ガストーチ",
+              "shortName": "BBQ-S43",
+              "normalizedName": "bbq-s43-gas-torch"
             }
           },
           {
             "key": {
-              "id": "678fa929819ddc4c350c0317"
+              "id": "678fa929819ddc4c350c0317",
+              "name": "バルブハンドル",
+              "shortName": "handwheel",
+              "normalizedName": "valve-handwheel"
             }
           }
         ]

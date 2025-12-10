@@ -1,4 +1,5 @@
 // js/queries.js
+
 const GRAPHQL_QUERY = `
 query GetData {
   tasks(gameMode: pve, lang: ja) {
@@ -36,6 +37,8 @@ query GetData {
       key { 
         id 
         name
+        shortName
+        normalizedName
       }
     }
   }
