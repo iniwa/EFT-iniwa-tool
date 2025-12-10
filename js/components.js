@@ -327,29 +327,29 @@ const CompKeys = {
 // js/components.js の CompModal
 
 const CompModal = {
-    // ★ props に 'completedTasks' を追加
     props: ['selectedTask', 'completedTasks'],
-    // ★ emits に 'toggle-task' を追加
     emits: ['close', 'toggle-task'],
     template: `
     <div v-if="selectedTask" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-content-custom">
             <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="form-check m-0">
-                        <input class="form-check-input fs-4" type="checkbox" 
-                               :checked="completedTasks.includes(selectedTask.name)" 
-                               @change="$emit('toggle-task', selectedTask.name)"
-                               style="cursor: pointer;">
-                    </div>
-                    <div>
-                        <h4 class="m-0 text-warning" :class="{'text-decoration-line-through text-muted': completedTasks.includes(selectedTask.name)}">
-                            {{ selectedTask.name }}
-                        </h4>
-                    </div>
+                <div class="d-flex align-items-center gap-3 w-100">
+                    <label class="custom-check-container" :class="{'is-checked': completedTasks.includes(selectedTask.name)}">
+                        <input type="checkbox" class="custom-check-input"
+                            :checked="completedTasks.includes(selectedTask.name)" 
+                            @change="$emit('toggle-task', selectedTask.name)">
+                        <span class="custom-check-box"></span>
+                        <span class="custom-check-label">
+                            {{ completedTasks.includes(selectedTask.name) ? '完了済み (Completed)' : '完了にする' }}
+                        </span>
+                    </label>
                 </div>
-                <button type="button" class="btn-close btn-close-white" @click="$emit('close')"></button>
+                <button type="button" class="btn-close btn-close-white flex-shrink-0 ms-3" @click="$emit('close')"></button>
             </div>
+            
+            <h4 class="m-0 text-warning mb-3" :class="{'text-decoration-line-through text-muted': completedTasks.includes(selectedTask.name)}">
+                {{ selectedTask.name }}
+            </h4>
             
             <div class="mb-3 d-flex justify-content-between flex-wrap gap-2">
                 <div><strong>Trader:</strong> {{ selectedTask.trader.name }}</div>

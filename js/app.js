@@ -100,6 +100,27 @@ createApp({
         };
 
         const fetchData = async () => {
+            const CACHE_KEY_V13 = 'eft_api_cache_v13';
+            const MIN_INTERVAL = 5 * 60 * 1000; // 5分 (ミリ秒)
+
+            const cache = localStorage.getItem(CACHE_KEY_V13);
+            if (cache) {
+                try {
+                    const parsedCache = JSON.parse(cache);
+                    // 保存時に lastFetchTime (ミリ秒) を保存している前提、なければ現在時刻比較でパスさせる
+                    const lastTime = parsedCache.lastFetchTime || 0;
+                    const nowTime = Date.now();
+
+                    // 5分未満かつ、データが空でない場合はAPIを叩かせない
+                    if ((nowTime - lastTime < MIN_INTERVAL) && parsedCache.tasks && parsedCache.tasks.length > 0) {
+                        const remainSec = Math.ceil((MIN_INTERVAL - (nowTime - lastTime)) / 1000);
+                        alert(`データは最新です。\nサーバー負荷軽減のため、更新は5分に1回に制限されています。\n(あと ${remainSec} 秒お待ちください)`);
+                        return; // ここで処理を中断
+                    }
+                } catch (e) {
+                    console.error("Cache check error", e);
+                }
+            }
             isLoading.value = true;
             loadError.value = null;
             const query = GRAPHQL_QUERY;
@@ -127,8 +148,9 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 // ★キャッシュv13
-                localStorage.setItem('eft_api_cache_v13', JSON.stringify({
-                    timestamp: now, 
+                localStorage.setItem(CACHE_KEY_V13, JSON.stringify({
+                    timestamp: now,
+                    lastFetchTime: Date.now(), // これを追加して次回判定に使用
                     hideoutStations: hideoutData.value, 
                     tasks: taskData.value, 
                     items: itemsData.value
