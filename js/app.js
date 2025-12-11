@@ -314,6 +314,14 @@ createApp({
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
+        watch(currentTab, (newTab) => {
+            if (typeof gtag === 'function') {
+                gtag('event', 'page_view', {
+                    page_title: newTab,
+                    page_location: location.href.split('#')[0] + '#' + newTab
+                });
+            }
+        });
 
         // --- 6. 計算ロジック ---
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
