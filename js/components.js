@@ -362,7 +362,7 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart
+// js/components.js の CompFlowchart (スクロール保持 & External色修正版)
 
 const CompFlowchart = {
     props: ['taskData', 'completedTasks', 'selectedTrader'],
@@ -385,9 +385,6 @@ const CompFlowchart = {
         taskData() { this.renderChart(); }
     },
     mounted() {
-        // ダミー関数
-        window.emptyCallback = () => {};
-
         mermaid.initialize({ 
             startOnLoad: false, 
             theme: 'dark',
@@ -407,6 +404,12 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
+            // ★追加: 現在のスクロール位置を保存 (親要素が overflow-auto を持っている)
+            const scrollContainer = container.parentElement;
+            const savedScrollTop = scrollContainer.scrollTop;
+            const savedScrollLeft = scrollContainer.scrollLeft;
+
+            // マッピング作成
             this.nodeMap = {}; 
             const nameToId = {};
             let counter = 0;
@@ -417,6 +420,7 @@ const CompFlowchart = {
                 this.nodeMap[simpleId] = t;
             });
 
+            // 描画対象の抽出
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
@@ -439,6 +443,7 @@ const CompFlowchart = {
                 }
             });
 
+            // グラフ定義
             let graph = 'graph LR\n';
             
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
@@ -450,34 +455,47 @@ const CompFlowchart = {
                 const task = this.taskData.find(t => t.name === taskName);
                 if (!task) return;
 
-                const isCompleted = this.completedTasks.includes(taskName);
-                let className = isCompleted ? 'done' : 'todo';
-
-                if (task.trader.name !== this.selectedTrader) {
+                // ★修正: クラス判定のロジックを変更
+                let className = '';
+                
+                if (this.completedTasks.includes(taskName)) {
+                    // 完了済みなら、自トレーダーでも他トレーダーでも「緑(done)」
+                    className = 'done';
+                } else if (task.trader.name !== this.selectedTrader) {
+                    // 未完了 かつ 他トレーダーなら「External(点線)」
                     className = 'external';
+                } else {
+                    // 未完了 かつ 自トレーダーなら「Todo(グレー)」
+                    className = 'todo';
                 }
 
                 const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");
                 
                 graph += `${nodeId}["${safeLabel}"]:::${className}\n`;
-                graph += `click ${nodeId} call emptyCallback() "${safeLabel}"\n`;
+                graph += `click ${nodeId} call void(0) "${safeLabel}"\n`;
             });
 
             edges.forEach(edge => {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
+            // レンダリング
             try {
                 container.innerHTML = '';
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 container.innerHTML = svg;
 
+                // スタイル調整 (クリック妨害排除など)
                 const edgesEl = container.querySelectorAll('.edgePath, .edgeLabel');
                 edgesEl.forEach(el => el.style.pointerEvents = 'none');
 
                 const nodesEl = container.querySelectorAll('.node');
                 nodesEl.forEach(el => el.style.cursor = 'pointer');
+
+                // ★追加: スクロール位置を復元
+                scrollContainer.scrollTop = savedScrollTop;
+                scrollContainer.scrollLeft = savedScrollLeft;
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
@@ -485,6 +503,7 @@ const CompFlowchart = {
             }
         },
 
+        // クリックハンドラ
         handleChartClick(event) {
             const nodeEl = event.target.closest('.node');
             if (!nodeEl) return;
@@ -520,7 +539,7 @@ const CompFlowchart = {
             <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
         </div>
         <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh; position: relative;">
-             <div ref="mermaidContainer" class="p-4 mermaid" 
+             <div ref="mermaidContainer" class="p-4" 
                   style="min-width: 100%; width: max-content;"
                   @click="handleChartClick">
                 <span class="text-secondary">Loading...</span>
