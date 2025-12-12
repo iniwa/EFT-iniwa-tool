@@ -146,12 +146,11 @@
             ></comp-debug>
         </div>
 
-        <div v-if="currentTab === 'chat'">
+        <div v-show="currentTab === 'chat'">
             <comp-chat
                 :task-data="taskData"
                 :hideout-data="hideoutData"
                 :items-data="itemsData"
-                
                 :completed-tasks="completedTasks"
                 :user-hideout="userHideout"
                 :player-level="playerLevel"
