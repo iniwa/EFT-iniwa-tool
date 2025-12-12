@@ -33,6 +33,19 @@ const CompModal = {
                 <div v-if="selectedTask.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
             </div>
 
+            <div v-if="selectedTask.neededKeys && selectedTask.neededKeys.length > 0" class="mb-4">
+                <h6 class="border-bottom pb-1 mb-2 text-warning">🔑 必要な鍵 (Needed Keys)</h6>
+                <ul class="list-group">
+                    <li v-for="(group, gIdx) in selectedTask.neededKeys" :key="'g'+gIdx" class="list-group-item bg-dark text-light border-secondary py-2">
+                        <div v-for="(keyItem, kIdx) in group.keys" :key="'k'+kIdx" class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="text-info fw-bold">{{ keyItem.name }}</span>
+                            <span v-if="keyItem.shortName" class="text-muted small">({{ keyItem.shortName }})</span>
+                            <a v-if="keyItem.wikiLink" :href="keyItem.wikiLink" target="_blank" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size: 0.7em;">Wiki</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
             <div class="d-grid gap-2 mb-4">
                 <a v-if="selectedTask.wikiLink" :href="selectedTask.wikiLink" target="_blank" class="btn btn-outline-info btn-sm">📖 Wikiで詳細を見る</a>
             </div>
