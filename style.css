@@ -113,10 +113,21 @@ a, button, .btn, .form-check-input, .list-group-item-action, label, select,
 .key-table th { color: #ffd700; border-bottom: 1px solid #444; }
 .key-table td { border-bottom: 1px solid #333; vertical-align: middle; }
 .key-row:hover { background-color: #252525; }
-.key-owned { color: #555; }
-.key-owned a { color: #555 !important; pointer-events: none; }
-.key-owned .form-control { color: #555 !important; border-bottom: 1px solid #333 !important; }
-.key-owned select { color: #555 !important; border-color: #333 !important; }
+
+/* 鍵が所持済み(.key-owned)の場合の特別ルール */
+.key-owned, 
+.key-owned .item-collected {
+    text-decoration: none !important; /* 取り消し線を強制的に消す */
+    opacity: 1 !important;            /* 透明度を下げない */
+}
+
+/* 所持済みの鍵の文字色（見やすいグレーに） */
+.key-owned,
+.key-owned td,
+.key-owned .item-collected {
+    color: #77dfdf !important; 
+}
+
 
 .map-header:hover { background-color: #3e5871 !important; }
 
