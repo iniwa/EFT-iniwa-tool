@@ -805,9 +805,11 @@ const CompDebug = {
     `
 };
 
-// Chat
+// js/components.js の CompChat 部分
+
 const CompChat = {
-    props: ['taskData', 'hideoutData', 'itemsData'],
+    // ★修正: completedTasks, userHideout, playerLevel を受け取れるように追加
+    props: ['taskData', 'hideoutData', 'itemsData', 'completedTasks', 'userHideout', 'playerLevel'],
     data() {
         return {
             apiKey: localStorage.getItem('gemini_api_key') || '',
@@ -840,11 +842,19 @@ const CompChat = {
             this.isSending = true;
 
             try {
+                // ★修正: ユーザーの進捗状況を含めたコンテキストデータを作成
                 const contextData = {
+                    userProfile: {
+                        level: this.playerLevel,
+                        hideoutLevels: this.userHideout
+                    },
                     tasks: this.taskData.map(t => ({
                         name: t.name,
                         trader: t.trader.name,
                         map: t.map ? t.map.name : "Any",
+                        // ★追加: 完了しているかどうか
+                        status: this.completedTasks.includes(t.name) ? "Completed" : "Not Completed",
+                        reqLevel: t.minPlayerLevel,
                         rewards: {
                             items: t.finishRewardsList.filter(r => r.type === 'item').map(r => r.name),
                             unlocks: t.finishRewardsList.filter(r => r.type === 'offerUnlock').map(r => `Buy ${r.itemName} from ${r.trader} LL${r.level}`),
@@ -856,6 +866,9 @@ const CompChat = {
                 const systemPrompt = `
 あなたはEscape from Tarkovのデータ分析アシスタントです。
 以下のJSONデータを参照して、ユーザーの質問に日本語で答えてください。
+ユーザーの現在のレベルは ${this.playerLevel} です。
+タスクの完了状況(status: "Completed")もデータに含まれています。
+
 回答にはMarkdown記法（太字、リスト、表など）を積極的に使用して見やすく整形してください。
 
 【データ】
@@ -907,7 +920,7 @@ ${JSON.stringify(contextData)}
             <div class="flex-grow-1 overflow-auto p-3" style="background-color: #1e1e1e;">
                 <div v-if="chatHistory.length === 0" class="text-muted text-center mt-5">
                     データについて何でも聞いてください。<br>
-                    例: 「クラフトが解禁されるタスクを教えて」「PraporのタスクでKappa必須のものは？」
+                    例: 「まだ終わっていないPraporのタスクを教えて」「今のレベルで受けられるタスクは？」
                 </div>
                 
                 <div v-for="(msg, idx) in chatHistory" :key="idx" class="mb-3">
