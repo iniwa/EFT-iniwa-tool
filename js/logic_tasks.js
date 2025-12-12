@@ -1,56 +1,96 @@
+// js/logic_tasks.js (重複カウント修正 & 機能完全版)
+
 const TaskLogic = {
+    // タスクのフィルタリング（完了済み除外、レベル条件、ソートなど）
     filterActiveTasks(taskData, completedList, level, search, showCompleted, showFuture) {
         if (!taskData) return [];
-        return taskData.filter(task => {
-            const isCompleted = completedList.includes(task.name);
-            const matchesSearch = !search || task.name.toLowerCase().includes(search.toLowerCase());
+        const lowerSearch = (search || '').toLowerCase();
 
-            if (showCompleted) {
-                return isCompleted && matchesSearch;
-            } else {
-                const levelMet = task.minPlayerLevel <= level;
-                let prereqMet = true;
-                if (task.taskRequirements && task.taskRequirements.length > 0) {
-                    prereqMet = task.taskRequirements.every(req => {
-                        if (!req.task) return true;
-                        return completedList.includes(req.task.name);
-                    });
-                }
-                let traderMet = true;
-                if (task.traderLevelRequirements && task.traderLevelRequirements.length > 0) {
-                    traderMet = task.traderLevelRequirements.every(req => req.level <= level);
-                }
-                const isUnlocked = levelMet && prereqMet && traderMet;
-                const condition = showFuture ? true : isUnlocked;
-                return !isCompleted && condition && matchesSearch;
+        return taskData.filter(task => {
+            // 1. 検索フィルター
+            if (lowerSearch && !task.name.toLowerCase().includes(lowerSearch)) {
+                return false;
             }
+
+            const isCompleted = completedList.includes(task.name);
+
+            // 2. 完了済みの表示切り替え
+            if (showCompleted) {
+                return isCompleted;
+            } else {
+                if (isCompleted) return false;
+            }
+
+            // 3. 未来のタスク（ロック中）の表示切り替え
+            if (!showFuture) {
+                // レベル不足は隠す
+                if (task.minPlayerLevel > level) return false;
+
+                // 前提タスクが終わっていない場合は隠す
+                if (task.taskRequirements) {
+                    const reqsMet = task.taskRequirements.every(req => 
+                        completedList.includes(req.task.name)
+                    );
+                    if (!reqsMet) return false;
+                }
+            }
+
+            return true;
+        }).sort((a, b) => {
+            // ソート順: レベル順 -> 名前順
+            if (a.minPlayerLevel !== b.minPlayerLevel) {
+                return a.minPlayerLevel - b.minPlayerLevel;
+            }
+            return a.name.localeCompare(b.name);
         });
     },
 
+    // 必要なアイテムの計算
     calculate(taskData, completedList, addItemFunc) {
         if (!taskData) return;
-        taskData.forEach(task => {
-            if (!completedList.includes(task.name)) {
-                if (task.objectives) {
-                    task.objectives.forEach(obj => {
-                        if ((obj.type === 'giveItem' || obj.type === 'findItem') && obj.item) {
-                            if (task.name === 'Collector') {
-                                // ★修正: sourceType = 'collector'
-                                addItemFunc('collector', obj.item.id, obj.item.name, obj.count, task.name, 'collector');
-                            } else if (obj.foundInRaid) {
-                                // ★修正: sourceType = 'task'
-                                addItemFunc('taskFir', obj.item.id, obj.item.name, obj.count, task.name, 'task');
-                            } else {
-                                // ★修正: sourceType = 'task'
-                                addItemFunc('taskNormal', obj.item.id, obj.item.name, obj.count, task.name, 'task');
-                            }
+        
+        // 完了していないタスクのみを対象
+        const activeTasks = taskData.filter(t => !completedList.includes(t.name));
+
+        activeTasks.forEach(task => {
+            if (task.objectives) {
+                task.objectives.forEach(obj => {
+                    // ★修正: 重複を防ぐため 'giveItem' (納品) のみを対象にする
+                    if (obj.type === 'giveItem' && obj.item) {
+                        
+                        // マップ名やWikiリンクの取得（app.jsへ渡すため）
+                        const mapName = task.map ? task.map.name : null;
+                        const wikiLink = task.wikiLink || null;
+
+                        // カテゴリ分け
+                        let category = 'taskNormal'; // デフォルト
+                        
+                        if (task.name === 'Collector') {
+                            category = 'collector';
+                        } else if (obj.foundInRaid) {
+                            category = 'taskFir';
                         }
-                    });
-                }
+
+                        // アイテム追加関数を実行 (引数は app.js の addItem に合わせる)
+                        addItemFunc(
+                            category,               // カテゴリ
+                            obj.item.id,           // アイテムID
+                            obj.item.name,         // アイテム名
+                            obj.count,             // 必要数
+                            task.name,             // ソース（タスク名）
+                            'task',                // タイプ
+                            mapName,               // マップ名
+                            wikiLink,              // Wikiリンク
+                            obj.item.shortName,    // 短縮名
+                            obj.item.normalizedName // URL用名
+                        );
+                    }
+                });
             }
         });
     },
 
+    // トレーダーごとのグルーピング
     groupTasksByTrader(tasks) {
         const groups = {};
         tasks.forEach(task => {
@@ -61,6 +101,7 @@ const TaskLogic = {
         return groups;
     },
     
+    // マップごとのグルーピング
     groupTasksByMap(tasks) {
         const groups = {};
         tasks.forEach(task => {
