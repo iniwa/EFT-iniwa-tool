@@ -645,7 +645,8 @@ const CompFlowchart = {
 };
 
 
-// Modal (Craft info added)
+// js/components.js の CompModal 部分
+
 const CompModal = {
     props: ['selectedTask', 'completedTasks'],
     emits: ['close', 'toggle-task'],
@@ -671,12 +672,16 @@ const CompModal = {
                 {{ selectedTask.name }}
             </h4>
             
-            <div class="mb-3 d-flex justify-content-between flex-wrap gap-2">
+            <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
                 <div><strong>Trader:</strong> {{ selectedTask.trader.name }}</div>
                 <div><strong>Map:</strong> {{ selectedTask.map ? selectedTask.map.name : 'None' }}</div>
+                <div v-if="selectedTask.minPlayerLevel > 0">
+                    <span class="text-info fw-bold">Req Lv: {{ selectedTask.minPlayerLevel }}</span>
+                </div>
                 <div v-if="selectedTask.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
                 <div v-if="selectedTask.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
             </div>
+
             <div class="d-grid gap-2 mb-4">
                 <a v-if="selectedTask.wikiLink" :href="selectedTask.wikiLink" target="_blank" class="btn btn-outline-info btn-sm">📖 Wikiで詳細を見る</a>
             </div>
