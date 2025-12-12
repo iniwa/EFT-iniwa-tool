@@ -451,7 +451,7 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart (スクロール崩れ防止 & ホバー復活版)
+// js/components.js の CompFlowchart 部分
 
 const CompFlowchart = {
     props: ['taskData', 'completedTasks', 'selectedTrader'],
@@ -464,8 +464,26 @@ const CompFlowchart = {
     computed: {
         traderList() {
             if (!this.taskData) return [];
+            
+            // ★修正: トレーダーの順序指定
+            const order = [
+                'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
+                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
+            ];
+
             const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
-            return Array.from(traders).sort();
+            const list = Array.from(traders);
+            
+            // 指定順にソート
+            return list.sort((a, b) => {
+                const idxA = order.indexOf(a);
+                const idxB = order.indexOf(b);
+                
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return a.localeCompare(b);
+            });
         }
     },
     watch: {
@@ -493,12 +511,10 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
-            // ★修正1: スクロール位置の保存
             const scrollContainer = container.parentElement;
             const savedScrollTop = scrollContainer.scrollTop;
             const savedScrollLeft = scrollContainer.scrollLeft;
 
-            // マッピング作成
             this.nodeMap = {}; 
             const nameToId = {};
             let counter = 0;
@@ -509,7 +525,6 @@ const CompFlowchart = {
                 this.nodeMap[simpleId] = t;
             });
 
-            // 描画対象抽出
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
@@ -532,10 +547,8 @@ const CompFlowchart = {
                 }
             });
 
-            // グラフ定義
             let graph = 'graph LR\n';
             
-            // クラス定義
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef doneExternal fill:#198754,stroke:#fff,stroke-width:2px,color:white,stroke-dasharray: 5 5;\n';
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
@@ -566,30 +579,23 @@ const CompFlowchart = {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
-            // レンダリング
             try {
-                // ★修正2: いきなり container.innerHTML = '' で消さず、
-                // まず新しいSVGを生成してから差し替えることで、高さが0になる瞬間を無くす
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 
-                // ここで差し替え
                 container.innerHTML = svg;
 
-                // スタイル調整
                 const edgesEl = container.querySelectorAll('.edgePath, .edgeLabel');
                 edgesEl.forEach(el => el.style.pointerEvents = 'none');
 
                 const nodesEl = container.querySelectorAll('.node');
                 nodesEl.forEach(el => el.style.cursor = 'pointer');
 
-                // ★修正3: 差し替え直後にスクロール位置を復元
                 scrollContainer.scrollTop = savedScrollTop;
                 scrollContainer.scrollLeft = savedScrollLeft;
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
-                // エラー時は何もしないか、エラー表示
             }
         },
 

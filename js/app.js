@@ -1,4 +1,4 @@
-// js/app.js (完全修正版)
+// js/app.js
 
 const { createApp, ref, computed, onMounted, watch } = Vue;
 
@@ -9,7 +9,6 @@ createApp({
         const taskViewMode = ref('list'); 
         const showCompleted = ref(false);
         const showFuture = ref(false);
-        // × forceHideoutFir は削除済み
         
         const isLoading = ref(false);
         const loadError = ref(null);
@@ -34,19 +33,16 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        // 設定値 (LocalStorage読み込み)
-        // 安全に読み込むためのヘルパー
+        // 設定値
         const safeGetLS = (key, def) => {
             try { return localStorage.getItem(key) || def; } catch (e) { return def; }
         };
         const showMaxedHideout = ref(safeGetLS('eft_show_maxed_hideout', 'false') === 'true');
-        const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'needed'));
-        const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map'));
+        const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'all'));
+        const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
 
         // --- 2. ヘルパー関数 ---
-        
-        // LocalStorage 読み込み
         const loadLS = (key, def) => {
             try {
                 const val = localStorage.getItem(key);
@@ -57,13 +53,12 @@ createApp({
             }
         };
 
-        // LocalStorage 保存 (エラー対策付き)
         const saveLS = (key, val) => {
             try {
                 const stringVal = typeof val === 'string' ? val : JSON.stringify(val);
                 localStorage.setItem(key, stringVal);
             } catch (e) {
-                console.warn(`Save Error (${key}): Storage might be blocked.`, e);
+                console.warn(`Save Error (${key}):`, e);
             }
         };
 
@@ -103,14 +98,11 @@ createApp({
                 const rewards = [];
                 const r = t.finishRewards || {};
                 
-                // アイテム報酬
                 if (r.items) {
                     r.items.forEach(entry => {
                         if(entry.item) rewards.push({ type: 'item', name: entry.item.name, count: entry.count || 1, id: entry.item.id });
                     });
                 }
-                
-                // 販売アンロック
                 if (r.offerUnlock) {
                     r.offerUnlock.forEach(entry => {
                         if(entry.item && entry.trader) {
@@ -118,8 +110,6 @@ createApp({
                         }
                     });
                 }
-
-                // クラフトアンロック
                 if (r.craftUnlock) {
                     r.craftUnlock.forEach(entry => {
                         const stationName = entry.station ? entry.station.name : "Unknown";
@@ -167,7 +157,6 @@ createApp({
             isLoading.value = true;
             loadError.value = null;
             
-            // queries.js で定義されている GRAPHQL_QUERY を使用
             const query = GRAPHQL_QUERY;
 
             try {
@@ -193,7 +182,6 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                // キャッシュ保存
                 saveLS(CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
@@ -202,7 +190,6 @@ createApp({
                     items: itemsData.value
                 });
                 
-                // ハイドアウトの初期化
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
                 });
@@ -264,7 +251,6 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(() => {
-            // キャッシュ読み込み
             const cache = loadLS('eft_api_cache_v20_final', null);
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
@@ -272,7 +258,6 @@ createApp({
                 itemsData.value = cache.items || { items: [], maps: [] };
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // バックアップファイル(data.js)からの読み込み
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = {
@@ -282,7 +267,6 @@ createApp({
                 lastUpdated.value = 'Backup File';
             }
 
-            // ユーザーデータ読み込み
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
@@ -290,18 +274,15 @@ createApp({
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             playerLevel.value = parseInt(safeGetLS('eft_level', '1'), 10);
             
-            // プリセット適用
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
             }
             
-            // Mermaidからのクリックイベント連携
             window.addEventListener('mermaid-task-click', (e) => {
                 openTaskFromName(e.detail);
             });
         });
 
-        // ユーザーデータの自動保存 (forceHideoutFir は除去済み)
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
@@ -311,11 +292,9 @@ createApp({
             saveLS('eft_level', playerLevel.value.toString());
         }, { deep: true });
 
-        // 設定の保存
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
-        watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val)); 
-        watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
+        watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
         watch(currentTab, (newTab) => {
             if (typeof gtag === 'function') {
@@ -329,7 +308,35 @@ createApp({
         // --- 6. 計算ロジック ---
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
-        const tasksByTrader = computed(() => TaskLogic.groupTasksByTrader(visibleTasks.value));
+        
+        // ★修正: トレーダー順序の固定
+        const tasksByTrader = computed(() => {
+            const rawGrouped = TaskLogic.groupTasksByTrader(visibleTasks.value);
+            
+            // 指定された順序
+            const traderOrder = [
+                'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
+                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
+            ];
+            
+            const sortedGrouped = {};
+            
+            // 定義順に追加
+            traderOrder.forEach(name => {
+                if (rawGrouped[name]) {
+                    sortedGrouped[name] = rawGrouped[name];
+                    delete rawGrouped[name]; 
+                }
+            });
+            
+            // 残り（Unknownなど）を末尾に追加
+            Object.keys(rawGrouped).forEach(key => {
+                sortedGrouped[key] = rawGrouped[key];
+            });
+
+            return sortedGrouped;
+        });
+
         const tasksByMap = computed(() => TaskLogic.groupTasksByMap(visibleTasks.value));
         
         const shoppingList = computed(() => {
@@ -366,26 +373,14 @@ createApp({
             
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
 
-            // --- 鍵リストのフィルタリングとソート ---
             let keysArray = Object.values(res.keys);
 
-            // 1. フィルタリング (View Mode)
             if (keysViewMode.value === 'owned') {
-                // 「所持のみ」モード
                 keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
-            } else if (keysViewMode.value === 'needed') {
-                // 「必要なもののみ」モード（タスクで使用する予定があるもの）
-                // ※ sourcesが存在する(=タスクで使う) かつ 未所持のもの を表示するのが一般的ですが、
-                //   ここでは単純に「タスク割り当てがあるもの」を表示し、所持/未所持は問わない実装にします
-                //   もし「未所持のみ」にしたい場合は !ownedKeys.value.includes(k.id) を追加してください
-                keysArray = keysArray.filter(k => k.sources.length > 0);
             }
-            // 'all' の場合はフィルタなし
 
-            // 2. ソート (Sort Mode)
             const getRateVal = (id) => {
                 const r = keyUserData.value[id]?.rating || '-';
-                // Rateの強さ定義 (Sが最強)
                 const map = {'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '?':1, '-': -1};
                 return map[r] !== undefined ? map[r] : -1;
             };
@@ -394,18 +389,14 @@ createApp({
                 const isOwnedA = ownedKeys.value.includes(a.id);
                 const isOwnedB = ownedKeys.value.includes(b.id);
 
-                // モード別の優先ソート
                 if (keysSortMode.value === 'owned_first') {
-                    // 所持しているものを上に
                     if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
                 } else if (keysSortMode.value === 'rating') {
-                    // Rateが高い順
                     const rateA = getRateVal(a.id);
                     const rateB = getRateVal(b.id);
                     if (rateA !== rateB) return rateB - rateA;
                 }
 
-                // サブソート: マップ名 -> アイテム名
                 const mapCmp = (a.mapName||'').localeCompare(b.mapName||'');
                 if (mapCmp !== 0) return mapCmp;
                 return a.name.localeCompare(b.name);
@@ -417,7 +408,7 @@ createApp({
                 taskFir: toArr(res.taskFir), 
                 taskNormal: toArr(res.taskNormal), 
                 collector: toArr(res.collector), 
-                keys: keysArray // 加工済みの配列を返す
+                keys: keysArray 
             };
         });
 
@@ -436,7 +427,7 @@ createApp({
         }));
 
         return {
-            showMaxedHideout, keysViewMode,keysSortMode,flowchartTrader,
+            showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,
