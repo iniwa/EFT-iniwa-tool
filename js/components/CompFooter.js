@@ -17,7 +17,7 @@ const CompFooter = {
             </div>
             
             <div class="mt-3 text-muted" style="font-size: 0.8em;">
-                EFT Planner &copy; 2025
+                Iniwa's Intel Center &copy; 2025
             </div>
         </div>
 
@@ -32,7 +32,7 @@ const CompFooter = {
                         
                         <h6 class="text-info border-bottom border-secondary pb-1 mb-2">免責事項 (Disclaimer)</h6>
                         <p class="small">
-                            本ツール（EFT Planner）は、Escape from Tarkovの非公式ファンメイドツールです。<br>
+                            本ツール（Iniwa's Intel Center）は、Escape from Tarkovの非公式ファンメイドツールです。<br>
                             Battlestate Gamesとは一切関係がありません。<br>
                             本ツールを使用して発生したいかなる損害・不利益についても、開発者は責任を負いかねます。<br>
                             ゲームのアップデートにより、データや仕様が実際のゲーム内と異なる場合があります。
