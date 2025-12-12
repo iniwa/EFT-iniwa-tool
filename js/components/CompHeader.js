@@ -3,7 +3,7 @@ const CompHeader = {
     emits: ['fetch-data', 'update:playerLevel', 'export-data', 'trigger-import'],
     template: `
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
-        <h1 class="m-0">EFT Planner</h1>
+        <h1 class="m-0">Iniwa's Intel Center</h1>
         <div class="d-flex align-items-center gap-2">
             <div class="btn-group btn-group-sm me-2">
                 <button class="btn btn-outline-light" @click="$emit('export-data')">Export</button>

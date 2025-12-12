@@ -446,4 +446,5 @@ createApp({
 .component('comp-debug', CompDebug)
 .component('comp-flowchart', CompFlowchart)
 .component('comp-chat', CompChat)
+.component('comp-footer', CompFooter)
 .mount('#app');
