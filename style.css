@@ -113,10 +113,21 @@ a, button, .btn, .form-check-input, .list-group-item-action, label, select,
 .key-table th { color: #ffd700; border-bottom: 1px solid #444; }
 .key-table td { border-bottom: 1px solid #333; vertical-align: middle; }
 .key-row:hover { background-color: #252525; }
-.key-owned { color: #555; }
-.key-owned a { color: #555 !important; pointer-events: none; }
-.key-owned .form-control { color: #555 !important; border-bottom: 1px solid #333 !important; }
-.key-owned select { color: #555 !important; border-color: #333 !important; }
+
+/* 鍵が所持済み(.key-owned)の場合の特別ルール */
+.key-owned, 
+.key-owned .item-collected {
+    text-decoration: none !important; /* 取り消し線を強制的に消す */
+    opacity: 1 !important;            /* 透明度を下げない */
+}
+
+/* 所持済みの鍵の文字色（見やすいグレーに） */
+.key-owned,
+.key-owned td,
+.key-owned .item-collected {
+    color: #77dfdf !important; 
+}
+
 
 .map-header:hover { background-color: #3e5871 !important; }
 
@@ -225,4 +236,48 @@ a, button, .btn, .form-check-input, .list-group-item-action, label, select,
 .edgePath path,
 .edgeLabel {
     pointer-events: none !important;
+}
+
+/* --- 入力欄の視認性向上修正 --- */
+
+/* すべての入力フォームに対して強制的に色を指定 */
+input, textarea, select, .form-control, .form-select {
+    background-color: #2a2a2a !important;   /* 背景：濃いグレー */
+    color: #ffffff !important;              /* 文字：真っ白 */
+    border: 1px solid #555 !important;      /* 枠線：少し明るいグレー */
+}
+
+/* フォーカス時（入力中）のデザイン */
+input:focus, textarea:focus, select:focus, .form-control:focus, .form-select:focus {
+    background-color: #333 !important;      /* 背景：少し明るく */
+    color: #ffffff !important;              /* 文字：真っ白 */
+    border-color: #ffd700 !important;       /* 枠線：黄色（アクセント） */
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3) !important;
+    outline: none !important;
+}
+
+/* プレースホルダー（未入力時のガイド文字）の色 */
+::placeholder {
+    color: #bbbbbb !important; /* 明るめのグレー */
+    opacity: 1; /* Firefox対策 */
+}
+
+/* 読み取り専用(readonly)の入力欄 */
+input[readonly], textarea[readonly] {
+    background-color: #1a1a1a !important; /* より暗い背景 */
+    color: #888 !important;               /* 少し暗い文字 */
+    cursor: default;
+    border-color: #333 !important;
+}
+
+/* 無効化(disabled)された入力欄 */
+input:disabled, textarea:disabled, select:disabled {
+    background-color: #151515 !important;
+    color: #666 !important;
+}
+
+/* 範囲選択（レンジバー）は背景色を適用しない（ブラウザ標準に任せる） */
+input[type="range"] {
+    background-color: transparent !important;
+    border: none !important;
 }

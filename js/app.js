@@ -1,4 +1,4 @@
-// js/app.js (完全修正版)
+// js/app.js
 
 const { createApp, ref, computed, onMounted, watch } = Vue;
 
@@ -9,7 +9,6 @@ createApp({
         const taskViewMode = ref('list'); 
         const showCompleted = ref(false);
         const showFuture = ref(false);
-        // × forceHideoutFir は削除済み
         
         const isLoading = ref(false);
         const loadError = ref(null);
@@ -34,18 +33,16 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        // 設定値 (LocalStorage読み込み)
-        // 安全に読み込むためのヘルパー
+        // 設定値
         const safeGetLS = (key, def) => {
             try { return localStorage.getItem(key) || def; } catch (e) { return def; }
         };
         const showMaxedHideout = ref(safeGetLS('eft_show_maxed_hideout', 'false') === 'true');
-        const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'needed'));
+        const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'all'));
+        const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
 
         // --- 2. ヘルパー関数 ---
-        
-        // LocalStorage 読み込み
         const loadLS = (key, def) => {
             try {
                 const val = localStorage.getItem(key);
@@ -56,13 +53,12 @@ createApp({
             }
         };
 
-        // LocalStorage 保存 (エラー対策付き)
         const saveLS = (key, val) => {
             try {
                 const stringVal = typeof val === 'string' ? val : JSON.stringify(val);
                 localStorage.setItem(key, stringVal);
             } catch (e) {
-                console.warn(`Save Error (${key}): Storage might be blocked.`, e);
+                console.warn(`Save Error (${key}):`, e);
             }
         };
 
@@ -102,14 +98,11 @@ createApp({
                 const rewards = [];
                 const r = t.finishRewards || {};
                 
-                // アイテム報酬
                 if (r.items) {
                     r.items.forEach(entry => {
                         if(entry.item) rewards.push({ type: 'item', name: entry.item.name, count: entry.count || 1, id: entry.item.id });
                     });
                 }
-                
-                // 販売アンロック
                 if (r.offerUnlock) {
                     r.offerUnlock.forEach(entry => {
                         if(entry.item && entry.trader) {
@@ -117,8 +110,6 @@ createApp({
                         }
                     });
                 }
-
-                // クラフトアンロック
                 if (r.craftUnlock) {
                     r.craftUnlock.forEach(entry => {
                         const stationName = entry.station ? entry.station.name : "Unknown";
@@ -166,7 +157,6 @@ createApp({
             isLoading.value = true;
             loadError.value = null;
             
-            // queries.js で定義されている GRAPHQL_QUERY を使用
             const query = GRAPHQL_QUERY;
 
             try {
@@ -192,7 +182,6 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                // キャッシュ保存
                 saveLS(CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
@@ -201,7 +190,6 @@ createApp({
                     items: itemsData.value
                 });
                 
-                // ハイドアウトの初期化
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
                 });
@@ -263,7 +251,6 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(() => {
-            // キャッシュ読み込み
             const cache = loadLS('eft_api_cache_v20_final', null);
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
@@ -271,7 +258,6 @@ createApp({
                 itemsData.value = cache.items || { items: [], maps: [] };
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // バックアップファイル(data.js)からの読み込み
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = {
@@ -281,7 +267,6 @@ createApp({
                 lastUpdated.value = 'Backup File';
             }
 
-            // ユーザーデータ読み込み
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
@@ -289,18 +274,15 @@ createApp({
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             playerLevel.value = parseInt(safeGetLS('eft_level', '1'), 10);
             
-            // プリセット適用
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
             }
             
-            // Mermaidからのクリックイベント連携
             window.addEventListener('mermaid-task-click', (e) => {
                 openTaskFromName(e.detail);
             });
         });
 
-        // ユーザーデータの自動保存 (forceHideoutFir は除去済み)
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
@@ -310,9 +292,9 @@ createApp({
             saveLS('eft_level', playerLevel.value.toString());
         }, { deep: true });
 
-        // 設定の保存
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
+        watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
         watch(currentTab, (newTab) => {
             if (typeof gtag === 'function') {
@@ -326,7 +308,35 @@ createApp({
         // --- 6. 計算ロジック ---
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
-        const tasksByTrader = computed(() => TaskLogic.groupTasksByTrader(visibleTasks.value));
+        
+        // ★修正: トレーダー順序の固定
+        const tasksByTrader = computed(() => {
+            const rawGrouped = TaskLogic.groupTasksByTrader(visibleTasks.value);
+            
+            // 指定された順序
+            const traderOrder = [
+                'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
+                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
+            ];
+            
+            const sortedGrouped = {};
+            
+            // 定義順に追加
+            traderOrder.forEach(name => {
+                if (rawGrouped[name]) {
+                    sortedGrouped[name] = rawGrouped[name];
+                    delete rawGrouped[name]; 
+                }
+            });
+            
+            // 残り（Unknownなど）を末尾に追加
+            Object.keys(rawGrouped).forEach(key => {
+                sortedGrouped[key] = rawGrouped[key];
+            });
+
+            return sortedGrouped;
+        });
+
         const tasksByMap = computed(() => TaskLogic.groupTasksByMap(visibleTasks.value));
         
         const shoppingList = computed(() => {
@@ -354,7 +364,6 @@ createApp({
                 }
             };
 
-            // ★修正: Hideout計算時の forceHideoutFir 引数を false (固定) に変更
             HideoutLogic.calculate(hideoutData.value, userHideout.value, false, addItem);
             TaskLogic.calculate(taskData.value, completedTasks.value, addItem);
             
@@ -363,9 +372,34 @@ createApp({
             KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
             
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
-            const toArrKeys = (o) => Object.values(o).sort((a,b) => {
+
+            let keysArray = Object.values(res.keys);
+
+            if (keysViewMode.value === 'owned') {
+                keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
+            }
+
+            const getRateVal = (id) => {
+                const r = keyUserData.value[id]?.rating || '-';
+                const map = {'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '?':1, '-': -1};
+                return map[r] !== undefined ? map[r] : -1;
+            };
+
+            keysArray.sort((a, b) => {
+                const isOwnedA = ownedKeys.value.includes(a.id);
+                const isOwnedB = ownedKeys.value.includes(b.id);
+
+                if (keysSortMode.value === 'owned_first') {
+                    if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
+                } else if (keysSortMode.value === 'rating') {
+                    const rateA = getRateVal(a.id);
+                    const rateB = getRateVal(b.id);
+                    if (rateA !== rateB) return rateB - rateA;
+                }
+
                 const mapCmp = (a.mapName||'').localeCompare(b.mapName||'');
-                return mapCmp !== 0 ? mapCmp : a.name.localeCompare(b.name);
+                if (mapCmp !== 0) return mapCmp;
+                return a.name.localeCompare(b.name);
             });
 
             return { 
@@ -374,7 +408,7 @@ createApp({
                 taskFir: toArr(res.taskFir), 
                 taskNormal: toArr(res.taskNormal), 
                 collector: toArr(res.collector), 
-                keys: toArrKeys(res.keys) 
+                keys: keysArray 
             };
         });
 
@@ -393,7 +427,7 @@ createApp({
         }));
 
         return {
-            showMaxedHideout, keysViewMode, flowchartTrader,
+            showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,

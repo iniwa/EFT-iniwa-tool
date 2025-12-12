@@ -9,6 +9,18 @@ query GetData {
     wikiLink
     trader { name }
     map { name }
+    
+    # ★追加: タスク攻略に必要な鍵のリストを取得
+    neededKeys {
+      keys {
+        id
+        name
+        shortName
+        normalizedName
+        wikiLink
+      }
+    }
+
     taskRequirements { task { name } }
     traderLevelRequirements { level requirementType value }
     kappaRequired
@@ -20,8 +32,6 @@ query GetData {
     finishRewards {
       items { count item { id name } }
       offerUnlock { level trader { name } item { name } }
-      
-      # ★修正: 正しいフィールド名 craftUnlock を使用
       craftUnlock {
         station { name }
         level
@@ -52,13 +62,13 @@ query GetData {
     }
   }
   
+  # itemsは基本的な鍵情報のみ取得 (タスクとの紐付けは上のtasks.neededKeysで行うためシンプルに戻しました)
   items(types: keys, lang: ja) {
     id
     name
     shortName
     normalizedName
     wikiLink
-    usedInTasks { name }
   }
 }
 `;

@@ -183,63 +183,125 @@ const CompResult = {
     `
 };
 
-// js/components.js の CompKeys (上書き)
-
 const CompKeys = {
-    // ★修正: 'viewMode' を props に追加
-    props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData', 'viewMode'], 
-    // ★修正: 'update:viewMode' を emits に追加
-    emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode'],
+    props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode'], 
+    emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode', 'update:sortMode'],
     data() {
         return {
-            // viewMode: 'needed', ← ★削除 (propsで貰うため)
             searchQuery: '',
             collapsedMaps: {},
-            ratings: ['-', 'S', 'A', 'B', 'C', 'D', 'F', 'SS']
+            ratings: ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F'],
+            // ★マップの表示順序定義 (APIの正式名称に合わせています)
+            mapOrder: [
+                "Customs",          // User: Cutom
+                "Woods",
+                "Interchange",
+                "Factory",
+                "Shoreline",
+                "Lighthouse",
+                "Reserve",
+                "Streets of Tarkov", // User: Street of Tarkov
+                "Ground Zero",
+                "The Lab",
+                "Labyrinth"          // User: Labrynth
+            ]
         }
     },
     computed: {
         filteredKeys() {
             let source = this.shoppingList.keys || [];
             
-            // ★this.viewMode (prop) を参照
-            if (this.viewMode === 'needed') {
-                source = source.filter(k => 
-                    k.sources && 
-                    k.sources.length > 0 && 
-                    k.sources.some(s => s.name && s.name !== '')
-                );
+            // フィルタリング (View Mode)
+            if (this.viewMode === 'owned') {
+                source = source.filter(k => this.ownedKeys.includes(k.id));
             }
-            // ... (以下同じ)
+
+            // 検索フィルタ
             const query = this.searchQuery.toLowerCase();
+            if (!query) return source;
+            
             return source.filter(k => {
-                if (!query) return true;
                 return (k.name && k.name.toLowerCase().includes(query)) || 
                        (k.shortName && k.shortName.toLowerCase().includes(query));
             });
         },
         groupedKeys() {
-            // ... (変更なし)
+            // マップごとのグループ化
             const groups = {};
             this.filteredKeys.forEach(k => {
                 const map = k.mapName || 'Unknown / Other';
                 if (!groups[map]) groups[map] = [];
                 groups[map].push(k);
             });
-            return Object.keys(groups).sort((a,b) => {
+
+            // ★修正: 指定された順序でマップ名をソート
+            const sortedMapNames = Object.keys(groups).sort((a,b) => {
+                // Unknownは常に最後
                 if (a === 'Unknown / Other') return 1;
                 if (b === 'Unknown / Other') return -1;
+
+                // 定義リスト内のインデックスを取得
+                const idxA = this.mapOrder.indexOf(a);
+                const idxB = this.mapOrder.indexOf(b);
+
+                // 両方リストにある場合、その順序に従う
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                
+                // 片方だけリストにある場合、ある方を優先(上)にする
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+
+                // どちらもリストにない場合、アルファベット順
                 return a.localeCompare(b);
-            }).reduce((acc, key) => {
-                acc[key] = groups[key].sort((a,b) => a.name.localeCompare(b.name));
+            });
+
+            // 各グループ内でのソート
+            return sortedMapNames.reduce((acc, mapName) => {
+                const items = groups[mapName];
+
+                items.sort((a, b) => {
+                    // A. 所持済み優先モード
+                    if (this.sortMode === 'owned_first') {
+                        const isOwnedA = this.ownedKeys.includes(a.id);
+                        const isOwnedB = this.ownedKeys.includes(b.id);
+                        if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
+                    }
+                    // B. レート順モード
+                    else if (this.sortMode === 'rating') {
+                        const getScore = (id) => {
+                            const r = this.keyUserData[id]?.rating || '-';
+                            const map = {'SS':12, 'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '-': -1}; 
+                            return map[r] !== undefined ? map[r] : -1;
+                        };
+                        const scoreA = getScore(a.id);
+                        const scoreB = getScore(b.id);
+                        if (scoreA !== scoreB) return scoreB - scoreA;
+                    }
+
+                    // C. 名前順
+                    return a.name.localeCompare(b.name);
+                });
+
+                acc[mapName] = items;
                 return acc;
             }, {});
         }
     },
     methods: {
-        // ... (toggleMap等は変更なし)
         toggleMap(mapName) {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
+        },
+        // ★追加: 全て収納する
+        collapseAll() {
+            Object.keys(this.groupedKeys).forEach(map => {
+                this.collapsedMaps[map] = true;
+            });
+        },
+        // ★追加: 全て展開する (便利なので追加)
+        expandAll() {
+            Object.keys(this.groupedKeys).forEach(map => {
+                this.collapsedMaps[map] = false;
+            });
         },
         getRating(id) {
             if (!this.keyUserData) return '-';
@@ -258,17 +320,43 @@ const CompKeys = {
     },
     template: `
     <div class="card border-info">
-        <div class="card-header bg-dark text-info border-bottom border-info d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <div>🔑 鍵管理</div>
-            
-            <div class="d-flex gap-2 align-items-center">
-                <div class="btn-group btn-group-sm">
-                    <button class="btn" :class="viewMode==='needed' ? 'btn-info' : 'btn-outline-secondary'" 
-                            @click="$emit('update:viewMode', 'needed')">タスクで使用</button>
-                    <button class="btn" :class="viewMode==='all' ? 'btn-info' : 'btn-outline-secondary'" 
-                            @click="$emit('update:viewMode', 'all')">全ての鍵</button>
+        <div class="card-header bg-dark text-info border-bottom border-info">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="fw-bold fs-5">🔑 鍵管理</div>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-secondary text-light" @click="collapseAll" title="全てのマップを閉じる">全て収納</button>
+                        <button class="btn btn-outline-secondary text-light" @click="expandAll" title="全てのマップを開く">全て展開</button>
+                    </div>
                 </div>
-                <input type="text" class="form-control form-control-sm" style="width: 200px;" placeholder="鍵名で検索..." v-model="searchQuery">
+                <input type="text" class="form-control form-control-sm" style="width: 200px;" 
+                       placeholder="鍵名で検索..." v-model="searchQuery">
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-secondary">表示:</span>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn" :class="viewMode==='all' || viewMode==='needed' ? 'btn-info' : 'btn-outline-secondary'" 
+                                @click="$emit('update:viewMode', 'all')">全ての鍵</button>
+                        <button class="btn" :class="viewMode==='owned' ? 'btn-info' : 'btn-outline-secondary'" 
+                                @click="$emit('update:viewMode', 'owned')">所持のみ</button>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="small text-secondary">並び順:</span>
+                    <select class="form-select form-select-sm bg-dark text-white border-secondary" 
+                            style="width: auto;"
+                            :value="sortMode" 
+                            @change="$emit('update:sortMode', $event.target.value)">
+                        <option value="map">マップ順 (Default)</option>
+                        <option value="owned_first">所持済みを先頭に</option>
+                        <option value="rating">Rate順 (SS -> F)</option>
+                    </select>
+                </div>
+                
             </div>
         </div>
         
@@ -307,7 +395,8 @@ const CompKeys = {
                                     <select class="form-select form-select-sm p-0 text-center" 
                                             style="height: 24px; background-color: #222; color: gold; border: 1px solid #555;"
                                             :value="getRating(item.id)"
-                                            @change="onRatingChange(item.id, $event)">
+                                            @change="onRatingChange(item.id, $event)"
+                                            @click.stop>
                                         <option v-for="r in ratings" :key="r" :value="r">{{ r }}</option>
                                     </select>
                                 </td>
@@ -340,12 +429,12 @@ const CompKeys = {
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    <a v-if="item.wikiLink" :href="item.wikiLink" target="_blank" class="btn btn-sm btn-outline-warning py-0 px-1" title="Wiki">W</a>
+                                    <a v-if="item.wikiLink" :href="item.wikiLink" target="_blank" class="btn btn-sm btn-outline-warning py-0 px-1" title="Wiki" @click.stop>W</a>
                                     <span v-else class="text-muted">-</span>
                                 </td>
 
                                 <td class="align-middle text-center">
-                                    <a v-if="item.normalizedName" :href="'https://tarkov.dev/item/' + item.normalizedName" target="_blank" class="btn btn-sm btn-outline-primary py-0 px-1" title="Tarkov.dev">D</a>
+                                    <a v-if="item.normalizedName" :href="'https://tarkov.dev/item/' + item.normalizedName" target="_blank" class="btn btn-sm btn-outline-primary py-0 px-1" title="Tarkov.dev" @click.stop>D</a>
                                     <span v-else class="text-muted">-</span>
                                 </td>
                             </tr>
@@ -362,7 +451,7 @@ const CompKeys = {
     `
 };
 
-// js/components.js の CompFlowchart (スクロール崩れ防止 & ホバー復活版)
+// js/components.js の CompFlowchart 部分
 
 const CompFlowchart = {
     props: ['taskData', 'completedTasks', 'selectedTrader'],
@@ -375,8 +464,26 @@ const CompFlowchart = {
     computed: {
         traderList() {
             if (!this.taskData) return [];
+            
+            // ★修正: トレーダーの順序指定
+            const order = [
+                'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
+                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
+            ];
+
             const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
-            return Array.from(traders).sort();
+            const list = Array.from(traders);
+            
+            // 指定順にソート
+            return list.sort((a, b) => {
+                const idxA = order.indexOf(a);
+                const idxB = order.indexOf(b);
+                
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return a.localeCompare(b);
+            });
         }
     },
     watch: {
@@ -404,12 +511,10 @@ const CompFlowchart = {
             const container = this.$refs.mermaidContainer;
             if (!container) return;
 
-            // ★修正1: スクロール位置の保存
             const scrollContainer = container.parentElement;
             const savedScrollTop = scrollContainer.scrollTop;
             const savedScrollLeft = scrollContainer.scrollLeft;
 
-            // マッピング作成
             this.nodeMap = {}; 
             const nameToId = {};
             let counter = 0;
@@ -420,7 +525,6 @@ const CompFlowchart = {
                 this.nodeMap[simpleId] = t;
             });
 
-            // 描画対象抽出
             const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
             const nodesToRender = new Set();
             const edges = [];
@@ -443,10 +547,8 @@ const CompFlowchart = {
                 }
             });
 
-            // グラフ定義
             let graph = 'graph LR\n';
             
-            // クラス定義
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef doneExternal fill:#198754,stroke:#fff,stroke-width:2px,color:white,stroke-dasharray: 5 5;\n';
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
@@ -477,30 +579,23 @@ const CompFlowchart = {
                 graph += `${edge.from} --> ${edge.to}\n`;
             });
 
-            // レンダリング
             try {
-                // ★修正2: いきなり container.innerHTML = '' で消さず、
-                // まず新しいSVGを生成してから差し替えることで、高さが0になる瞬間を無くす
                 const id = `mermaid-${Date.now()}`;
                 const { svg } = await mermaid.render(id, graph);
                 
-                // ここで差し替え
                 container.innerHTML = svg;
 
-                // スタイル調整
                 const edgesEl = container.querySelectorAll('.edgePath, .edgeLabel');
                 edgesEl.forEach(el => el.style.pointerEvents = 'none');
 
                 const nodesEl = container.querySelectorAll('.node');
                 nodesEl.forEach(el => el.style.cursor = 'pointer');
 
-                // ★修正3: 差し替え直後にスクロール位置を復元
                 scrollContainer.scrollTop = savedScrollTop;
                 scrollContainer.scrollLeft = savedScrollLeft;
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
-                // エラー時は何もしないか、エラー表示
             }
         },
 
@@ -550,7 +645,8 @@ const CompFlowchart = {
 };
 
 
-// Modal (Craft info added)
+// js/components.js の CompModal 部分
+
 const CompModal = {
     props: ['selectedTask', 'completedTasks'],
     emits: ['close', 'toggle-task'],
@@ -576,12 +672,16 @@ const CompModal = {
                 {{ selectedTask.name }}
             </h4>
             
-            <div class="mb-3 d-flex justify-content-between flex-wrap gap-2">
+            <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
                 <div><strong>Trader:</strong> {{ selectedTask.trader.name }}</div>
                 <div><strong>Map:</strong> {{ selectedTask.map ? selectedTask.map.name : 'None' }}</div>
+                <div v-if="selectedTask.minPlayerLevel > 0">
+                    <span class="text-info fw-bold">Req Lv: {{ selectedTask.minPlayerLevel }}</span>
+                </div>
                 <div v-if="selectedTask.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
                 <div v-if="selectedTask.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
             </div>
+
             <div class="d-grid gap-2 mb-4">
                 <a v-if="selectedTask.wikiLink" :href="selectedTask.wikiLink" target="_blank" class="btn btn-outline-info btn-sm">📖 Wikiで詳細を見る</a>
             </div>
