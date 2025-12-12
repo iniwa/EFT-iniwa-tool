@@ -41,6 +41,7 @@ createApp({
         };
         const showMaxedHideout = ref(safeGetLS('eft_show_maxed_hideout', 'false') === 'true');
         const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'needed'));
+        const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map'));
         const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
 
         // --- 2. ヘルパー関数 ---
@@ -313,6 +314,8 @@ createApp({
         // 設定の保存
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
+        watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val)); 
+        watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
         watch(currentTab, (newTab) => {
             if (typeof gtag === 'function') {
@@ -354,7 +357,6 @@ createApp({
                 }
             };
 
-            // ★修正: Hideout計算時の forceHideoutFir 引数を false (固定) に変更
             HideoutLogic.calculate(hideoutData.value, userHideout.value, false, addItem);
             TaskLogic.calculate(taskData.value, completedTasks.value, addItem);
             
@@ -363,9 +365,50 @@ createApp({
             KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
             
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
-            const toArrKeys = (o) => Object.values(o).sort((a,b) => {
+
+            // --- 鍵リストのフィルタリングとソート ---
+            let keysArray = Object.values(res.keys);
+
+            // 1. フィルタリング (View Mode)
+            if (keysViewMode.value === 'owned') {
+                // 「所持のみ」モード
+                keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
+            } else if (keysViewMode.value === 'needed') {
+                // 「必要なもののみ」モード（タスクで使用する予定があるもの）
+                // ※ sourcesが存在する(=タスクで使う) かつ 未所持のもの を表示するのが一般的ですが、
+                //   ここでは単純に「タスク割り当てがあるもの」を表示し、所持/未所持は問わない実装にします
+                //   もし「未所持のみ」にしたい場合は !ownedKeys.value.includes(k.id) を追加してください
+                keysArray = keysArray.filter(k => k.sources.length > 0);
+            }
+            // 'all' の場合はフィルタなし
+
+            // 2. ソート (Sort Mode)
+            const getRateVal = (id) => {
+                const r = keyUserData.value[id]?.rating || '-';
+                // Rateの強さ定義 (Sが最強)
+                const map = {'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '?':1, '-': -1};
+                return map[r] !== undefined ? map[r] : -1;
+            };
+
+            keysArray.sort((a, b) => {
+                const isOwnedA = ownedKeys.value.includes(a.id);
+                const isOwnedB = ownedKeys.value.includes(b.id);
+
+                // モード別の優先ソート
+                if (keysSortMode.value === 'owned_first') {
+                    // 所持しているものを上に
+                    if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
+                } else if (keysSortMode.value === 'rating') {
+                    // Rateが高い順
+                    const rateA = getRateVal(a.id);
+                    const rateB = getRateVal(b.id);
+                    if (rateA !== rateB) return rateB - rateA;
+                }
+
+                // サブソート: マップ名 -> アイテム名
                 const mapCmp = (a.mapName||'').localeCompare(b.mapName||'');
-                return mapCmp !== 0 ? mapCmp : a.name.localeCompare(b.name);
+                if (mapCmp !== 0) return mapCmp;
+                return a.name.localeCompare(b.name);
             });
 
             return { 
@@ -374,7 +417,7 @@ createApp({
                 taskFir: toArr(res.taskFir), 
                 taskNormal: toArr(res.taskNormal), 
                 collector: toArr(res.collector), 
-                keys: toArrKeys(res.keys) 
+                keys: keysArray // 加工済みの配列を返す
             };
         });
 
@@ -393,7 +436,7 @@ createApp({
         }));
 
         return {
-            showMaxedHideout, keysViewMode, flowchartTrader,
+            showMaxedHideout, keysViewMode,keysSortMode,flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,
