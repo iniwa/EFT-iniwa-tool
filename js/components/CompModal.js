@@ -1,6 +1,8 @@
 const CompModal = {
-    props: ['selectedTask', 'completedTasks'],
-    emits: ['close', 'toggle-task'],
+    // ★修正: prioritizedTasks を受け取る
+    props: ['selectedTask', 'completedTasks', 'prioritizedTasks'],
+    // ★修正: toggle-priority をemitに追加
+    emits: ['close', 'toggle-task', 'toggle-priority'],
     template: `
     <div v-if="selectedTask" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-content-custom">
@@ -15,6 +17,12 @@ const CompModal = {
                             {{ completedTasks.includes(selectedTask.name) ? '完了済み (Completed)' : '完了にする' }}
                         </span>
                     </label>
+                    
+                    <button class="btn btn-sm" 
+                            :class="prioritizedTasks.includes(selectedTask.name) ? 'btn-warning' : 'btn-outline-secondary'"
+                            @click="$emit('toggle-priority', selectedTask.name)">
+                        {{ prioritizedTasks.includes(selectedTask.name) ? '★ 優先 (Prioritized)' : '☆ 優先にする' }}
+                    </button>
                 </div>
                 <button type="button" class="btn-close btn-close-white flex-shrink-0 ms-3" @click="$emit('close')"></button>
             </div>

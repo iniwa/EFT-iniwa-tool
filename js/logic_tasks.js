@@ -1,32 +1,24 @@
-// js/logic_tasks.js (重複カウント修正 & 機能完全版)
+// js/logic_tasks.js
 
 const TaskLogic = {
-    // タスクのフィルタリング（完了済み除外、レベル条件、ソートなど）
+    // タスクのフィルタリング
     filterActiveTasks(taskData, completedList, level, search, showCompleted, showFuture) {
         if (!taskData) return [];
         const lowerSearch = (search || '').toLowerCase();
 
         return taskData.filter(task => {
-            // 1. 検索フィルター
-            if (lowerSearch && !task.name.toLowerCase().includes(lowerSearch)) {
-                return false;
-            }
+            if (lowerSearch && !task.name.toLowerCase().includes(lowerSearch)) return false;
 
             const isCompleted = completedList.includes(task.name);
 
-            // 2. 完了済みの表示切り替え
             if (showCompleted) {
                 return isCompleted;
             } else {
                 if (isCompleted) return false;
             }
 
-            // 3. 未来のタスク（ロック中）の表示切り替え
             if (!showFuture) {
-                // レベル不足は隠す
                 if (task.minPlayerLevel > level) return false;
-
-                // 前提タスクが終わっていない場合は隠す
                 if (task.taskRequirements) {
                     const reqsMet = task.taskRequirements.every(req => 
                         completedList.includes(req.task.name)
@@ -34,10 +26,8 @@ const TaskLogic = {
                     if (!reqsMet) return false;
                 }
             }
-
             return true;
         }).sort((a, b) => {
-            // ソート順: レベル順 -> 名前順
             if (a.minPlayerLevel !== b.minPlayerLevel) {
                 return a.minPlayerLevel - b.minPlayerLevel;
             }
@@ -45,44 +35,78 @@ const TaskLogic = {
         });
     },
 
+    // ★修正: 日本語名も含めてマップを検索
+    getTaskMaps(task) {
+        // 検索対象のマップ名定義 (英語名 -> 検索キーワード配列)
+        const mapKeywords = {
+            "Customs": ["customs", "カスタム"],
+            "Factory": ["factory", "工場", "night factory"],
+            "Interchange": ["interchange", "インターチェンジ"],
+            "The Lab": ["the lab", "labs", "ラボ"],
+            "Lighthouse": ["lighthouse", "ライトハウス"],
+            "Reserve": ["reserve", "リザーブ", "軍事基地"],
+            "Shoreline": ["shoreline", "ショアライン"],
+            "Streets of Tarkov": ["streets of tarkov", "streets", "ストリート"],
+            "Woods": ["woods", "ウッズ"],
+            "Ground Zero": ["ground zero", "グラウンドゼロ"]
+        };
+        
+        const maps = new Set();
+
+        // 1. APIのマップ情報があれば追加 (最優先)
+        if (task.map && task.map.name) {
+            // APIのマップ名を正規化して登録
+            let apiMapName = task.map.name;
+            // 表記揺れの吸収
+            if (apiMapName.includes("Night")) apiMapName = "Factory";
+            if (apiMapName.includes("21+")) apiMapName = "Ground Zero";
+            
+            maps.add(apiMapName);
+        }
+
+        // 2. 目標の説明文からマップ名を検索して追加
+        if (task.objectives) {
+            task.objectives.forEach(obj => {
+                const desc = (obj.description || "").toLowerCase();
+                
+                for (const [officialName, keywords] of Object.entries(mapKeywords)) {
+                    // 既に登録済みならスキップ
+                    if (maps.has(officialName)) continue;
+
+                    // キーワードが含まれているかチェック
+                    for (const key of keywords) {
+                        if (desc.includes(key.toLowerCase())) {
+                            maps.add(officialName);
+                            break; // ヒットしたらこのマップの他のキーワードはチェック不要
+                        }
+                    }
+                }
+            });
+        }
+
+        if (maps.size === 0) return [];
+        return Array.from(maps).sort();
+    },
+
     // 必要なアイテムの計算
     calculate(taskData, completedList, addItemFunc) {
         if (!taskData) return;
-        
-        // 完了していないタスクのみを対象
         const activeTasks = taskData.filter(t => !completedList.includes(t.name));
 
         activeTasks.forEach(task => {
             if (task.objectives) {
                 task.objectives.forEach(obj => {
-                    // ★修正: 重複を防ぐため 'giveItem' (納品) のみを対象にする
                     if (obj.type === 'giveItem' && obj.item) {
-                        
-                        // マップ名やWikiリンクの取得（app.jsへ渡すため）
                         const mapName = task.map ? task.map.name : null;
                         const wikiLink = task.wikiLink || null;
+                        let category = 'taskNormal'; 
+                        if (task.name === 'Collector') category = 'collector';
+                        else if (obj.foundInRaid) category = 'taskFir';
 
-                        // カテゴリ分け
-                        let category = 'taskNormal'; // デフォルト
-                        
-                        if (task.name === 'Collector') {
-                            category = 'collector';
-                        } else if (obj.foundInRaid) {
-                            category = 'taskFir';
-                        }
-
-                        // アイテム追加関数を実行 (引数は app.js の addItem に合わせる)
                         addItemFunc(
-                            category,               // カテゴリ
-                            obj.item.id,           // アイテムID
-                            obj.item.name,         // アイテム名
-                            obj.count,             // 必要数
-                            task.name,             // ソース（タスク名）
-                            'task',                // タイプ
-                            mapName,               // マップ名
-                            wikiLink,              // Wikiリンク
-                            obj.item.shortName,    // 短縮名
-                            obj.item.normalizedName // URL用名
+                            category, obj.item.id, obj.item.name, obj.count,
+                            task.name, 'task', mapName, wikiLink,
+                            obj.item.shortName, obj.item.normalizedName
                         );
                     }
                 });
@@ -105,9 +129,14 @@ const TaskLogic = {
     groupTasksByMap(tasks) {
         const groups = {};
         tasks.forEach(task => {
-            const mapName = (task.map && task.map.name) ? task.map.name : 'Any / Multiple';
-            if (!groups[mapName]) groups[mapName] = [];
-            groups[mapName].push(task);
+            const mapNames = task.derivedMaps && task.derivedMaps.length > 0 
+                            ? task.derivedMaps 
+                            : ['Any / Multiple'];
+
+            mapNames.forEach(mapName => {
+                if (!groups[mapName]) groups[mapName] = [];
+                groups[mapName].push(task);
+            });
         });
         return groups;
     }

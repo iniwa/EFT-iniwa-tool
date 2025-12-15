@@ -79,6 +79,7 @@
                 :user-hideout="userHideout"
                 :filtered-tasks-list="filteredTasksList"
                 :completed-tasks="completedTasks"
+                :prioritized-tasks="prioritizedTasks" 
                 :task-view-mode="taskViewMode"
                 :show-completed="showCompleted"
                 :show-future="showFuture"
@@ -93,6 +94,7 @@
                 @update:search-task="searchTask = $event"
                 @open-task-details="openTaskDetails"
                 @toggle-task="toggleTask"
+                @toggle-priority="togglePriority"
             ></comp-input>
         </div>
 
@@ -128,6 +130,7 @@
             <comp-flowchart
                 :task-data="taskData"
                 :completed-tasks="completedTasks"
+                :prioritized-tasks="prioritizedTasks"
                 :selected-trader="flowchartTrader"
                 @update:selected-trader="flowchartTrader = $event"
                 @toggle-task="toggleTask"
@@ -161,7 +164,9 @@
         <comp-modal
             :selected-task="selectedTask"
             :completed-tasks="completedTasks" 
+            :prioritized-tasks="prioritizedTasks"
             @toggle-task="toggleTask"
+            @toggle-priority="togglePriority"
             @close="selectedTask = null"
         ></comp-modal>
 
@@ -173,18 +178,18 @@
     <script src="js/queries.js?=v1.0.0"></script>
     <script src="js/key_presets.js?=v1.0.0"></script> 
     <script src="js/logic_hideout.js?=v1.0.0"></script>
-    <script src="js/logic_tasks.js?=v1.0.0"></script>
+    <script src="js/logic_tasks.js?=v1.0.1"></script>
     <script src="js/logic_keys.js?=v1.0.0"></script>
 
     <script src="js/components/CompHeader.js?=v1.0.0"></script>
-    <script src="js/components/CompInput.js?=v1.0.0"></script>
+    <script src="js/components/CompInput.js?=v1.0.2"></script>
     <script src="js/components/CompResult.js?=v1.0.0"></script>
     <script src="js/components/CompKeys.js?=v1.0.0"></script>
-    <script src="js/components/CompFlowchart.js?=v1.0.0"></script>
-    <script src="js/components/CompModal.js?=v1.0.0"></script>
+    <script src="js/components/CompFlowchart.js?=v1.0.1"></script>
+    <script src="js/components/CompModal.js?=v1.0.1"></script>
     <script src="js/components/CompDebug.js?=v1.0.0"></script>
     <script src="js/components/CompChat.js?=v1.0.0"></script>
     <script src="js/components/CompFooter.js?=v1.0.0"></script>
-    <script src="js/app.js?=v1.0.0"></script>
+    <script src="js/app.js?=v1.0.2"></script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 const CompInput = {
-    props: ['hideoutData', 'userHideout', 'filteredTasksList', 'completedTasks', 'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap', 'showMaxedHideout'],
-    emits: ['update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 'open-task-details', 'toggle-task', 'update:showMaxedHideout'],
+    // prioritizedTasks と toggle-priority は不要になったので削除しても良いですが、
+    // index.html の記述そのままで動くように props/emits に残しておいても害はありません。
+    // 今回は表示ロジック（template）から削除します。
+    props: ['hideoutData', 'userHideout', 'filteredTasksList', 'completedTasks', 'prioritizedTasks', 'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap', 'showMaxedHideout'],
+    emits: ['update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 'open-task-details', 'toggle-task', 'update:showMaxedHideout', 'toggle-priority'],
     
     computed: {
         visibleHideoutStations() {
@@ -80,7 +83,7 @@ const CompInput = {
                                     {{ task.name }}
                                     <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                                     <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
-                                    <span v-if="task.map" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.map.name }}</span>
+                                    <span v-if="task.mapLabel" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.mapLabel }}</span>
                                 </span>
                                 <span class="badge bg-secondary">{{ task.trader.name }}</span>
                             </div>
@@ -99,7 +102,7 @@ const CompInput = {
                                             <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                                             <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                                         </span>
-                                        <small class="text-muted">{{ taskViewMode === 'trader' ? (task.map ? task.map.name : '') : task.trader.name }}</small>
+                                        <small class="text-muted">{{ taskViewMode === 'trader' ? task.mapLabel : task.trader.name }}</small>
                                     </div>
                                 </div>
                             </div>
