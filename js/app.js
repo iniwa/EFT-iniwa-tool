@@ -14,6 +14,9 @@ createApp({
         const loadError = ref(null);
         const lastUpdated = ref(null);
 
+        // ★修正: キャッシュキーをここで定義し、読み込み・保存の両方で共通利用する
+        const APP_CACHE_KEY = 'eft_api_cache_v21_mapfix'; 
+
         // データコンテナ
         const hideoutData = ref([]);
         const taskData = ref([]);
@@ -125,17 +128,29 @@ createApp({
                     });
                 }
 
+                // ★追加: マップ情報を解析してプロパティに追加
+                const maps = TaskLogic.getTaskMaps(t);
+                // 表示用ラベルを作成 (例: "Customs, Woods")
+                const mapLabel = maps.length > 0 ? maps.join(', ') : (t.map ? t.map.name : 'Any');
+
                 const finalWikiLink = t.wikiLink || `https://tarkov.dev/task/${t.id}`;
-                return { ...t, finishRewardsList: rewards, wikiLink: finalWikiLink };
+                
+                return { 
+                    ...t, 
+                    finishRewardsList: rewards, 
+                    wikiLink: finalWikiLink,
+                    derivedMaps: maps,   // 配列 (マップ別表示で使用)
+                    mapLabel: mapLabel   // 表示用文字列 (リスト表示で使用)
+                };
             });
         };
 
         // --- 3. データ取得ロジック ---
         const fetchData = async () => {
-            const CACHE_KEY = 'eft_api_cache_v20_final'; 
             const MIN_INTERVAL = 5 * 60 * 1000; 
 
-            const cache = loadLS(CACHE_KEY, null);
+            // ★修正: 共通定数 APP_CACHE_KEY を使用
+            const cache = loadLS(APP_CACHE_KEY, null);
             if (cache) {
                 try {
                     const lastTime = cache.lastFetchTime || 0;
@@ -182,7 +197,8 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                saveLS(CACHE_KEY, {
+                // ★修正: 共通定数 APP_CACHE_KEY を使用して保存
+                saveLS(APP_CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
                     hideoutStations: hideoutData.value, 
@@ -251,7 +267,9 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(() => {
-            const cache = loadLS('eft_api_cache_v20_final', null);
+            // ★修正: 読み込み時も 共通定数 APP_CACHE_KEY を使用
+            const cache = loadLS(APP_CACHE_KEY, null);
+            
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
@@ -259,6 +277,7 @@ createApp({
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
+                // バックアップデータを使う場合も processTasks を通す
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = {
                     items: TARKOV_DATA.data.items || [],
@@ -309,11 +328,10 @@ createApp({
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
         
-        // ★修正: トレーダー順序の固定
+        // トレーダー順序の固定
         const tasksByTrader = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByTrader(visibleTasks.value);
             
-            // 指定された順序
             const traderOrder = [
                 'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
                 'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
@@ -321,7 +339,6 @@ createApp({
             
             const sortedGrouped = {};
             
-            // 定義順に追加
             traderOrder.forEach(name => {
                 if (rawGrouped[name]) {
                     sortedGrouped[name] = rawGrouped[name];
@@ -329,7 +346,6 @@ createApp({
                 }
             });
             
-            // 残り（Unknownなど）を末尾に追加
             Object.keys(rawGrouped).forEach(key => {
                 sortedGrouped[key] = rawGrouped[key];
             });
