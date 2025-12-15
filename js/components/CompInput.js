@@ -1,7 +1,4 @@
 const CompInput = {
-    // prioritizedTasks と toggle-priority は不要になったので削除しても良いですが、
-    // index.html の記述そのままで動くように props/emits に残しておいても害はありません。
-    // 今回は表示ロジック（template）から削除します。
     props: ['hideoutData', 'userHideout', 'filteredTasksList', 'completedTasks', 'prioritizedTasks', 'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap', 'showMaxedHideout'],
     emits: ['update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 'open-task-details', 'toggle-task', 'update:showMaxedHideout', 'toggle-priority'],
     
@@ -79,7 +76,12 @@ const CompInput = {
                         <div v-for="task in filteredTasksList" :key="task.id" class="list-group-item d-flex align-items-center gap-3">
                             <input class="form-check-input flex-shrink-0 m-0" type="checkbox" :checked="completedTasks.includes(task.name)" @change="$emit('toggle-task', task.name)" style="cursor: pointer;">
                             <div class="w-100 d-flex justify-content-between align-items-center">
-                                <span class="task-name-link" :class="{ 'text-decoration-line-through text-muted': showCompleted }" @click="$emit('open-task-details', task)">
+                                <span class="task-name-link" 
+                                    :class="{ 
+                                        'text-decoration-line-through text-muted': showCompleted,
+                                        'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.name)
+                                    }" 
+                                    @click="$emit('open-task-details', task)">
                                     {{ task.name }}
                                     <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                                     <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
@@ -97,7 +99,12 @@ const CompInput = {
                                 <div class="list-group-item d-flex align-items-center gap-3 py-1" v-for="task in tasks" :key="task.name">
                                     <input class="form-check-input flex-shrink-0 m-0" type="checkbox" :checked="completedTasks.includes(task.name)" @change="$emit('toggle-task', task.name)" style="cursor: pointer;">
                                     <div class="d-flex justify-content-between w-100">
-                                        <span class="task-name-link" :class="{ 'text-decoration-line-through text-muted': showCompleted }" @click="$emit('open-task-details', task)">
+                                        <span class="task-name-link" 
+                                            :class="{ 
+                                                'text-decoration-line-through text-muted': showCompleted,
+                                                'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.name)
+                                            }" 
+                                            @click="$emit('open-task-details', task)">
                                             {{ task.name }}
                                             <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                                             <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
