@@ -1,5 +1,6 @@
 const CompFlowchart = {
-    props: ['taskData', 'completedTasks', 'selectedTrader'],
+    // ★修正: prioritizedTasks を受け取る
+    props: ['taskData', 'completedTasks', 'prioritizedTasks', 'selectedTrader'],
     emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
     data() {
         return {
@@ -10,7 +11,6 @@ const CompFlowchart = {
         traderList() {
             if (!this.taskData) return [];
             
-            // ★修正: トレーダーの順序指定
             const order = [
                 'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
                 'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
@@ -19,7 +19,6 @@ const CompFlowchart = {
             const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
             const list = Array.from(traders);
             
-            // 指定順にソート
             return list.sort((a, b) => {
                 const idxA = order.indexOf(a);
                 const idxB = order.indexOf(b);
@@ -34,6 +33,8 @@ const CompFlowchart = {
     watch: {
         selectedTrader() { this.renderChart(); },
         completedTasks: { deep: true, handler() { this.renderChart(); } },
+        // ★追加: 優先タスクが変わったら再描画
+        prioritizedTasks: { deep: true, handler() { this.renderChart(); } },
         taskData() { this.renderChart(); }
     },
     mounted() {
@@ -94,10 +95,14 @@ const CompFlowchart = {
 
             let graph = 'graph LR\n';
             
+            // スタイル定義
             graph += 'classDef done fill:#198754,stroke:#fff,stroke-width:2px,color:white;\n'; 
             graph += 'classDef doneExternal fill:#198754,stroke:#fff,stroke-width:2px,color:white,stroke-dasharray: 5 5;\n';
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
             graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
+            
+            // ★追加: 優先タスク用のスタイル (濃いグレー背景 + 金色の太枠)
+            graph += 'classDef priority fill:#2c3e50,stroke:#ffd700,stroke-width:4px,color:white,stroke-dasharray: 0;\n';
 
             nodesToRender.forEach(taskName => {
                 const nodeId = nameToId[taskName];
@@ -107,11 +112,17 @@ const CompFlowchart = {
                 let className = '';
                 const isCompleted = this.completedTasks.includes(taskName);
                 const isExternal = task.trader.name !== this.selectedTrader;
+                // ★追加: 優先かどうか
+                const isPrioritized = this.prioritizedTasks.includes(taskName);
 
                 if (isCompleted) {
                     className = isExternal ? 'doneExternal' : 'done';
                 } else {
-                    className = isExternal ? 'external' : 'todo';
+                    if (isPrioritized) {
+                        className = 'priority'; // 完了していない優先タスクは金色
+                    } else {
+                        className = isExternal ? 'external' : 'todo';
+                    }
                 }
 
                 const safeLabel = taskName.replace(/"/g, "'").replace(/\(/g, "（").replace(/\)/g, "）");

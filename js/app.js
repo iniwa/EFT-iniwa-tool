@@ -14,7 +14,6 @@ createApp({
         const loadError = ref(null);
         const lastUpdated = ref(null);
 
-        // ★修正: キャッシュキーをここで定義し、読み込み・保存の両方で共通利用する
         const APP_CACHE_KEY = 'eft_api_cache_v21_mapfix'; 
 
         // データコンテナ
@@ -27,6 +26,8 @@ createApp({
         const completedTasks = ref([]);
         const collectedItems = ref([]);
         const ownedKeys = ref([]);
+        // ★追加: 優先タスクリスト
+        const prioritizedTasks = ref([]);
         const keyUserData = ref({}); 
         const playerLevel = ref(1);
         const searchTask = ref("");
@@ -77,6 +78,13 @@ createApp({
             keyUserData.value[id][field] = value;
         };
 
+        // ★追加: 優先タスクの切り替え関数
+        const togglePriority = (taskName) => {
+            const idx = prioritizedTasks.value.indexOf(taskName);
+            if (idx > -1) prioritizedTasks.value.splice(idx, 1);
+            else prioritizedTasks.value.push(taskName);
+        };
+
         const applyKeyPresets = (allItems) => {
             if (!allItems || typeof KEY_PRESETS === 'undefined') return;
             const currentData = { ...keyUserData.value };
@@ -117,8 +125,8 @@ createApp({
                     r.craftUnlock.forEach(entry => {
                         const stationName = entry.station ? entry.station.name : "Unknown";
                         const craftedItemName = (entry.rewardItems && entry.rewardItems.length > 0) 
-                                              ? entry.rewardItems[0].item.name 
-                                              : "Unknown Item";
+                                            ? entry.rewardItems[0].item.name 
+                                            : "Unknown Item";
                         rewards.push({ 
                             type: 'craftUnlock', 
                             station: stationName, 
@@ -128,19 +136,16 @@ createApp({
                     });
                 }
 
-                // ★追加: マップ情報を解析してプロパティに追加
                 const maps = TaskLogic.getTaskMaps(t);
-                // 表示用ラベルを作成 (例: "Customs, Woods")
                 const mapLabel = maps.length > 0 ? maps.join(', ') : (t.map ? t.map.name : 'Any');
-
                 const finalWikiLink = t.wikiLink || `https://tarkov.dev/task/${t.id}`;
                 
                 return { 
                     ...t, 
                     finishRewardsList: rewards, 
                     wikiLink: finalWikiLink,
-                    derivedMaps: maps,   // 配列 (マップ別表示で使用)
-                    mapLabel: mapLabel   // 表示用文字列 (リスト表示で使用)
+                    derivedMaps: maps,
+                    mapLabel: mapLabel
                 };
             });
         };
@@ -149,7 +154,6 @@ createApp({
         const fetchData = async () => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
 
-            // ★修正: 共通定数 APP_CACHE_KEY を使用
             const cache = loadLS(APP_CACHE_KEY, null);
             if (cache) {
                 try {
@@ -197,7 +201,6 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                // ★修正: 共通定数 APP_CACHE_KEY を使用して保存
                 saveLS(APP_CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
@@ -226,7 +229,9 @@ createApp({
                 collectedItems: collectedItems.value,
                 ownedKeys: ownedKeys.value,
                 keyUserData: keyUserData.value,
-                playerLevel: playerLevel.value
+                playerLevel: playerLevel.value,
+                // ★追加: 優先タスクもエクスポート
+                prioritizedTasks: prioritizedTasks.value 
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -252,6 +257,8 @@ createApp({
                     if(parsed.ownedKeys) ownedKeys.value = parsed.ownedKeys;
                     if(parsed.keyUserData) keyUserData.value = parsed.keyUserData;
                     if(parsed.playerLevel) playerLevel.value = parsed.playerLevel;
+                    // ★追加: 優先タスクのインポート
+                    if(parsed.prioritizedTasks) prioritizedTasks.value = parsed.prioritizedTasks;
                     alert("インポート完了");
                 } catch (err) { alert("読み込み失敗"); }
             };
@@ -267,9 +274,7 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(() => {
-            // ★修正: 読み込み時も 共通定数 APP_CACHE_KEY を使用
             const cache = loadLS(APP_CACHE_KEY, null);
-            
             if (cache && cache.tasks) {
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
@@ -277,7 +282,6 @@ createApp({
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
-                // バックアップデータを使う場合も processTasks を通す
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = {
                     items: TARKOV_DATA.data.items || [],
@@ -291,6 +295,8 @@ createApp({
             collectedItems.value = loadLS('eft_collected', []);
             ownedKeys.value = loadLS('eft_keys', []);
             keyUserData.value = loadLS('eft_key_user_data', {}); 
+            // ★追加: 優先タスクのロード
+            prioritizedTasks.value = loadLS('eft_prioritized', []);
             playerLevel.value = parseInt(safeGetLS('eft_level', '1'), 10);
             
             if (itemsData.value.items.length > 0) {
@@ -302,13 +308,15 @@ createApp({
             });
         });
 
-        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel], () => {
+        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
             saveLS('eft_collected', collectedItems.value);
             saveLS('eft_keys', ownedKeys.value);
             saveLS('eft_key_user_data', keyUserData.value);
             saveLS('eft_level', playerLevel.value.toString());
+            // ★追加: 優先タスクの保存
+            saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
 
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
@@ -328,28 +336,12 @@ createApp({
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
         
-        // トレーダー順序の固定
         const tasksByTrader = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByTrader(visibleTasks.value);
-            
-            const traderOrder = [
-                'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
-                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
-            ];
-            
+            const traderOrder = ['Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'];
             const sortedGrouped = {};
-            
-            traderOrder.forEach(name => {
-                if (rawGrouped[name]) {
-                    sortedGrouped[name] = rawGrouped[name];
-                    delete rawGrouped[name]; 
-                }
-            });
-            
-            Object.keys(rawGrouped).forEach(key => {
-                sortedGrouped[key] = rawGrouped[key];
-            });
-
+            traderOrder.forEach(name => { if (rawGrouped[name]) { sortedGrouped[name] = rawGrouped[name]; delete rawGrouped[name]; } });
+            Object.keys(rawGrouped).forEach(key => { sortedGrouped[key] = rawGrouped[key]; });
             return sortedGrouped;
         });
 
@@ -357,7 +349,6 @@ createApp({
         
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
-            
             const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
                 const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
                 if (!res[cat][uid]) {
@@ -367,7 +358,6 @@ createApp({
                         shortName, normalizedName
                     };
                 }
-                
                 if (cat === 'keys') {
                     if (sourceName && !res[cat][uid].sources.some(s => s.name === sourceName)) {
                         res[cat][uid].sources.push({ name: sourceName, type: sourceType });
@@ -390,7 +380,6 @@ createApp({
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
 
             let keysArray = Object.values(res.keys);
-
             if (keysViewMode.value === 'owned') {
                 keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
             }
@@ -404,7 +393,6 @@ createApp({
             keysArray.sort((a, b) => {
                 const isOwnedA = ownedKeys.value.includes(a.id);
                 const isOwnedB = ownedKeys.value.includes(b.id);
-
                 if (keysSortMode.value === 'owned_first') {
                     if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
                 } else if (keysSortMode.value === 'rating') {
@@ -412,7 +400,6 @@ createApp({
                     const rateB = getRateVal(b.id);
                     if (rateA !== rateB) return rateB - rateA;
                 }
-
                 const mapCmp = (a.mapName||'').localeCompare(b.mapName||'');
                 if (mapCmp !== 0) return mapCmp;
                 return a.name.localeCompare(b.name);
@@ -446,10 +433,11 @@ createApp({
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
-            taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, searchTask,
+            taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
+            playerLevel, searchTask,
             filteredTasksList, tasksByTrader, tasksByMap, shoppingList, totalItemsNeeded, totalKeysNeeded,
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
-            toggleCollected, toggleOwnedKey, updateKeyUserData, displayLists,
+            toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
             exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData
         };
     }
