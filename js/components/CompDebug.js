@@ -1,5 +1,6 @@
 const CompDebug = {
-    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData'],
+    // ★追加: prioritizedTasks を受け取る
+    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData', 'prioritizedTasks'],
     data() {
         return {
             currentView: 'tasks',
@@ -16,7 +17,9 @@ const CompDebug = {
                     userHideout: this.userHideout,
                     completedTasks: this.completedTasks,
                     ownedKeys: this.ownedKeys,
-                    keyUserData: this.keyUserData 
+                    keyUserData: this.keyUserData,
+                    // ★追加: デバッグ画面に表示
+                    prioritizedTasks: this.prioritizedTasks 
                 };
                 default: return {};
             }
