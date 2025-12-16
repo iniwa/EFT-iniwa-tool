@@ -237,7 +237,7 @@ createApp({
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `eft_planner_backup.json`;
+            a.download = `iniwas_intel_center_backup.json`;
             a.click();
             URL.revokeObjectURL(url);
         };
