@@ -1,8 +1,7 @@
 const CompFooter = {
-    // バージョンを手動で管理するか、propで受け取る形にします
     data() {
         return {
-            appVersion: 'v1.1' 
+            appVersion: 'v1.0.3'
         };
     },
     template: `
@@ -25,16 +24,14 @@ const CompFooter = {
                 <button class="btn btn-link btn-sm text-muted text-decoration-none mx-2" data-bs-toggle="modal" data-bs-target="#legalModal">
                     プライバシーポリシー & 免責事項
                 </button>
-            </div>
-
-            <div>
-                <a href="https://x.com/iniwach" target="_blank" class="btn btn-link btn-sm text-muted text-decoration-none mx-2" onclick="return false;" style="cursor: default;">
-                    Contact / Developer
+                <span class="text-dark">|</span>
+                <a href="#" class="btn btn-link btn-sm text-muted text-decoration-none mx-2" onclick="return false;" style="cursor: default;">
+                    Iniwa's Intel Center
                 </a>
             </div>
 
             <div class="text-muted" style="font-size: 0.8em;">
-                Iniwa's Intel Center &copy; 2025 <span class="mx-1">&bull;</span> {{ appVersion }}
+                &copy; 2025 Iniwa's Intel Center <span class="mx-1">&bull;</span> {{ appVersion }}
             </div>
         </div>
 
@@ -53,28 +50,49 @@ const CompFooter = {
                                 本ツール「Iniwa's Intel Center」は、Escape from Tarkovの非公式ファンメイドツールです。<br>
                                 開発元である Battlestate Games とは一切関係がありません。<br>
                                 本ツールを使用して発生したいかなる損害・不利益についても、開発者は責任を負いかねます。<br>
-                                ゲームのアップデートにより、データや仕様が実際のゲーム内と異なる場合があります。
+                                本ツールのデータは、外部のコミュニティAPI（tarkov.dev）を利用して取得しています。 APIの性質上、実際のゲーム内容との差異や更新の遅れが生じる場合があるため、情報の完全な正確性は保証されません。あくまで参考情報としてご利用ください。
                             </p>
                         </div>
 
                         <div class="mb-4">
                             <h6 class="text-info border-bottom border-secondary pb-1 mb-2">プライバシーポリシー (Privacy Policy)</h6>
+                            
+                            <p class="small text-light fw-bold mb-1">ユーザーデータの取り扱いについて</p>
                             <p class="small text-secondary">
-                                <strong>データの保存について:</strong><br>
-                                本ツールで入力された進捗データ（タスク完了状況、ハイドアウトレベル、所持鍵など）は、ご利用のブラウザの <code>LocalStorage</code>（端末内）にのみ保存されます。<br>
-                                開発者のサーバーへ個人データが送信・保存されることはありません。<br>
-                                Gemini APIキーを入力された場合も同様に、ブラウザ内にのみ保存され、AI対話機能以外に使用されることはありません。
+                                本ツールで入力された進捗データ（タスク完了状況、ハイドアウトレベル、所持鍵など）およびAPIキーは、ご利用のブラウザの <strong>LocalStorage（端末内）</strong>にのみ保存されます。<br>
+                                開発者のサーバーへ個人データが送信・保存されることは一切ありません。
                             </p>
+
+                            <p class="small text-light fw-bold mb-1 mt-3">アクセス解析ツールについて</p>
                             <p class="small text-secondary">
-                                <strong>アクセス解析について:</strong><br>
-                                本サイトでは、利用状況の把握とサービス向上のため、Google Analytics および Cloudflare Web Analytics を使用しています。<br>
-                                これらはクッキー（Cookie）を使用し、個人を特定しない形でアクセスログを収集します。
+                                本サイトでは、利用状況の把握とサービス向上のため、Google Analytics および Cloudflare Web Analytics を利用しています。<br>
+                                これらはトラフィックデータの収集のためにクッキー（Cookie）を使用しています。このトラフィックデータは匿名で収集されており、個人を特定するものではありません。<br>
+                                この機能はクッキーを無効にすることで収集を拒否することが出来ますので、お使いのブラウザの設定をご確認ください。
+                            </p>
+
+                            <p class="small text-light fw-bold mb-1 mt-3">広告の配信について</p>
+                            <p class="small text-secondary">
+                                本サイトは、第三者配信の広告サービス（Google AdSense等）を利用する予定、または利用しています。<br>
+                                広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、当サイトや他サイトへのアクセスに関する情報「Cookie」(氏名、住所、メール アドレス、電話番号は含まれません) を使用することがあります。<br>
+                                またGoogleアドセンスに関して、このプロセスの詳細やこのような情報が広告配信事業者に使用されないようにする方法については、<a href="https://policies.google.com/technologies/ads?hl=ja" target="_blank" class="text-info">Googleのポリシーと規約</a>をご確認ください。
                             </p>
                         </div>
 
                         <div>
                             <h6 class="text-info border-bottom border-secondary pb-1 mb-2">Credits & License</h6>
                             <ul class="small list-unstyled text-secondary">
+                                <li class="mb-1">
+                                    <strong>Developer:</strong> 
+                                    <a href="https://twitter.com/iniwach" target="_blank" class="text-info">
+                                        @iniwach
+                                    </a>
+                                </li>
+                                <li class="mb-1">
+                                    <strong>Source & Updates:</strong> 
+                                    <a href="https://github.com/iniwa/EFT-iniwa-tool" target="_blank" class="text-info">
+                                        GitHub Repository
+                                    </a>
+                                </li>
                                 <li class="mb-1">
                                     <strong>Game Data:</strong> <a href="https://tarkov.dev/" target="_blank" class="text-info">tarkov.dev</a> (Community API)
                                 </li>
