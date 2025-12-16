@@ -59,7 +59,7 @@ const CompFooter = {
                             
                             <p class="small text-light fw-bold mb-1">ユーザーデータの取り扱いについて</p>
                             <p class="small text-secondary">
-                                本ツールで入力された進捗データ（タスク完了状況、ハイドアウトレベル、所持鍵など）およびAPIキーは、ご利用のブラウザの <strong>LocalStorage（端末内）</strong>にのみ保存されます。<br>
+                                本ツールで入力された進捗データ（タスク完了状況、ハイドアウトレベル、所持鍵など）およびAPIキーは、ご利用のブラウザのLocalStorage（端末内）にのみ保存されます。<br>
                                 開発者のサーバーへ個人データが送信・保存されることは一切ありません。
                             </p>
 

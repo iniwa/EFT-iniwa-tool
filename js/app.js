@@ -26,10 +26,10 @@ createApp({
         const completedTasks = ref([]);
         const collectedItems = ref([]);
         const ownedKeys = ref([]);
-        // ★追加: 優先タスクリスト
         const prioritizedTasks = ref([]);
         const keyUserData = ref({}); 
-        const playerLevel = ref(1);
+        // ★修正: 初期値を 0 に変更
+        const playerLevel = ref(0);
         const searchTask = ref("");
         
         // UI状態
@@ -78,7 +78,6 @@ createApp({
             keyUserData.value[id][field] = value;
         };
 
-        // ★追加: 優先タスクの切り替え関数
         const togglePriority = (taskName) => {
             const idx = prioritizedTasks.value.indexOf(taskName);
             if (idx > -1) prioritizedTasks.value.splice(idx, 1);
@@ -230,7 +229,6 @@ createApp({
                 ownedKeys: ownedKeys.value,
                 keyUserData: keyUserData.value,
                 playerLevel: playerLevel.value,
-                // ★追加: 優先タスクもエクスポート
                 prioritizedTasks: prioritizedTasks.value 
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -257,7 +255,6 @@ createApp({
                     if(parsed.ownedKeys) ownedKeys.value = parsed.ownedKeys;
                     if(parsed.keyUserData) keyUserData.value = parsed.keyUserData;
                     if(parsed.playerLevel) playerLevel.value = parsed.playerLevel;
-                    // ★追加: 優先タスクのインポート
                     if(parsed.prioritizedTasks) prioritizedTasks.value = parsed.prioritizedTasks;
                     alert("インポート完了");
                 } catch (err) { alert("読み込み失敗"); }
@@ -295,9 +292,9 @@ createApp({
             collectedItems.value = loadLS('eft_collected', []);
             ownedKeys.value = loadLS('eft_keys', []);
             keyUserData.value = loadLS('eft_key_user_data', {}); 
-            // ★追加: 優先タスクのロード
             prioritizedTasks.value = loadLS('eft_prioritized', []);
-            playerLevel.value = parseInt(safeGetLS('eft_level', '1'), 10);
+            // ★修正: ローカルストレージのデフォルト値を '1' から '0' に変更
+            playerLevel.value = parseInt(safeGetLS('eft_level', '0'), 10);
             
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
@@ -315,7 +312,6 @@ createApp({
             saveLS('eft_keys', ownedKeys.value);
             saveLS('eft_key_user_data', keyUserData.value);
             saveLS('eft_level', playerLevel.value.toString());
-            // ★追加: 優先タスクの保存
             saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
 
@@ -345,10 +341,9 @@ createApp({
             return sortedGrouped;
         });
 
+        // マップ順序の固定
         const tasksByMap = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByMap(visibleTasks.value);
-            
-            // 固定したいマップ順序定義
             const mapOrder = [
                 "Any / Multiple",
                 "Customs",
@@ -363,22 +358,9 @@ createApp({
                 "The Lab",
                 "The Labyrinth"
             ];
-
             const sortedGrouped = {};
-
-            // 1. 定義順に並べる
-            mapOrder.forEach(name => {
-                if (rawGrouped[name]) {
-                    sortedGrouped[name] = rawGrouped[name];
-                    delete rawGrouped[name]; 
-                }
-            });
-
-            // 2. リストにないもの（Unknownなど）があればアルファベット順で末尾に追加
-            Object.keys(rawGrouped).sort().forEach(key => {
-                sortedGrouped[key] = rawGrouped[key];
-            });
-
+            mapOrder.forEach(name => { if (rawGrouped[name]) { sortedGrouped[name] = rawGrouped[name]; delete rawGrouped[name]; } });
+            Object.keys(rawGrouped).sort().forEach(key => { sortedGrouped[key] = rawGrouped[key]; });
             return sortedGrouped;
         });
         

@@ -17,6 +17,9 @@ const TaskLogic = {
                 if (isCompleted) return false;
             }
 
+            // ★追加: Lv0の場合は、未完了タスクならすべて表示 (レベル制限等を無視)
+            if (level === 0) return true;
+
             if (!showFuture) {
                 if (task.minPlayerLevel > level) return false;
                 if (task.taskRequirements) {
@@ -35,9 +38,8 @@ const TaskLogic = {
         });
     },
 
-    // ★修正: 日本語名も含めてマップを検索
+    // 日本語名も含めてマップを検索
     getTaskMaps(task) {
-        // 検索対象のマップ名定義 (英語名 -> 検索キーワード配列)
         const mapKeywords = {
             "Customs": ["customs", "カスタム"],
             "Factory": ["factory", "工場", "night factory"],
@@ -48,19 +50,17 @@ const TaskLogic = {
             "Shoreline": ["shoreline", "ショアライン"],
             "Streets of Tarkov": ["streets of tarkov", "streets", "ストリート"],
             "Woods": ["woods", "ウッズ"],
-            "Ground Zero": ["ground zero", "グラウンドゼロ"]
+            "Ground Zero": ["ground zero", "グラウンドゼロ"],
+            "The Labyrinth": ["labyrinth", "ラビリンス"]
         };
         
         const maps = new Set();
 
         // 1. APIのマップ情報があれば追加 (最優先)
         if (task.map && task.map.name) {
-            // APIのマップ名を正規化して登録
             let apiMapName = task.map.name;
-            // 表記揺れの吸収
             if (apiMapName.includes("Night")) apiMapName = "Factory";
             if (apiMapName.includes("21+")) apiMapName = "Ground Zero";
-            
             maps.add(apiMapName);
         }
 
@@ -68,16 +68,12 @@ const TaskLogic = {
         if (task.objectives) {
             task.objectives.forEach(obj => {
                 const desc = (obj.description || "").toLowerCase();
-                
                 for (const [officialName, keywords] of Object.entries(mapKeywords)) {
-                    // 既に登録済みならスキップ
                     if (maps.has(officialName)) continue;
-
-                    // キーワードが含まれているかチェック
                     for (const key of keywords) {
                         if (desc.includes(key.toLowerCase())) {
                             maps.add(officialName);
-                            break; // ヒットしたらこのマップの他のキーワードはチェック不要
+                            break; 
                         }
                     }
                 }
