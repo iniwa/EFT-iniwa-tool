@@ -237,7 +237,7 @@ createApp({
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `eft_planner_backup.json`;
+            a.download = `iniwas_intel_center_backup.json`;
             a.click();
             URL.revokeObjectURL(url);
         };
@@ -345,7 +345,42 @@ createApp({
             return sortedGrouped;
         });
 
-        const tasksByMap = computed(() => TaskLogic.groupTasksByMap(visibleTasks.value));
+        const tasksByMap = computed(() => {
+            const rawGrouped = TaskLogic.groupTasksByMap(visibleTasks.value);
+            
+            // 固定したいマップ順序定義
+            const mapOrder = [
+                "Any / Multiple",
+                "Customs",
+                "Woods",
+                "Interchange",
+                "Factory",
+                "Shoreline",
+                "Lighthouse",
+                "Reserve",
+                "Streets of Tarkov",
+                "Ground Zero",
+                "The Lab",
+                "The Labyrinth"
+            ];
+
+            const sortedGrouped = {};
+
+            // 1. 定義順に並べる
+            mapOrder.forEach(name => {
+                if (rawGrouped[name]) {
+                    sortedGrouped[name] = rawGrouped[name];
+                    delete rawGrouped[name]; 
+                }
+            });
+
+            // 2. リストにないもの（Unknownなど）があればアルファベット順で末尾に追加
+            Object.keys(rawGrouped).sort().forEach(key => {
+                sortedGrouped[key] = rawGrouped[key];
+            });
+
+            return sortedGrouped;
+        });
         
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
