@@ -10,7 +10,6 @@ query GetData {
     trader { name }
     map { name }
     
-    # ★追加: タスク攻略に必要な鍵のリストを取得
     neededKeys {
       keys {
         id
@@ -62,13 +61,29 @@ query GetData {
     }
   }
   
-  # itemsは基本的な鍵情報のみ取得 (タスクとの紐付けは上のtasks.neededKeysで行うためシンプルに戻しました)
   items(types: keys, lang: ja) {
     id
     name
     shortName
     normalizedName
     wikiLink
+  }
+
+  # ★追加: 弾薬データの取得
+  ammo(lang: ja) {
+    item {
+      id
+      name
+      shortName
+      wikiLink
+      image512pxLink
+    }
+    caliber
+    damage
+    penetrationPower
+    armorDamage
+    fragmentationChance
+    projectileSpeed: initialSpeed
   }
 }
 `;

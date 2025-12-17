@@ -19,7 +19,8 @@ createApp({
         // データコンテナ
         const hideoutData = ref([]);
         const taskData = ref([]);
-        const itemsData = ref({ items: [], maps: [] }); 
+        const itemsData = ref({ items: [], maps: [] });
+        const ammoData = ref([]);
         
         // ユーザーデータ (LocalStorage保存対象)
         const userHideout = ref({});
@@ -194,7 +195,19 @@ createApp({
                     items: result.data.items || [],
                     maps: result.data.maps || []
                 };
-                
+
+                const rawAmmo = result.data.ammo || [];
+                ammoData.value = rawAmmo.map(a => {
+                    // itemオブジェクトの中身を外に出す（フラット化）
+                    return {
+                        ...a,
+                        id: a.item ? a.item.id : Math.random(), // itemがない場合のフォールバック
+                        name: a.item ? a.item.name : 'Unknown Ammo',
+                        shortName: a.item ? a.item.shortName : null,
+                        wikiLink: a.item ? a.item.wikiLink : null,
+                        image512pxLink: a.item ? a.item.image512pxLink : null
+                    };
+                });
                 applyKeyPresets(result.data.items);
                 
                 const now = new Date().toLocaleString('ja-JP');
@@ -205,7 +218,8 @@ createApp({
                     lastFetchTime: Date.now(),
                     hideoutStations: hideoutData.value, 
                     tasks: taskData.value, 
-                    items: itemsData.value
+                    items: itemsData.value,
+                    ammo: ammoData.value
                 });
                 
                 hideoutData.value.forEach(s => {
@@ -451,7 +465,7 @@ createApp({
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
-            playerLevel, searchTask,
+            playerLevel, searchTask,ammoData,
             filteredTasksList, tasksByTrader, tasksByMap, shoppingList, totalItemsNeeded, totalKeysNeeded,
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
@@ -468,4 +482,5 @@ createApp({
 .component('comp-flowchart', CompFlowchart)
 .component('comp-chat', CompChat)
 .component('comp-footer', CompFooter)
+.component('comp-ammo', CompAmmo)
 .mount('#app');
