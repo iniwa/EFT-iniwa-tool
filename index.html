@@ -134,6 +134,7 @@
         <div v-if="currentTab === 'ammo'">
             <comp-ammo
                 :ammo-data="ammoData"
+                @open-task-from-name="openTaskFromName"
             ></comp-ammo>
         </div>
 
