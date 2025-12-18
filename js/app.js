@@ -19,7 +19,8 @@ createApp({
         // データコンテナ
         const hideoutData = ref([]);
         const taskData = ref([]);
-        const itemsData = ref({ items: [], maps: [] }); 
+        const itemsData = ref({ items: [], maps: [] });
+        const ammoData = ref([]);
         
         // ユーザーデータ (LocalStorage保存対象)
         const userHideout = ref({});
@@ -83,6 +84,8 @@ createApp({
             if (idx > -1) prioritizedTasks.value.splice(idx, 1);
             else prioritizedTasks.value.push(taskName);
         };
+
+        
 
         const applyKeyPresets = (allItems) => {
             if (!allItems || typeof KEY_PRESETS === 'undefined') return;
@@ -194,7 +197,95 @@ createApp({
                     items: result.data.items || [],
                     maps: result.data.maps || []
                 };
+
+                const taskMap = new Map(taskData.value.map(t => [t.id, t.name]));
+
+                // ★修正: マップデータから「鍵ID -> マップ名リスト」の対応表を作成
+                const mapLookup = {};
+                const maps = result.data.maps || [];
+                maps.forEach(map => {
+                    if (map.locks) {
+                        map.locks.forEach(lock => {
+                            if (lock.key) {
+                                if (!mapLookup[lock.key.id]) {
+                                    mapLookup[lock.key.id] = [];
+                                }
+                                // 重複を防ぎつつマップ名を追加 (例: Customs)
+                                if (!mapLookup[lock.key.id].includes(map.name)) {
+                                    mapLookup[lock.key.id].push(map.name);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                // ★修正: 鍵データに画像URLとマップ情報を結合
+                const rawItems = result.data.items || [];
+                itemsData.value = {
+                    items: rawItems.map(i => {
+                        const associatedMaps = mapLookup[i.id] || [];
+                        return {
+                            ...i,
+                            image512pxLink: i.image512pxLink, // 画像URL
+                            maps: associatedMaps,             // マップ名の配列
+                            // グルーピング用に最初のマップ名を使用（なければ Unknown）
+                            mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
+                        };
+                    })
+                };
                 
+                // ★修正: 弾薬データ整形（前提タスク情報の紐付けを追加）
+                const rawAmmo = result.data.ammo || [];
+                ammoData.value = rawAmmo.map(a => {
+                    // --- 1. 販売情報 (Traders) ---
+                    let traders = [];
+                    if (a.item && a.item.buyFor) {
+                        traders = a.item.buyFor.filter(b => b.vendor.name !== 'Flea Market');
+                        traders.forEach(t => {
+                            // レベル制限
+                            const llReq = t.requirements ? t.requirements.find(r => r.type === 'loyaltyLevel') : null;
+                            t.minTraderLevel = llReq ? llReq.value : 1;
+
+                            // ★追加: タスク要件 (questCompleted) を探して名前をセット
+                            const taskReq = t.requirements ? t.requirements.find(r => r.type === 'questCompleted') : null;
+                            if (taskReq && taskReq.stringValue) {
+                                // IDからタスク名を検索 (見つからなければIDそのまま表示等のフォールバック)
+                                t.taskUnlockName = taskMap.get(taskReq.stringValue) || 'Unknown Task';
+                            }
+                        });
+                        traders.sort((a, b) => a.minTraderLevel - b.minTraderLevel);
+                    }
+
+                    // --- 2. クラフト情報 (Crafts) ---
+                    let crafts = [];
+                    if (a.item && a.item.craftsFor) {
+                        crafts = a.item.craftsFor;
+                        crafts.sort((a, b) => a.level - b.level);
+                        // クラフトの taskUnlock はAPIが直接 name を持っているのでそのまま使用可能
+                    }
+
+                    return {
+                        ...a,
+                        id: a.item ? a.item.id : Math.random(),
+                        name: a.item ? a.item.name : 'Unknown Ammo',
+                        shortName: a.item ? a.item.shortName : null,
+                        description: a.item ? a.item.description : '',
+                        wikiLink: a.item ? a.item.wikiLink : null,
+                        image512pxLink: a.item ? a.item.image512pxLink : null,
+                        
+                        // ステータス
+                        accuracyModifier: a.accuracyModifier,
+                        recoilModifier: a.recoilModifier,
+                        lightBleedModifier: a.lightBleedModifier,
+                        heavyBleedModifier: a.heavyBleedModifier,
+                        ricochetChance: a.ricochetChance,
+                        
+                        // 入手手段
+                        soldBy: traders,
+                        crafts: crafts
+                    };
+                });
+
                 applyKeyPresets(result.data.items);
                 
                 const now = new Date().toLocaleString('ja-JP');
@@ -205,7 +296,8 @@ createApp({
                     lastFetchTime: Date.now(),
                     hideoutStations: hideoutData.value, 
                     tasks: taskData.value, 
-                    items: itemsData.value
+                    items: itemsData.value,
+                    ammo: ammoData.value
                 });
                 
                 hideoutData.value.forEach(s => {
@@ -276,6 +368,7 @@ createApp({
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
                 itemsData.value = cache.items || { items: [], maps: [] };
+                ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
@@ -284,6 +377,7 @@ createApp({
                     items: TARKOV_DATA.data.items || [],
                     maps: TARKOV_DATA.data.maps || []
                 };
+                ammoData.value = TARKOV_DATA.data.ammo || [];
                 lastUpdated.value = 'Backup File';
             }
 
@@ -451,7 +545,7 @@ createApp({
             currentTab, taskViewMode, showCompleted, showFuture, 
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
-            playerLevel, searchTask,
+            playerLevel, searchTask,ammoData,
             filteredTasksList, tasksByTrader, tasksByMap, shoppingList, totalItemsNeeded, totalKeysNeeded,
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
@@ -468,4 +562,5 @@ createApp({
 .component('comp-flowchart', CompFlowchart)
 .component('comp-chat', CompChat)
 .component('comp-footer', CompFooter)
+.component('comp-ammo', CompAmmo)
 .mount('#app');

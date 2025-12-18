@@ -63,6 +63,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" :class="{active: currentTab === 'ammo'}" @click="currentTab = 'ammo'" href="#">
+                    🔫 Ammo
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'chat'}" @click="currentTab = 'chat'" href="#">
                     🤖 Chat
                 </a>
@@ -128,6 +133,12 @@
             ></comp-keys>
         </div>
 
+        <div v-if="currentTab === 'ammo'">
+            <comp-ammo
+                :ammo-data="ammoData"
+            ></comp-ammo>
+        </div>
+
         <div v-if="currentTab === 'flowchart'">
             <comp-flowchart
                 :task-data="taskData"
@@ -145,6 +156,7 @@
                 :task-data="taskData"
                 :hideout-data="hideoutData"
                 :items-data="itemsData"
+                :ammo-data="ammoData"
                 :user-hideout="userHideout"
                 :completed-tasks="completedTasks"
                 :owned-keys="ownedKeys"
@@ -193,6 +205,7 @@
     <script src="js/components/CompDebug.js?=v1.1.0"></script>
     <script src="js/components/CompChat.js?=v1.1.0"></script>
     <script src="js/components/CompFooter.js?=v1.1.0"></script>
+    <script src="js/components/CompAmmo.js?v=1.1.0"></script>
     <script src="js/app.js?=v1.1.0"></script>
 </body>
 </html>
