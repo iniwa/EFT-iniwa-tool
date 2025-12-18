@@ -58,7 +58,7 @@ const CompDebug = {
                                 @click="currentView='items'">Items/Keys (API)</button>
                         <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
                                 :class="{active: currentView==='ammoData'}" 
-                                @click="currentView='ammoData'">ammoData</button>
+                                @click="currentView='ammoData'">AmmoData (API)</button>
                         <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
                                 :class="{active: currentView==='userProgress'}" 
                                 @click="currentView='userProgress'">User Save Data</button>
