@@ -69,21 +69,119 @@ query GetData {
     wikiLink
   }
 
-  # ★追加: 弾薬データの取得
+  # ★修正: 弾薬の詳細データ
   ammo(lang: ja) {
     item {
       id
       name
       shortName
+      description
       wikiLink
       image512pxLink
+      
+      # 購入情報
+      buyFor {
+        priceRUB
+        vendor { name }
+        requirements {
+          type
+          value
+          stringValue
+        }
+        price
+        currency
+      }
+      
+      # クラフト情報
+      craftsFor {
+        id
+        level
+        source
+        sourceName
+        station { name }
+        duration # 時間も取得
+        taskUnlock {
+          name
+          id
+          trader { name }
+        }
+        requiredItems {
+          count
+          quantity
+          # ★追加: 素材のアイテム名を取得
+          item {
+            name
+          }
+          attributes {
+            name
+            type
+            value
+          }
+        }
+        rewardItems {
+          quantity
+          count
+          # ★追加: 成果物のアイテム名を取得
+          item {
+            name
+          }
+          attributes {
+            name
+            type
+            value
+          }
+        }
+      }
+      
+      # 交換情報
+      bartersFor {
+        level
+        requiredItems {
+          count
+          quantity
+          item { name } # 交換も同様に追加しておきます
+          attributes {
+            name
+            type
+            value
+          }
+        }
+        rewardItems {
+          count
+          quantity
+          item { name }
+          attributes {
+            name
+            type
+            value
+          }
+        }
+      }
     }
+    
+    # 弾薬性能データ
     caliber
     damage
     penetrationPower
     armorDamage
     fragmentationChance
     projectileSpeed: initialSpeed
+    
+    # 追加ステータス
+    accuracyModifier
+    recoilModifier
+    lightBleedModifier
+    heavyBleedModifier
+    ricochetChance
+    ammoType
+    tracer
+    tracerColor
+    staminaBurnPerDamage
+    stackMaxSize
+    recoil
+    penetrationPowerDeviation
+    projectileCount
+    penetrationChance
   }
 }
 `;

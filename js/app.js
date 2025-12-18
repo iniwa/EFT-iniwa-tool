@@ -85,6 +85,8 @@ createApp({
             else prioritizedTasks.value.push(taskName);
         };
 
+        
+
         const applyKeyPresets = (allItems) => {
             if (!allItems || typeof KEY_PRESETS === 'undefined') return;
             const currentData = { ...keyUserData.value };
@@ -196,18 +198,60 @@ createApp({
                     maps: result.data.maps || []
                 };
 
+                const taskMap = new Map(taskData.value.map(t => [t.id, t.name]));
+
+                // ★修正: 弾薬データ整形（前提タスク情報の紐付けを追加）
                 const rawAmmo = result.data.ammo || [];
                 ammoData.value = rawAmmo.map(a => {
-                    // itemオブジェクトの中身を外に出す（フラット化）
+                    // --- 1. 販売情報 (Traders) ---
+                    let traders = [];
+                    if (a.item && a.item.buyFor) {
+                        traders = a.item.buyFor.filter(b => b.vendor.name !== 'Flea Market');
+                        traders.forEach(t => {
+                            // レベル制限
+                            const llReq = t.requirements ? t.requirements.find(r => r.type === 'loyaltyLevel') : null;
+                            t.minTraderLevel = llReq ? llReq.value : 1;
+
+                            // ★追加: タスク要件 (questCompleted) を探して名前をセット
+                            const taskReq = t.requirements ? t.requirements.find(r => r.type === 'questCompleted') : null;
+                            if (taskReq && taskReq.stringValue) {
+                                // IDからタスク名を検索 (見つからなければIDそのまま表示等のフォールバック)
+                                t.taskUnlockName = taskMap.get(taskReq.stringValue) || 'Unknown Task';
+                            }
+                        });
+                        traders.sort((a, b) => a.minTraderLevel - b.minTraderLevel);
+                    }
+
+                    // --- 2. クラフト情報 (Crafts) ---
+                    let crafts = [];
+                    if (a.item && a.item.craftsFor) {
+                        crafts = a.item.craftsFor;
+                        crafts.sort((a, b) => a.level - b.level);
+                        // クラフトの taskUnlock はAPIが直接 name を持っているのでそのまま使用可能
+                    }
+
                     return {
                         ...a,
-                        id: a.item ? a.item.id : Math.random(), // itemがない場合のフォールバック
+                        id: a.item ? a.item.id : Math.random(),
                         name: a.item ? a.item.name : 'Unknown Ammo',
                         shortName: a.item ? a.item.shortName : null,
+                        description: a.item ? a.item.description : '',
                         wikiLink: a.item ? a.item.wikiLink : null,
-                        image512pxLink: a.item ? a.item.image512pxLink : null
+                        image512pxLink: a.item ? a.item.image512pxLink : null,
+                        
+                        // ステータス
+                        accuracyModifier: a.accuracyModifier,
+                        recoilModifier: a.recoilModifier,
+                        lightBleedModifier: a.lightBleedModifier,
+                        heavyBleedModifier: a.heavyBleedModifier,
+                        ricochetChance: a.ricochetChance,
+                        
+                        // 入手手段
+                        soldBy: traders,
+                        crafts: crafts
                     };
                 });
+
                 applyKeyPresets(result.data.items);
                 
                 const now = new Date().toLocaleString('ja-JP');
