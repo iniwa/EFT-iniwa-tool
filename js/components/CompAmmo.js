@@ -1,7 +1,7 @@
 const CompAmmo = {
     props: ['ammoData'],
+    emits: ['open-task-from-name'],
     data() {
-        // 保存されたフィルター設定があれば読み込む
         const savedFilters = localStorage.getItem('eft_ammo_filters');
         
         return {
@@ -97,7 +97,7 @@ const CompAmmo = {
                 'Caliber9x33R': { name: '.357 Magnum', examples: 'Rhino' },
                 'Caliber762x54R': { name: '7.62x54mm R', examples: 'Mosin, SVDS, PKM' },
                 'Caliber86x70': { name: '.338 Lapua Magnum', examples: 'AXMC, Mk-18 Mjolnir' },
-                'Caliber127x99': { name: '.50 BMG', examples: 'AK-50' },
+                'Caliber127x99': { name: '.50 BMG', examples: 'M82A1' },
                 'Caliber12g': { name: '12/70 Gauge', examples: 'MP-153, Saiga-12' },
                 'Caliber20g': { name: '20/70 Gauge', examples: 'TOZ-106' },
                 'Caliber23x75': { name: '23x75mm', examples: 'KS-23M' },
@@ -109,7 +109,6 @@ const CompAmmo = {
             }
         };
     },
-    // フィルターの変更を監視して自動保存
     watch: {
         selectedCalibers: {
             handler(newVal) {
@@ -302,7 +301,7 @@ const CompAmmo = {
             </div>
         </div>
 
-        <div v-if="selectedAmmo" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8);" @click.self="closeDetail">
+        <div v-if="selectedAmmo" class="modal d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.8); z-index: 1040;" @click.self="closeDetail">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content bg-dark text-white border-secondary shadow-lg">
                     <div class="modal-header border-secondary">
@@ -317,7 +316,7 @@ const CompAmmo = {
                         <h6 class="text-warning border-bottom border-secondary pb-1 mb-2">📊 基本性能 (Basic Stats)</h6>
                         <div class="row g-2 mb-3 text-center">
                             <div class="col-3"><div class="p-2 border border-secondary rounded bg-black"><div>ダメージ</div><div class="fs-4 fw-bold">{{ selectedAmmo.damage }}</div></div></div>
-                            <div class="col-3"><div class="p-2 border border-secondary rounded bg-black"><div>貫通力</div><div class="fs-4 fw-bold text-warning">{{ selectedAmmo.penetrationPower }}</div></div></div>
+                            <div class="col-3"><div class="p-2 border border-secondary rounded bg-black"><div>貫通力</div><div class="fs-4 fw-bold">{{ selectedAmmo.penetrationPower }}</div></div></div>
                             <div class="col-3"><div class="p-2 border border-secondary rounded bg-black"><div>アーマーDmg</div><div class="fs-4">{{ selectedAmmo.armorDamage }}%</div></div></div>
                             <div class="col-3"><div class="p-2 border border-secondary rounded bg-black"><div>初速</div><div class="fs-4">{{ selectedAmmo.projectileSpeed }} m/s</div></div></div>
                         </div>
@@ -351,7 +350,7 @@ const CompAmmo = {
                                     <div>
                                         <span>{{ deal.vendor.name }} (Lv.{{ deal.minTraderLevel }})</span>
                                         <div v-if="deal.taskUnlockName" class="small text-warning">
-                                            🔒 要: {{ deal.taskUnlockName }}
+                                            🔒 要: <span class="text-decoration-underline" style="cursor: pointer;" @click="$emit('open-task-from-name', deal.taskUnlockName)">{{ deal.taskUnlockName }}</span>
                                         </div>
                                     </div>
                                     <span class="fw-bold text-warning">{{ deal.priceRUB.toLocaleString() }} ₽</span>
@@ -369,7 +368,7 @@ const CompAmmo = {
                                     <div>
                                         <span class="fw-bold text-primary">{{ craft.station.name }} (Lv.{{ craft.level }})</span>
                                         <div v-if="craft.taskUnlock" class="small text-warning">
-                                            🔒 要: {{ craft.taskUnlock.name }}
+                                            🔒 要: <span class="text-decoration-underline" style="cursor: pointer;" @click="$emit('open-task-from-name', craft.taskUnlock.name)">{{ craft.taskUnlock.name }}</span>
                                         </div>
                                     </div>
                                     <div class="text-end">
@@ -392,10 +391,10 @@ const CompAmmo = {
                             {{ selectedAmmo.description }}
                         </div>
 
-                    </div>
-                    <div class="modal-footer border-secondary">
-                        <a :href="selectedAmmo.wikiLink" target="_blank" class="btn btn-primary btn-sm">Wikiで詳細を見る</a>
-                        <button type="button" class="btn btn-secondary btn-sm" @click="closeDetail">閉じる</button>
+                        <div class="d-grid gap-2 mt-3">
+                            <a :href="selectedAmmo.wikiLink" target="_blank" class="btn btn-outline-info btn-sm">📖 Wikiで詳細を見る</a>
+                        </div>
+
                     </div>
                 </div>
             </div>
