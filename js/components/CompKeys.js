@@ -1,5 +1,6 @@
 const CompKeys = {
-    props: ['shoppingList', 'ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode'], 
+    // itemsData を受け取るように props を整理
+    props: ['ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode', 'update:sortMode'],
     data() {
         return {
@@ -23,7 +24,8 @@ const CompKeys = {
     },
     computed: {
         filteredKeys() {
-            let source = this.shoppingList.keys || [];
+            // ★修正: itemsData.items を参照してリストを作成
+            let source = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
             
             // フィルタリング (View Mode)
             if (this.viewMode === 'owned') {
@@ -43,29 +45,24 @@ const CompKeys = {
             // マップごとのグループ化
             const groups = {};
             this.filteredKeys.forEach(k => {
+                // app.jsで付与した mapName を使用
                 const map = k.mapName || 'Unknown / Other';
                 if (!groups[map]) groups[map] = [];
                 groups[map].push(k);
             });
 
-            // ★修正: 指定された順序でマップ名をソート
+            // マップ名のソート
             const sortedMapNames = Object.keys(groups).sort((a,b) => {
-                // Unknownは常に最後
                 if (a === 'Unknown / Other') return 1;
                 if (b === 'Unknown / Other') return -1;
 
-                // 定義リスト内のインデックスを取得
                 const idxA = this.mapOrder.indexOf(a);
                 const idxB = this.mapOrder.indexOf(b);
 
-                // 両方リストにある場合、その順序に従う
                 if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-                
-                // 片方だけリストにある場合、ある方を優先(上)にする
                 if (idxA !== -1) return -1;
                 if (idxB !== -1) return 1;
 
-                // どちらもリストにない場合、アルファベット順
                 return a.localeCompare(b);
             });
 
@@ -83,7 +80,7 @@ const CompKeys = {
                     // B. レート順モード
                     else if (this.sortMode === 'rating') {
                         const getScore = (id) => {
-                            const r = this.keyUserData[id]?.rating || '-';
+                            const r = (this.keyUserData && this.keyUserData[id] && this.keyUserData[id].rating) || '-';
                             const map = {'SS':12, 'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '-': -1}; 
                             return map[r] !== undefined ? map[r] : -1;
                         };
@@ -105,13 +102,11 @@ const CompKeys = {
         toggleMap(mapName) {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
         },
-        // ★追加: 全て収納する
         collapseAll() {
             Object.keys(this.groupedKeys).forEach(map => {
                 this.collapsedMaps[map] = true;
             });
         },
-        // ★追加: 全て展開する (便利なので追加)
         expandAll() {
             Object.keys(this.groupedKeys).forEach(map => {
                 this.collapsedMaps[map] = false;
@@ -189,9 +184,9 @@ const CompKeys = {
                             <tr>
                                 <th style="width: 50px;" class="text-center">所持</th>
                                 <th style="width: 70px;" class="text-center">Rate</th>
-                                <th style="width: 120px;">ShortName</th>
+                                <th style="width: 100px;">ShortName</th>
                                 <th>Name / Memo</th>
-                                <th style="width: 200px;">使用Task</th>
+                                <th style="width: 180px;">使用Task</th>
                                 <th style="width: 50px;" class="text-center">Wiki</th>
                                 <th style="width: 50px;" class="text-center">Dev</th>
                             </tr>
@@ -220,14 +215,23 @@ const CompKeys = {
                                 </td>
 
                                 <td class="align-middle">
-                                    <div :class="{'item-collected': ownedKeys.includes(item.id)}" class="fw-bold small text-truncate" :title="item.name">
-                                        {{ item.name }}
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="bg-black rounded d-flex align-items-center justify-content-center flex-shrink-0" style="width: 32px; height: 32px; border: 1px solid #444;">
+                                            <img v-if="item.image512pxLink" :src="item.image512pxLink" alt="" 
+                                                style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                        </div>
+                                        
+                                        <div style="min-width: 0; flex-grow: 1;">
+                                            <div :class="{'item-collected': ownedKeys.includes(item.id)}" class="fw-bold small text-truncate" :title="item.name">
+                                                {{ item.name }}
+                                            </div>
+                                            <input type="text" class="form-control form-control-sm mt-1 py-0" 
+                                                style="background: transparent; border: none; border-bottom: 1px solid #444; color: #aaa; font-size: 0.8em;"
+                                                placeholder="メモ..." 
+                                                :value="getMemo(item.id)"
+                                                @input="onMemoChange(item.id, $event)">
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm mt-1 py-0" 
-                                        style="background: transparent; border: none; border-bottom: 1px solid #444; color: #aaa; font-size: 0.8em;"
-                                        placeholder="メモ..." 
-                                        :value="getMemo(item.id)"
-                                        @input="onMemoChange(item.id, $event)">
                                 </td>
 
                                 <td class="align-middle small">

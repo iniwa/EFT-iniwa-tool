@@ -200,6 +200,40 @@ createApp({
 
                 const taskMap = new Map(taskData.value.map(t => [t.id, t.name]));
 
+                // ★修正: マップデータから「鍵ID -> マップ名リスト」の対応表を作成
+                const mapLookup = {};
+                const maps = result.data.maps || [];
+                maps.forEach(map => {
+                    if (map.locks) {
+                        map.locks.forEach(lock => {
+                            if (lock.key) {
+                                if (!mapLookup[lock.key.id]) {
+                                    mapLookup[lock.key.id] = [];
+                                }
+                                // 重複を防ぎつつマップ名を追加 (例: Customs)
+                                if (!mapLookup[lock.key.id].includes(map.name)) {
+                                    mapLookup[lock.key.id].push(map.name);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                // ★修正: 鍵データに画像URLとマップ情報を結合
+                const rawItems = result.data.items || [];
+                itemsData.value = {
+                    items: rawItems.map(i => {
+                        const associatedMaps = mapLookup[i.id] || [];
+                        return {
+                            ...i,
+                            image512pxLink: i.image512pxLink, // 画像URL
+                            maps: associatedMaps,             // マップ名の配列
+                            // グルーピング用に最初のマップ名を使用（なければ Unknown）
+                            mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
+                        };
+                    })
+                };
+                
                 // ★修正: 弾薬データ整形（前提タスク情報の紐付けを追加）
                 const rawAmmo = result.data.ammo || [];
                 ammoData.value = rawAmmo.map(a => {

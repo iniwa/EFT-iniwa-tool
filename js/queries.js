@@ -67,6 +67,7 @@ query GetData {
     shortName
     normalizedName
     wikiLink
+    image512pxLink
   }
 
   # ★修正: 弾薬の詳細データ
