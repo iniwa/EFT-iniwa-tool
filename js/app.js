@@ -290,6 +290,7 @@ createApp({
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
                 itemsData.value = cache.items || { items: [], maps: [] };
+                ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
@@ -298,6 +299,7 @@ createApp({
                     items: TARKOV_DATA.data.items || [],
                     maps: TARKOV_DATA.data.maps || []
                 };
+                ammoData.value = TARKOV_DATA.data.ammo || [];
                 lastUpdated.value = 'Backup File';
             }
 

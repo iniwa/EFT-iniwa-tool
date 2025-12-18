@@ -5,33 +5,171 @@ const CompAmmo = {
             selectedCalibers: [],
             sortKey: 'penetrationPower',
             sortDesc: true,
-            chartInstance: null
+            // フィルター表示用の階層データ (固定設定)
+            CALIBER_GROUPS: [
+                {
+                    category: "Assault Rifles (AR)",
+                    icon: "⚔️",
+                    sections: [
+                        {
+                            title: "🇺🇸 Western / NATO",
+                            ids: ['Caliber556x45NATO', 'Caliber762x35', 'Caliber68x51']
+                        },
+                        {
+                            title: "🇷🇺 Eastern / RUS",
+                            ids: ['Caliber545x39', 'Caliber762x39', 'Caliber366TKM', 'Caliber9x39', 'Caliber127x55']
+                        }
+                    ]
+                },
+                {
+                    category: "DMR / Sniper Rifles (SR)",
+                    icon: "🎯",
+                    sections: [
+                        {
+                            title: "🇺🇸 Western / NATO",
+                            ids: ['Caliber762x51', 'Caliber86x70', 'Caliber127x99']
+                        },
+                        {
+                            title: "🇷🇺 Eastern / RUS",
+                            ids: ['Caliber762x54R', 'Caliber93x64']
+                        }
+                    ]
+                },
+                {
+                    category: "SMG / Pistols",
+                    icon: "🔫",
+                    sections: [
+                        {
+                            title: "🇺🇸 Western / NATO",
+                            ids: ['Caliber9x19PARA', 'Caliber1143x23ACP', 'Caliber46x30', 'Caliber57x28', 'Caliber9x33R', 'Caliber127x33']
+                        },
+                        {
+                            title: "🇷🇺 Eastern / RUS",
+                            ids: ['Caliber9x18PM', 'Caliber762x25TT', 'Caliber9x21']
+                        }
+                    ]
+                },
+                {
+                    category: "Shotguns (SG)",
+                    icon: "💥",
+                    sections: [
+                        {
+                            title: "All Origins",
+                            ids: ['Caliber12g', 'Caliber20g', 'Caliber23x75']
+                        }
+                    ]
+                },
+                {
+                    category: "Others / GL",
+                    icon: "📦",
+                    sections: [
+                        {
+                            title: "Grenades & Flares",
+                            ids: ['Caliber40x46', 'Caliber40mmRU', 'Caliber26x75', 'Caliber20x1mm']
+                        }
+                    ]
+                }
+            ],
+            // データ詳細辞書
+            CALIBER_MAP: {
+                // AR
+                'Caliber556x45NATO': { name: '5.56x45mm NATO', examples: 'M4A1, HK416, MDR' },
+                'Caliber762x39': { name: '7.62x39mm', examples: 'AKM, Mk47, SKS' },
+                'Caliber545x39': { name: '5.45x39mm', examples: 'AK-74, RPK-16' },
+                'Caliber762x51': { name: '7.62x51mm NATO', examples: 'M80, SR-25, SCAR-H' },
+                'Caliber762x35': { name: '.300 Blackout', examples: 'MCX, M4 (mod)' },
+                'Caliber366TKM': { name: '.366 TKM', examples: 'VPO-209, VPO-215' },
+                'Caliber127x55': { name: '12.7x55mm', examples: 'ASh-12, RSh-12' },
+                'Caliber68x51': { name: '6.8x51mm', examples: 'SIG Spear' },
+                'Caliber9x39': { name: '9x39mm', examples: 'VSS, AS VAL' },
+
+                // DMR/SR
+                'Caliber762x51': { name: '7.62x51mm NATO', examples: 'M80, SR-25, SCAR-H' },
+                'Caliber762x54R': { name: '7.62x54mm R', examples: 'Mosin, SVDS, PKM' },
+                'Caliber86x70': { name: '.338 Lapua Magnum', examples: 'AXMC, Mk-18 Mjolnir' },
+                'Caliber127x99': { name: '.50 BMG', examples: 'M82A1' },
+                'Caliber93x64': { name: '9.3x64mm Brenneke', examples: 'SVDK' },
+
+                // SMG/HG
+                'Caliber9x19PARA': { name: '9x19mm Parabellum', examples: 'MP5, Vector, Glock' },
+                'Caliber1143x23ACP': { name: '.45 ACP', examples: 'UMP, M1911, Vector' },
+                'Caliber46x30': { name: '4.6x30mm HK', examples: 'MP7' },
+                'Caliber57x28': { name: '5.7x28mm FN', examples: 'P90, Five-seveN' },
+                'Caliber9x21': { name: '9x21mm Gyurza', examples: 'SR-2M Veresk' },
+                'Caliber9x18PM': { name: '9x18mm PM', examples: 'Kedr, Makarov' },
+                'Caliber762x25TT': { name: '7.62x25mm TT', examples: 'PPSH, TT' },
+                'Caliber9x33R': { name: '.357 Magnum', examples: 'Rhino' },
+                'Caliber127x33': { name: '.50 Action Express', examples: 'Desert Eagle' },
+
+                // SG
+                'Caliber12g': { name: '12/70 Gauge', examples: 'MP-153, Saiga-12' },
+                'Caliber20g': { name: '20/70 Gauge', examples: 'TOZ-106' },
+                'Caliber23x75': { name: '23x75mm', examples: 'KS-23M' },
+
+                // Other
+                'Caliber40x46': { name: '40x46mm Grenade', examples: 'M203, M32A1' },
+                'Caliber40mmRU': { name: '40mm VOG', examples: 'GP-25' },
+                'Caliber26x75': { name: '26x75mm Flare', examples: 'Signal Pistol' },
+                'Caliber20x1mm': { name: '20x1mm', examples: 'Toy Gun' },
+            }
         };
     },
     computed: {
-        // 全ての口径リストを取得
-        allCalibers() {
+        // 全データの口径リスト
+        allCalibersFlat() {
             if (!this.ammoData) return [];
-            const calibers = new Set(this.ammoData.map(a => a.caliber));
-            return Array.from(calibers).sort();
+            return Array.from(new Set(this.ammoData.map(a => a.caliber)));
         },
-        // フィルタリングとソート適用後のデータ
+        // ★追加: 定義済みの口径リスト (重複排除用)
+        knownCalibers() {
+            const ids = new Set();
+            this.CALIBER_GROUPS.forEach(group => {
+                group.sections.forEach(section => {
+                    section.ids.forEach(id => ids.add(id));
+                });
+            });
+            return ids;
+        },
+        // ★追加: 未定義の口径リスト
+        unknownCalibers() {
+            if (!this.ammoData) return [];
+            // 全データの中にあり、かつ定義リストに含まれていないものを抽出
+            return this.allCalibersFlat.filter(cal => !this.knownCalibers.has(cal)).sort();
+        },
+        // ★追加: 表示用の統合グループリスト
+        extendedCaliberGroups() {
+            // 元のグループ設定をコピー
+            const groups = JSON.parse(JSON.stringify(this.CALIBER_GROUPS));
+            const unknown = this.unknownCalibers;
+
+            // 未知の口径があれば、「Unknown / New」グループとして末尾に追加
+            if (unknown.length > 0) {
+                groups.push({
+                    category: "Unknown / New",
+                    icon: "❓",
+                    sections: [
+                        {
+                            title: "Uncategorized",
+                            ids: unknown
+                        }
+                    ]
+                });
+            }
+            return groups;
+        },
         filteredAmmo() {
             if (!this.ammoData) return [];
             
             let data = this.ammoData;
 
-            // 口径フィルタ
             if (this.selectedCalibers.length > 0) {
                 data = data.filter(a => this.selectedCalibers.includes(a.caliber));
             }
 
-            // ソート
             return data.sort((a, b) => {
                 let valA = a[this.sortKey];
                 let valB = b[this.sortKey];
                 
-                // 数値変換（念のため）
                 if (typeof valA === 'string') valA = valA.toLowerCase();
                 if (typeof valB === 'string') valB = valB.toLowerCase();
 
@@ -40,16 +178,6 @@ const CompAmmo = {
                 return 0;
             });
         }
-    },
-    watch: {
-        filteredAmmo() {
-            this.renderChart();
-        }
-    },
-    mounted() {
-        // 初期表示でよく使う口径を選択しておく（例: 5.56x45mm, 7.62x39mm）
-        // this.selectedCalibers = ['5.56x45mm NATO', '7.62x39mm']; 
-        this.renderChart();
     },
     methods: {
         toggleCaliber(cal) {
@@ -66,42 +194,53 @@ const CompAmmo = {
             }
         },
         getBgColor(pen) {
-            // 貫通力に応じた色分け
-            if (pen >= 60) return '#dc3545'; // 赤 (クラス6貫通)
-            if (pen >= 50) return '#fd7e14'; // オレンジ (クラス5)
-            if (pen >= 40) return '#ffc107'; // 黄 (クラス4)
-            if (pen >= 30) return '#198754'; // 緑 (クラス3)
-            return '#6c757d'; // グレー
+            if (pen >= 60) return '#dc3545'; 
+            if (pen >= 50) return '#fd7e14'; 
+            if (pen >= 40) return '#ffc107'; 
+            if (pen >= 30) return '#198754'; 
+            return '#6c757d'; 
         },
-        renderChart() {
-            const ctx = document.getElementById('ammoChart');
-            if (!ctx) return;
-
-            // Chart.js が必要です。index.htmlで読み込んでいない場合は追加が必要です。
-            // 今回は簡易的な散布図を描画するロジックを Chart.js なしで実装するか、
-            // あるいはライブラリ依存を避けるため、今回は「テーブルメイン」とし、
-            // 将来的にChart.jsを入れる想定でプレースホルダーにします。
-            
-            // ※もしChart.jsを導入済みならここで描画コードを記述します。
-            // 今回はHTML/CSSだけで簡易的なバーを表示する形にします。
+        getCaliberInfo(calId) {
+            // マップにない場合も安全にデフォルト値を返す
+            return this.CALIBER_MAP[calId] || { name: calId.replace('Caliber', ''), examples: 'Unknown Weapon' };
+        },
+        hasData(calId) {
+            return this.allCalibersFlat.includes(calId);
         }
     },
     template: `
     <div class="row">
         <div class="col-md-3 mb-3">
             <div class="card h-100 border-secondary">
-                <div class="card-header bg-dark text-white border-secondary">
-                    🔫 口径フィルター
-                    <button class="btn btn-sm btn-outline-light float-end" @click="selectedCalibers = []">クリア</button>
+                <div class="card-header bg-dark text-white border-secondary d-flex justify-content-between align-items-center">
+                    <span>🔫 口径フィルター</span>
+                    <button class="btn btn-sm btn-outline-light" @click="selectedCalibers = []">クリア</button>
                 </div>
-                <div class="card-body bg-dark text-white overflow-auto" style="max-height: 80vh;">
-                    <div v-for="cal in allCalibers" :key="cal" class="form-check">
-                        <input class="form-check-input" type="checkbox" :value="cal" :id="'cal-'+cal" 
-                               :checked="selectedCalibers.includes(cal)" @change="toggleCaliber(cal)">
-                        <label class="form-check-label small" :for="'cal-'+cal" style="cursor: pointer;">
-                            {{ cal }}
-                        </label>
+                <div class="card-body bg-dark text-white overflow-auto p-2" style="max-height: 80vh;">
+                    
+                    <div v-for="(group, gIdx) in extendedCaliberGroups" :key="gIdx" class="mb-3">
+                        <div class="text-warning border-bottom border-secondary mb-2 pb-1 small fw-bold">
+                            {{ group.icon }} {{ group.category }}
+                        </div>
+
+                        <div v-for="(section, sIdx) in group.sections" :key="sIdx" class="mb-2 ms-1">
+                            <div class="text-muted small mb-1" style="font-size: 0.75rem;">{{ section.title }}</div>
+                            
+                            <div v-for="cal in section.ids" :key="cal">
+                                <div v-if="hasData(cal)" class="form-check mb-1 ms-2">
+                                    <input class="form-check-input mt-1" type="checkbox" :value="cal" :id="'cal-'+cal" 
+                                        :checked="selectedCalibers.includes(cal)" @change="toggleCaliber(cal)">
+                                    <label class="form-check-label w-100" :for="'cal-'+cal" style="cursor: pointer; line-height: 1.2;">
+                                        <div class="small fw-bold">{{ getCaliberInfo(cal).name }}</div>
+                                        <div class="text-secondary" style="font-size: 0.7em;">
+                                            {{ getCaliberInfo(cal).examples }}
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -133,7 +272,9 @@ const CompAmmo = {
                                         {{ ammo.shortName || ammo.name }}
                                     </a>
                                 </td>
-                                <td class="text-muted">{{ ammo.caliber.replace('Caliber', '') }}</td>
+                                <td class="text-muted small">
+                                    {{ getCaliberInfo(ammo.caliber).name }}
+                                </td>
                                 <td class="text-end fw-bold">{{ ammo.damage }}</td>
                                 <td class="text-end fw-bold position-relative">
                                     <span class="badge" :style="{backgroundColor: getBgColor(ammo.penetrationPower)}">

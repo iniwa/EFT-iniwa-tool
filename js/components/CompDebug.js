@@ -1,6 +1,6 @@
 const CompDebug = {
-    // ★追加: prioritizedTasks を受け取る
-    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData', 'prioritizedTasks'],
+    // 修正: 記法を統一し ammoData を追加
+    props: ['taskData', 'hideoutData', 'itemsData', 'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData', 'prioritizedTasks', 'ammoData'],
     data() {
         return {
             currentView: 'tasks',
@@ -13,12 +13,13 @@ const CompDebug = {
                 case 'tasks': return this.taskData;
                 case 'hideout': return this.hideoutData;
                 case 'items': return this.itemsData;
+                // ★修正: ケース名をボタンの設定値 'ammoData' に合わせました
+                case 'ammoData': return this.ammoData;
                 case 'userProgress': return {
                     userHideout: this.userHideout,
                     completedTasks: this.completedTasks,
                     ownedKeys: this.ownedKeys,
                     keyUserData: this.keyUserData,
-                    // ★追加: デバッグ画面に表示
                     prioritizedTasks: this.prioritizedTasks 
                 };
                 default: return {};
@@ -55,6 +56,9 @@ const CompDebug = {
                         <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
                                 :class="{active: currentView==='items'}" 
                                 @click="currentView='items'">Items/Keys (API)</button>
+                        <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
+                                :class="{active: currentView==='ammoData'}" 
+                                @click="currentView='ammoData'">ammoData</button>
                         <button class="list-group-item list-group-item-action bg-dark text-white border-secondary" 
                                 :class="{active: currentView==='userProgress'}" 
                                 @click="currentView='userProgress'">User Save Data</button>
