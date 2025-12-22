@@ -2,18 +2,17 @@
 
 const KeyLogic = {
     calculate(itemsData, mapsData, allTaskData, addItemFunc) {
-        if (!mapsData || !Array.isArray(mapsData)) return;
+        // itemsDataが必須です
+        if (!itemsData || !Array.isArray(itemsData)) return;
 
-        // 1. アイテム参照用マップ作成
+        // 1. アイテム参照用マップ作成 (ID -> Item)
         const itemLookup = {};
-        if (itemsData && Array.isArray(itemsData)) {
-            itemsData.forEach(item => { 
-                if (item.id) itemLookup[item.id] = item;
-                if (item.normalizedName) itemLookup[item.normalizedName] = item;
-            });
-        }
+        itemsData.forEach(item => { 
+            if (item.id) itemLookup[item.id] = item;
+            if (item.normalizedName) itemLookup[item.normalizedName] = item;
+        });
 
-        // 2. 鍵とタスクの紐付けマップ作成
+        // 2. 鍵とタスクの紐付けマップ作成 (KeyID -> Set of TaskNames)
         const keyTaskMap = {}; 
 
         const addRelation = (keyId, keyNormName, taskName) => {
@@ -35,6 +34,7 @@ const KeyLogic = {
                         if (group.keys && Array.isArray(group.keys)) {
                             group.keys.forEach(k => {
                                 addRelation(k.id, k.normalizedName, task.name);
+                                // itemLookupにない場合の保険
                                 if (k.id && !itemLookup[k.id]) itemLookup[k.id] = k;
                             });
                         }
@@ -44,8 +44,11 @@ const KeyLogic = {
                 if (task.objectives) {
                     task.objectives.forEach(obj => {
                         if (obj.item && (obj.type === 'giveItem' || obj.type === 'findItem')) {
-                            if (itemLookup[obj.item.id]) {
-                                const keyItem = itemLookup[obj.item.id];
+                            const keyId = obj.item.id;
+                            // アイテムが「鍵」であるかを確認（itemLookupにあるか、または名前にkeyが含まれるか等簡易判定）
+                            // ここでは itemLookup に登録されている(＝APIで鍵カテゴリとして取得された)もののみを対象とする
+                            if (itemLookup[keyId]) {
+                                const keyItem = itemLookup[keyId];
                                 addRelation(keyItem.id, keyItem.normalizedName, task.name);
                             }
                         }
@@ -54,55 +57,77 @@ const KeyLogic = {
             });
         }
 
-        // 3. マップデータに基づいてリスト生成
-        mapsData.forEach(map => {
-            if (map.locks) {
-                // ★修正箇所: マップ名の正規化(統一)処理
-                let mapName = map.name;
-
-                // Ground Zero (21+) を Ground Zero に統合
-                // 英語名と日本語名(グラウンドゼロ)の両方を考慮して部分一致で判定
-                if (mapName.includes('Ground Zero') || mapName.includes('グラウンドゼロ')) {
-                    mapName = 'Ground Zero';
-                }
-
-                // Factory (Night) を Factory に統合
-                // 英語名、カタカナ、漢字(工場)のいずれも Factory に統一
-                if (mapName.includes('Factory') || mapName.includes('ファクトリー') || mapName.includes('工場')) {
-                    mapName = 'Factory';
-                }
-
-                map.locks.forEach(lock => {
-                    if (lock.key) {
-                        const rawKey = lock.key;
-                        const keyId = rawKey.id;
-                        const keyNorm = rawKey.normalizedName;
-                        
-                        const fullKeyData = itemLookup[keyId] || itemLookup[keyNorm] || rawKey;
-                        
-                        const keyName = fullKeyData.name || rawKey.name || "Unknown Key";
-                        const wiki = fullKeyData.wikiLink || "";
-                        const short = fullKeyData.shortName || "";
-                        const norm = fullKeyData.normalizedName || keyNorm || "";
-                        const finalId = fullKeyData.id || keyId;
-
-                        let taskNames = [];
-                        if (finalId && keyTaskMap[finalId]) {
-                            taskNames = [...keyTaskMap[finalId]];
-                        } else if (norm && keyTaskMap[norm]) {
-                            taskNames = [...keyTaskMap[norm]];
-                        }
-
-                        // addItemFuncに渡す mapName を、正規化した変数に変更
-                        if (taskNames.length > 0) {
-                            taskNames.forEach(tName => {
-                                addItemFunc('keys', finalId, keyName, 1, tName, 'task', mapName, wiki, short, norm);
-                            });
-                        } else {
-                            addItemFunc('keys', finalId, keyName, 1, '', 'none', mapName, wiki, short, norm);
-                        }
+        // 3. マップ情報の事前集計 (KeyID -> MapName)
+        // ★修正: ここでマップ情報を先に辞書化しておきます
+        const keyLocationMap = {};
+        if (mapsData && Array.isArray(mapsData)) {
+            mapsData.forEach(map => {
+                if (map.locks) {
+                    let mapName = map.name;
+                    // マップ名の正規化
+                    if (mapName.includes('Ground Zero') || mapName.includes('グラウンドゼロ')) {
+                        mapName = 'Ground Zero';
                     }
+                    if (mapName.includes('Factory') || mapName.includes('ファクトリー') || mapName.includes('工場')) {
+                        mapName = 'Factory';
+                    }
+
+                    map.locks.forEach(lock => {
+                        if (lock.key && lock.key.id) {
+                            if (!keyLocationMap[lock.key.id]) {
+                                keyLocationMap[lock.key.id] = [];
+                            }
+                            if (!keyLocationMap[lock.key.id].includes(mapName)) {
+                                keyLocationMap[lock.key.id].push(mapName);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // 4. リスト生成 (全鍵データを走査)
+        // ★修正: itemsData (全鍵データ) をループの主軸にします
+        itemsData.forEach(rawKey => {
+            const keyId = rawKey.id;
+            const keyNorm = rawKey.normalizedName;
+            
+            const fullKeyData = itemLookup[keyId] || itemLookup[keyNorm] || rawKey;
+            
+            const keyName = fullKeyData.name || rawKey.name || "Unknown Key";
+            const wiki = fullKeyData.wikiLink || "";
+            const short = fullKeyData.shortName || "";
+            const norm = fullKeyData.normalizedName || keyNorm || "";
+            const finalId = fullKeyData.id || keyId;
+
+            // タスク情報の取得
+            let taskNames = [];
+            if (finalId && keyTaskMap[finalId]) {
+                taskNames = [...keyTaskMap[finalId]];
+            } else if (norm && keyTaskMap[norm]) {
+                taskNames = [...keyTaskMap[norm]];
+            }
+
+            // マップ情報の取得 (なければ Unknown / Other になる)
+            // app.js側で mapLookup しているが、念のためここでも判定
+            let mapName = 'Unknown / Other';
+            if (keyLocationMap[finalId] && keyLocationMap[finalId].length > 0) {
+                mapName = keyLocationMap[finalId][0]; // 最初のマップを採用
+            }
+
+            // データ登録
+            // タスクがある鍵、またはマップ情報がある鍵のみを登録しても良いが、
+            // itemsDataにあるならすべて登録しておくのが安全
+            if (taskNames.length > 0) {
+                taskNames.forEach(tName => {
+                    addItemFunc('keys', finalId, keyName, 1, tName, 'task', mapName, wiki, short, norm);
                 });
+            } else if (mapName !== 'Unknown / Other') {
+                // タスクはないがマップ場所はわかっている鍵
+                addItemFunc('keys', finalId, keyName, 1, '', 'none', mapName, wiki, short, norm);
+            } else {
+                // タスクもマップも不明だがアイテムデータにはある鍵 (念のため追加)
+                addItemFunc('keys', finalId, keyName, 1, '', 'none', mapName, wiki, short, norm);
             }
         });
     }

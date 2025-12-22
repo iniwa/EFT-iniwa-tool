@@ -1,6 +1,5 @@
 const CompKeys = {
-    // itemsData を受け取るように props を整理
-    props: ['ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode'], 
+    props: ['ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode', 'shoppingList'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode', 'update:sortMode'],
     data() {
         return {
@@ -24,8 +23,39 @@ const CompKeys = {
     },
     computed: {
         filteredKeys() {
-            // ★修正: itemsData.items を参照してリストを作成
-            let source = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
+            // ベースとなる鍵データ (画像・マップ情報あり)
+            let rawSource = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
+            
+            // ★修正: shoppingListからタスク情報(sources)を検索・統合するためのマップ作成
+            const sourceLookup = {};
+            if (this.shoppingList && this.shoppingList.keys) {
+                this.shoppingList.keys.forEach(k => {
+                    if (k.id && k.sources && k.sources.length > 0) {
+                        if (!sourceLookup[k.id]) {
+                            sourceLookup[k.id] = [];
+                        }
+                        // 既存のリストと重複しないようにタスク情報を追加 (マージ)
+                        k.sources.forEach(src => {
+                            // "TaskName" と "task" タイプで重複チェック
+                            const exists = sourceLookup[k.id].some(existing => 
+                                existing.name === src.name && existing.type === src.type
+                            );
+                            if (!exists && src.name) {
+                                sourceLookup[k.id].push(src);
+                            }
+                        });
+                    }
+                });
+            }
+
+            // ★追加: 鍵データにタスク情報を結合
+            let source = rawSource.map(item => {
+                return {
+                    ...item,
+                    // 統合したタスク情報をセット。なければ空配列
+                    sources: sourceLookup[item.id] || []
+                };
+            });
             
             // フィルタリング (View Mode)
             if (this.viewMode === 'owned') {
@@ -45,7 +75,6 @@ const CompKeys = {
             // マップごとのグループ化
             const groups = {};
             this.filteredKeys.forEach(k => {
-                // app.jsで付与した mapName を使用
                 const map = k.mapName || 'Unknown / Other';
                 if (!groups[map]) groups[map] = [];
                 groups[map].push(k);
@@ -235,7 +264,7 @@ const CompKeys = {
                                 </td>
 
                                 <td class="align-middle small">
-                                    <div v-if="item.sources && item.sources.length > 0 && item.sources[0].name !== ''">
+                                    <div v-if="item.sources && item.sources.length > 0">
                                         <div v-for="(source, idx) in item.sources" :key="idx" class="text-truncate">
                                             <span v-if="source.type === 'task'" class="source-task-link text-info" @click="$emit('open-task-from-name', source.name)">
                                                 {{ source.name }}
