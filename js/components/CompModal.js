@@ -1,8 +1,6 @@
 const CompModal = {
-    // ★修正: prioritizedTasks を受け取る
-    props: ['selectedTask', 'completedTasks', 'prioritizedTasks'],
-    // ★修正: toggle-priority をemitに追加
-    emits: ['close', 'toggle-task', 'toggle-priority'],
+    props: ['selectedTask', 'completedTasks', 'prioritizedTasks', 'ownedKeys'],
+    emits: ['close', 'toggle-task', 'toggle-priority', 'toggle-owned-key'],
     template: `
     <div v-if="selectedTask" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-content-custom">
@@ -45,8 +43,19 @@ const CompModal = {
                 <h6 class="border-bottom pb-1 mb-2 text-warning">🔑 必要な鍵 (Needed Keys)</h6>
                 <ul class="list-group">
                     <li v-for="(group, gIdx) in selectedTask.neededKeys" :key="'g'+gIdx" class="list-group-item bg-dark text-light border-secondary py-2">
-                        <div v-for="(keyItem, kIdx) in group.keys" :key="'k'+kIdx" class="d-flex align-items-center gap-2 flex-wrap">
-                            <span class="text-info fw-bold">{{ keyItem.name }}</span>
+                        <div v-for="(keyItem, kIdx) in group.keys" :key="'k'+kIdx" class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            
+                            <button class="btn btn-sm py-0 px-2 fw-bold"
+                                :class="ownedKeys.includes(keyItem.id) ? 'btn-success' : 'btn-outline-secondary'"
+                                @click="$emit('toggle-owned-key', keyItem.id)"
+                                style="min-width: 60px; height: 24px; font-size: 0.8em;">
+                                {{ ownedKeys.includes(keyItem.id) ? '所持' : '未所持' }}
+                            </button>
+                            
+                            <span class="fw-bold" :class="ownedKeys.includes(keyItem.id) ? 'text-success' : 'text-info'">
+                                {{ keyItem.name }}
+                            </span>
+                            
                             <span v-if="keyItem.shortName" class="text-muted small">({{ keyItem.shortName }})</span>
                             <a v-if="keyItem.wikiLink" :href="keyItem.wikiLink" target="_blank" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size: 0.7em;">Wiki</a>
                         </div>
