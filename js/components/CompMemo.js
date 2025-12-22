@@ -3,6 +3,7 @@ const CompMemo = {
     emits: ['open-task-from-name'],
     data() {
         return {
+            // 初期状態はすべて閉じる
             isOpen: {
                 health: false,
                 weapon: false,
@@ -176,9 +177,9 @@ const CompMemo = {
                                         <th style="width: 10%;">容量</th>
                                         <th style="width: 10%;">総時間</th>
                                         <th style="width: 15%;" class="text-blue">発動ラグ</th>
-                                        <th style="width: 10%;">HP/回</th>
-                                        <th style="width: 12%;">軽出血</th>
-                                        <th style="width: 12%;">重出血</th>
+                                        <th style="width: 15%;">1回回復量</th>
+                                        <th style="width: 10%;">軽出血</th>
+                                        <th style="width: 10%;">重出血</th>
                                         <th style="width: 8%;">骨折</th>
                                     </tr>
                                 </thead>
@@ -235,8 +236,11 @@ const CompMemo = {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
-                                ※ <strong>発動ラグ:</strong> アニメーション開始から実際にHPが回復するまでの時間（目安）。この直後にアニメーションキャンセルが可能。
+                             <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>1回回復量:</strong> 1回のアニメーションで回復できるHPの上限値。</li>
+                                    <li><strong>発動ラグ:</strong> 使用開始からHPが実際に回復するまでの時間。この直後にクリックでキャンセル可能。</li>
+                                </ul>
                             </div>
 
                             <div class="memo-static-header">
@@ -288,7 +292,7 @@ const CompMemo = {
                     </h2>
                     <div v-show="isOpen.weapon">
                         <div class="accordion-body p-0 bg-black">
-                            <table class="memo-table">
+                             <table class="memo-table">
                                 <thead>
                                     <tr>
                                         <th class="weapon-col-caliber">口径</th>
