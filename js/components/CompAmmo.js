@@ -37,6 +37,11 @@ const CompAmmo = {
                         {
                             title: "🇷🇺 Eastern / RUS",
                             ids: ['Caliber762x54R', 'Caliber93x64']
+                        },
+                        // ★修正: .308 ME 用のカテゴリを追加
+                        {
+                            title: "🦌 Civilian / Hunting",
+                            ids: ['Caliber308ME']
                         }
                     ]
                 },
@@ -106,6 +111,8 @@ const CompAmmo = {
                 'Caliber26x75': { name: '26x75mm Flare', examples: 'Signal Pistol' },
                 'Caliber20x1mm': { name: '20x1mm', examples: 'Toy Gun' },
                 'Caliber127x33': { name: '.50 Action Express', examples: 'Desert Eagle' },
+                // ★修正: .308 ME の表示名定義
+                'Caliber308ME': { name: '.308 Marlin Express', examples: 'Marlin MXLR' },
             }
         };
     },
@@ -118,9 +125,23 @@ const CompAmmo = {
         }
     },
     computed: {
-        allCalibersFlat() {
+        // ★修正: データの前処理 (308 MEを分離するロジック)
+        processedAmmoData() {
             if (!this.ammoData) return [];
-            return Array.from(new Set(this.ammoData.map(a => a.caliber)));
+            return this.ammoData.map(item => {
+                // Propsは直接変更できないためコピーを作成
+                const newItem = { ...item };
+                // 名前が .308 ME で始まる場合、口径IDを独自のものに書き換える
+                if (newItem.name && newItem.name.includes('.308 ME')) {
+                    newItem.caliber = 'Caliber308ME';
+                }
+                return newItem;
+            });
+        },
+        // 以下、this.ammoData の代わりに this.processedAmmoData を使用
+        allCalibersFlat() {
+            if (!this.processedAmmoData) return [];
+            return Array.from(new Set(this.processedAmmoData.map(a => a.caliber)));
         },
         knownCalibers() {
             const ids = new Set();
@@ -132,7 +153,7 @@ const CompAmmo = {
             return ids;
         },
         unknownCalibers() {
-            if (!this.ammoData) return [];
+            if (!this.processedAmmoData) return [];
             return this.allCalibersFlat.filter(cal => !this.knownCalibers.has(cal)).sort();
         },
         extendedCaliberGroups() {
@@ -148,8 +169,8 @@ const CompAmmo = {
             return groups;
         },
         filteredAmmo() {
-            if (!this.ammoData) return [];
-            let data = this.ammoData;
+            if (!this.processedAmmoData) return [];
+            let data = this.processedAmmoData;
             if (this.selectedCalibers.length > 0) {
                 data = data.filter(a => this.selectedCalibers.includes(a.caliber));
             }
@@ -230,7 +251,7 @@ const CompAmmo = {
                             <div v-for="cal in section.ids" :key="cal">
                                 <div v-if="hasData(cal)" class="form-check mb-1 ms-2">
                                     <input class="form-check-input mt-1" type="checkbox" :value="cal" :id="'cal-'+cal" 
-                                           :checked="selectedCalibers.includes(cal)" @change="toggleCaliber(cal)">
+                                        :checked="selectedCalibers.includes(cal)" @change="toggleCaliber(cal)">
                                     <label class="form-check-label w-100" :for="'cal-'+cal" style="cursor: pointer; line-height: 1.2;">
                                         <div class="small fw-bold">{{ getCaliberInfo(cal).name }}</div>
                                         <div class="text-secondary" style="font-size: 0.7em;">

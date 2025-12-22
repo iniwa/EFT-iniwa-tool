@@ -1,5 +1,6 @@
 const CompChat = {
-    props: ['taskData', 'hideoutData', 'itemsData', 'completedTasks', 'userHideout', 'playerLevel'],
+    // ★修正: ammoData を props に追加
+    props: ['taskData', 'hideoutData', 'itemsData', 'completedTasks', 'userHideout', 'playerLevel', 'ammoData'],
     data() {
         return {
             apiKey: localStorage.getItem('gemini_api_key') || '',
@@ -32,6 +33,7 @@ const CompChat = {
             this.isSending = true;
 
             try {
+                // ★修正: AIに送るコンテキストデータに弾薬情報を追加
                 const contextData = {
                     userProfile: {
                         level: this.playerLevel,
@@ -48,7 +50,21 @@ const CompChat = {
                             unlocks: t.finishRewardsList.filter(r => r.type === 'offerUnlock').map(r => `Buy ${r.itemName} from ${r.trader} LL${r.level}`),
                             crafts: t.finishRewardsList.filter(r => r.type === 'craftUnlock').map(r => `Craft ${r.itemName} at ${r.station} Lv${r.level}`)
                         }
-                    }))
+                    })),
+                    // ★追加: 弾薬データ (軽量化して送信)
+                    ammo: this.ammoData ? this.ammoData.map(a => ({
+                        name: a.name,
+                        caliber: a.caliber.replace('Caliber', ''),
+                        stats: {
+                            dmg: a.damage,
+                            pen: a.penetrationPower,
+                            armor: a.armorDamage
+                        },
+                        // 購入情報: トレーダー名、レベル、アンロックタスク名
+                        buy: a.soldBy.map(b => `${b.vendor.name} LL${b.minTraderLevel}` + (b.taskUnlockName ? ` (Req: ${b.taskUnlockName})` : '')),
+                        // 製造情報: 設備、レベル
+                        craft: a.crafts.map(c => `${c.station.name} Lv${c.level}`)
+                    })) : []
                 };
 
                 const systemPrompt = `
@@ -58,6 +74,7 @@ const CompChat = {
 タスクの完了状況(status: "Completed")もデータに含まれています。
 
 回答にはMarkdown記法（太字、リスト、表など）を積極的に使用して見やすく整形してください。
+弾薬に関する質問の場合、ユーザーのレベルやタスク進捗に基づいて「購入可能か」「製造可能か」を考慮して提案してください。
 
 【データ】
 ${JSON.stringify(contextData)}
@@ -108,7 +125,7 @@ ${JSON.stringify(contextData)}
             <div class="flex-grow-1 overflow-auto p-3" style="background-color: #1e1e1e;">
                 <div v-if="chatHistory.length === 0" class="text-muted text-center mt-5">
                     データについて何でも聞いてください。<br>
-                    例: 「まだ終わっていないPraporのタスクを教えて」「今のレベルで受けられるタスクは？」
+                    例: 「まだ終わっていないPraporのタスクを教えて」「今のレベルで使える貫通力の高い5.56mm弾は？」
                 </div>
                 
                 <div v-for="(msg, idx) in chatHistory" :key="idx" class="mb-3">
