@@ -563,4 +563,5 @@ createApp({
 .component('comp-chat', CompChat)
 .component('comp-footer', CompFooter)
 .component('comp-ammo', CompAmmo)
+.component('comp-memo', CompMemo)
 .mount('#app');
