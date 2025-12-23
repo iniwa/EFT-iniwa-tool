@@ -2,21 +2,30 @@ const CompMemo = {
     // タスク名クリックイベントを親に通知
     emits: ['open-task-from-name'],
     data() {
+        // ローカルストレージから状態を取得
+        const savedState = localStorage.getItem('memo_accordion_state');
+        
+        // デフォルトの状態（すべて閉じる）
+        const defaultState = {
+            health: false,
+            weapon: false,
+            armor: false,
+            stims: false,
+            grenade: false,
+            items: false
+        };
+
         return {
-            // 初期状態はすべて閉じる
-            isOpen: {
-                health: false,
-                weapon: false,
-                armor: false,
-                stims: false,
-                grenade: false,
-                items: false
-            }
+            // 保存された状態があればそれを復元し、なければデフォルトを使用
+            // (...defaultState を先に展開することで、将来新しいキーが増えた場合のエラーを防ぐ)
+            isOpen: savedState ? { ...defaultState, ...JSON.parse(savedState) } : defaultState
         };
     },
     methods: {
         toggleSection(sectionKey) {
             this.isOpen[sectionKey] = !this.isOpen[sectionKey];
+            // 状態が変化するたびにローカルストレージに保存
+            localStorage.setItem('memo_accordion_state', JSON.stringify(this.isOpen));
         }
     },
     template: `
@@ -59,7 +68,7 @@ const CompMemo = {
             width: 1.25rem;
             height: 1.25rem;
             margin-left: auto;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230dcaf0'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230dcaf0'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-size: 1.25rem;
             transition: transform 0.2s ease-in-out;
@@ -157,7 +166,7 @@ const CompMemo = {
         
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 情報はパッチ1.0.0、正式版直後の情報を元に作成しています。
+                ※ 情報はパッチ1.0.0.5の情報を元に作成しています。
             </div>
 
             <div class="accordion accordion-flush" id="memoAccordion">
@@ -296,6 +305,9 @@ const CompMemo = {
                     </h2>
                     <div v-show="isOpen.weapon">
                         <div class="accordion-body p-0 bg-black">
+                            <div class="memo-static-header">
+                                AR / DMR (Assault Rifles & Marksman)
+                            </div>
                             <table class="memo-table">
                                 <thead>
                                     <tr>
@@ -306,39 +318,48 @@ const CompMemo = {
                                 </thead>
                                 <tbody>
                                     <tr class="memo-caliber-row">
-                                        <td rowspan="5" class="weapon-col-caliber border-end border-secondary">
+                                        <td rowspan="7" class="weapon-col-caliber border-end border-secondary">
                                             7.62x51mm<br><span class="small text-muted">NATO</span>
                                         </td>
                                         <td class="text-blue fw-bold ps-3">SR-25</td>
                                         <td class="text-muted-dark">
-                                            セミオートDMRの王道。リコイルの戻り（跳ねた照準が戻る速度）が非常に早く、連射しても当てやすい。
-                                            <span class="text-blue">「迷ったらこれ」</span>と言えるほどコスパと性能のバランスが良い。
+                                            7.62x51mmの中でも非常に扱いやすく、メタ武器の1つ。リコイルの戻りが早く、連射しても当てやすい。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold ps-3 text-secondary">RSASS</td>
                                         <td class="text-muted-dark">
-                                            SR-25の上位互換で理論値最強だが、本体価格が非常に高い。
-                                            コスパ度外視のロマン・ガチ装備。
+                                            SR-25のほぼ上位互換。性能は最強クラスだが、本体価格が非常に高い。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-3 fw-bold">RFB</td>
+                                        <td class="text-muted-dark">
+                                            非常に安価で入手性が良い。カスタム幅は狭いが、コスパ良く7.62x51mmを撃てる。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-3 fw-bold">M1A</td>
+                                        <td class="text-muted-dark">
+                                            SR-25等と違い<span class="text-blue">50発マガジン</span>が使用可能。対多数や制圧射撃に強いが、エルゴは低くなりやすい。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-blue fw-bold ps-3">MDR 7.62</td>
                                         <td class="text-muted-dark">
-                                            この大口径を<span class="text-blue">フルオート</span>で撃てる強武器。
-                                            ブルパップなので全長が短く、室内戦や曲がり角での取り回しが良い。
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="fw-bold ps-3">SA-58</td>
-                                        <td class="text-muted-dark">
-                                            通称「破壊神」。近距離の火力は凄まじいが、反動が強烈すぎて中距離以降の制御は困難。
+                                            この大口径を<span class="text-blue">フルオート</span>で撃てる強武器。SCAR-Hに比べエルゴは高いが、反動は強め。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold ps-3">SCAR-H</td>
                                         <td class="text-muted-dark">
-                                            レートが遅めで反動制御はしやすいが、カスタム幅が狭くエルゴノミクス（構え）が低くなりがち。
+                                            反動はマイルドで制御しやすいが、エルゴが低く、構えや取り回しが重くなりやすい。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold ps-3">SA-58</td>
+                                        <td class="text-muted-dark">
+                                            近距離の火力は凄まじいが、反動が強烈すぎて中距離以降の制御は困難。
                                         </td>
                                     </tr>
 
@@ -348,33 +369,29 @@ const CompMemo = {
                                         </td>
                                         <td class="text-blue fw-bold ps-3">RD-704</td>
                                         <td class="text-muted-dark">
-                                            非常にコンパクトで<span class="text-blue">エルゴノミクスが最強クラス</span>。
-                                            サプレッサーを付けても取り回しが良く、遭遇戦で先手を取りやすい。
+                                            非常にコンパクトでエルゴが高い。全長が短く、サプレッサーを付けても取り回しが良い。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="text-blue fw-bold ps-3">Mk47 Mutant</td>
                                         <td class="text-muted-dark">
-                                            RD-704より連射速度が速く、精度も良いが少し重い。
-                                            「火力でねじ伏せる」ならこちら。
+                                            RD-704より連射速度が速く、精度も良いが少し重い。「火力でねじ伏せる」ならこちら。
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fw-bold ps-3">AKMN / 103</td>
+                                        <td class="fw-bold ps-3">AKMN / 103 / 104</td>
                                         <td class="text-muted-dark">
-                                            RDやMk47が高くて買えない時の主力。
-                                            性能は劣るが、強力なBP/PP弾を撃てる発射台としては十分優秀。
+                                            大口径弾を撃てる発射台として優秀。104はカービンモデルで取り回しが良い。
                                         </td>
                                     </tr>
 
                                     <tr class="memo-caliber-row">
-                                        <td rowspan="3" class="weapon-col-caliber border-end border-secondary">
+                                        <td rowspan="5" class="weapon-col-caliber border-end border-secondary">
                                             5.56x45mm<br><span class="small text-muted">NATO</span>
                                         </td>
                                         <td class="text-blue fw-bold ps-3">AUG A3</td>
                                         <td class="text-muted-dark">
-                                            純正状態で性能が高く、カスタム費用が安い。
-                                            <span class="text-blue">コスパ最強</span>の5.56mm枠。スコープを載せるだけで戦える。
+                                            純正状態で性能が高く、カスタム費用が安い。<span class="text-blue">コスパ最強</span>の5.56mm枠。
                                         </td>
                                     </tr>
                                     <tr>
@@ -384,9 +401,21 @@ const CompMemo = {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="fw-bold ps-3">SCAR-L</td>
+                                        <td class="text-muted-dark">
+                                            反動が非常にマイルド。レートが遅く(650RPM)近距離の撃ち合いは弱めだが、中距離で当てやすい。
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="fw-bold ps-3">M4A1 / HK416</td>
                                         <td class="text-muted-dark">
                                             お金をかけてフルカスタムすれば最強だが、中途半端なカスタムだと弱い。上級者向け。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold ps-3">ADAR / TX-15</td>
+                                        <td class="text-muted-dark">
+                                            セミオート運用前提のAR。安価に5.56mmを運用できる。
                                         </td>
                                     </tr>
 
@@ -396,21 +425,103 @@ const CompMemo = {
                                         </td>
                                         <td class="text-blue fw-bold ps-3">NL-545</td>
                                         <td class="text-muted-dark">
-                                            <span class="text-blue">今期のメタ武器</span>。M4と同じ高レート(800RPM)で撃て、反動も非常にマイルド。
-                                            5.45mmを使うならまずこれ。
+                                            <span class="text-blue">5.45mmの最強銃</span>。M4と同じ高レート(800RPM)で撃て、反動も非常にマイルド。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold ps-3">SAG AK-545</td>
                                         <td class="text-muted-dark">
-                                            セミオート限定のAK。精度とエルゴノミクスが非常に高く、安価。
-                                            頭を狙う練習用や、スカブ狩りタスクなどで非常に優秀。
+                                            非常に安価なセミオート。精度が高く、最序盤にオススメ。
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="fw-bold ps-3">AK-74N / 74M</td>
                                         <td class="text-muted-dark">
-                                            いわゆる普通のAK。弾（BP/BT/BS）が入手しやすいので、序盤〜中盤の主力になる。
+                                            5.45mmのスタンダード。弾の入手性が比較的良い。
+                                        </td>
+                                    </tr>
+
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            9x39mm
+                                        </td>
+                                        <td class="text-blue fw-bold ps-3">AS VAL / VSS</td>
+                                        <td class="text-muted-dark">
+                                            消音器内蔵。900RPMの高レートと高貫通弾(SP-6/BP)により近距離火力はトップクラス。弾速が遅く遠距離は困難。
+                                        </td>
+                                    </tr>
+
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            .300 Blackout
+                                        </td>
+                                        <td class="text-blue fw-bold ps-3">SIG MCX</td>
+                                        <td class="text-muted-dark">
+                                            高レートで近距離火力が高い。CBJ弾が貫通・ダメージ共に優秀だが、入手は中盤以降(Peacekeeper)。
+                                        </td>
+                                    </tr>
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            12.7x55mm
+                                        </td>
+                                        <td class="fw-bold ps-3">ASh-12</td>
+                                        <td class="text-muted-dark">
+                                            専用のPS12B弾は4アーマーだったらワンパンで倒せる。近距離特化のロマン砲。弾はPraporから入手。
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="memo-static-header">
+                                SMG / PDW (Submachine Guns)
+                            </div>
+                            <table class="memo-table">
+                                <thead>
+                                    <tr>
+                                        <th class="weapon-col-caliber">口径</th>
+                                        <th class="weapon-col-name text-start ps-3">武器名</th>
+                                        <th class="weapon-col-desc ps-3">特徴・運用メモ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            4.6x30mm
+                                        </td>
+                                        <td class="text-blue fw-bold ps-3">MP7A1 / A2</td>
+                                        <td class="text-muted-dark">
+                                            高レート・低反動・高貫通の3拍子が揃った強武器。店売りの<span class="text-white">FMJ SX</span>で十分強い。
+                                            最強弾の<span class="text-blue">AP SX</span>はクラフト/拾いのみだが、クラス5/6も貫通する。
+                                        </td>
+                                    </tr>
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            5.7x28mm
+                                        </td>
+                                        <td class="text-blue fw-bold ps-3">P90</td>
+                                        <td class="text-muted-dark">
+                                            デフォルトで50発マガジンを持ち、リロードを挟まず連戦しやすい。
+                                            弾は<span class="text-white">SS190</span>等が優秀。弾込めが遅いのが難点。
+                                        </td>
+                                    </tr>
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            .45 ACP
+                                        </td>
+                                        <td class="text-start ps-3 fw-bold">Vector .45</td>
+                                        <td class="text-muted-dark">
+                                            1100RPMという圧倒的連射速度。近距離火力は最強クラスだが弾持ちが悪い。
+                                            <span class="text-white">AP弾</span>で溶かすか、<span class="text-white">RIP/Hydra-Shok</span>で足を狙う。
+                                        </td>
+                                    </tr>
+                                    <tr class="memo-caliber-row">
+                                        <td class="weapon-col-caliber border-end border-secondary">
+                                            9x19mm
+                                        </td>
+                                        <td class="text-start ps-3 fw-bold">Vector 9mm</td>
+                                        <td class="text-muted-dark">
+                                            950RPM。.45より少し遅いが、50連ドラムマガジンがあり継戦能力が高い。
+                                            <span class="text-white">AP 6.3</span>や<span class="text-blue">PBP (7N31)</span>を使う。
                                         </td>
                                     </tr>
                                 </tbody>
@@ -447,8 +558,8 @@ const CompMemo = {
                                             UHMWPE<br><span class="small text-muted">超高分子量ポリエチレン</span>
                                         </td>
                                         <td class="text-center text-info">Light</td>
-                                        <td class="text-center text-green">極小</td>
-                                        <td class="text-center text-green">小</td>
+                                        <td class="text-center text-green">良</td>
+                                        <td class="text-center text-green">弱</td>
                                         <td class="text-muted-dark">
                                             <span class="text-blue">最強素材</span>。軽く、壊れにくく、修理もしやすい。
                                         </td>
@@ -458,8 +569,8 @@ const CompMemo = {
                                             Aramid<br><span class="small text-muted">アラミド (繊維)</span>
                                         </td>
                                         <td class="text-center text-info">Light</td>
-                                        <td class="text-center text-green">小</td>
-                                        <td class="text-center text-green">極小</td>
+                                        <td class="text-center text-green">良</td>
+                                        <td class="text-center text-green">弱</td>
                                         <td class="text-muted-dark">
                                             ソフトアーマーに多い。耐久が減りにくい。
                                         </td>
@@ -469,7 +580,7 @@ const CompMemo = {
                                             Combined<br><span class="small text-muted">複合材</span>
                                         </td>
                                         <td class="text-center text-orange">Heavy</td>
-                                        <td class="text-center text-green">小～中</td>
+                                        <td class="text-center text-green">良</td>
                                         <td class="text-center">中</td>
                                         <td class="text-muted-dark">バランス型。多くのリグやヘルメットで使用。</td>
                                     </tr>
@@ -478,8 +589,8 @@ const CompMemo = {
                                             Titanium<br><span class="small text-muted">チタン</span>
                                         </td>
                                         <td class="text-center text-orange">Heavy</td>
-                                        <td class="text-center text-green">小</td>
-                                        <td class="text-center">小</td>
+                                        <td class="text-center text-green">良</td>
+                                        <td class="text-center">弱</td>
                                         <td class="text-muted-dark">修理効率が良く、硬さのバランスも良い。</td>
                                     </tr>
                                     <tr>
@@ -487,8 +598,8 @@ const CompMemo = {
                                             Aluminium<br><span class="small text-muted">アルミニウム</span>
                                         </td>
                                         <td class="text-center text-info">Light</td>
-                                        <td class="text-center text-green">小</td>
-                                        <td class="text-center text-orange">中～強</td>
+                                        <td class="text-center text-green">良</td>
+                                        <td class="text-center text-orange">中</td>
                                         <td class="text-muted-dark">修理はしやすいが、撃たれると少し脆い。</td>
                                     </tr>
                                     <tr>
@@ -496,7 +607,7 @@ const CompMemo = {
                                             Armor Steel<br><span class="small text-muted">防弾鋼板</span>
                                         </td>
                                         <td class="text-center text-orange">Heavy</td>
-                                        <td class="text-center text-green">極小</td>
+                                        <td class="text-center text-green">良</td>
                                         <td class="text-center text-red">強</td>
                                         <td class="text-muted-dark">
                                             <span class="text-red">非常に重い</span>。何度でも直せるが、脆い。
@@ -526,9 +637,9 @@ const CompMemo = {
                             </table>
                             <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
                                 <ul class="mb-0 ps-3">
-                                    <li><strong>被弾脆さ:</strong> 「小/極小」＝耐久値が減りにくい（優秀）。「強」＝数発で耐久がゼロになりやすい（脆い）。</li>
+                                    <li><strong>被弾脆さ:</strong> 「弱」＝耐久値が減りにくい（優秀）。「強」＝数発で耐久がゼロになりやすい（脆い）。</li>
                                     <li><strong>種別:</strong> Heavy Armorは移動速度や旋回速度へのデバフが大きい傾向がある。</li>
-                                    <li><strong>修理効率:</strong> 修理効率が小なのは、修理したときの耐久度減少が小さいということです。</li>
+                                    <li><strong>修理効率:</strong> 「良」は修理時の最大耐久値の減少が小さく、繰り返し使用に適している。</li>
                                 </ul>
                             </div>
                         </div>
