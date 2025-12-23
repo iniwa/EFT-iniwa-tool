@@ -165,7 +165,7 @@ const CompMemo = {
         
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 情報はパッチ1.0.0、正式版直後の情報を元に作成しています。
+                ※ 情報はパッチ1.0.0.5、正式版直後の情報を元に作成しています。
             </div>
 
             <div class="accordion accordion-flush" id="memoAccordion">
@@ -248,7 +248,7 @@ const CompMemo = {
                                     </tr>
                                 </tbody>
                             </table>
-                             <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
+                            <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
                                 <ul class="mb-0 ps-3">
                                     <li><strong>1回回復量:</strong> 1回のアニメーションで回復できるHPの上限値。</li>
                                     <li><strong>発動ラグ:</strong> 使用開始からHPが実際に回復するまでの時間。この直後にクリックでキャンセル可能。</li>
@@ -307,7 +307,7 @@ const CompMemo = {
                             <div class="memo-static-header">
                                 AR / DMR (Assault Rifles & Marksman)
                             </div>
-                             <table class="memo-table">
+                            <table class="memo-table">
                                 <thead>
                                     <tr>
                                         <th class="weapon-col-caliber">口径</th>
@@ -634,7 +634,7 @@ const CompMemo = {
                                     </tr>
                                 </tbody>
                             </table>
-                             <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
+                            <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
                                 <ul class="mb-0 ps-3">
                                     <li><strong>修理時の耐久減少:</strong> 「小」や「極小」であるほど、修理しても最大耐久値が減りにくい（優秀）。</li>
                                     <li><strong>被弾脆さ:</strong> 「小/極小」＝耐久値が減りにくい（優秀）。「大」＝数発で耐久がゼロになりやすい（脆い）。</li>
@@ -791,7 +791,7 @@ const CompMemo = {
                         </div>
                     </h2>
                     <div v-show="isOpen.items">
-                         <div class="accordion-body p-0 bg-black">
+                        <div class="accordion-body p-0 bg-black">
                             
                             <div class="memo-static-header">
                                 📦 集めておくべき重要アイテム (Barter & Collection)
