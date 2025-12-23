@@ -580,7 +580,7 @@ const CompMemo = {
                                         </td>
                                         <td class="text-center text-orange">Heavy</td>
                                         <td class="text-center text-green">小～中</td>
-                                        <td class="text-center">中</td>
+                                        <td class="text-center">小</td>
                                         <td class="text-muted-dark">バランス型。多くのリグやヘルメットで使用。</td>
                                     </tr>
                                     <tr>
@@ -589,7 +589,7 @@ const CompMemo = {
                                         </td>
                                         <td class="text-center text-orange">Heavy</td>
                                         <td class="text-center text-green">小</td>
-                                        <td class="text-center">小</td>
+                                        <td class="text-center">小～中</td>
                                         <td class="text-muted-dark">修理効率が良く、硬さのバランスも良い。</td>
                                     </tr>
                                     <tr>
