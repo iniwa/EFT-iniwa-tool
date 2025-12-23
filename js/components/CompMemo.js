@@ -156,6 +156,10 @@ const CompMemo = {
         </div>
         
         <div class="card-body bg-black p-0">
+            <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
+                ※ 情報はパッチ1.0.0、正式版直後の情報を元に作成しています。
+            </div>
+
             <div class="accordion accordion-flush" id="memoAccordion">
                 
                 <div class="accordion-item">
@@ -236,7 +240,7 @@ const CompMemo = {
                                     </tr>
                                 </tbody>
                             </table>
-                             <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
+                            <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
                                 <ul class="mb-0 ps-3">
                                     <li><strong>1回回復量:</strong> 1回のアニメーションで回復できるHPの上限値。</li>
                                     <li><strong>発動ラグ:</strong> 使用開始からHPが実際に回復するまでの時間。この直後にクリックでキャンセル可能。</li>
@@ -292,7 +296,7 @@ const CompMemo = {
                     </h2>
                     <div v-show="isOpen.weapon">
                         <div class="accordion-body p-0 bg-black">
-                             <table class="memo-table">
+                            <table class="memo-table">
                                 <thead>
                                     <tr>
                                         <th class="weapon-col-caliber">口径</th>
@@ -431,50 +435,102 @@ const CompMemo = {
                                 <thead>
                                     <tr>
                                         <th class="text-start ps-4">材質</th>
-                                        <th>修理効率</th>
-                                        <th>耐久減少</th>
-                                        <th>重量</th>
-                                        <th>代表例</th>
+                                        <th style="width: 12%;">種別 (Class)</th>
+                                        <th style="width: 15%;">修理効率</th>
+                                        <th style="width: 15%;">被弾脆さ</th>
+                                        <th style="width: 25%;">特徴・備考</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-start ps-4 text-blue fw-bold">UHMWPE (ポリエチレン)</td>
-                                        <td class="text-center text-green">最高</td>
-                                        <td class="text-center">小</td>
-                                        <td class="text-center">軽い</td>
-                                        <td>CPC Mod.2, Tactec</td>
+                                        <td class="text-start ps-4 text-blue fw-bold">
+                                            UHMWPE<br><span class="small text-muted">超高分子量ポリエチレン</span>
+                                        </td>
+                                        <td class="text-center text-info">Light</td>
+                                        <td class="text-center text-green">極小</td>
+                                        <td class="text-center text-green">小</td>
+                                        <td class="text-muted-dark">
+                                            <span class="text-blue">最強素材</span>。軽く、壊れにくく、修理もしやすい。
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start ps-4 text-white">アラミド (Aramid)</td>
-                                        <td class="text-center">良い</td>
-                                        <td class="text-center">小</td>
-                                        <td class="text-center">軽い</td>
-                                        <td>PACA, ソフトアーマー</td>
+                                        <td class="text-start ps-4 text-white">
+                                            Aramid<br><span class="small text-muted">アラミド (繊維)</span>
+                                        </td>
+                                        <td class="text-center text-info">Light</td>
+                                        <td class="text-center text-green">小</td>
+                                        <td class="text-center text-green">極小</td>
+                                        <td class="text-muted-dark">
+                                            ソフトアーマーに多い。耐久が減りにくい。
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start ps-4 text-white">スチール (Steel)</td>
-                                        <td class="text-center">良い</td>
+                                        <td class="text-start ps-4 text-white">
+                                            Combined<br><span class="small text-muted">複合材</span>
+                                        </td>
+                                        <td class="text-center text-orange">Heavy</td>
+                                        <td class="text-center text-green">小～中</td>
                                         <td class="text-center">中</td>
-                                        <td class="text-center text-red fw-bold">重い</td>
-                                        <td>Korund-VM</td>
+                                        <td class="text-muted-dark">バランス型。多くのリグやヘルメットで使用。</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start ps-4 text-white">チタン (Titanium)</td>
-                                        <td class="text-center">普通</td>
+                                        <td class="text-start ps-4 text-white">
+                                            Titanium<br><span class="small text-muted">チタン</span>
+                                        </td>
+                                        <td class="text-center text-orange">Heavy</td>
+                                        <td class="text-center text-green">小</td>
                                         <td class="text-center">小</td>
-                                        <td class="text-center">普通</td>
-                                        <td>Zhuk-6</td>
+                                        <td class="text-muted-dark">修理効率が良く、硬さのバランスも良い。</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start ps-4 text-red fw-bold">セラミック (Ceramic)</td>
-                                        <td class="text-center text-red">悪い</td>
-                                        <td class="text-center text-red">大</td>
-                                        <td class="text-center">普通</td>
-                                        <td>Gzhel-K (使い捨て推奨)</td>
+                                        <td class="text-start ps-4 text-white">
+                                            Aluminium<br><span class="small text-muted">アルミニウム</span>
+                                        </td>
+                                        <td class="text-center text-info">Light</td>
+                                        <td class="text-center text-green">小</td>
+                                        <td class="text-center text-orange">中～強</td>
+                                        <td class="text-muted-dark">修理はしやすいが、撃たれると少し脆い。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-4 text-white">
+                                            Armor Steel<br><span class="small text-muted">防弾鋼板</span>
+                                        </td>
+                                        <td class="text-center text-orange">Heavy</td>
+                                        <td class="text-center text-green">極小</td>
+                                        <td class="text-center text-red">強</td>
+                                        <td class="text-muted-dark">
+                                            <span class="text-red">非常に重い</span>。何度でも直せるが、脆い。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-4 text-red fw-bold">
+                                            Ceramic<br><span class="small text-muted">セラミック</span>
+                                        </td>
+                                        <td class="text-center text-orange">Heavy</td>
+                                        <td class="text-center text-red">悪</td>
+                                        <td class="text-center text-red">強</td>
+                                        <td class="text-muted-dark">
+                                            重い・脆い・直らない。使い捨て前提。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start ps-4 text-red">
+                                            Glass<br><span class="small text-muted">防弾ガラス</span>
+                                        </td>
+                                        <td class="text-center text-muted">-</td>
+                                        <td class="text-center text-red">悪</td>
+                                        <td class="text-center text-red">強</td>
+                                        <td class="text-muted-dark">バイザー等。修理すると視界が悪化しやすい。</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
+                                <ul class="mb-0 ps-3">
+                                    <li><strong>被弾脆さ:</strong> 「小/極小」＝耐久値が減りにくい（優秀）。「強」＝数発で耐久がゼロになりやすい（脆い）。</li>
+                                    <li><strong>種別:</strong> Heavy Armorは移動速度や旋回速度へのデバフが大きい傾向がある。</li>
+                                    <li><strong>修理効率:</strong> 修理効率が小なのは、修理したときの耐久度減少が小さいということです。</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
