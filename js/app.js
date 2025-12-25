@@ -29,7 +29,6 @@ createApp({
         const ownedKeys = ref([]);
         const prioritizedTasks = ref([]);
         const keyUserData = ref({}); 
-        // ★修正: 初期値を 0 に変更
         const playerLevel = ref(0);
         const searchTask = ref("");
         
@@ -85,8 +84,6 @@ createApp({
             else prioritizedTasks.value.push(taskName);
         };
 
-        
-
         const applyKeyPresets = (allItems) => {
             if (!allItems || typeof KEY_PRESETS === 'undefined') return;
             const currentData = { ...keyUserData.value };
@@ -105,6 +102,9 @@ createApp({
             keyUserData.value = currentData;
         };
 
+        // --- データ加工・整形用関数 (共通化) ---
+
+        // タスクデータの整形
         const processTasks = (tasks) => {
             if (!tasks) return [];
             return tasks.map(t => {
@@ -152,6 +152,86 @@ createApp({
             });
         };
 
+        // アイテム(鍵)データの整形: マップ紐付けと画像パスの確保
+        const processItems = (rawItems, rawMaps) => {
+            const mapLookup = {};
+            if (rawMaps) {
+                rawMaps.forEach(map => {
+                    if (map.locks) {
+                        map.locks.forEach(lock => {
+                            if (lock.key) {
+                                if (!mapLookup[lock.key.id]) mapLookup[lock.key.id] = [];
+                                // 重複を防ぎつつマップ名を追加
+                                if (!mapLookup[lock.key.id].includes(map.name)) {
+                                    mapLookup[lock.key.id].push(map.name);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            return {
+                items: (rawItems || []).map(i => {
+                    const associatedMaps = mapLookup[i.id] || [];
+                    return {
+                        ...i,
+                        image512pxLink: i.image512pxLink, // 画像URL
+                        maps: associatedMaps,             // マップ名の配列
+                        mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
+                    };
+                }),
+                maps: rawMaps || []
+            };
+        };
+
+        // 弾薬データの整形: 階層のフラット化とトレーダー/クラフト情報の整理
+        const processAmmo = (rawAmmo, taskList) => {
+            const taskMap = new Map((taskList || []).map(t => [t.id, t.name]));
+            return (rawAmmo || []).map(a => {
+                // --- 販売情報 ---
+                let traders = [];
+                if (a.item && a.item.buyFor) {
+                    traders = a.item.buyFor.filter(b => b.vendor.name !== 'Flea Market');
+                    traders.forEach(t => {
+                        const llReq = t.requirements ? t.requirements.find(r => r.type === 'loyaltyLevel') : null;
+                        t.minTraderLevel = llReq ? llReq.value : 1;
+
+                        const taskReq = t.requirements ? t.requirements.find(r => r.type === 'questCompleted') : null;
+                        if (taskReq && taskReq.stringValue) {
+                            t.taskUnlockName = taskMap.get(taskReq.stringValue) || 'Unknown Task';
+                        }
+                    });
+                    traders.sort((a, b) => a.minTraderLevel - b.minTraderLevel);
+                }
+
+                // --- クラフト情報 ---
+                let crafts = [];
+                if (a.item && a.item.craftsFor) {
+                    crafts = a.item.craftsFor;
+                    crafts.sort((a, b) => a.level - b.level);
+                }
+
+                return {
+                    ...a,
+                    id: a.item ? a.item.id : Math.random(),
+                    name: a.item ? a.item.name : 'Unknown Ammo',
+                    shortName: a.item ? a.item.shortName : null,
+                    description: a.item ? a.item.description : '',
+                    wikiLink: a.item ? a.item.wikiLink : null,
+                    image512pxLink: a.item ? a.item.image512pxLink : null, // ★修正: CompAmmo用に画像をトップレベルへ
+                    
+                    accuracyModifier: a.accuracyModifier,
+                    recoilModifier: a.recoilModifier,
+                    lightBleedModifier: a.lightBleedModifier,
+                    heavyBleedModifier: a.heavyBleedModifier,
+                    ricochetChance: a.ricochetChance,
+                    
+                    soldBy: traders,
+                    crafts: crafts
+                };
+            });
+        };
+
         // --- 3. データ取得ロジック ---
         const fetchData = async () => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
@@ -169,6 +249,7 @@ createApp({
                         hideoutData.value = cache.hideoutStations;
                         taskData.value = cache.tasks;
                         itemsData.value = cache.items;
+                        ammoData.value = cache.ammo || []; // キャッシュから復元
                         lastUpdated.value = cache.timestamp;
                         return; 
                     }
@@ -191,100 +272,11 @@ createApp({
                 if (result.errors) throw new Error(`GraphQL Error: ${result.errors[0].message}`);
                 if (!result.data) throw new Error(`No Data`);
                 
+                // ★修正: 共通関数を使用してデータを整形
                 hideoutData.value = result.data.hideoutStations || [];
                 taskData.value = processTasks(result.data.tasks || []);
-                itemsData.value = {
-                    items: result.data.items || [],
-                    maps: result.data.maps || []
-                };
-
-                const taskMap = new Map(taskData.value.map(t => [t.id, t.name]));
-
-                // ★修正: マップデータから「鍵ID -> マップ名リスト」の対応表を作成
-                const mapLookup = {};
-                const maps = result.data.maps || [];
-                maps.forEach(map => {
-                    if (map.locks) {
-                        map.locks.forEach(lock => {
-                            if (lock.key) {
-                                if (!mapLookup[lock.key.id]) {
-                                    mapLookup[lock.key.id] = [];
-                                }
-                                // 重複を防ぎつつマップ名を追加 (例: Customs)
-                                if (!mapLookup[lock.key.id].includes(map.name)) {
-                                    mapLookup[lock.key.id].push(map.name);
-                                }
-                            }
-                        });
-                    }
-                });
-
-                // ★修正: 鍵データに画像URLとマップ情報を結合
-                const rawItems = result.data.items || [];
-                itemsData.value = {
-                    items: rawItems.map(i => {
-                        const associatedMaps = mapLookup[i.id] || [];
-                        return {
-                            ...i,
-                            image512pxLink: i.image512pxLink, // 画像URL
-                            maps: associatedMaps,             // マップ名の配列
-                            // グルーピング用に最初のマップ名を使用（なければ Unknown）
-                            mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
-                        };
-                    })
-                };
-                
-                // ★修正: 弾薬データ整形（前提タスク情報の紐付けを追加）
-                const rawAmmo = result.data.ammo || [];
-                ammoData.value = rawAmmo.map(a => {
-                    // --- 1. 販売情報 (Traders) ---
-                    let traders = [];
-                    if (a.item && a.item.buyFor) {
-                        traders = a.item.buyFor.filter(b => b.vendor.name !== 'Flea Market');
-                        traders.forEach(t => {
-                            // レベル制限
-                            const llReq = t.requirements ? t.requirements.find(r => r.type === 'loyaltyLevel') : null;
-                            t.minTraderLevel = llReq ? llReq.value : 1;
-
-                            // ★追加: タスク要件 (questCompleted) を探して名前をセット
-                            const taskReq = t.requirements ? t.requirements.find(r => r.type === 'questCompleted') : null;
-                            if (taskReq && taskReq.stringValue) {
-                                // IDからタスク名を検索 (見つからなければIDそのまま表示等のフォールバック)
-                                t.taskUnlockName = taskMap.get(taskReq.stringValue) || 'Unknown Task';
-                            }
-                        });
-                        traders.sort((a, b) => a.minTraderLevel - b.minTraderLevel);
-                    }
-
-                    // --- 2. クラフト情報 (Crafts) ---
-                    let crafts = [];
-                    if (a.item && a.item.craftsFor) {
-                        crafts = a.item.craftsFor;
-                        crafts.sort((a, b) => a.level - b.level);
-                        // クラフトの taskUnlock はAPIが直接 name を持っているのでそのまま使用可能
-                    }
-
-                    return {
-                        ...a,
-                        id: a.item ? a.item.id : Math.random(),
-                        name: a.item ? a.item.name : 'Unknown Ammo',
-                        shortName: a.item ? a.item.shortName : null,
-                        description: a.item ? a.item.description : '',
-                        wikiLink: a.item ? a.item.wikiLink : null,
-                        image512pxLink: a.item ? a.item.image512pxLink : null,
-                        
-                        // ステータス
-                        accuracyModifier: a.accuracyModifier,
-                        recoilModifier: a.recoilModifier,
-                        lightBleedModifier: a.lightBleedModifier,
-                        heavyBleedModifier: a.heavyBleedModifier,
-                        ricochetChance: a.ricochetChance,
-                        
-                        // 入手手段
-                        soldBy: traders,
-                        crafts: crafts
-                    };
-                });
+                itemsData.value = processItems(result.data.items, result.data.maps);
+                ammoData.value = processAmmo(result.data.ammo, taskData.value);
 
                 applyKeyPresets(result.data.items);
                 
@@ -300,6 +292,7 @@ createApp({
                     ammo: ammoData.value
                 });
                 
+                // データ更新時のハイドアウト初期化
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
                 });
@@ -371,13 +364,12 @@ createApp({
                 ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
+                // ★修正: data.js (TARKOV_DATA) からロードする場合も、API取得時と同じ整形処理を通す
+                console.log("Loading from TARKOV_DATA...");
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
-                itemsData.value = {
-                    items: TARKOV_DATA.data.items || [],
-                    maps: TARKOV_DATA.data.maps || []
-                };
-                ammoData.value = TARKOV_DATA.data.ammo || [];
+                itemsData.value = processItems(TARKOV_DATA.data.items, TARKOV_DATA.data.maps);
+                ammoData.value = processAmmo(TARKOV_DATA.data.ammo, taskData.value);
                 lastUpdated.value = 'Backup File';
             }
 
@@ -387,11 +379,17 @@ createApp({
             ownedKeys.value = loadLS('eft_keys', []);
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             prioritizedTasks.value = loadLS('eft_prioritized', []);
-            // ★修正: ローカルストレージのデフォルト値を '1' から '0' に変更
             playerLevel.value = parseInt(safeGetLS('eft_level', '0'), 10);
             
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
+            }
+            
+            // ★修正: ハイドアウトレベルのスライダー位置ズレ防止 (未定義項目を0で初期化)
+            if (hideoutData.value.length > 0) {
+                hideoutData.value.forEach(s => {
+                    if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
+                });
             }
             
             window.addEventListener('mermaid-task-click', (e) => {
