@@ -3,22 +3,25 @@ const CompFlowchart = {
     emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
     data() {
         return {
-            nodeMap: {} 
+            nodeMap: {},
+            zoomLevel: 1.0
         };
     },
     computed: {
         traderList() {
-            if (!this.taskData) return [];
+            // 初期値を 'Prapor' に設定 (アプリ側のデフォルトと合わせるため)
+            if (!this.taskData) return ['Prapor'];
             
+            // 'BTR' を 'BTR Driver' に修正し、Lightkeeperの前に追加
             const order = [
                 'Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 
-                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'
+                'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'BTR Driver', 'Lightkeeper'
             ];
 
             const traders = new Set(this.taskData.map(t => t.trader ? t.trader.name : 'Unknown'));
             const list = Array.from(traders);
             
-            return list.sort((a, b) => {
+            list.sort((a, b) => {
                 const idxA = order.indexOf(a);
                 const idxB = order.indexOf(b);
                 
@@ -27,6 +30,12 @@ const CompFlowchart = {
                 if (idxB !== -1) return 1;
                 return a.localeCompare(b);
             });
+
+            // 'All' を末尾に追加
+            return [...list, 'All※実験的機能'];
+        },
+        zoomPercentage() {
+            return Math.round(this.zoomLevel * 100) + '%';
         }
     },
     watch: {
@@ -40,6 +49,7 @@ const CompFlowchart = {
             startOnLoad: false, 
             theme: 'dark',
             securityLevel: 'loose',
+            maxEdges: 1500, // 確認結果に基づき 1500 に設定
             flowchart: { 
                 useMaxWidth: false, 
                 htmlLabels: true 
@@ -48,6 +58,16 @@ const CompFlowchart = {
         this.renderChart();
     },
     methods: {
+        zoomIn() {
+            this.zoomLevel = Math.round((this.zoomLevel + 0.1) * 10) / 10;
+        },
+        zoomOut() {
+            this.zoomLevel = Math.max(0.1, Math.round((this.zoomLevel - 0.1) * 10) / 10);
+        },
+        resetZoom() {
+            this.zoomLevel = 1.0;
+        },
+
         async renderChart() {
             if (!this.taskData || this.taskData.length === 0) return;
             await Vue.nextTick();
@@ -69,7 +89,11 @@ const CompFlowchart = {
                 this.nodeMap[simpleId] = t;
             });
 
-            const currentTraderTasks = this.taskData.filter(t => t.trader.name === this.selectedTrader);
+            const isAll = this.selectedTrader === 'All※実験的機能';
+            const currentTraderTasks = isAll 
+                ? this.taskData 
+                : this.taskData.filter(t => t.trader.name === this.selectedTrader);
+
             const nodesToRender = new Set();
             const edges = [];
 
@@ -97,8 +121,6 @@ const CompFlowchart = {
             graph += 'classDef doneExternal fill:#198754,stroke:#fff,stroke-width:2px,color:white,stroke-dasharray: 5 5;\n';
             graph += 'classDef todo fill:#212529,stroke:#666,stroke-width:2px,color:white;\n'; 
             graph += 'classDef external fill:#343a40,stroke:#6c757d,stroke-width:1px,color:#adb5bd,stroke-dasharray: 5 5;\n';
-            
-            // ★変更: stroke色を #ffd700(金) から #0dcaf0(水色/青) に変更
             graph += 'classDef priority fill:#2c3e50,stroke:#0dcaf0,stroke-width:4px,color:white,stroke-dasharray: 0;\n';
 
             nodesToRender.forEach(taskName => {
@@ -108,8 +130,8 @@ const CompFlowchart = {
 
                 let className = '';
                 const isCompleted = this.completedTasks.includes(taskName);
-                const isExternal = task.trader.name !== this.selectedTrader;
                 const isPrioritized = this.prioritizedTasks.includes(taskName);
+                const isExternal = isAll ? false : (task.trader.name !== this.selectedTrader);
 
                 if (isCompleted) {
                     className = isExternal ? 'doneExternal' : 'done';
@@ -148,6 +170,10 @@ const CompFlowchart = {
 
             } catch (e) {
                 console.error('Mermaid Render Error:', e);
+                container.innerHTML = `<div class="text-danger p-3">
+                    <strong>描画エラー:</strong><br>
+                    <small class="text-muted">(${e.message})</small>
+                </div>`;
             }
         },
 
@@ -173,21 +199,33 @@ const CompFlowchart = {
     },
     template: `
     <div class="card h-100 border-secondary">
-        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center gap-3">
-                <span>🗺️ タスクフローチャート</span>
+                <span>🗺️ Flowchart</span>
                 <select class="form-select form-select-sm bg-dark text-white border-secondary" 
-                        style="width: 200px;" 
+                        style="width: 180px;" 
                         :value="selectedTrader"
                         @change="$emit('update:selectedTrader', $event.target.value)">
                     <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
                 </select>
             </div>
-            <small class="text-muted">※左クリック: 詳細 / <span class="text-warning fw-bold">Shift+クリック: 完了切替</span></small>
+            
+            <div class="d-flex align-items-center gap-3">
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary" @click="zoomOut" title="縮小">➖</button>
+                    <button class="btn btn-outline-secondary text-white" @click="resetZoom" style="min-width: 60px;">{{ zoomPercentage }}</button>
+                    <button class="btn btn-outline-secondary" @click="zoomIn" title="拡大">➕</button>
+                </div>
+
+                <small class="text-muted d-none d-md-inline">
+                    (左クリック: 詳細 / <span class="text-warning fw-bold">Shift+左クリック: 完了</span>)
+                </small>
+            </div>
         </div>
         <div class="card-body bg-dark overflow-auto p-0" style="min-height: 60vh; position: relative;">
             <div ref="mermaidContainer" class="p-4 mermaid" 
-                style="min-width: 100%; width: max-content;"
+                :style="{ zoom: zoomLevel }"
+                style="min-width: 100%; width: max-content; transform-origin: top left;"
                 @click="handleChartClick">
                 <span class="text-secondary">Loading...</span>
             </div>
