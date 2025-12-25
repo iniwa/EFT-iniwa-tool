@@ -1,5 +1,5 @@
 const CompChat = {
-    // ★修正: ammoData を props に追加
+    // propsにammoDataなどが含まれています
     props: ['taskData', 'hideoutData', 'itemsData', 'completedTasks', 'userHideout', 'playerLevel', 'ammoData'],
     data() {
         return {
@@ -33,11 +33,13 @@ const CompChat = {
             this.isSending = true;
 
             try {
-                // ★修正: AIに送るコンテキストデータに弾薬情報を追加
+                // AIに送るコンテキストデータの構築
                 const contextData = {
                     userProfile: {
                         level: this.playerLevel,
-                        hideoutLevels: this.userHideout
+                        hideoutLevels: this.userHideout,
+                        // 完了済みタスクのリスト（AIが前提条件チェックに使いやすくするため明示）
+                        completedTasksList: this.completedTasks
                     },
                     tasks: this.taskData.map(t => ({
                         name: t.name,
@@ -45,13 +47,15 @@ const CompChat = {
                         map: t.map ? t.map.name : "Any",
                         status: this.completedTasks.includes(t.name) ? "Completed" : "Not Completed",
                         reqLevel: t.minPlayerLevel,
+                        // ★追加: 前提タスク情報を送信
+                        prerequisites: t.taskRequirements ? t.taskRequirements.map(req => req.task.name) : [],
                         rewards: {
                             items: t.finishRewardsList.filter(r => r.type === 'item').map(r => r.name),
                             unlocks: t.finishRewardsList.filter(r => r.type === 'offerUnlock').map(r => `Buy ${r.itemName} from ${r.trader} LL${r.level}`),
                             crafts: t.finishRewardsList.filter(r => r.type === 'craftUnlock').map(r => `Craft ${r.itemName} at ${r.station} Lv${r.level}`)
                         }
                     })),
-                    // ★追加: 弾薬データ (軽量化して送信)
+                    // 弾薬データ (軽量化)
                     ammo: this.ammoData ? this.ammoData.map(a => ({
                         name: a.name,
                         caliber: a.caliber.replace('Caliber', ''),
@@ -60,9 +64,9 @@ const CompChat = {
                             pen: a.penetrationPower,
                             armor: a.armorDamage
                         },
-                        // 購入情報: トレーダー名、レベル、アンロックタスク名
+                        // 購入情報
                         buy: a.soldBy.map(b => `${b.vendor.name} LL${b.minTraderLevel}` + (b.taskUnlockName ? ` (Req: ${b.taskUnlockName})` : '')),
-                        // 製造情報: 設備、レベル
+                        // 製造情報
                         craft: a.crafts.map(c => `${c.station.name} Lv${c.level}`)
                     })) : []
                 };
@@ -71,10 +75,17 @@ const CompChat = {
 あなたはEscape from Tarkovのデータ分析アシスタントです。
 以下のJSONデータを参照して、ユーザーの質問に日本語で答えてください。
 ユーザーの現在のレベルは ${this.playerLevel} です。
-タスクの完了状況(status: "Completed")もデータに含まれています。
+
+【タスク提案時の重要ルール】
+データ内の "tasks" には "prerequisites" (前提タスク名) が含まれています。
+「次にやるべきタスク」を提案する際は、以下の条件をすべて満たすものを優先してください：
+1. status が "Not Completed" であること。
+2. reqLevel (要求レベル) が現在のレベル以下であること。
+3. **重要: prerequisites に含まれる全てのタスクが "completedTasksList" に含まれている（完了済み）であること。**
+
+前提タスクが終わっていないものは「まだ受注できません」と判断してください。
 
 回答にはMarkdown記法（太字、リスト、表など）を積極的に使用して見やすく整形してください。
-弾薬に関する質問の場合、ユーザーのレベルやタスク進捗に基づいて「購入可能か」「製造可能か」を考慮して提案してください。
 
 【データ】
 ${JSON.stringify(contextData)}
