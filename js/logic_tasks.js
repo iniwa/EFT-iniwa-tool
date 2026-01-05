@@ -81,9 +81,10 @@ const TaskLogic = {
             });
         }
 
-        // ★修正: 汎用的な除外ルールは削除し、個別の誤検知タスクのみを「特別に」除外する
-        // "One Less Loose End" は Factory のタスクだが、説明文に "lab journal" があるため誤検知される
-        if (task.name === "One Less Loose End") {
+        // ★修正: 誤検知タスクを「特別に」除外するリスト
+        // - "One Less Loose End": Factoryタスクだが "lab journal" でヒットしてしまう
+        // - "A Healthy Alternative": Reserveタスクだが "laboratory" でヒットしてしまう
+        if (task.name === "One Less Loose End" || task.name === "A Healthy Alternative") {
             maps.delete("The Lab");
         }
 
