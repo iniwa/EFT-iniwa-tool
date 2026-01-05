@@ -20,7 +20,9 @@ const CompHeader = {
             <div class="d-flex align-items-center gap-2 border-start ps-3 border-secondary">
                 <label class="fw-bold">Level:</label>
                 <input type="number" class="form-control form-control-sm text-center" style="width: 70px;" 
-                    :value="playerLevel" @input="$emit('update:playerLevel', parseInt($event.target.value))" min="1" max="79">
+                    :value="playerLevel" 
+                    @input="let v = parseInt($event.target.value); if(isNaN(v)) v = 0; $emit('update:playerLevel', v)" 
+                    min="0" max="79">
             </div>
         </div>
     </div>

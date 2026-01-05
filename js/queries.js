@@ -1,5 +1,3 @@
-// js/queries.js
-
 const GRAPHQL_QUERY = `
 query GetData {
   tasks(gameMode: pve, lang: ja) {
@@ -24,10 +22,33 @@ query GetData {
     traderLevelRequirements { level requirementType value }
     kappaRequired
     lightkeeperRequired
+    
     objectives { 
       description
-      ... on TaskObjectiveItem { type count foundInRaid item { id name } } 
+      type 
+      
+      ... on TaskObjectiveItem { 
+        count 
+        foundInRaid 
+        item { id name } 
+      }
+      
+      ... on TaskObjectiveShoot {
+        count
+        target
+        bodyParts
+        usingWeapon { name }
+      }
+      
+      ... on TaskObjectiveExtract {
+        count
+      }
+      
+      ... on TaskObjectiveMark {
+        markerItem { name }
+      }
     }
+
     finishRewards {
       items { count item { id name } }
       offerUnlock { level trader { name } item { name } }
@@ -61,16 +82,68 @@ query GetData {
     }
   }
   
-  items(types: keys, lang: ja) {
+  # アイテム情報のスリム化: sellFor, buyFor を削除
+  items(lang: ja) {
     id
     name
     shortName
     normalizedName
     wikiLink
     image512pxLink
+    width
+    height
+    types
+    
+    # 削除: sellFor (売却額)
+    # 削除: buyFor (購入額 - 弾薬以外は不要)
+    
+    craftsFor {
+      station { name }
+      level
+      duration
+      requiredItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      rewardItems {
+        quantity
+        count
+        item { name }
+        attributes { name type value }
+      }
+      taskUnlock {
+         name
+         id
+         trader { name }
+      }
+    }
+    
+    bartersFor {
+      level
+      trader { name }
+      requiredItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      rewardItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      taskUnlock {
+        name
+        id
+        trader { name }
+      }
+    }
   }
-
-  # ★修正: 弾薬の詳細データ
+  
+  # 弾薬情報の buyFor は維持
   ammo(lang: ja) {
     item {
       id
@@ -80,7 +153,7 @@ query GetData {
       wikiLink
       image512pxLink
       
-      # 購入情報
+      # 弾薬の購入情報は必要なので残す
       buyFor {
         priceRUB
         vendor { name }
@@ -89,78 +162,25 @@ query GetData {
           value
           stringValue
         }
-        price
-        currency
       }
       
-      # クラフト情報
       craftsFor {
-        id
-        level
-        source
-        sourceName
         station { name }
-        duration # 時間も取得
-        taskUnlock {
-          name
-          id
-          trader { name }
-        }
-        requiredItems {
-          count
-          quantity
-          # ★追加: 素材のアイテム名を取得
-          item {
-            name
-          }
-          attributes {
-            name
-            type
-            value
-          }
-        }
-        rewardItems {
-          quantity
-          count
-          # ★追加: 成果物のアイテム名を取得
-          item {
-            name
-          }
-          attributes {
-            name
-            type
-            value
-          }
-        }
-      }
-      
-      # 交換情報
-      bartersFor {
         level
+        duration
         requiredItems {
           count
-          quantity
-          item { name } # 交換も同様に追加しておきます
-          attributes {
-            name
-            type
-            value
-          }
+          item { name }
+          attributes { name }
         }
         rewardItems {
           count
-          quantity
           item { name }
-          attributes {
-            name
-            type
-            value
-          }
         }
+        taskUnlock { name }
       }
     }
     
-    # 弾薬性能データ
     caliber
     damage
     penetrationPower
@@ -168,7 +188,6 @@ query GetData {
     fragmentationChance
     projectileSpeed: initialSpeed
     
-    # 追加ステータス
     accuracyModifier
     recoilModifier
     lightBleedModifier
@@ -176,13 +195,6 @@ query GetData {
     ricochetChance
     ammoType
     tracer
-    tracerColor
-    staminaBurnPerDamage
-    stackMaxSize
-    recoil
-    penetrationPowerDeviation
-    projectileCount
-    penetrationChance
   }
 }
 `;

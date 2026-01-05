@@ -1,10 +1,12 @@
+// js/components/CompKeys.js
+
 const CompKeys = {
     props: ['ownedKeys', 'itemsData', 'keyUserData', 'viewMode', 'sortMode', 'shoppingList'], 
     emits: ['toggle-owned-key', 'open-task-from-name', 'update-key-user-data', 'update:viewMode', 'update:sortMode'],
     data() {
         return {
             searchQuery: '',
-            collapsedMaps: {},
+            collapsedMaps: {}, // マップごとの開閉状態 (true=閉じる)
             ratings: ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F'],
             mapOrder: [
                 "Customs",
@@ -17,47 +19,82 @@ const CompKeys = {
                 "Streets of Tarkov",
                 "Ground Zero",
                 "The Lab",
+                "The Labyrinth", 
                 "Labyrinth"
             ]
         }
     },
+    mounted() {
+        // ★修正: LocalStorageから開閉状態を復元
+        const savedState = localStorage.getItem('eft_keys_collapsed_state');
+        
+        if (savedState) {
+            try {
+                // 保存された状態をロード
+                this.collapsedMaps = JSON.parse(savedState);
+                
+                // もし新しいマップが増えていたら、それは閉じておく
+                this.mapOrder.forEach(m => {
+                    if (this.collapsedMaps[m] === undefined) {
+                        this.collapsedMaps[m] = true;
+                    }
+                });
+                if (this.collapsedMaps['Unknown / Other'] === undefined) {
+                    this.collapsedMaps['Unknown / Other'] = true;
+                }
+            } catch (e) {
+                console.warn("Failed to load collapsed state", e);
+                this.collapseAll(); // エラー時は初期化
+            }
+        } else {
+            // 保存データがない場合は全部閉じる (初回)
+            this.collapseAll();
+        }
+    },
+    watch: {
+        // ★追加: 開閉状態が変わるたびに保存
+        collapsedMaps: {
+            handler(newVal) {
+                localStorage.setItem('eft_keys_collapsed_state', JSON.stringify(newVal));
+            },
+            deep: true
+        }
+    },
     computed: {
         filteredKeys() {
-            // ベースとなる鍵データ (画像・マップ情報あり)
+            // APIからの全アイテムデータ
             let rawSource = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
             
-            // ★修正: shoppingListからタスク情報(sources)を検索・統合するためのマップ作成
+            // LogicKeysで生成された「正解の鍵リスト」からIDセットを作成
+            const validKeyIds = new Set();
             const sourceLookup = {};
+
             if (this.shoppingList && this.shoppingList.keys) {
                 this.shoppingList.keys.forEach(k => {
-                    if (k.id && k.sources && k.sources.length > 0) {
-                        if (!sourceLookup[k.id]) {
-                            sourceLookup[k.id] = [];
+                    if (k.id) {
+                        validKeyIds.add(k.id);
+                        if (k.sources && k.sources.length > 0) {
+                            if (!sourceLookup[k.id]) sourceLookup[k.id] = [];
+                            k.sources.forEach(src => {
+                                const exists = sourceLookup[k.id].some(existing => existing.name === src.name && existing.type === src.type);
+                                if (!exists && src.name) sourceLookup[k.id].push(src);
+                            });
                         }
-                        // 既存のリストと重複しないようにタスク情報を追加 (マージ)
-                        k.sources.forEach(src => {
-                            // "TaskName" と "task" タイプで重複チェック
-                            const exists = sourceLookup[k.id].some(existing => 
-                                existing.name === src.name && existing.type === src.type
-                            );
-                            if (!exists && src.name) {
-                                sourceLookup[k.id].push(src);
-                            }
-                        });
                     }
                 });
             }
 
-            // ★追加: 鍵データにタスク情報を結合
-            let source = rawSource.map(item => {
-                return {
-                    ...item,
-                    // 統合したタスク情報をセット。なければ空配列
-                    sources: sourceLookup[item.id] || []
-                };
-            });
+            // Unknownフィルタリング再適用
+            let source = rawSource
+                .filter(item => validKeyIds.has(item.id))
+                .map(item => {
+                    return {
+                        ...item,
+                        sources: sourceLookup[item.id] || []
+                    };
+                });
             
-            // フィルタリング (View Mode)
+            // View Mode フィルタ
             if (this.viewMode === 'owned') {
                 source = source.filter(k => this.ownedKeys.includes(k.id));
             }
@@ -72,7 +109,6 @@ const CompKeys = {
             });
         },
         groupedKeys() {
-            // マップごとのグループ化
             const groups = {};
             this.filteredKeys.forEach(k => {
                 const map = k.mapName || 'Unknown / Other';
@@ -80,34 +116,25 @@ const CompKeys = {
                 groups[map].push(k);
             });
 
-            // マップ名のソート
             const sortedMapNames = Object.keys(groups).sort((a,b) => {
                 if (a === 'Unknown / Other') return 1;
                 if (b === 'Unknown / Other') return -1;
-
                 const idxA = this.mapOrder.indexOf(a);
                 const idxB = this.mapOrder.indexOf(b);
-
                 if (idxA !== -1 && idxB !== -1) return idxA - idxB;
                 if (idxA !== -1) return -1;
                 if (idxB !== -1) return 1;
-
                 return a.localeCompare(b);
             });
 
-            // 各グループ内でのソート
             return sortedMapNames.reduce((acc, mapName) => {
                 const items = groups[mapName];
-
                 items.sort((a, b) => {
-                    // A. 所持済み優先モード
                     if (this.sortMode === 'owned_first') {
                         const isOwnedA = this.ownedKeys.includes(a.id);
                         const isOwnedB = this.ownedKeys.includes(b.id);
                         if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1;
-                    }
-                    // B. レート順モード
-                    else if (this.sortMode === 'rating') {
+                    } else if (this.sortMode === 'rating') {
                         const getScore = (id) => {
                             const r = (this.keyUserData && this.keyUserData[id] && this.keyUserData[id].rating) || '-';
                             const map = {'SS':12, 'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '-': -1}; 
@@ -117,11 +144,8 @@ const CompKeys = {
                         const scoreB = getScore(b.id);
                         if (scoreA !== scoreB) return scoreB - scoreA;
                     }
-
-                    // C. 名前順
                     return a.name.localeCompare(b.name);
                 });
-
                 acc[mapName] = items;
                 return acc;
             }, {});
@@ -132,14 +156,14 @@ const CompKeys = {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
         },
         collapseAll() {
-            Object.keys(this.groupedKeys).forEach(map => {
-                this.collapsedMaps[map] = true;
+            // 全てのグループを閉じる
+            Object.keys(this.groupedKeys).forEach(mapName => {
+                this.collapsedMaps[mapName] = true;
             });
+            this.collapsedMaps['Unknown / Other'] = true;
         },
         expandAll() {
-            Object.keys(this.groupedKeys).forEach(map => {
-                this.collapsedMaps[map] = false;
-            });
+            Object.keys(this.collapsedMaps).forEach(k => this.collapsedMaps[k] = false);
         },
         getRating(id) {
             if (!this.keyUserData) return '-';
@@ -154,6 +178,16 @@ const CompKeys = {
         },
         onMemoChange(id, event) {
             this.$emit('update-key-user-data', id, 'memo', event.target.value);
+        },
+        formatSourceName(name) {
+            if (!name) return '';
+            return name.replace(/^Task:\s*/, '');
+        },
+        getKeyClass(keyId) {
+             return this.ownedKeys.includes(keyId) ? 'table-success' : '';
+        },
+        getButtonClass(keyId) {
+             return this.ownedKeys.includes(keyId) ? 'btn-success' : 'btn-outline-secondary';
         }
     },
     template: `
@@ -172,7 +206,6 @@ const CompKeys = {
             </div>
 
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                
                 <div class="d-flex align-items-center gap-2">
                     <span class="small text-secondary">表示:</span>
                     <div class="btn-group btn-group-sm">
@@ -182,7 +215,6 @@ const CompKeys = {
                                 @click="$emit('update:viewMode', 'owned')">所持のみ</button>
                     </div>
                 </div>
-
                 <div class="d-flex align-items-center gap-2">
                     <span class="small text-secondary">並び順:</span>
                     <select class="form-select form-select-sm bg-dark text-white border-secondary" 
@@ -194,7 +226,6 @@ const CompKeys = {
                         <option value="rating">Rate順 (SS -> F)</option>
                     </select>
                 </div>
-                
             </div>
         </div>
         
@@ -207,7 +238,7 @@ const CompKeys = {
                     <span class="small text-muted">{{ collapsedMaps[mapName] ? '▼ 表示' : '▲ 非表示' }}</span>
                 </div>
 
-                <div v-if="!collapsedMaps[mapName]">
+                <div v-show="!collapsedMaps[mapName]">
                     <table class="table table-dark table-hover mb-0 key-table table-sm" style="table-layout: fixed;">
                         <thead>
                             <tr>
@@ -266,8 +297,9 @@ const CompKeys = {
                                 <td class="align-middle small">
                                     <div v-if="item.sources && item.sources.length > 0">
                                         <div v-for="(source, idx) in item.sources" :key="idx" class="text-truncate">
-                                            <span v-if="source.type === 'task'" class="source-task-link text-info" @click="$emit('open-task-from-name', source.name)">
-                                                {{ source.name }}
+                                            <span v-if="source.type === 'task'" class="source-task-link text-info" style="cursor: pointer; text-decoration: underline;" 
+                                                @click="$emit('open-task-from-name', formatSourceName(source.name))">
+                                                {{ formatSourceName(source.name) }}
                                             </span>
                                             <span v-else>{{ source.name }}</span>
                                         </div>
