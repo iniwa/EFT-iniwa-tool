@@ -82,6 +82,7 @@ query GetData {
     }
   }
   
+  # アイテム情報のスリム化: sellFor, buyFor を削除
   items(lang: ja) {
     id
     name
@@ -92,20 +93,8 @@ query GetData {
     width
     height
     
-    sellFor {
-      priceRUB
-      vendor { name }
-    }
-    
-    buyFor {
-      priceRUB
-      vendor { name }
-      requirements {
-        type
-        value
-        stringValue
-      }
-    }
+    # 削除: sellFor (売却額)
+    # 削除: buyFor (購入額 - 弾薬以外は不要)
     
     craftsFor {
       station { name }
@@ -153,6 +142,7 @@ query GetData {
     }
   }
   
+  # 弾薬情報の buyFor は維持
   ammo(lang: ja) {
     item {
       id
@@ -162,6 +152,7 @@ query GetData {
       wikiLink
       image512pxLink
       
+      # 弾薬の購入情報は必要なので残す
       buyFor {
         priceRUB
         vendor { name }
