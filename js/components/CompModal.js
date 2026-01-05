@@ -44,18 +44,15 @@ const CompModal = {
                 <ul class="list-group">
                     <li v-for="(group, gIdx) in selectedTask.neededKeys" :key="'g'+gIdx" class="list-group-item bg-dark text-light border-secondary py-2">
                         <div v-for="(keyItem, kIdx) in group.keys" :key="'k'+kIdx" class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            
                             <button class="btn btn-sm py-0 px-2 fw-bold"
                                 :class="ownedKeys.includes(keyItem.id) ? 'btn-success' : 'btn-outline-secondary'"
                                 @click="$emit('toggle-owned-key', keyItem.id)"
                                 style="min-width: 60px; height: 24px; font-size: 0.8em;">
                                 {{ ownedKeys.includes(keyItem.id) ? '所持' : '未所持' }}
                             </button>
-                            
                             <span class="fw-bold" :class="ownedKeys.includes(keyItem.id) ? 'text-success' : 'text-info'">
                                 {{ keyItem.name }}
                             </span>
-                            
                             <span v-if="keyItem.shortName" class="text-muted small">({{ keyItem.shortName }})</span>
                             <a v-if="keyItem.wikiLink" :href="keyItem.wikiLink" target="_blank" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size: 0.7em;">Wiki</a>
                         </div>
@@ -71,6 +68,7 @@ const CompModal = {
                 <h6 class="border-bottom pb-1 mb-2 text-info">目標 (Objectives)</h6>
                 <ul class="list-group">
                     <li v-for="(obj, idx) in selectedTask.objectives" :key="idx" class="list-group-item bg-dark text-light border-secondary py-2">
+                        
                         <div v-if="obj.item">
                             <span class="text-warning fw-bold">{{ obj.item.name }}</span> x {{ obj.count }}
                             <div class="mt-1">
@@ -79,6 +77,18 @@ const CompModal = {
                                 <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark me-1">Give</span>
                             </div>
                         </div>
+
+                        <div v-else-if="obj.type === 'shoot'">
+                            <span>
+                                ⚔️ <span class="fw-bold text-danger">{{ obj.target }}</span> 
+                                <span class="fw-bold text-warning ms-1">x{{ obj.count }}</span>
+                            </span>
+                            
+                            <span v-if="obj.description" class="small text-white ms-2">
+                                - {{ obj.description }}
+                            </span>
+                        </div>
+
                         <div v-else>
                             <span v-if="obj.description">{{ obj.description }}</span>
                             <span v-else class="text-muted small">(アクション目標)</span>
@@ -91,19 +101,15 @@ const CompModal = {
                 <h6 class="border-bottom pb-1 mb-2 text-success">報酬 (Rewards)</h6>
                 <ul class="list-group">
                     <li v-for="(reward, idx) in selectedTask.finishRewardsList" :key="'r'+idx" class="list-group-item bg-dark text-light border-secondary py-1">
-                        
                         <div v-if="reward.type === 'item'">
                             📦 {{ reward.name }} <span class="text-warning">x{{ reward.count }}</span>
                         </div>
-                        
                         <div v-else-if="reward.type === 'offerUnlock'">
                             🔓 販売: {{ reward.itemName }} ({{ reward.trader }} Lv{{ reward.level }})
                         </div>
-
                         <div v-else-if="reward.type === 'craftUnlock'" class="text-info">
                             🔨 生成: {{ reward.itemName }} ({{ reward.station }} Lv{{ reward.level }})
                         </div>
-
                     </li>
                 </ul>
             </div>

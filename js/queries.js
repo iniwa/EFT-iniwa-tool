@@ -1,5 +1,3 @@
-// js/queries.js
-
 const GRAPHQL_QUERY = `
 query GetData {
   tasks(gameMode: pve, lang: ja) {
@@ -24,10 +22,40 @@ query GetData {
     traderLevelRequirements { level requirementType value }
     kappaRequired
     lightkeeperRequired
+    
     objectives { 
       description
-      ... on TaskObjectiveItem { type count foundInRaid item { id name } } 
+      type 
+      
+      # 納品タスク
+      ... on TaskObjectiveItem { 
+        count 
+        foundInRaid 
+        item { id name } 
+      }
+      
+      # 討伐(キル)タスク
+      ... on TaskObjectiveShoot {
+        count
+        target
+        bodyParts
+        usingWeapon { name }
+        # ★修正: name -> id (API仕様に準拠)
+        zones { id }
+      }
+      
+      # 脱出タスク
+      ... on TaskObjectiveExtract {
+        count
+        # zoneは存在しないため削除済み
+      }
+      
+      # マーキングタスク
+      ... on TaskObjectiveMark {
+        markerItem { name }
+      }
     }
+
     finishRewards {
       items { count item { id name } }
       offerUnlock { level trader { name } item { name } }
@@ -61,16 +89,77 @@ query GetData {
     }
   }
   
-  items(types: keys, lang: ja) {
+  items(lang: ja) {
     id
     name
     shortName
     normalizedName
     wikiLink
     image512pxLink
+    width
+    height
+    
+    sellFor {
+      priceRUB
+      vendor { name }
+    }
+    
+    buyFor {
+      priceRUB
+      vendor { name }
+      requirements {
+        type
+        value
+        stringValue
+      }
+    }
+    
+    craftsFor {
+      station { name }
+      level
+      duration
+      requiredItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      rewardItems {
+        quantity
+        count
+        item { name }
+        attributes { name type value }
+      }
+      taskUnlock {
+         name
+         id
+         trader { name }
+      }
+    }
+    
+    bartersFor {
+      level
+      trader { name }
+      requiredItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      rewardItems {
+        count
+        quantity
+        item { name }
+        attributes { name type value }
+      }
+      taskUnlock {
+        name
+        id
+        trader { name }
+      }
+    }
   }
-
-  # ★修正: 弾薬の詳細データ
+  
   ammo(lang: ja) {
     item {
       id
@@ -80,7 +169,6 @@ query GetData {
       wikiLink
       image512pxLink
       
-      # 購入情報
       buyFor {
         priceRUB
         vendor { name }
@@ -89,78 +177,25 @@ query GetData {
           value
           stringValue
         }
-        price
-        currency
       }
       
-      # クラフト情報
       craftsFor {
-        id
-        level
-        source
-        sourceName
         station { name }
-        duration # 時間も取得
-        taskUnlock {
-          name
-          id
-          trader { name }
-        }
-        requiredItems {
-          count
-          quantity
-          # ★追加: 素材のアイテム名を取得
-          item {
-            name
-          }
-          attributes {
-            name
-            type
-            value
-          }
-        }
-        rewardItems {
-          quantity
-          count
-          # ★追加: 成果物のアイテム名を取得
-          item {
-            name
-          }
-          attributes {
-            name
-            type
-            value
-          }
-        }
-      }
-      
-      # 交換情報
-      bartersFor {
         level
+        duration
         requiredItems {
           count
-          quantity
-          item { name } # 交換も同様に追加しておきます
-          attributes {
-            name
-            type
-            value
-          }
+          item { name }
+          attributes { name }
         }
         rewardItems {
           count
-          quantity
           item { name }
-          attributes {
-            name
-            type
-            value
-          }
         }
+        taskUnlock { name }
       }
     }
     
-    # 弾薬性能データ
     caliber
     damage
     penetrationPower
@@ -168,7 +203,6 @@ query GetData {
     fragmentationChance
     projectileSpeed: initialSpeed
     
-    # 追加ステータス
     accuracyModifier
     recoilModifier
     lightBleedModifier
@@ -176,13 +210,6 @@ query GetData {
     ricochetChance
     ammoType
     tracer
-    tracerColor
-    staminaBurnPerDamage
-    stackMaxSize
-    recoil
-    penetrationPowerDeviation
-    projectileCount
-    penetrationChance
   }
 }
 `;
