@@ -7,16 +7,7 @@ createApp({
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
         const taskViewMode = ref('list'); 
-        const showCompleted = ref(false);
-        const showFuture = ref(false);
         
-        // ★追加: Kappa/LKモード用フラグ
-        const safeGetLS = (key, def) => {
-            try { return localStorage.getItem(key) || def; } catch (e) { return def; }
-        };
-        const showKappaOnly = ref(safeGetLS('eft_show_kappa', 'false') === 'true');
-        const showLightkeeperOnly = ref(safeGetLS('eft_show_lk', 'false') === 'true');
-
         const isLoading = ref(false);
         const loadError = ref(null);
         const lastUpdated = ref(null);
@@ -42,16 +33,18 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        const showMaxedHideout = ref(safeGetLS('eft_show_maxed_hideout', 'false') === 'true');
-        const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'all'));
-        const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
-        const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
-
+        // --- 設定値の読み書き (LocalStorage) ---
+        
+        // データを正しく復元するための関数 (JSONパース付き)
         const loadLS = (key, def) => {
             try {
                 const val = localStorage.getItem(key);
+                // 値があればJSONとしてパースして返す。なければデフォルト値を返す
                 return val ? JSON.parse(val) : def;
-            } catch (e) { return def; }
+            } catch (e) { 
+                console.warn(`LS Load Error (${key}):`, e);
+                return def; 
+            }
         };
         
         const saveLS = (key, val) => {
@@ -59,6 +52,17 @@ createApp({
                 localStorage.setItem(key, JSON.stringify(val));
             } catch (e) { console.warn("LS Save Error:", e); }
         };
+
+        // ★修正: すべて loadLS を使って読み込むように変更
+        const showCompleted = ref(loadLS('eft_show_completed', false)); // 履歴表示の状態も保存したい場合はキーを指定
+        const showFuture = ref(loadLS('eft_show_future', false));
+        
+        const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
+        const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
+        const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map')); 
+        const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
+        const showKappaOnly = ref(loadLS('eft_show_kappa', false));
+        const showLightkeeperOnly = ref(loadLS('eft_show_lk', false));
 
         // --- 2. IndexedDB ヘルパー関数 ---
         const DB_NAME = 'EFT_APP_DB';
@@ -436,13 +440,12 @@ createApp({
             }
         });
 
-        watch(playerLevel, (newVal) => {
-            saveLS('eft_level', newVal);
-        });
-
-        // ★追加: Kappa/LKモードの保存
+        // 監視と保存
+        watch(playerLevel, (newVal) => saveLS('eft_level', newVal));
         watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
         watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
+        watch(showCompleted, (val) => saveLS('eft_show_completed', val)); // ★追加: 履歴モードの保存
+        watch(showFuture, (val) => saveLS('eft_show_future', val));       // ★追加: ロック表示の保存
 
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
@@ -457,6 +460,7 @@ createApp({
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
+        
         watch(currentTab, (newTab) => {
             if (typeof gtag === 'function') {
                 gtag('event', 'page_view', {
@@ -467,7 +471,6 @@ createApp({
         });
 
         // --- 6. 計算ロジック ---
-        // ★修正: Kappa/LKフラグを渡す
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(
             taskData.value, 
             completedTasks.value, 
@@ -475,8 +478,8 @@ createApp({
             searchTask.value, 
             showCompleted.value, 
             showFuture.value,
-            showKappaOnly.value, // ★
-            showLightkeeperOnly.value // ★
+            showKappaOnly.value,
+            showLightkeeperOnly.value
         ));
 
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
@@ -597,7 +600,7 @@ createApp({
         return {
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
-            showKappaOnly, showLightkeeperOnly, // ★追加
+            showKappaOnly, showLightkeeperOnly,
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
             playerLevel, searchTask,ammoData,
