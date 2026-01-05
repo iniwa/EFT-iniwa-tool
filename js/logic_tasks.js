@@ -17,7 +17,7 @@ const TaskLogic = {
                 if (isCompleted) return false;
             }
 
-            // ★追加: Lv0の場合は、未完了タスクならすべて表示 (レベル制限等を無視)
+            // Lv0の場合は、未完了タスクならすべて表示 (レベル制限等を無視)
             if (level === 0) return true;
 
             if (!showFuture) {
@@ -44,9 +44,9 @@ const TaskLogic = {
             "Customs": ["customs", "カスタム"],
             "Factory": ["factory", "工場", "night factory"],
             "Interchange": ["interchange", "インターチェンジ"],
-            "The Lab": ["the lab", "labs", "ラボ"],
+            "The Lab": ["the lab"], 
             "Lighthouse": ["lighthouse", "ライトハウス"],
-            "Reserve": ["reserve", "リザーブ", "軍事基地"],
+            "Reserve": ["reserve", "リザーブ", "軍事基地", "military base"],
             "Shoreline": ["shoreline", "ショアライン"],
             "Streets of Tarkov": ["streets of tarkov", "streets", "ストリート"],
             "Woods": ["woods", "ウッズ"],
@@ -70,6 +70,7 @@ const TaskLogic = {
                 const desc = (obj.description || "").toLowerCase();
                 for (const [officialName, keywords] of Object.entries(mapKeywords)) {
                     if (maps.has(officialName)) continue;
+                    
                     for (const key of keywords) {
                         if (desc.includes(key.toLowerCase())) {
                             maps.add(officialName);
@@ -78,6 +79,12 @@ const TaskLogic = {
                     }
                 }
             });
+        }
+
+        // ★修正: 汎用的な除外ルールは削除し、個別の誤検知タスクのみを「特別に」除外する
+        // "One Less Loose End" は Factory のタスクだが、説明文に "lab journal" があるため誤検知される
+        if (task.name === "One Less Loose End") {
+            maps.delete("The Lab");
         }
 
         if (maps.size === 0) return [];
