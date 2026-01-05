@@ -27,30 +27,23 @@ query GetData {
       description
       type 
       
-      # 納品タスク
       ... on TaskObjectiveItem { 
         count 
         foundInRaid 
         item { id name } 
       }
       
-      # 討伐(キル)タスク
       ... on TaskObjectiveShoot {
         count
         target
         bodyParts
         usingWeapon { name }
-        # ★修正: name -> id (API仕様に準拠)
-        zones { id }
       }
       
-      # 脱出タスク
       ... on TaskObjectiveExtract {
         count
-        # zoneは存在しないため削除済み
       }
       
-      # マーキングタスク
       ... on TaskObjectiveMark {
         markerItem { name }
       }

@@ -1,6 +1,6 @@
 // js/app.js
 
-const { createApp, ref, computed, onMounted, watch } = Vue;
+const { createApp, ref, shallowRef, computed, onMounted, watch } = Vue;
 
 createApp({
     setup() {
@@ -14,15 +14,14 @@ createApp({
         const loadError = ref(null);
         const lastUpdated = ref(null);
 
-        const APP_CACHE_KEY = 'eft_api_cache_v21_mapfix'; 
+        // キャッシュキーを変更 (LocalStorage用)
+        const APP_CACHE_KEY = 'eft_api_cache_v28_ls'; 
 
-        // データコンテナ
-        const hideoutData = ref([]);
-        const taskData = ref([]);
-        const itemsData = ref({ items: [], maps: [] });
-        const ammoData = ref([]);
+        const hideoutData = shallowRef([]);
+        const taskData = shallowRef([]);
+        const itemsData = shallowRef({ items: [], maps: [] });
+        const ammoData = shallowRef([]);
         
-        // ユーザーデータ (LocalStorage保存対象)
         const userHideout = ref({});
         const completedTasks = ref([]);
         const collectedItems = ref([]);
@@ -32,7 +31,6 @@ createApp({
         const playerLevel = ref(0);
         const searchTask = ref("");
         
-        // UI状態
         const expandedItems = ref({});
         const selectedTask = ref(null);
         const fileInput = ref(null);
@@ -46,25 +44,29 @@ createApp({
         const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
 
-        // --- 2. ヘルパー関数 ---
+        // --- 2. ヘルパー関数 (LocalStorageのみ) ---
         const loadLS = (key, def) => {
             try {
                 const val = localStorage.getItem(key);
                 return val ? JSON.parse(val) : def;
-            } catch (e) {
-                console.warn(`Load Error (${key}):`, e);
-                return def;
+            } catch (e) { 
+                // キャッシュ読み込みエラーはコンソールのみに出力し、デフォルト値を返す
+                console.warn(`Load Error (${key}):`, e); 
+                return def; 
             }
         };
-
+        
         const saveLS = (key, val) => {
             try {
                 const stringVal = typeof val === 'string' ? val : JSON.stringify(val);
                 localStorage.setItem(key, stringVal);
-            } catch (e) {
-                console.warn(`Save Error (${key}):`, e);
+            } catch (e) { 
+                // 容量オーバー等のエラーはここでキャッチ
+                console.warn(`Save Error (${key}):`, e); 
             }
         };
+
+        // IndexedDB関連の関数 (initDB, saveDB, loadDB) は削除しました
 
         const openTaskFromName = (taskName) => {
             if (!taskData.value) return;
@@ -102,24 +104,20 @@ createApp({
             keyUserData.value = currentData;
         };
 
-        // --- データ加工・整形用関数 ---
-
+        // --- データ加工・整形 ---
         const processTasks = (tasks) => {
             if (!tasks) return [];
             const uniqueTasks = [];
             const seenNames = new Set();
-            
             tasks.forEach(t => {
                 if (!seenNames.has(t.name)) {
                     seenNames.add(t.name);
                     uniqueTasks.push(t);
                 }
             });
-
             return uniqueTasks.map(t => {
                 const rewards = [];
                 const r = t.finishRewards || {};
-                
                 if (r.items) {
                     r.items.forEach(entry => {
                         if(entry.item) rewards.push({ type: 'item', name: entry.item.name, count: entry.count || 1, id: entry.item.id });
@@ -135,29 +133,14 @@ createApp({
                 if (r.craftUnlock) {
                     r.craftUnlock.forEach(entry => {
                         const stationName = entry.station ? entry.station.name : "Unknown";
-                        const craftedItemName = (entry.rewardItems && entry.rewardItems.length > 0) 
-                                            ? entry.rewardItems[0].item.name 
-                                            : "Unknown Item";
-                        rewards.push({ 
-                            type: 'craftUnlock', 
-                            station: stationName, 
-                            level: entry.level, 
-                            itemName: craftedItemName 
-                        });
+                        const craftedItemName = (entry.rewardItems && entry.rewardItems.length > 0) ? entry.rewardItems[0].item.name : "Unknown Item";
+                        rewards.push({ type: 'craftUnlock', station: stationName, level: entry.level, itemName: craftedItemName });
                     });
                 }
-
                 const maps = TaskLogic.getTaskMaps(t);
                 const mapLabel = maps.length > 0 ? maps.join(', ') : (t.map ? t.map.name : 'Any');
                 const finalWikiLink = t.wikiLink || `https://tarkov.dev/task/${t.id}`;
-                
-                return { 
-                    ...t, 
-                    finishRewardsList: rewards, 
-                    wikiLink: finalWikiLink,
-                    derivedMaps: maps,
-                    mapLabel: mapLabel
-                };
+                return { ...t, finishRewardsList: rewards, wikiLink: finalWikiLink, derivedMaps: maps, mapLabel: mapLabel };
             });
         };
 
@@ -184,7 +167,8 @@ createApp({
                         ...i,
                         image512pxLink: i.image512pxLink,
                         maps: associatedMaps,
-                        mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
+                        mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other',
+                        types: i.types || []
                     };
                 }),
                 maps: rawMaps || []
@@ -231,11 +215,12 @@ createApp({
             });
         };
 
-        // --- 3. データ取得ロジック ---
         const fetchData = async () => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
-
+            
+            // LocalStorageからキャッシュ読み込み
             const cache = loadLS(APP_CACHE_KEY, null);
+            
             if (cache) {
                 try {
                     const lastTime = cache.lastFetchTime || 0;
@@ -243,8 +228,6 @@ createApp({
 
                     if ((nowTime - lastTime < MIN_INTERVAL) && cache.tasks && cache.tasks.length > 0) {
                         const remainSec = Math.ceil((MIN_INTERVAL - (nowTime - lastTime)) / 1000);
-                        // 自動更新チェックの場合はalertを出さないようにする制御も可能ですが、
-                        // 手動クリック時のフィードバックとして残しておきます。
                         alert(`データは最新です (あと ${remainSec} 秒)。`);
                         
                         hideoutData.value = cache.hideoutStations;
@@ -259,7 +242,6 @@ createApp({
 
             isLoading.value = true;
             loadError.value = null;
-            
             const query = GRAPHQL_QUERY;
 
             try {
@@ -283,6 +265,7 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
+                // LocalStorageへ保存
                 saveLS(APP_CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
@@ -304,7 +287,6 @@ createApp({
             }
         };
 
-        // --- 4. インポート/エクスポート ---
         const exportData = () => {
             const data = {
                 userHideout: userHideout.value,
@@ -354,45 +336,42 @@ createApp({
         };
 
         // --- 5. ライフサイクル & 監視 ---
-        onMounted(() => {
+        onMounted(async () => {
+            // LocalStorageからロード
             const cache = loadLS(APP_CACHE_KEY, null);
-            // ★自動更新の閾値: 20時間 (ミリ秒換算)
             const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
             
-            let shouldFetch = true; // デフォルトではフェッチを試みる
+            let shouldFetch = true;
 
             if (cache && cache.tasks) {
-                // まずキャッシュを表示 (UX向上のため即座に表示)
+                console.log("Loaded data from LocalStorage.");
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
                 itemsData.value = cache.items || { items: [], maps: [] };
                 ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
 
-                // 時間経過チェック
                 const lastTime = cache.lastFetchTime || 0;
                 const now = Date.now();
                 
                 if ((now - lastTime) < AUTO_UPDATE_THRESHOLD) {
-                    // 20時間以内ならキャッシュを正とし、自動フェッチを行わない
                     shouldFetch = false;
                     console.log(`Cache is valid. (${((now - lastTime)/1000/60/60).toFixed(1)} hours passed)`);
                 } else {
                     console.log("Cache is too old. Auto-fetching...");
-                    // 20時間以上経過しているので shouldFetch = true のまま
                 }
 
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
+                // バックアップ変数 (data.js等) からのロード
                 console.log("Loading from TARKOV_DATA...");
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = processItems(TARKOV_DATA.data.items, TARKOV_DATA.data.maps);
                 ammoData.value = processAmmo(TARKOV_DATA.data.ammo, taskData.value);
                 lastUpdated.value = 'Backup File';
-                shouldFetch = false; // バックアップデータがある場合は自動フェッチしない(手動更新に任せる)
+                shouldFetch = false;
             }
 
-            // ユーザー設定の復元
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
@@ -414,7 +393,6 @@ createApp({
                 openTaskFromName(e.detail);
             });
 
-            // ★条件を満たしていればデータ取得を実行
             if (shouldFetch) {
                 fetchData();
             }
@@ -504,6 +482,7 @@ createApp({
             HideoutLogic.calculate(hideoutData.value, userHideout.value, false, addItem);
             TaskLogic.calculate(taskData.value, completedTasks.value, addItem);
             
+            // ★ KeyLogicを呼び出すように戻しました
             const rawItems = itemsData.value.items || [];
             const rawMaps = itemsData.value.maps || [];
             KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
