@@ -60,7 +60,9 @@ const TaskLogic = {
         });
     },
 
-    // 日本語名も含めてマップを検索
+    /**
+     * 日本語名も含めてマップを検索する
+     */
     getTaskMaps(task) {
         const mapKeywords = {
             "Customs": ["customs", "カスタム"],
@@ -103,7 +105,7 @@ const TaskLogic = {
             });
         }
 
-        // ★修正: 誤検知タスクを「特別に」除外するリスト
+        // 誤検知タスクを「特別に」除外するリスト
         // - "One Less Loose End": Factoryタスクだが "lab journal" でヒットしてしまう
         // - "A Healthy Alternative": Reserveタスクだが "laboratory" でヒットしてしまう
         if (task.name === "One Less Loose End" || task.name === "A Healthy Alternative") {
@@ -112,6 +114,8 @@ const TaskLogic = {
 
         if (maps.size === 0) return [];
         return Array.from(maps).sort();
+    },
+
     /**
      * トレーダーごとのグループ化
      */
@@ -141,21 +145,6 @@ const TaskLogic = {
     },
 
     /**
-     * タスク情報からマップ名を抽出するヘルパー
-     */
-    getTaskMaps(task) {
-        const maps = new Set();
-        if (task.map) maps.add(task.map.name);
-        if (task.objectives) {
-            task.objectives.forEach(obj => {
-                if (obj.maps) obj.maps.forEach(m => maps.add(m.name));
-                if (obj.map) maps.add(obj.map.name);
-            });
-        }
-        return Array.from(maps);
-    },
-
-    /**
      * ショッピングリスト計算
      */
     calculate(tasks, completed, addItemFunc) {
@@ -169,7 +158,7 @@ const TaskLogic = {
                 t.objectives.forEach(obj => {
                     if (obj.type === 'giveItem' && obj.item) {
                         
-                        // ★修正: カテゴリ判定ロジック
+                        // カテゴリ判定ロジック
                         // Collectorタスクは専用カテゴリへ、それ以外はFIR有無で振り分け
                         const isCollector = t.name === 'Collector';
                         let cat;
@@ -179,10 +168,10 @@ const TaskLogic = {
                             cat = obj.foundInRaid ? 'taskFir' : 'taskNormal';
                         }
 
-                        // ★修正: タスク名そのままを使用 ('Task: ' を付けない)
+                        // タスク名そのままを使用 ('Task: ' を付けない)
                         const srcName = t.name;
                         
-                        // ★修正: ソースタイプの設定
+                        // ソースタイプの設定
                         const srcType = isCollector ? 'collector' : 'task';
                         
                         addItemFunc(
