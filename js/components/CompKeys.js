@@ -6,7 +6,7 @@ const CompKeys = {
     data() {
         return {
             searchQuery: '',
-            collapsedMaps: {},
+            collapsedMaps: {}, // マップごとの開閉状態 (true=閉じる)
             ratings: ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F'],
             mapOrder: [
                 "Customs",
@@ -19,18 +19,50 @@ const CompKeys = {
                 "Streets of Tarkov",
                 "Ground Zero",
                 "The Lab",
-                "The Labyrinth", // The Labyrinth も追加
-                "Labyrinth"      // 念のため両方
+                "The Labyrinth", 
+                "Labyrinth"
             ]
         }
     },
     mounted() {
-        // ★初期状態で全てのマップを閉じる
-        this.collapseAll();
+        // ★修正: LocalStorageから開閉状態を復元
+        const savedState = localStorage.getItem('eft_keys_collapsed_state');
+        
+        if (savedState) {
+            try {
+                // 保存された状態をロード
+                this.collapsedMaps = JSON.parse(savedState);
+                
+                // もし新しいマップが増えていたら、それは閉じておく
+                this.mapOrder.forEach(m => {
+                    if (this.collapsedMaps[m] === undefined) {
+                        this.collapsedMaps[m] = true;
+                    }
+                });
+                if (this.collapsedMaps['Unknown / Other'] === undefined) {
+                    this.collapsedMaps['Unknown / Other'] = true;
+                }
+            } catch (e) {
+                console.warn("Failed to load collapsed state", e);
+                this.collapseAll(); // エラー時は初期化
+            }
+        } else {
+            // 保存データがない場合は全部閉じる (初回)
+            this.collapseAll();
+        }
+    },
+    watch: {
+        // ★追加: 開閉状態が変わるたびに保存
+        collapsedMaps: {
+            handler(newVal) {
+                localStorage.setItem('eft_keys_collapsed_state', JSON.stringify(newVal));
+            },
+            deep: true
+        }
     },
     computed: {
         filteredKeys() {
-            // APIからの全アイテムデータ (ここには水や食料も含まれる)
+            // APIからの全アイテムデータ
             let rawSource = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
             
             // LogicKeysで生成された「正解の鍵リスト」からIDセットを作成
@@ -43,7 +75,6 @@ const CompKeys = {
                         validKeyIds.add(k.id);
                         if (k.sources && k.sources.length > 0) {
                             if (!sourceLookup[k.id]) sourceLookup[k.id] = [];
-                            // ソース情報のマージ
                             k.sources.forEach(src => {
                                 const exists = sourceLookup[k.id].some(existing => existing.name === src.name && existing.type === src.type);
                                 if (!exists && src.name) sourceLookup[k.id].push(src);
@@ -53,11 +84,7 @@ const CompKeys = {
                 });
             }
 
-            // ★コンソール出力: 修正の効果を確認
-            console.log(`[CompKeys] Raw Items (API): ${rawSource.length} -> Valid Keys (Logic): ${validKeyIds.size}`);
-
-            // ★重要: 正解リストに含まれるIDだけをフィルタリングして表示する
-            // これにより logic_keys.js で弾かれたゴミデータは画面に出なくなる
+            // Unknownフィルタリング再適用
             let source = rawSource
                 .filter(item => validKeyIds.has(item.id))
                 .map(item => {
@@ -129,11 +156,10 @@ const CompKeys = {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
         },
         collapseAll() {
-            // mapOrderだけでなく、実際に存在するすべてのグループを閉じる
+            // 全てのグループを閉じる
             Object.keys(this.groupedKeys).forEach(mapName => {
                 this.collapsedMaps[mapName] = true;
             });
-            // Unknownなども明示的に
             this.collapsedMaps['Unknown / Other'] = true;
         },
         expandAll() {
@@ -153,7 +179,6 @@ const CompKeys = {
         onMemoChange(id, event) {
             this.$emit('update-key-user-data', id, 'memo', event.target.value);
         },
-        // ★追加: 表示用にタスク名からプレフィックスを削除するヘルパー
         formatSourceName(name) {
             if (!name) return '';
             return name.replace(/^Task:\s*/, '');
