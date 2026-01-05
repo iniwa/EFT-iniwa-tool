@@ -1,7 +1,7 @@
 const CompFooter = {
     data() {
         return {
-            appVersion: 'v1.3.5'
+            appVersion: 'v1.3.6'
         };
     },
     template: `
