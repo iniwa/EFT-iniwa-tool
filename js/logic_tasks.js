@@ -1,146 +1,151 @@
 // js/logic_tasks.js
 
 const TaskLogic = {
-    // タスクのフィルタリング
-    filterActiveTasks(taskData, completedList, level, search, showCompleted, showFuture) {
-        if (!taskData) return [];
-        const lowerSearch = (search || '').toLowerCase();
+    /**
+     * タスクのフィルタリングを行う
+     */
+    filterActiveTasks(tasks, completed, level, query, showCompleted, showFuture, showKappaOnly, showLightkeeperOnly) {
+        if (!tasks) return [];
+        
+        const q = (query || "").toLowerCase();
+        const ignoreLevel = (level === 0); // Lv0なら制限解除
 
-        return taskData.filter(task => {
-            if (lowerSearch && !task.name.toLowerCase().includes(lowerSearch)) return false;
+        return tasks.filter(task => {
+            const isCompleted = completed.includes(task.name);
 
-            const isCompleted = completedList.includes(task.name);
-
+            // モードによる表示/非表示の切り分け
             if (showCompleted) {
-                return isCompleted;
+                // 履歴モード: 完了済みだけを表示
+                if (!isCompleted) return false;
             } else {
+                // 通常モード: 未完了だけを表示
                 if (isCompleted) return false;
             }
 
-            // Lv0の場合は、未完了タスクならすべて表示 (レベル制限等を無視)
-            if (level === 0) return true;
+            // 検索フィルタ
+            if (q) {
+                const matchName = task.name.toLowerCase().includes(q);
+                const matchMap = task.map && task.map.name.toLowerCase().includes(q);
+                const matchTrader = task.trader && task.trader.name.toLowerCase().includes(q);
+                if (!matchName && !matchMap && !matchTrader) return false;
+            }
 
-            if (!showFuture) {
-                if (task.minPlayerLevel > level) return false;
+            // 未完了タスクの表示条件
+            if (!isCompleted) {
+                // 前提タスクチェック
+                let reqMet = true;
                 if (task.taskRequirements) {
-                    const reqsMet = task.taskRequirements.every(req => 
-                        completedList.includes(req.task.name)
-                    );
-                    if (!reqsMet) return false;
+                    task.taskRequirements.forEach(r => {
+                        if (!completed.includes(r.task.name)) reqMet = false;
+                    });
+                }
+                
+                // レベルチェック
+                let levelMet = true;
+                if (!ignoreLevel && task.minPlayerLevel > level) levelMet = false;
+
+                // showFuture=false (ロック中を表示しない) なら、条件未達は隠す
+                if (!showFuture) {
+                    if (!reqMet || !levelMet) return false;
                 }
             }
+
+            // Kappa判定
+            if (showKappaOnly && !task.kappaRequired) return false;
+
+            // LK判定
+            if (showLightkeeperOnly && !task.lightkeeperRequired) return false;
+
             return true;
-        }).sort((a, b) => {
-            if (a.minPlayerLevel !== b.minPlayerLevel) {
-                return a.minPlayerLevel - b.minPlayerLevel;
-            }
-            return a.name.localeCompare(b.name);
         });
     },
 
-    // 日本語名も含めてマップを検索
-    getTaskMaps(task) {
-        const mapKeywords = {
-            "Customs": ["customs", "カスタム"],
-            "Factory": ["factory", "工場", "night factory"],
-            "Interchange": ["interchange", "インターチェンジ"],
-            "The Lab": ["the lab"], 
-            "Lighthouse": ["lighthouse", "ライトハウス"],
-            "Reserve": ["reserve", "リザーブ", "軍事基地", "military base"],
-            "Shoreline": ["shoreline", "ショアライン"],
-            "Streets of Tarkov": ["streets of tarkov", "streets", "ストリート"],
-            "Woods": ["woods", "ウッズ"],
-            "Ground Zero": ["ground zero", "グラウンドゼロ"],
-            "The Labyrinth": ["labyrinth", "ラビリンス"]
-        };
-        
-        const maps = new Set();
-
-        // 1. APIのマップ情報があれば追加 (最優先)
-        if (task.map && task.map.name) {
-            let apiMapName = task.map.name;
-            if (apiMapName.includes("Night")) apiMapName = "Factory";
-            if (apiMapName.includes("21+")) apiMapName = "Ground Zero";
-            maps.add(apiMapName);
-        }
-
-        // 2. 目標の説明文からマップ名を検索して追加
-        if (task.objectives) {
-            task.objectives.forEach(obj => {
-                const desc = (obj.description || "").toLowerCase();
-                for (const [officialName, keywords] of Object.entries(mapKeywords)) {
-                    if (maps.has(officialName)) continue;
-                    
-                    for (const key of keywords) {
-                        if (desc.includes(key.toLowerCase())) {
-                            maps.add(officialName);
-                            break; 
-                        }
-                    }
-                }
-            });
-        }
-
-        // ★修正: 汎用的な除外ルールは削除し、個別の誤検知タスクのみを「特別に」除外する
-        // "One Less Loose End" は Factory のタスクだが、説明文に "lab journal" があるため誤検知される
-        if (task.name === "One Less Loose End") {
-            maps.delete("The Lab");
-        }
-
-        if (maps.size === 0) return [];
-        return Array.from(maps).sort();
+    /**
+     * トレーダーごとのグループ化
+     */
+    groupTasksByTrader(tasks) {
+        const groups = {};
+        tasks.forEach(t => {
+            const tr = t.trader ? t.trader.name : 'Unknown';
+            if (!groups[tr]) groups[tr] = [];
+            groups[tr].push(t);
+        });
+        return groups;
     },
 
-    // 必要なアイテムの計算
-    calculate(taskData, completedList, addItemFunc) {
-        if (!taskData) return;
-        const activeTasks = taskData.filter(t => !completedList.includes(t.name));
+    /**
+     * マップごとのグループ化
+     */
+    groupTasksByMap(tasks) {
+        const groups = {};
+        tasks.forEach(t => {
+            const maps = this.getTaskMaps(t);
+            let key = maps.length > 0 ? maps[0] : (t.map ? t.map.name : 'Any / Multiple');
+            if (maps.length > 1) key = "Any / Multiple";
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(t);
+        });
+        return groups;
+    },
 
-        activeTasks.forEach(task => {
-            if (task.objectives) {
-                task.objectives.forEach(obj => {
+    /**
+     * タスク情報からマップ名を抽出するヘルパー
+     */
+    getTaskMaps(task) {
+        const maps = new Set();
+        if (task.map) maps.add(task.map.name);
+        if (task.objectives) {
+            task.objectives.forEach(obj => {
+                if (obj.maps) obj.maps.forEach(m => maps.add(m.name));
+                if (obj.map) maps.add(obj.map.name);
+            });
+        }
+        return Array.from(maps);
+    },
+
+    /**
+     * ショッピングリスト計算
+     */
+    calculate(tasks, completed, addItemFunc) {
+        if (!tasks) return;
+        tasks.forEach(t => {
+            // 完了済みはスキップ
+            if (completed.includes(t.name)) return;
+
+            // 必要なアイテム (Objectives)
+            if (t.objectives) {
+                t.objectives.forEach(obj => {
                     if (obj.type === 'giveItem' && obj.item) {
-                        const mapName = task.map ? task.map.name : null;
-                        const wikiLink = task.wikiLink || null;
-                        let category = 'taskNormal'; 
-                        if (task.name === 'Collector') category = 'collector';
-                        else if (obj.foundInRaid) category = 'taskFir';
+                        
+                        // ★修正: カテゴリ判定ロジック
+                        // Collectorタスクは専用カテゴリへ、それ以外はFIR有無で振り分け
+                        const isCollector = t.name === 'Collector';
+                        let cat;
+                        if (isCollector) {
+                            cat = 'collector';
+                        } else {
+                            cat = obj.foundInRaid ? 'taskFir' : 'taskNormal';
+                        }
 
+                        // ★修正: タスク名そのままを使用 ('Task: ' を付けない)
+                        const srcName = t.name;
+                        
+                        // ★修正: ソースタイプの設定
+                        const srcType = isCollector ? 'collector' : 'task';
+                        
                         addItemFunc(
-                            category, obj.item.id, obj.item.name, obj.count,
-                            task.name, 'task', mapName, wikiLink,
-                            obj.item.shortName, obj.item.normalizedName
+                            cat, 
+                            obj.item.id, 
+                            obj.item.name, 
+                            obj.count, 
+                            srcName, 
+                            srcType, 
+                            t.map ? t.map.name : null,
+                            t.wikiLink
                         );
                     }
                 });
             }
         });
-    },
-
-    // トレーダーごとのグルーピング
-    groupTasksByTrader(tasks) {
-        const groups = {};
-        tasks.forEach(task => {
-            const trader = task.trader ? task.trader.name : 'Unknown';
-            if (!groups[trader]) groups[trader] = [];
-            groups[trader].push(task);
-        });
-        return groups;
-    },
-    
-    // マップごとのグルーピング
-    groupTasksByMap(tasks) {
-        const groups = {};
-        tasks.forEach(task => {
-            const mapNames = task.derivedMaps && task.derivedMaps.length > 0 
-                            ? task.derivedMaps 
-                            : ['Any / Multiple'];
-
-            mapNames.forEach(mapName => {
-                if (!groups[mapName]) groups[mapName] = [];
-                groups[mapName].push(task);
-            });
-        });
-        return groups;
     }
 };

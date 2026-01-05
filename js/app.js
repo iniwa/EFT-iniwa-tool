@@ -10,11 +10,18 @@ createApp({
         const showCompleted = ref(false);
         const showFuture = ref(false);
         
+        // ★追加: Kappa/LKモード用フラグ
+        const safeGetLS = (key, def) => {
+            try { return localStorage.getItem(key) || def; } catch (e) { return def; }
+        };
+        const showKappaOnly = ref(safeGetLS('eft_show_kappa', 'false') === 'true');
+        const showLightkeeperOnly = ref(safeGetLS('eft_show_lk', 'false') === 'true');
+
         const isLoading = ref(false);
         const loadError = ref(null);
         const lastUpdated = ref(null);
 
-        // キャッシュキー (IndexedDB用)
+        // キャッシュキー
         const APP_CACHE_KEY = 'eft_api_cache_v29_idb'; 
 
         const hideoutData = shallowRef([]);
@@ -35,10 +42,6 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        // 設定値 (LocalStorage)
-        const safeGetLS = (key, def) => {
-            try { return localStorage.getItem(key) || def; } catch (e) { return def; }
-        };
         const showMaxedHideout = ref(safeGetLS('eft_show_maxed_hideout', 'false') === 'true');
         const keysViewMode = ref(safeGetLS('eft_keys_view_mode', 'all'));
         const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
@@ -98,7 +101,7 @@ createApp({
                     const store = tx.objectStore(STORE_NAME);
                     const req = store.get(key);
                     req.onsuccess = () => resolve(req.result);
-                    req.onerror = () => resolve(null); // エラー時はnull
+                    req.onerror = () => resolve(null); 
                 });
             } catch (e) {
                 console.warn("IDB Load Error:", e);
@@ -257,7 +260,6 @@ createApp({
         const fetchData = async () => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
             
-            // IndexedDBからキャッシュ読み込み
             const cache = await loadDB(APP_CACHE_KEY);
             
             if (cache) {
@@ -304,7 +306,6 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                // IndexedDBへ保存
                 await saveDB(APP_CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
@@ -376,7 +377,6 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(async () => {
-            // IndexedDBからロード
             const cache = await loadDB(APP_CACHE_KEY);
             const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
             
@@ -401,7 +401,6 @@ createApp({
                 }
 
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // バックアップ変数からのロード
                 console.log("Loading from TARKOV_DATA...");
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
@@ -411,15 +410,12 @@ createApp({
                 shouldFetch = false;
             }
 
-            // ユーザー設定は LocalStorage からロード
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
             ownedKeys.value = loadLS('eft_keys', []);
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             prioritizedTasks.value = loadLS('eft_prioritized', []);
-            
-            // ★修正: safeGetLSではなくloadLSを使用し、安全に読み込む
             playerLevel.value = parseInt(loadLS('eft_level', 0), 10);
             
             if (itemsData.value.items.length > 0) {
@@ -440,12 +436,14 @@ createApp({
             }
         });
 
-        // ★修正: .toString() を削除し、数値のまま保存する
         watch(playerLevel, (newVal) => {
             saveLS('eft_level', newVal);
         });
 
-        // その他の設定データの保存
+        // ★追加: Kappa/LKモードの保存
+        watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
+        watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
+
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
@@ -469,7 +467,18 @@ createApp({
         });
 
         // --- 6. 計算ロジック ---
-        const visibleTasks = computed(() => TaskLogic.filterActiveTasks(taskData.value, completedTasks.value, playerLevel.value, searchTask.value, showCompleted.value, showFuture.value));
+        // ★修正: Kappa/LKフラグを渡す
+        const visibleTasks = computed(() => TaskLogic.filterActiveTasks(
+            taskData.value, 
+            completedTasks.value, 
+            playerLevel.value, 
+            searchTask.value, 
+            showCompleted.value, 
+            showFuture.value,
+            showKappaOnly.value, // ★
+            showLightkeeperOnly.value // ★
+        ));
+
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
         
         const tasksByTrader = computed(() => {
@@ -588,6 +597,7 @@ createApp({
         return {
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
+            showKappaOnly, showLightkeeperOnly, // ★追加
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
             playerLevel, searchTask,ammoData,
