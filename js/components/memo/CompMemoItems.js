@@ -61,6 +61,18 @@ const CompMemoItems = {
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 border-end border-secondary border-bottom border-dark">
+                <div class="p-3">
+                    <div class="text-blue fw-bold mb-2">SICC アイテムポーチ (イェーガー Lv.4)</div>
+                    <div class="small text-muted mb-2">※ドッグタグや鍵が入る (5x5マス)。書類は不可。</div>
+                    <ul class="mb-0 text-secondary small">
+                        <li>🪢 Paracord x 10</li>
+                        <li>🩹 Duct tape (銀) x 15</li>
+                        <li>🟦 Insulating tape (青) x 10</li>
+                        <li>🧵 Aramid fiber cloth x 10</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
