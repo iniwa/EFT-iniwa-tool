@@ -14,8 +14,8 @@ createApp({
         const loadError = ref(null);
         const lastUpdated = ref(null);
 
-        // キャッシュキーを変更 (LocalStorage用)
-        const APP_CACHE_KEY = 'eft_api_cache_v28_ls'; 
+        // キャッシュキー (IndexedDB用)
+        const APP_CACHE_KEY = 'eft_api_cache_v29_idb'; 
 
         const hideoutData = shallowRef([]);
         const taskData = shallowRef([]);
@@ -35,7 +35,7 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        // 設定値
+        // 設定値 (LocalStorage)
         const safeGetLS = (key, def) => {
             try { return localStorage.getItem(key) || def; } catch (e) { return def; }
         };
@@ -44,30 +44,69 @@ createApp({
         const keysSortMode = ref(safeGetLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(safeGetLS('eft_flowchart_trader', 'Prapor'));
 
-        // --- 2. ヘルパー関数 (LocalStorageのみ) ---
         const loadLS = (key, def) => {
             try {
                 const val = localStorage.getItem(key);
                 return val ? JSON.parse(val) : def;
-            } catch (e) { 
-                // キャッシュ読み込みエラーはコンソールのみに出力し、デフォルト値を返す
-                console.warn(`Load Error (${key}):`, e); 
-                return def; 
-            }
+            } catch (e) { return def; }
         };
         
         const saveLS = (key, val) => {
             try {
-                const stringVal = typeof val === 'string' ? val : JSON.stringify(val);
-                localStorage.setItem(key, stringVal);
-            } catch (e) { 
-                // 容量オーバー等のエラーはここでキャッチ
-                console.warn(`Save Error (${key}):`, e); 
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch (e) { console.warn("LS Save Error:", e); }
+        };
+
+        // --- 2. IndexedDB ヘルパー関数 ---
+        const DB_NAME = 'EFT_APP_DB';
+        const STORE_NAME = 'api_cache';
+
+        const initDB = () => {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME);
+                    }
+                };
+                request.onsuccess = (event) => resolve(event.target.result);
+                request.onerror = (event) => reject(event.target.error);
+            });
+        };
+
+        const saveDB = async (key, val) => {
+            try {
+                const db = await initDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readwrite');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.put(val, key);
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => reject(req.error);
+                });
+            } catch (e) {
+                console.error("IDB Save Error:", e);
             }
         };
 
-        // IndexedDB関連の関数 (initDB, saveDB, loadDB) は削除しました
+        const loadDB = async (key) => {
+            try {
+                const db = await initDB();
+                return new Promise((resolve, reject) => {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.get(key);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => resolve(null); // エラー時はnull
+                });
+            } catch (e) {
+                console.warn("IDB Load Error:", e);
+                return null;
+            }
+        };
 
+        // --- 3. ロジック関数 ---
         const openTaskFromName = (taskName) => {
             if (!taskData.value) return;
             const task = taskData.value.find(t => t.name === taskName);
@@ -218,8 +257,8 @@ createApp({
         const fetchData = async () => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
             
-            // LocalStorageからキャッシュ読み込み
-            const cache = loadLS(APP_CACHE_KEY, null);
+            // IndexedDBからキャッシュ読み込み
+            const cache = await loadDB(APP_CACHE_KEY);
             
             if (cache) {
                 try {
@@ -265,8 +304,8 @@ createApp({
                 const now = new Date().toLocaleString('ja-JP');
                 lastUpdated.value = now;
                 
-                // LocalStorageへ保存
-                saveLS(APP_CACHE_KEY, {
+                // IndexedDBへ保存
+                await saveDB(APP_CACHE_KEY, {
                     timestamp: now,
                     lastFetchTime: Date.now(),
                     hideoutStations: hideoutData.value, 
@@ -337,14 +376,14 @@ createApp({
 
         // --- 5. ライフサイクル & 監視 ---
         onMounted(async () => {
-            // LocalStorageからロード
-            const cache = loadLS(APP_CACHE_KEY, null);
+            // IndexedDBからロード
+            const cache = await loadDB(APP_CACHE_KEY);
             const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
             
             let shouldFetch = true;
 
             if (cache && cache.tasks) {
-                console.log("Loaded data from LocalStorage.");
+                console.log("Loaded data from IndexedDB.");
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
                 itemsData.value = cache.items || { items: [], maps: [] };
@@ -362,7 +401,7 @@ createApp({
                 }
 
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // バックアップ変数 (data.js等) からのロード
+                // バックアップ変数からのロード
                 console.log("Loading from TARKOV_DATA...");
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
@@ -372,13 +411,16 @@ createApp({
                 shouldFetch = false;
             }
 
+            // ユーザー設定は LocalStorage からロード
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
             ownedKeys.value = loadLS('eft_keys', []);
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             prioritizedTasks.value = loadLS('eft_prioritized', []);
-            playerLevel.value = parseInt(safeGetLS('eft_level', '0'), 10);
+            
+            // ★修正: safeGetLSではなくloadLSを使用し、安全に読み込む
+            playerLevel.value = parseInt(loadLS('eft_level', 0), 10);
             
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
@@ -398,13 +440,18 @@ createApp({
             }
         });
 
-        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, prioritizedTasks], () => {
+        // ★修正: .toString() を削除し、数値のまま保存する
+        watch(playerLevel, (newVal) => {
+            saveLS('eft_level', newVal);
+        });
+
+        // その他の設定データの保存
+        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
             saveLS('eft_collected', collectedItems.value);
             saveLS('eft_keys', ownedKeys.value);
             saveLS('eft_key_user_data', keyUserData.value);
-            saveLS('eft_level', playerLevel.value.toString());
             saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
 
@@ -482,7 +529,6 @@ createApp({
             HideoutLogic.calculate(hideoutData.value, userHideout.value, false, addItem);
             TaskLogic.calculate(taskData.value, completedTasks.value, addItem);
             
-            // ★ KeyLogicを呼び出すように戻しました
             const rawItems = itemsData.value.items || [];
             const rawMaps = itemsData.value.maps || [];
             KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
