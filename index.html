@@ -97,7 +97,8 @@
                 :tasks-by-trader="tasksByTrader"
                 :tasks-by-map="tasksByMap"
                 :show-maxed-hideout="showMaxedHideout"
-                @update:show-maxed-hideout="showMaxedHideout = $event"
+                
+                :player-level="playerLevel"  @update:show-maxed-hideout="showMaxedHideout = $event"
                 @update:task-view-mode="taskViewMode = $event"
                 @update:show-completed="showCompleted = $event"
                 @update:show-future="showFuture = $event"
@@ -105,6 +106,8 @@
                 @open-task-details="openTaskDetails"
                 @toggle-task="toggleTask"
                 @toggle-priority="togglePriority"
+                v-model:show-kappa-only="showKappaOnly"
+                v-model:show-lightkeeper-only="showLightkeeperOnly"
             ></comp-input>
         </div>
 
@@ -202,33 +205,33 @@
 
     </div>
 
-    <script src="data.js?=v1.3.0"></script>
-    <script src="js/queries.js?=v1.3.0"></script>
-    <script src="js/key_presets.js?=v1.3.0"></script> 
-    <script src="js/logic_hideout.js?=v1.3.0"></script>
-    <script src="js/logic_tasks.js?=v1.3.5"></script>
-    <script src="js/logic_keys.js?=v1.3.0"></script>
+    <script src="data.js?=v1.4.0"></script>
+    <script src="js/queries.js?=v1.4.0"></script>
+    <script src="js/key_presets.js?=v1.4.0"></script> 
+    <script src="js/logic_hideout.js?=v1.4.0"></script>
+    <script src="js/logic_tasks.js?=v1.4.0"></script>
+    <script src="js/logic_keys.js?=v1.4.0"></script>
 
-    <script src="js/components/CompHeader.js?=v1.3.0"></script>
-    <script src="js/components/CompInput.js?=v1.3.0"></script>
-    <script src="js/components/CompResult.js?=v1.3.0"></script>
-    <script src="js/components/CompKeys.js?=v1.3.8"></script>
-    <script src="js/components/CompFlowchart.js?=v1.3.4"></script>
-    <script src="js/components/CompModal.js?=v1.3.0"></script>
-    <script src="js/components/CompDebug.js?=v1.3.0"></script>
-    <script src="js/components/CompChat.js?=v1.3.3"></script>
-    <script src="js/components/CompFooter.js?=v1.3.5"></script>
-    <script src="js/components/CompAmmo.js?v=1.3.0"></script>
+    <script src="js/components/CompHeader.js?=v1.4.0"></script>
+    <script src="js/components/CompInput.js?=v1.4.0"></script>
+    <script src="js/components/CompResult.js?=v1.4.0"></script>
+    <script src="js/components/CompKeys.js?=v1.4.0"></script>
+    <script src="js/components/CompFlowchart.js?=v1.4.0"></script>
+    <script src="js/components/CompModal.js?=v1.4.0"></script>
+    <script src="js/components/CompDebug.js?=v1.4.0"></script>
+    <script src="js/components/CompChat.js?=v1.4.0"></script>
+    <script src="js/components/CompFooter.js?=v1.4.0"></script>
+    <script src="js/components/CompAmmo.js?v=1.4.0"></script>
 
-    <script src="js/components/memo/CompMemoHealth.js?=v1.3.6"></script>
-    <script src="js/components/memo/CompMemoWeapon.js?=v1.3.7"></script>
-    <script src="js/components/memo/CompMemoArmor.js?=v1.3.6"></script>
-    <script src="js/components/memo/CompMemoStims.js?=v1.3.7"></script>
-    <script src="js/components/memo/CompMemoGrenade.js?=v1.3.6"></script>
-    <script src="js/components/memo/CompMemoTraders.js?=v1.3.6"></script>
-    <script src="js/components/memo/CompMemoItems.js?=v1.3.6"></script>
-    <script src="js/components/CompMemo.js?=v1.3.7"></script>
+    <script src="js/components/memo/CompMemoHealth.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoWeapon.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoArmor.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoStims.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoGrenade.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoTraders.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoItems.js?=v1.4.0"></script>
+    <script src="js/components/CompMemo.js?=v1.4.0"></script>
 
-    <script src="js/app.js?=v1.3.8"></script>
+    <script src="js/app.js?=v1.4.0"></script>
 </body>
 </html>
