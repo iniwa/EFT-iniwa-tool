@@ -156,7 +156,7 @@ const CompMemo = {
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <div class="memo-accordion-button" :class="{ collapsed: !isOpen.stims }" @click="toggleSection('stims')">
-                            <span class="me-2">💉</span> M.U.L.E.代替・重量スタミナ注射
+                            <span class="me-2">💉</span> 注射器 (Stims)
                         </div>
                     </h2>
                     <div v-show="isOpen.stims">
