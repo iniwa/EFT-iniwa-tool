@@ -102,14 +102,10 @@ createApp({
             keyUserData.value = currentData;
         };
 
-        // --- データ加工・整形用関数 (共通化) ---
+        // --- データ加工・整形用関数 ---
 
-        // タスクデータの整形
         const processTasks = (tasks) => {
             if (!tasks) return [];
-
-            // ★追加: タスク名の重複排除 (Drip Out対策)
-            // 同名のタスクが存在する場合、最初に見つかった1つだけを採用し、残りは無視する
             const uniqueTasks = [];
             const seenNames = new Set();
             
@@ -165,7 +161,6 @@ createApp({
             });
         };
 
-        // アイテム(鍵)データの整形: マップ紐付けと画像パスの確保
         const processItems = (rawItems, rawMaps) => {
             const mapLookup = {};
             if (rawMaps) {
@@ -174,7 +169,6 @@ createApp({
                         map.locks.forEach(lock => {
                             if (lock.key) {
                                 if (!mapLookup[lock.key.id]) mapLookup[lock.key.id] = [];
-                                // 重複を防ぎつつマップ名を追加
                                 if (!mapLookup[lock.key.id].includes(map.name)) {
                                     mapLookup[lock.key.id].push(map.name);
                                 }
@@ -188,8 +182,8 @@ createApp({
                     const associatedMaps = mapLookup[i.id] || [];
                     return {
                         ...i,
-                        image512pxLink: i.image512pxLink, // 画像URL
-                        maps: associatedMaps,             // マップ名の配列
+                        image512pxLink: i.image512pxLink,
+                        maps: associatedMaps,
                         mapName: associatedMaps.length > 0 ? associatedMaps[0] : 'Unknown / Other'
                     };
                 }),
@@ -197,18 +191,15 @@ createApp({
             };
         };
 
-        // 弾薬データの整形: 階層のフラット化とトレーダー/クラフト情報の整理
         const processAmmo = (rawAmmo, taskList) => {
             const taskMap = new Map((taskList || []).map(t => [t.id, t.name]));
             return (rawAmmo || []).map(a => {
-                // --- 販売情報 ---
                 let traders = [];
                 if (a.item && a.item.buyFor) {
                     traders = a.item.buyFor.filter(b => b.vendor.name !== 'Flea Market');
                     traders.forEach(t => {
                         const llReq = t.requirements ? t.requirements.find(r => r.type === 'loyaltyLevel') : null;
                         t.minTraderLevel = llReq ? llReq.value : 1;
-
                         const taskReq = t.requirements ? t.requirements.find(r => r.type === 'questCompleted') : null;
                         if (taskReq && taskReq.stringValue) {
                             t.taskUnlockName = taskMap.get(taskReq.stringValue) || 'Unknown Task';
@@ -216,14 +207,11 @@ createApp({
                     });
                     traders.sort((a, b) => a.minTraderLevel - b.minTraderLevel);
                 }
-
-                // --- クラフト情報 ---
                 let crafts = [];
                 if (a.item && a.item.craftsFor) {
                     crafts = a.item.craftsFor;
                     crafts.sort((a, b) => a.level - b.level);
                 }
-
                 return {
                     ...a,
                     id: a.item ? a.item.id : Math.random(),
@@ -231,14 +219,12 @@ createApp({
                     shortName: a.item ? a.item.shortName : null,
                     description: a.item ? a.item.description : '',
                     wikiLink: a.item ? a.item.wikiLink : null,
-                    image512pxLink: a.item ? a.item.image512pxLink : null, // ★修正: CompAmmo用に画像をトップレベルへ
-                    
+                    image512pxLink: a.item ? a.item.image512pxLink : null,
                     accuracyModifier: a.accuracyModifier,
                     recoilModifier: a.recoilModifier,
                     lightBleedModifier: a.lightBleedModifier,
                     heavyBleedModifier: a.heavyBleedModifier,
                     ricochetChance: a.ricochetChance,
-                    
                     soldBy: traders,
                     crafts: crafts
                 };
@@ -257,12 +243,14 @@ createApp({
 
                     if ((nowTime - lastTime < MIN_INTERVAL) && cache.tasks && cache.tasks.length > 0) {
                         const remainSec = Math.ceil((MIN_INTERVAL - (nowTime - lastTime)) / 1000);
+                        // 自動更新チェックの場合はalertを出さないようにする制御も可能ですが、
+                        // 手動クリック時のフィードバックとして残しておきます。
                         alert(`データは最新です (あと ${remainSec} 秒)。`);
                         
                         hideoutData.value = cache.hideoutStations;
                         taskData.value = cache.tasks;
                         itemsData.value = cache.items;
-                        ammoData.value = cache.ammo || []; // キャッシュから復元
+                        ammoData.value = cache.ammo || []; 
                         lastUpdated.value = cache.timestamp;
                         return; 
                     }
@@ -285,7 +273,6 @@ createApp({
                 if (result.errors) throw new Error(`GraphQL Error: ${result.errors[0].message}`);
                 if (!result.data) throw new Error(`No Data`);
                 
-                // ★修正: 共通関数を使用してデータを整形
                 hideoutData.value = result.data.hideoutStations || [];
                 taskData.value = processTasks(result.data.tasks || []);
                 itemsData.value = processItems(result.data.items, result.data.maps);
@@ -305,7 +292,6 @@ createApp({
                     ammo: ammoData.value
                 });
                 
-                // データ更新時のハイドアウト初期化
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
                 });
@@ -370,22 +356,43 @@ createApp({
         // --- 5. ライフサイクル & 監視 ---
         onMounted(() => {
             const cache = loadLS(APP_CACHE_KEY, null);
+            // ★自動更新の閾値: 20時間 (ミリ秒換算)
+            const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
+            
+            let shouldFetch = true; // デフォルトではフェッチを試みる
+
             if (cache && cache.tasks) {
+                // まずキャッシュを表示 (UX向上のため即座に表示)
                 hideoutData.value = cache.hideoutStations;
                 taskData.value = cache.tasks;
                 itemsData.value = cache.items || { items: [], maps: [] };
                 ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
+
+                // 時間経過チェック
+                const lastTime = cache.lastFetchTime || 0;
+                const now = Date.now();
+                
+                if ((now - lastTime) < AUTO_UPDATE_THRESHOLD) {
+                    // 20時間以内ならキャッシュを正とし、自動フェッチを行わない
+                    shouldFetch = false;
+                    console.log(`Cache is valid. (${((now - lastTime)/1000/60/60).toFixed(1)} hours passed)`);
+                } else {
+                    console.log("Cache is too old. Auto-fetching...");
+                    // 20時間以上経過しているので shouldFetch = true のまま
+                }
+
             } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // ★修正: data.js (TARKOV_DATA) からロードする場合も、API取得時と同じ整形処理を通す
                 console.log("Loading from TARKOV_DATA...");
                 hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
                 taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
                 itemsData.value = processItems(TARKOV_DATA.data.items, TARKOV_DATA.data.maps);
                 ammoData.value = processAmmo(TARKOV_DATA.data.ammo, taskData.value);
                 lastUpdated.value = 'Backup File';
+                shouldFetch = false; // バックアップデータがある場合は自動フェッチしない(手動更新に任せる)
             }
 
+            // ユーザー設定の復元
             userHideout.value = loadLS('eft_hideout', {});
             completedTasks.value = loadLS('eft_tasks', []);
             collectedItems.value = loadLS('eft_collected', []);
@@ -397,8 +404,6 @@ createApp({
             if (itemsData.value.items.length > 0) {
                 applyKeyPresets(itemsData.value.items);
             }
-            
-            // ★修正: ハイドアウトレベルのスライダー位置ズレ防止 (未定義項目を0で初期化)
             if (hideoutData.value.length > 0) {
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
@@ -408,6 +413,11 @@ createApp({
             window.addEventListener('mermaid-task-click', (e) => {
                 openTaskFromName(e.detail);
             });
+
+            // ★条件を満たしていればデータ取得を実行
+            if (shouldFetch) {
+                fetchData();
+            }
         });
 
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, playerLevel, prioritizedTasks], () => {
@@ -446,7 +456,6 @@ createApp({
             return sortedGrouped;
         });
 
-        // マップ順序の固定
         const tasksByMap = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByMap(visibleTasks.value);
             const mapOrder = [
