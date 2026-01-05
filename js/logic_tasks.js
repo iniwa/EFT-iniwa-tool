@@ -61,6 +61,62 @@ const TaskLogic = {
     },
 
     /**
+     * 日本語名も含めてマップを検索する
+     */
+    getTaskMaps(task) {
+        const mapKeywords = {
+            "Customs": ["customs", "カスタム"],
+            "Factory": ["factory", "工場", "night factory"],
+            "Interchange": ["interchange", "インターチェンジ"],
+            "The Lab": ["the lab"], 
+            "Lighthouse": ["lighthouse", "ライトハウス"],
+            "Reserve": ["reserve", "リザーブ", "軍事基地", "military base"],
+            "Shoreline": ["shoreline", "ショアライン"],
+            "Streets of Tarkov": ["streets of tarkov", "streets", "ストリート"],
+            "Woods": ["woods", "ウッズ"],
+            "Ground Zero": ["ground zero", "グラウンドゼロ"],
+            "The Labyrinth": ["labyrinth", "ラビリンス"]
+        };
+        
+        const maps = new Set();
+
+        // 1. APIのマップ情報があれば追加 (最優先)
+        if (task.map && task.map.name) {
+            let apiMapName = task.map.name;
+            if (apiMapName.includes("Night")) apiMapName = "Factory";
+            if (apiMapName.includes("21+")) apiMapName = "Ground Zero";
+            maps.add(apiMapName);
+        }
+
+        // 2. 目標の説明文からマップ名を検索して追加
+        if (task.objectives) {
+            task.objectives.forEach(obj => {
+                const desc = (obj.description || "").toLowerCase();
+                for (const [officialName, keywords] of Object.entries(mapKeywords)) {
+                    if (maps.has(officialName)) continue;
+                    
+                    for (const key of keywords) {
+                        if (desc.includes(key.toLowerCase())) {
+                            maps.add(officialName);
+                            break; 
+                        }
+                    }
+                }
+            });
+        }
+
+        // 誤検知タスクを「特別に」除外するリスト
+        // - "One Less Loose End": Factoryタスクだが "lab journal" でヒットしてしまう
+        // - "A Healthy Alternative": Reserveタスクだが "laboratory" でヒットしてしまう
+        if (task.name === "One Less Loose End" || task.name === "A Healthy Alternative") {
+            maps.delete("The Lab");
+        }
+
+        if (maps.size === 0) return [];
+        return Array.from(maps).sort();
+    },
+
+    /**
      * トレーダーごとのグループ化
      */
     groupTasksByTrader(tasks) {
@@ -89,21 +145,6 @@ const TaskLogic = {
     },
 
     /**
-     * タスク情報からマップ名を抽出するヘルパー
-     */
-    getTaskMaps(task) {
-        const maps = new Set();
-        if (task.map) maps.add(task.map.name);
-        if (task.objectives) {
-            task.objectives.forEach(obj => {
-                if (obj.maps) obj.maps.forEach(m => maps.add(m.name));
-                if (obj.map) maps.add(obj.map.name);
-            });
-        }
-        return Array.from(maps);
-    },
-
-    /**
      * ショッピングリスト計算
      */
     calculate(tasks, completed, addItemFunc) {
@@ -117,7 +158,7 @@ const TaskLogic = {
                 t.objectives.forEach(obj => {
                     if (obj.type === 'giveItem' && obj.item) {
                         
-                        // ★修正: カテゴリ判定ロジック
+                        // カテゴリ判定ロジック
                         // Collectorタスクは専用カテゴリへ、それ以外はFIR有無で振り分け
                         const isCollector = t.name === 'Collector';
                         let cat;
@@ -127,10 +168,10 @@ const TaskLogic = {
                             cat = obj.foundInRaid ? 'taskFir' : 'taskNormal';
                         }
 
-                        // ★修正: タスク名そのままを使用 ('Task: ' を付けない)
+                        // タスク名そのままを使用 ('Task: ' を付けない)
                         const srcName = t.name;
                         
-                        // ★修正: ソースタイプの設定
+                        // ソースタイプの設定
                         const srcType = isCollector ? 'collector' : 'task';
                         
                         addItemFunc(
