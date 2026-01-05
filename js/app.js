@@ -107,7 +107,20 @@ createApp({
         // タスクデータの整形
         const processTasks = (tasks) => {
             if (!tasks) return [];
-            return tasks.map(t => {
+
+            // ★追加: タスク名の重複排除 (Drip Out対策)
+            // 同名のタスクが存在する場合、最初に見つかった1つだけを採用し、残りは無視する
+            const uniqueTasks = [];
+            const seenNames = new Set();
+            
+            tasks.forEach(t => {
+                if (!seenNames.has(t.name)) {
+                    seenNames.add(t.name);
+                    uniqueTasks.push(t);
+                }
+            });
+
+            return uniqueTasks.map(t => {
                 const rewards = [];
                 const r = t.finishRewards || {};
                 
