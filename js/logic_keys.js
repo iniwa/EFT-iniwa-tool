@@ -56,28 +56,12 @@ const KeyLogic = {
         // 4. IDの統合 (タスクとマップから抽出)
         const allKeyIds = new Set([...Object.keys(keyLocationMap), ...Object.keys(keyTaskMap)]);
 
-        // ★追加: 名前による鍵アイテムの救出 (使用先不明の鍵を拾うため)
-        // types情報がないため、アイテム名で判定する
+        // ★修正: 名前判定 ("key"を含むか) を廃止し、データ上の分類 (types) で判定する
+        // これにより "KeyMOD" や "KeySlot" などの誤検知を排除します
         itemsData.forEach(item => {
-            const name = (item.name || "").toLowerCase();
-            const shortName = (item.shortName || "").toLowerCase();
-            
-            // 判定キーワード: 鍵, key, card, カード
-            // 除外キーワード: キーカードホルダー, keytool などコンテナ類が含まれないように注意が必要だが、
-            // 一旦広く拾って、明らかに違うものは除外リストに入れるなどが安全。
-            // ここではシンプルなキーワード判定を行う。
-            
-            const isKeyByName = 
-                name.includes("key") || name.includes("鍵") || 
-                name.includes("card") || name.includes("カード");
-
-            // 既にリストにある場合はスキップ
-            if (isKeyByName && !allKeyIds.has(item.id)) {
-                // 明らかにゴミっぽいものを除外する簡易フィルタ (必要に応じて調整)
-                if (name.includes("keytool") || name.includes("keycard holder") || name.includes("ケース")) {
-                    return; 
-                }
-                allKeyIds.add(item.id);
+            // ステップ1で queries.js に types を追加していないと、ここは無視されます
+            if (item.types && item.types.includes('keys')) {
+                 allKeyIds.add(item.id);
             }
         });
 
@@ -98,10 +82,8 @@ const KeyLogic = {
                 mapName = keyLocationMap[finalId][0];
             }
 
-            // Unknownフィルタリングについて:
+            // Unknownフィルタリング:
             // 今回は「使用先不明の鍵」も表示したいので、mapNameがUnknownでも許可する。
-            // ただし、タスクもなく、マップもなく、名前も鍵っぽくない（IDだけリストにあった謎データ）は弾く。
-            // (ステップ4で名前チェックを通しているので、ここに来るUnknownは「名前が鍵」か「リストにあった」もののどちらか)
             
             // 登録
             if (taskNames.length > 0) {
@@ -110,7 +92,6 @@ const KeyLogic = {
                 });
             } else {
                 // タスクなし
-                // マップ情報があればそれを表示、なければ Unknown / Other になる
                 addItemFunc('keys', finalId, keyName, 1, '-', 'map', mapName, wiki, short, norm);
             }
         });

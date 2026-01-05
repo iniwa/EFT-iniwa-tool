@@ -92,6 +92,7 @@ query GetData {
     image512pxLink
     width
     height
+    types
     
     # 削除: sellFor (売却額)
     # 削除: buyFor (購入額 - 弾薬以外は不要)
