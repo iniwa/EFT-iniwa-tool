@@ -3,17 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniwa's Intel Center</title>
+    
+    <title>EFT タスク＆ハイドアウト管理ツール | Iniwa's Intel Center</title>
+    <meta name="description" content="Escape from Tarkov (EFT/タルコフ) 用の進捗管理ツール。タスク、ハイドアウト、鍵、弾薬、納品アイテムを一元管理。PvE/PvP対応。必要なアイテムや鍵を自動計算し、効率的なレイドをサポートします。">
+    <meta name="keywords" content="EFT, Escape from Tarkov, タルコフ, タスク管理, ハイドアウト, 鍵, 弾薬, ツール, PvE, 納品アイテム">
+
+    <meta property="og:title" content="EFT タスク＆ハイドアウト管理ツール | Iniwa's Intel Center">
+    <meta property="og:description" content="タルコフのタスク・ハイドアウト・鍵・弾薬を一括管理できるWebツール。必要なFIRアイテムや鍵を自動リストアップして効率化！">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://iniwach.com/eft-tool/"> <meta property="og:image" content="https://iniwach.com/eft-tool/ogp_image.png"> <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@iniwach">
+
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Iniwa's Intel Center",
+    "url": "https://iniwach.com/eft-tool/",
+    "description": "Escape from Tarkov (EFT) のタスク、ハイドアウト、鍵、弾薬を管理する多機能ブラウザツール。",
+    "applicationCategory": "GameUtility",
+    "operatingSystem": "Any",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "JPY"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Iniwa",
+        "url": "https://twitter.com/iniwach"
+    }
+    }
+    </script>
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <!-- Cloudflare Web Analytics -->
+
     <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4ece1c7234fa4f6cbfb6930c36791c4d"}'></script>
-    <!-- End Cloudflare Web Analytics -->
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-F2P73S8ECS"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -21,8 +51,7 @@
     gtag('js', new Date());
     gtag('config', 'G-F2P73S8ECS');
     </script>
-    <!-- END Google tag (gtag.js) -->
-</head>
+    </head>
 <body>
     <div id="app" class="container-fluid py-4">
         
