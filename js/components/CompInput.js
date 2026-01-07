@@ -1,10 +1,8 @@
-// js/components/CompInput.js
-
 const CompInput = {
     props: [
         'hideoutData', 'userHideout', 'filteredTasksList', 'completedTasks', 'prioritizedTasks', 
         'taskViewMode', 'showCompleted', 'showFuture', 'searchTask', 'tasksByTrader', 'tasksByMap', 'showMaxedHideout',
-        'showKappaOnly', 'showLightkeeperOnly', 'playerLevel' // playerLevelが必要なので確認
+        'showKappaOnly', 'showLightkeeperOnly', 'playerLevel'
     ],
     emits: [
         'update:taskViewMode', 'update:showCompleted', 'update:showFuture', 'update:searchTask', 
@@ -12,6 +10,13 @@ const CompInput = {
         'update:showKappaOnly', 'update:showLightkeeperOnly'
     ],
     
+    // ★追加: 並び替え用の設定を持つ
+    data() {
+        return {
+            taskSortMode: 'default' // 'default' (Level順) | 'name' (名前順)
+        }
+    },
+
     computed: {
         visibleHideoutStations() {
             if (!this.hideoutData) return [];
@@ -25,21 +30,34 @@ const CompInput = {
     },
 
     methods: {
-        // ★追加: タスクがロックされているか判定
         isLocked(task) {
-            // 完了済みはロックではない
             if (this.completedTasks.includes(task.name)) return false;
-            
-            // レベル制限 (Lv0は制限解除)
             if (this.playerLevel !== 0 && task.minPlayerLevel > this.playerLevel) return true;
-            
-            // 前提タスク制限
             if (task.taskRequirements) {
                 const reqsMet = task.taskRequirements.every(r => this.completedTasks.includes(r.task.name));
                 if (!reqsMet) return true;
             }
-            
             return false;
+        },
+
+        // ★追加: タスクリストを現在のモードに従って並び替える関数
+        getSortedTasks(tasks) {
+            if (!tasks) return [];
+            // 元の配列を壊さないようにコピーしてソート
+            const sorted = [...tasks];
+            
+            if (this.taskSortMode === 'name') {
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+            } else {
+                // Default: レベル順 (同じレベルなら名前順)
+                sorted.sort((a, b) => {
+                    if (a.minPlayerLevel !== b.minPlayerLevel) {
+                        return a.minPlayerLevel - b.minPlayerLevel;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+            }
+            return sorted;
         }
     },
 
@@ -102,14 +120,22 @@ const CompInput = {
 
                         <div class="form-check form-switch ms-1" v-if="!showCompleted">
                             <input class="form-check-input" type="checkbox" :checked="showFuture" @change="$emit('update:showFuture', $event.target.checked)">
-                            <label class="form-check-label small text-muted">ロック中も</label>
+                            <label class="form-check-label small text-muted">ロック中も表示</label>
                         </div>
                     </div>
                     
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-outline-warning" :class="{active: taskViewMode==='list'}" @click="$emit('update:taskViewMode', 'list')">List</button>
-                        <button class="btn btn-outline-warning" :class="{active: taskViewMode==='trader'}" @click="$emit('update:taskViewMode', 'trader')">Trader</button>
-                        <button class="btn btn-outline-warning" :class="{active: taskViewMode==='map'}" @click="$emit('update:taskViewMode', 'map')">Map</button>
+                    <div class="d-flex align-items-center gap-2">
+                        <select class="form-select form-select-sm bg-dark text-white border-secondary py-0" 
+                                style="width: auto; height: 31px;" v-model="taskSortMode">
+                            <option value="default">Default</option>
+                            <option value="name">Name</option>
+                        </select>
+
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-warning" :class="{active: taskViewMode==='list'}" @click="$emit('update:taskViewMode', 'list')">List</button>
+                            <button class="btn btn-outline-warning" :class="{active: taskViewMode==='trader'}" @click="$emit('update:taskViewMode', 'trader')">Trader</button>
+                            <button class="btn btn-outline-warning" :class="{active: taskViewMode==='map'}" @click="$emit('update:taskViewMode', 'map')">Map</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -117,7 +143,7 @@ const CompInput = {
                     <input type="text" class="form-control mb-3" placeholder="タスク名で検索..." :value="searchTask" @input="$emit('update:searchTask', $event.target.value)">
                     
                     <div v-if="taskViewMode === 'list'" class="list-group">
-                        <div v-for="task in filteredTasksList" :key="task.id" 
+                        <div v-for="task in getSortedTasks(filteredTasksList)" :key="task.id" 
                              class="list-group-item d-flex align-items-center gap-3"
                              :class="{'bg-secondary bg-opacity-25': isLocked(task)}">
                             
@@ -155,7 +181,7 @@ const CompInput = {
                         <div v-for="(tasks, group) in (taskViewMode === 'trader' ? tasksByTrader : tasksByMap)" :key="group" class="mb-3">
                             <h6 class="text-warning border-bottom border-secondary pb-1">{{ group }}</h6>
                             <div class="list-group">
-                                <div v-for="task in tasks" :key="task.name" 
+                                <div v-for="task in getSortedTasks(tasks)" :key="task.name" 
                                      class="list-group-item d-flex align-items-center gap-3 py-1"
                                      :class="{'bg-secondary bg-opacity-25': isLocked(task)}">
                                     
