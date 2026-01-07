@@ -1,6 +1,6 @@
 const CompFlowchart = {
-    props: ['taskData', 'completedTasks', 'prioritizedTasks', 'selectedTrader'],
-    emits: ['toggle-task', 'open-task-details', 'update:selectedTrader'],
+    props: ['taskData', 'completedTasks', 'prioritizedTasks', 'selectedTrader', 'isInitialSetupMode'],
+    emits: ['toggle-task', 'open-task-details', 'update:selectedTrader', 'update:isInitialSetupMode', 'batch-complete'],
     data() {
         return {
             nodeMap: {},
@@ -189,9 +189,19 @@ const CompFlowchart = {
             const task = this.nodeMap[simpleId];
 
             if (task) {
+                // Shiftキーが押されている場合は、モードに関わらず「単体トグル」を行う
                 if (event.shiftKey) {
                     this.$emit('toggle-task', task.name);
+                    return;
+                }
+
+                if (this.isInitialSetupMode) {
+                    // 初期設定モード & Shiftなし: クリックで前提タスクごと一括完了
+                    if (confirm(`「${task.name}」およびその前提タスクを全て完了済みにしますか？`)) {
+                        this.$emit('batch-complete', task.name);
+                    }
                 } else {
+                    // 通常モード & Shiftなし: 詳細表示
                     this.$emit('open-task-details', task);
                 }
             }
@@ -208,6 +218,15 @@ const CompFlowchart = {
                         @change="$emit('update:selectedTrader', $event.target.value)">
                     <option v-for="t in traderList" :key="t" :value="t">{{ t }}</option>
                 </select>
+                
+                <div class="form-check form-switch ms-2">
+                    <input class="form-check-input" type="checkbox" id="setupModeSwitch"
+                        :checked="isInitialSetupMode"
+                        @change="$emit('update:isInitialSetupMode', $event.target.checked)">
+                    <label class="form-check-label text-warning small" for="setupModeSwitch">
+                        初期設定モード
+                    </label>
+                </div>
             </div>
             
             <div class="d-flex align-items-center gap-3">
@@ -217,8 +236,11 @@ const CompFlowchart = {
                     <button class="btn btn-outline-secondary" @click="zoomIn" title="拡大">➕</button>
                 </div>
 
-                <small class="text-muted d-none d-md-inline">
+                <small class="text-muted d-none d-md-inline" v-if="!isInitialSetupMode">
                     (左クリック: 詳細 / <span class="text-warning fw-bold">Shift+左クリック: 完了</span>)
+                </small>
+                <small class="text-warning fw-bold d-none d-md-inline" v-else>
+                    (クリックで前提含む一括完了 / <span class="text-white">Shift+左クリック: 単体完了</span>)
                 </small>
             </div>
         </div>

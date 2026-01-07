@@ -185,11 +185,13 @@
                 :task-data="taskData"
                 :completed-tasks="completedTasks"
                 :prioritized-tasks="prioritizedTasks"
-                :selected-trader="flowchartTrader"
-                @update:selected-trader="flowchartTrader = $event"
+                v-model:selected-trader="flowchartTrader"
+                :is-initial-setup-mode="isInitialSetupMode"
+                @update:is-initial-setup-mode="val => isInitialSetupMode = val"
+                @batch-complete="batchCompleteTask"
                 @toggle-task="toggleTask"
-                @open-task-details="openTaskDetails"
-            ></comp-flowchart>
+                @open-task-details="openTaskDetails">
+            </comp-flowchart>
         </div>
 
         <div v-if="currentTab === 'debug'">
@@ -237,19 +239,19 @@
     <script src="js/queries.js?=v1.4.0"></script>
     <script src="js/key_presets.js?=v1.4.0"></script> 
     <script src="js/logic_hideout.js?=v1.4.0"></script>
-    <script src="js/logic_tasks.js?=v1.4.1"></script>
+    <script src="js/logic_tasks.js?=v1.4.4"></script>
     <script src="js/logic_keys.js?=v1.4.0"></script>
 
     <script src="js/components/CompHeader.js?=v1.4.3"></script>
     <script src="js/components/CompInput.js?=v1.4.2"></script>
     <script src="js/components/CompResult.js?=v1.4.0"></script>
     <script src="js/components/CompKeys.js?=v1.4.0"></script>
-    <script src="js/components/CompFlowchart.js?=v1.4.0"></script>
+    <script src="js/components/CompFlowchart.js?=v1.4.4"></script>
     <script src="js/components/CompModal.js?=v1.4.0"></script>
     <script src="js/components/CompDebug.js?=v1.4.0"></script>
     <script src="js/components/CompChat.js?=v1.4.0"></script>
     <script src="js/components/CompAmmo.js?v=1.4.0"></script>
-    <script src="js/components/CompFooter.js?=v1.4.3"></script>
+    <script src="js/components/CompFooter.js?=v1.4.4"></script>
 
     <script src="js/components/memo/CompMemoHealth.js?=v1.4.0"></script>
     <script src="js/components/memo/CompMemoWeapon.js?=v1.4.0"></script>
@@ -260,6 +262,6 @@
     <script src="js/components/memo/CompMemoItems.js?=v1.4.0"></script>
     <script src="js/components/CompMemo.js?=v1.4.0"></script>
 
-    <script src="js/app.js?=v1.4.0"></script>
+    <script src="js/app.js?=v1.4.4"></script>
 </body>
 </html>

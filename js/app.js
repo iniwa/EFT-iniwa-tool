@@ -29,6 +29,9 @@ createApp({
         const playerLevel = ref(0);
         const searchTask = ref("");
         
+        // 初期設定モード
+        const isInitialSetupMode = ref(false);
+        
         const expandedItems = ref({});
         const selectedTask = ref(null);
         const fileInput = ref(null);
@@ -53,8 +56,7 @@ createApp({
             } catch (e) { console.warn("LS Save Error:", e); }
         };
 
-        // ★修正: すべて loadLS を使って読み込むように変更
-        const showCompleted = ref(loadLS('eft_show_completed', false)); // 履歴表示の状態も保存したい場合はキーを指定
+        const showCompleted = ref(loadLS('eft_show_completed', false));
         const showFuture = ref(loadLS('eft_show_future', false));
         
         const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
@@ -148,6 +150,24 @@ createApp({
                 }
             });
             keyUserData.value = currentData;
+        };
+
+        // タスクを一括完了する関数
+        const batchCompleteTask = (taskName) => {
+            if (!taskData.value) return;
+            
+            const prereqs = TaskLogic.getAllPrerequisites(taskName, taskData.value);
+            const targets = [...prereqs, taskName];
+
+            let count = 0;
+            targets.forEach(t => {
+                if (!completedTasks.value.includes(t)) {
+                    completedTasks.value.push(t);
+                    count++;
+                }
+            });
+
+            console.log(`${count} tasks batch completed.`);
         };
 
         // --- データ加工・整形 ---
@@ -444,8 +464,8 @@ createApp({
         watch(playerLevel, (newVal) => saveLS('eft_level', newVal));
         watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
         watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
-        watch(showCompleted, (val) => saveLS('eft_show_completed', val)); // ★追加: 履歴モードの保存
-        watch(showFuture, (val) => saveLS('eft_show_future', val));       // ★追加: ロック表示の保存
+        watch(showCompleted, (val) => saveLS('eft_show_completed', val));
+        watch(showFuture, (val) => saveLS('eft_show_future', val));
 
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
@@ -607,7 +627,11 @@ createApp({
             filteredTasksList, tasksByTrader, tasksByMap, shoppingList, totalItemsNeeded, totalKeysNeeded,
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
-            exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData
+            exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData,
+            
+            // 新規追加
+            isInitialSetupMode,
+            batchCompleteTask
         };
     }
 })
