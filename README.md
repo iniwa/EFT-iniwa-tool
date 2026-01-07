@@ -1,7 +1,27 @@
 **Geminiにコードを書いていただきました。いかなる問題がおきたとしても全てにおいて自己責任でお願いします。**  
 **tarkov.dev APIを利用しています。更新ボタンの連打はやめてください。**  
 
+Title: Iniwa's Intel Center (EFT Tool)
+
+Description: Escape from Tarkov task & hideout tracker.
+
+Features:
+
+Task filtering (Kappa/Lightkeeper)
+
+Items to keep (FIR) list generation
+
+Key management
+
+Ammo chart
+
+Data Source: Tarkov.dev API
+
+Author: @iniwach
+
 更新には5分間隔の制限を入れてます。  
+
+-----
 
 `https://efttool.iniwach.com`より利用できます。  
 ダウンロードし、`index.html`をダブルクリックすることでも利用できます（アップデートは適応されません）。  
