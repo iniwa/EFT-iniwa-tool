@@ -188,5 +188,30 @@ const TaskLogic = {
                 });
             }
         });
+    },
+
+    /**
+     * 指定したタスクの「前提タスク」を再帰的に全て取得する
+     */
+    getAllPrerequisites(taskName, allTasks, visited = new Set()) {
+        const results = [];
+        const task = allTasks.find(t => t.name === taskName);
+        if (!task || visited.has(taskName)) return results;
+
+        visited.add(taskName);
+
+        if (task.taskRequirements) {
+            task.taskRequirements.forEach(req => {
+                const reqName = req.task.name;
+                if (!visited.has(reqName)) {
+                    results.push(reqName);
+                    // 再帰的に親の親を取得
+                    const parents = this.getAllPrerequisites(reqName, allTasks, visited);
+                    results.push(...parents);
+                }
+            });
+        }
+        
+        return [...new Set(results)];
     }
 };
