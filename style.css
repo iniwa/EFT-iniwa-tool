@@ -71,7 +71,7 @@ a, button, .btn, .form-check-input, .list-group-item-action, label, select,
 }
 
 /* カード・リスト */
-.card { background-color: #1e1e1e; border: 1px solid #333; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+.card { background-color: #1e1e1e; border: 1px solid #333; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border-radius: 2px; border: 1px solid #444;}
 .card-header { background-color: #252525; border-bottom: 1px solid #333; color: #ffd700; font-weight: bold; }
 .list-group-item { background-color: #181818; border: 1px solid #333; }
 .list-group-item:hover { background-color: #2a2a2a; }
