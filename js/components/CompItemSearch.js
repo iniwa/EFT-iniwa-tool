@@ -102,6 +102,12 @@ const CompItemSearch = {
             const h = Math.floor(sec / 3600);
             const m = Math.floor((sec % 3600) / 60);
             return `${h}h ${m}m`;
+        },
+        // ★追加: クラフト成果物の中から自分自身の個数を取得
+        getCraftCount(craft, itemId) {
+            if (!craft.rewardItems) return null;
+            const selfReward = craft.rewardItems.find(r => r.item.id === itemId);
+            return selfReward ? selfReward.count : null;
         }
     },
     template: `
@@ -176,7 +182,7 @@ const CompItemSearch = {
                             <tr v-if="expandedItems[item.id]" class="bg-secondary bg-opacity-10 border-bottom border-secondary">
                                 <td colspan="5" class="p-3">
                                     <div class="row g-3">
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg">
                                             <h6 class="text-success border-bottom border-success pb-1 small">🛒 入手・交換・製造</h6>
                                             
                                             <div v-if="getBuySources(item).length > 0">
@@ -201,7 +207,9 @@ const CompItemSearch = {
                                                 <ul class="list-unstyled mb-0 ps-1">
                                                     <li v-for="(c, cIdx) in item.craftsFor" :key="cIdx" class="mb-1 text-light">
                                                         <span class="badge bg-secondary border border-light me-1">🔧 {{ c.station.name }} Lv{{ c.level }}</span>
-                                                        <span class="text-info text-decoration-underline cursor-pointer small" 
+                                                        <span v-if="getCraftCount(c, item.id) > 1" class="badge bg-success border border-light ms-1">x{{ getCraftCount(c, item.id) }}</span>
+                                                        
+                                                        <span class="text-info text-decoration-underline cursor-pointer small ms-1" 
                                                               style="cursor: pointer;" 
                                                               @click.stop="openCraftPopup(c)">レシピ</span>
                                                     </li>
@@ -211,7 +219,7 @@ const CompItemSearch = {
                                             <div v-if="getBuySources(item).length === 0 && (!item.craftsFor || item.craftsFor.length === 0)" class="small text-muted">情報なし</div>
                                         </div>
 
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg">
                                             <h6 class="text-info border-bottom border-info pb-1 small">📦 タスク / 🏠 隠れ家</h6>
                                             <div v-if="item.usedInTasks && item.usedInTasks.length > 0" class="mb-2">
                                                 <div class="small text-muted fw-bold mb-1" style="font-size: 0.7rem;">[タスク]</div>
@@ -238,7 +246,7 @@ const CompItemSearch = {
                                             <div v-if="(!item.usedInTasks || item.usedInTasks.length === 0) && getHideoutUsage(item).length === 0" class="small text-muted">特になし</div>
                                         </div>
 
-                                        <div class="col-md-6 col-lg-3">
+                                        <div class="col-md-6 col-lg">
                                             <h6 class="text-warning border-bottom border-warning pb-1 small">🔄 使用先 (素材)</h6>
                                             
                                             <div v-if="item.bartersUsing && item.bartersUsing.length > 0">
@@ -257,7 +265,13 @@ const CompItemSearch = {
                                                 <ul class="list-unstyled mb-0 ps-1">
                                                     <li v-for="(c, idx) in item.craftsUsing" :key="idx" class="small mb-1 text-truncate">
                                                         <span class="badge bg-secondary border border-secondary me-1">🔧 {{ c.station.name }}</span>
-                                                        <span class="text-light" v-for="reward in c.rewardItems">{{ reward.item.name }}</span>
+                                                        <span class="text-info text-decoration-underline cursor-pointer" 
+                                                            style="cursor: pointer;"
+                                                            @click.stop="openCraftPopup(c)">
+                                                            <span v-for="(reward, rIdx) in c.rewardItems" :key="rIdx">
+                                                                {{ reward.item.name }}<span v-if="rIdx < c.rewardItems.length - 1">, </span>
+                                                            </span>
+                                                        </span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -265,15 +279,18 @@ const CompItemSearch = {
                                             <div v-if="(!item.bartersUsing || item.bartersUsing.length === 0) && (!item.craftsUsing || item.craftsUsing.length === 0)" class="small text-muted">特になし</div>
                                         </div>
 
-                                        <div class="col-md-6 col-lg-3 d-flex flex-column gap-2 justify-content-start">
-                                            <a :href="item.wikiLink" target="_blank" class="btn btn-sm btn-outline-info w-100 py-0 px-2" style="font-size: 0.8rem;">Wiki</a>
-                                            <button class="btn btn-sm w-100 py-0 px-2" style="font-size: 0.8rem;"
+                                        <div class="col-md-6 col-lg-auto d-flex flex-column gap-2 justify-content-start border-start-lg border-secondary ps-lg-3">
+                                            
+                                            <a :href="item.wikiLink" target="_blank" class="btn btn-sm btn-outline-info py-1 px-2" style="font-size: 0.8rem;">Wiki</a>
+                                            
+                                            <button class="btn btn-sm py-1 px-2" style="font-size: 0.8rem;"
                                                 :class="isUpdating(item.id) ? 'btn-secondary' : 'btn-success'" 
                                                 @click.stop="$emit('update-single-price', item.id)" 
                                                 :disabled="isUpdating(item.id)">
                                                 <span v-if="isUpdating(item.id)"><span class="spinner-border spinner-border-sm me-1"></span>更新中...</span>
                                                 <span v-else>個別更新</span>
                                             </button>
+                                            
                                             <small class="text-muted" style="font-size: 0.7rem; line-height: 1.2;">※フリーマーケット・トレーダー買取価格のみ更新</small>
                                         </div>
                                     </div>
@@ -340,12 +357,12 @@ const CompItemSearch = {
                     <div class="mb-3 text-center border-bottom border-secondary pb-3">
                         <div class="small text-muted mb-1">作成対象 (Product)</div>
                         <div v-if="selectedCraft.rewardItems && selectedCraft.rewardItems.length > 0">
-                            <div class="fw-bold fs-5 text-success">
+                             <div class="fw-bold fs-5 text-success">
                                 <span v-if="selectedCraft.rewardItems[0].item.iconLink">
                                     <img :src="selectedCraft.rewardItems[0].item.iconLink" style="width: 30px; height: 30px; object-fit: contain;" class="me-2">
                                 </span>
                                 {{ selectedCraft.rewardItems[0].item.name }} x{{ selectedCraft.rewardItems[0].count }}
-                            </div>
+                             </div>
                         </div>
                         <div class="mt-2 badge bg-secondary border border-light">
                             {{ selectedCraft.station.name }} (Lv{{ selectedCraft.level }})
