@@ -36,6 +36,120 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
+        const itemDb = shallowRef([]);     // 重いのでshallowRef推奨
+        const itemDbLoading = ref(false);
+        const wishlist = ref([]);          // IDリスト
+// js/app.js - setup() 内
+
+        // --- アイテムDB関連のロジック ---
+
+        const fetchItemDatabase = async () => {
+            if (itemDbLoading.value) return;
+            itemDbLoading.value = true;
+
+            // 言語は日本語(ja)を指定。重いので必要なフィールドのみ厳選
+            const query = `
+            {
+                items(lang: ja) {
+                    id
+                    name
+                    shortName
+                    normalizedName
+                    iconLink
+                    wikiLink
+                    avg24hPrice
+                    sellFor {
+                        price
+                        currency
+                        priceRUB
+                        vendor { name }
+                    }
+                    usedInTasks { name }
+                    bartersUsing {
+                        trader { name }
+                        level
+                        rewardItems {
+                            count
+                            item { name }
+                        }
+                    }
+                }
+            }`;
+
+            try {
+                const response = await fetch('https://api.tarkov.dev/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const result = await response.json();
+                
+                if (result.errors) throw new Error(result.errors[0].message);
+                
+                // データ保存 (IDBにもキャッシュ推奨だが、ここではメモリ展開のみ実装)
+                itemDb.value = result.data.items || [];
+                
+                // IndexedDBにも保存しておく（次回起動時の高速化のため）
+                await saveDB('eft_item_db_cache', {
+                    timestamp: Date.now(),
+                    items: itemDb.value
+                });
+
+            } catch (err) {
+                alert(`DB取得失敗: ${err.message}`);
+            } finally {
+                itemDbLoading.value = false;
+            }
+        };
+
+        const updateSingleItemPrice = async (itemId) => {
+            const query = `
+            {
+                item(id: "${itemId}", lang: ja) {
+                    avg24hPrice
+                    sellFor {
+                        price
+                        currency
+                        priceRUB
+                        vendor { name }
+                    }
+                }
+            }`;
+            
+            try {
+                const response = await fetch('https://api.tarkov.dev/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const result = await response.json();
+                if (result.data && result.data.item) {
+                    // itemDb内の対象アイテムを更新
+                    const targetIndex = itemDb.value.findIndex(i => i.id === itemId);
+                    if (targetIndex > -1) {
+                        const newItem = { ...itemDb.value[targetIndex] };
+                        newItem.avg24hPrice = result.data.item.avg24hPrice;
+                        newItem.sellFor = result.data.item.sellFor;
+                        
+                        // 配列のリアクティブ更新のため置換
+                        const newDb = [...itemDb.value];
+                        newDb[targetIndex] = newItem;
+                        itemDb.value = newDb;
+                        
+                        alert(`「${newItem.name}」の価格情報を更新しました。`);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                alert("価格更新に失敗しました");
+            }
+        };
+
+        const toggleWishlist = (id) => {
+            const idx = wishlist.value.indexOf(id);
+            if (idx > -1) wishlist.value.splice(idx, 1);
+            else wishlist.value.push(id);
+        };
         // --- 設定値の読み書き (LocalStorage) ---
         
         // データを正しく復元するための関数 (JSONパース付き)
@@ -457,7 +571,12 @@ createApp({
 
             if (shouldFetch) {
                 fetchData();
-            }
+            
+            const dbCache = await loadDB('eft_item_db_cache');
+            if (dbCache && dbCache.items) {
+                console.log(`Loaded Item DB from Cache (${dbCache.items.length} items)`);
+                itemDb.value = dbCache.items;
+        }}
         });
 
         // 監視と保存
@@ -487,6 +606,7 @@ createApp({
                     page_title: newTab,
                     page_location: location.href.split('#')[0] + '#' + newTab
                 });
+        watch(wishlist, (val) => saveLS('eft_wishlist', val));
             }
         });
 
@@ -631,8 +751,12 @@ createApp({
             
             // 新規追加
             isInitialSetupMode,
-            batchCompleteTask
+            batchCompleteTask,
+            itemDb, itemDbLoading, wishlist,
+            fetchItemDatabase, updateSingleItemPrice, toggleWishlist
         };
+
+        
     }
 })
 .component('comp-header', CompHeader)
@@ -646,4 +770,5 @@ createApp({
 .component('comp-footer', CompFooter)
 .component('comp-ammo', CompAmmo)
 .component('comp-memo', CompMemo)
+.component('comp-item-search', CompItemSearch) // ★ここを追加
 .mount('#app');

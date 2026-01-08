@@ -96,6 +96,11 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" :class="{ active: currentTab === 'search' }" href="#" @click.prevent="currentTab = 'search'">
+                    🔍 Item Search
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'memo'}" @click="currentTab = 'memo'" href="#">
                     📝 Memo
                 </a>
@@ -220,6 +225,18 @@
             ></comp-chat>
         </div>
 
+        <div v-show="currentTab === 'search'">
+            <comp-item-search
+                :item-db="itemDb"
+                :completed-tasks="completedTasks"
+                :wishlist="wishlist"
+                :is-loading-db="itemDbLoading"
+                @fetch-db="fetchItemDatabase"
+                @update-single-price="updateSingleItemPrice"
+                @toggle-wishlist="toggleWishlist"
+            ></comp-item-search>
+        </div>
+
         <comp-modal
             :selected-task="selectedTask"
             :completed-tasks="completedTasks" 
@@ -241,6 +258,7 @@
     <script src="js/logic_hideout.js?=v1.4.0"></script>
     <script src="js/logic_tasks.js?=v1.4.4"></script>
     <script src="js/logic_keys.js?=v1.4.0"></script>
+    <script src="js/logic_items.js?=v1.4.5"></script>
 
     <script src="js/components/CompHeader.js?=v1.4.3"></script>
     <script src="js/components/CompInput.js?=v1.4.2"></script>
@@ -252,6 +270,8 @@
     <script src="js/components/CompChat.js?=v1.4.0"></script>
     <script src="js/components/CompAmmo.js?v=1.4.0"></script>
     <script src="js/components/CompFooter.js?=v1.4.4"></script>
+    <script src="js/components/CompItemSearch.js?=v1.4.5"></script>
+
 
     <script src="js/components/memo/CompMemoHealth.js?=v1.4.0"></script>
     <script src="js/components/memo/CompMemoWeapon.js?=v1.4.0"></script>
@@ -262,6 +282,6 @@
     <script src="js/components/memo/CompMemoItems.js?=v1.4.0"></script>
     <script src="js/components/CompMemo.js?=v1.4.0"></script>
 
-    <script src="js/app.js?=v1.4.4"></script>
+    <script src="js/app.js?=v1.4.5"></script>
 </body>
 </html>
