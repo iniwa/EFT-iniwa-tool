@@ -1,6 +1,13 @@
-const GRAPHQL_QUERY = `
+// js/queries.js
+
+/**
+ * ゲームモードと言語を指定してGraphQLクエリを生成する関数
+ * @param {string} gameMode - 'pve' or 'regular'
+ * @param {string} lang - 'ja' or 'en'
+ */
+const getMainQuery = (gameMode, lang) => `
 query GetData {
-  tasks(gameMode: pve, lang: ja) {
+  tasks(gameMode: ${gameMode}, lang: ${lang}) {
     id
     name
     minPlayerLevel
@@ -62,89 +69,64 @@ query GetData {
     }
   }
   
-  hideoutStations(lang: ja) {
+  # gameModeあり
+  hideoutStations(gameMode: ${gameMode}, lang: ${lang}) {
+    id
     name
     levels {
+      id
       level
-      itemRequirements { count item { id name } attributes { type value } }
-    }
-  }
-
-  maps(lang: ja) {
-    name
-    locks {
-      key { 
-        id 
-        name
-        shortName
-        normalizedName
+      constructionTime
+      
+      itemRequirements {
+        count
+        item { id name }
+        # ★追加: これがないとFIR判定ができず、すべて購入枠に入ってしまいます
+        attributes { type value }
+      }
+      
+      traderRequirements {
+        trader { name }
+        value
+        requirementType
+        compareMethod
+      }
+      
+      stationLevelRequirements {
+        station { name }
+        level
       }
     }
   }
-  
-  # アイテム情報のスリム化: sellFor, buyFor を削除
-  items(lang: ja) {
+
+  # gameModeあり
+  items(gameMode: ${gameMode}, lang: ${lang}) {
     id
     name
     shortName
     normalizedName
-    wikiLink
     image512pxLink
-    width
-    height
-    types
     
-    # 削除: sellFor (売却額)
-    # 削除: buyFor (購入額 - 弾薬以外は不要)
-    
-    craftsFor {
-      station { name }
-      level
-      duration
-      requiredItems {
-        count
-        quantity
-        item { name }
-        attributes { name type value }
-      }
-      rewardItems {
-        quantity
-        count
-        item { name }
-        attributes { name type value }
-      }
-      taskUnlock {
-         name
-         id
-         trader { name }
-      }
+    sellFor {
+      price
+      priceRUB
+      currency
+      vendor { name }
     }
     
-    bartersFor {
-      level
-      trader { name }
-      requiredItems {
-        count
-        quantity
-        item { name }
-        attributes { name type value }
-      }
-      rewardItems {
-        count
-        quantity
-        item { name }
-        attributes { name type value }
-      }
-      taskUnlock {
-        name
-        id
-        trader { name }
-      }
+    containsItems { item { id } }
+  }
+  
+  # gameModeなし
+  maps(lang: ${lang}) {
+    name
+    locks {
+      key { id }
     }
   }
   
-  # 弾薬情報の buyFor は維持
-  ammo(lang: ja) {
+  # gameModeなし
+  ammo(lang: ${lang}) {
     item {
       id
       name
@@ -153,7 +135,6 @@ query GetData {
       wikiLink
       image512pxLink
       
-      # 弾薬の購入情報は必要なので残す
       buyFor {
         priceRUB
         vendor { name }
@@ -196,5 +177,4 @@ query GetData {
     ammoType
     tracer
   }
-}
-`;
+}`;

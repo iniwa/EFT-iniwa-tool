@@ -210,6 +210,8 @@ const CompAmmo = {
             return '#6c757d'; 
         },
         getCaliberInfo(calId) {
+            if (!calId) return { name: 'Unknown', examples: '' };
+            
             return this.CALIBER_MAP[calId] || { name: calId.replace('Caliber', ''), examples: 'Unknown Weapon' };
         },
         hasData(calId) {

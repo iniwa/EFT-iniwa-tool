@@ -4,8 +4,32 @@ const { createApp, ref, shallowRef, computed, onMounted, watch } = Vue;
 
 createApp({
     setup() {
+        // --- 0. ヘルパー関数 (定義順序を一番上に配置) ---
+        const loadLS = (key, def) => {
+            try {
+                const val = localStorage.getItem(key);
+                return val ? JSON.parse(val) : def;
+            } catch (e) { 
+                console.warn(`LS Load Error (${key}):`, e);
+                return def; 
+            }
+        };
+        
+        const saveLS = (key, val) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch (e) { console.warn("LS Save Error:", e); }
+        };
+
+        const APP_VERSION = '2.0.0';
+
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
+        
+        // ★ゲームモードとデータ言語
+        const gameMode = ref(loadLS('eft_gamemode', 'pve')); 
+        const apiLang = ref(loadLS('eft_apilang', 'ja'));
+
         const taskViewMode = ref('list'); 
         
         const isLoading = ref(false);
@@ -13,8 +37,8 @@ createApp({
         const lastUpdated = ref(null);
 
         // キャッシュキー
-        const APP_CACHE_KEY = 'eft_api_cache_v29_idb'; 
-        const ITEM_DB_CACHE_KEY = 'eft_item_db_cache'; // アイテムDB用キー
+        const APP_CACHE_KEY = 'eft_api_cache_v30_idb'; 
+        const ITEM_DB_CACHE_KEY = 'eft_item_db_cache';
 
         const hideoutData = shallowRef([]);
         const taskData = shallowRef([]);
@@ -37,29 +61,12 @@ createApp({
         const selectedTask = ref(null);
         const fileInput = ref(null);
 
-        // アイテムDB関連 (修正)
+        // アイテムDB関連
         const itemDb = shallowRef([]);
         const itemDbLoading = ref(false);
-        const itemDbLastUpdated = ref(null); // ★追加: アイテムDBの最終更新日時
-        const updatingItemIds = ref([]);       // ★追加: 個別更新中のアイテムIDリスト
+        const itemDbLastUpdated = ref(null);
+        const updatingItemIds = ref([]);
         const wishlist = ref([]);
-
-        // --- 設定値の読み書き (LocalStorage) ---
-        const loadLS = (key, def) => {
-            try {
-                const val = localStorage.getItem(key);
-                return val ? JSON.parse(val) : def;
-            } catch (e) { 
-                console.warn(`LS Load Error (${key}):`, e);
-                return def; 
-            }
-        };
-        
-        const saveLS = (key, val) => {
-            try {
-                localStorage.setItem(key, JSON.stringify(val));
-            } catch (e) { console.warn("LS Save Error:", e); }
-        };
 
         const showCompleted = ref(loadLS('eft_show_completed', false));
         const showFuture = ref(loadLS('eft_show_future', false));
@@ -122,7 +129,6 @@ createApp({
             else alert("タスク詳細が見つかりませんでした");
         };
 
-        // ... (既存の updateKeyUserData, togglePriority, applyKeyPresets, batchCompleteTask など) ...
         const updateKeyUserData = (id, field, value) => {
             if (!keyUserData.value[id]) keyUserData.value[id] = { rating: '-', memo: '' };
             keyUserData.value[id][field] = value;
@@ -161,7 +167,6 @@ createApp({
             console.log(`${count} tasks batch completed.`);
         };
 
-        // ... (既存の processTasks, processItems, processAmmo, fetchData, exportData, importData, toggleTask など) ...
         const processTasks = (tasks) => {
             if (!tasks) return [];
             const uniqueTasks = [];
@@ -200,6 +205,7 @@ createApp({
                 return { ...t, finishRewardsList: rewards, wikiLink: finalWikiLink, derivedMaps: maps, mapLabel: mapLabel };
             });
         };
+
         const processItems = (rawItems, rawMaps) => {
             const mapLookup = {};
             if (rawMaps) {
@@ -230,6 +236,8 @@ createApp({
                 maps: rawMaps || []
             };
         };
+
+        // ★修正: 弾薬データの加工（caliberが空の場合の安全策を追加）
         const processAmmo = (rawAmmo, taskList) => {
             const taskMap = new Map((taskList || []).map(t => [t.id, t.name]));
             return (rawAmmo || []).map(a => {
@@ -253,6 +261,9 @@ createApp({
                 }
                 return {
                     ...a,
+                    // ★安全策: caliberがundefinedの場合は 'Unknown' にする
+                    caliber: a.caliber || 'Unknown', 
+                    
                     id: a.item ? a.item.id : Math.random(),
                     name: a.item ? a.item.name : 'Unknown Ammo',
                     shortName: a.item ? a.item.shortName : null,
@@ -269,10 +280,12 @@ createApp({
                 };
             });
         };
-        const fetchData = async () => {
+
+        const fetchData = async (force = false) => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
             const cache = await loadDB(APP_CACHE_KEY);
-            if (cache) {
+            
+            if (!force && cache) {
                 try {
                     const lastTime = cache.lastFetchTime || 0;
                     const nowTime = Date.now();
@@ -290,7 +303,11 @@ createApp({
             }
             isLoading.value = true;
             loadError.value = null;
-            const query = GRAPHQL_QUERY;
+
+            // ★修正: ゲームモードと言語を適用してクエリ生成
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const query = getMainQuery(mode, apiLang.value);
+
             try {
                 const response = await fetch('https://api.tarkov.dev/graphql', {
                     method: 'POST',
@@ -329,6 +346,7 @@ createApp({
                 isLoading.value = false;
             }
         };
+
         const exportData = () => {
             const data = {
                 userHideout: userHideout.value,
@@ -374,7 +392,7 @@ createApp({
             else completedTasks.value.push(taskName);
         };
 
-        // --- アイテムDB関連のロジック (★修正) ---
+        // --- アイテムDB関連のロジック ---
         const fetchItemDatabase = async (forceUpdate = false) => {
             if (itemDbLoading.value) return;
 
@@ -386,10 +404,14 @@ createApp({
             itemDbLoading.value = true;
             console.log("Fetching Item DB from API...");
 
-            // 【修正】クエリ: buyForのitemを除去し、bartersForを追加
+            // ★修正: gameModeと言語変数を適用
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const lang = apiLang.value;
+
+            // ★修正: クエリに gameMode: ${mode} を追加
             const query = `
             {
-                items(lang: ja) {
+                items(gameMode: ${mode}, lang: ${lang}) {
                     id
                     name
                     shortName
@@ -410,7 +432,7 @@ createApp({
                         requirements {
                             type
                             value
-                            # item { name } はエラーになるので削除
+                            # item { name } はエラー回避のため除外
                         }
                     }
                     bartersFor {
@@ -469,10 +491,14 @@ createApp({
 
         const updateSingleItemPrice = async (itemId) => {
             updatingItemIds.value.push(itemId);
+            
+            // ★修正: gameModeと言語変数を適用
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const lang = apiLang.value;
 
             const query = `
             {
-                item(id: "${itemId}", lang: ja) {
+                item(id: "${itemId}", gameMode: ${mode}, lang: ${lang}) {
                     avg24hPrice
                     sellFor {
                         price
@@ -497,8 +523,6 @@ createApp({
                             item { name iconLink }
                         }
                     }
-                    # 単体更新時は bartersUsing (素材としての用途) は変動しないため省略可ですが
-                    # 構造維持のため含めても構いません。ここでは通信量削減のため省略します。
                 }
             }`;
             
@@ -512,12 +536,10 @@ createApp({
                 if (result.data && result.data.item) {
                     const targetIndex = itemDb.value.findIndex(i => i.id === itemId);
                     if (targetIndex > -1) {
-                        // 既存のデータをベースに、取得したフィールドだけ上書き
                         const oldItem = itemDb.value[targetIndex];
                         const newItem = { 
                             ...oldItem, 
                             ...result.data.item,
-                            // bartersUsingなどはクエリに含めていないので、古いデータを維持する
                             bartersUsing: oldItem.bartersUsing,
                             usedInTasks: oldItem.usedInTasks
                         };
@@ -549,9 +571,6 @@ createApp({
 
         // --- ライフサイクル ---
         onMounted(async () => {
-            // ... (既存処理) ...
-
-            // ★アイテムDBのキャッシュ復元
             const dbCache = await loadDB(ITEM_DB_CACHE_KEY);
             if (dbCache && dbCache.items) {
                 console.log(`Loaded Item DB from Cache (${dbCache.items.length} items)`);
@@ -559,9 +578,6 @@ createApp({
                 itemDbLastUpdated.value = dbCache.timestamp || 'Unknown';
             }
 
-            // ... (その他の既存処理: fetchData, window.addEventListenerなど)
-            
-            // 下記の既存処理はそのまま
             const cache = await loadDB(APP_CACHE_KEY);
             const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
             let shouldFetch = true;
@@ -578,9 +594,6 @@ createApp({
                 if ((now - lastTime) < AUTO_UPDATE_THRESHOLD) {
                     shouldFetch = false;
                 }
-            } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                // ... (省略)
-                shouldFetch = false;
             }
 
             userHideout.value = loadLS('eft_hideout', {});
@@ -590,7 +603,7 @@ createApp({
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             prioritizedTasks.value = loadLS('eft_prioritized', []);
             playerLevel.value = parseInt(loadLS('eft_level', 0), 10);
-            wishlist.value = loadLS('eft_wishlist', []); // ★追加
+            wishlist.value = loadLS('eft_wishlist', []); 
 
             if (itemsData.value.items.length > 0) applyKeyPresets(itemsData.value.items);
             if (hideoutData.value.length > 0) {
@@ -619,7 +632,20 @@ createApp({
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
-        watch(wishlist, (val) => saveLS('eft_wishlist', val)); // ★追加
+        watch(wishlist, (val) => saveLS('eft_wishlist', val));
+
+        // ★追加: 設定変更時に保存＆再取得
+        watch([gameMode, apiLang], ([newMode, newLang]) => {
+            saveLS('eft_gamemode', newMode);
+            saveLS('eft_apilang', newLang);
+            
+            // 設定が変わったら強制リロード
+            fetchData(true);
+            
+            // アイテムDBもクリアして再取得させる
+            itemDb.value = []; 
+            saveDB(ITEM_DB_CACHE_KEY, { timestamp: 0, items: [] });
+        });
 
         // ... (計算ロジック shoppingList等はそのまま) ...
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(
@@ -703,11 +729,12 @@ createApp({
         const toggleCollected = (uid) => { const idx = collectedItems.value.indexOf(uid); if (idx > -1) collectedItems.value.splice(idx, 1); else collectedItems.value.push(uid); };
         const toggleOwnedKey = (id) => { const idx = ownedKeys.value.indexOf(id); if (idx > -1) ownedKeys.value.splice(idx, 1); else ownedKeys.value.push(id); };
         const displayLists = computed(() => ({
-            hideoutFir: { title: '🏠 Hideout (FIR必須)', items: shoppingList.value.hideoutFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
-            hideoutBuy: { title: '🏠 Hideout (購入で可)', items: shoppingList.value.hideoutBuy, borderClass: '', headerClass: 'bg-dark text-info border-info', badgeClass: 'bg-primary' },
-            taskFir: { title: '✅ Task (FIR必須)', items: shoppingList.value.taskFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
+            // Hideout -> ハイドアウト, Task -> タスク に変更
+            hideoutFir: { title: '🏠 ハイドアウト (FIR必須)', items: shoppingList.value.hideoutFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
+            hideoutBuy: { title: '🏠 ハイドアウト (購入で可)', items: shoppingList.value.hideoutBuy, borderClass: '', headerClass: 'bg-dark text-info border-info', badgeClass: 'bg-primary' },
+            taskFir: { title: '✅ タスク (FIR必須)', items: shoppingList.value.taskFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
             collector: { title: '👑 Collector (FIR)', items: shoppingList.value.collector, borderClass: 'border-danger', headerClass: 'bg-dark text-danger border-danger', badgeClass: 'bg-danger' },
-            taskNormal: { title: '📦 Task (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
+            taskNormal: { title: '📦 タスク (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
         }));
 
         return {
@@ -722,9 +749,11 @@ createApp({
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
             exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData,
             isInitialSetupMode, batchCompleteTask,
-            // ★新規追加・更新
+            // ★追加
+            gameMode, apiLang, 
             itemDb, itemDbLoading, itemDbLastUpdated, updatingItemIds, wishlist,
-            fetchItemDatabase, updateSingleItemPrice, toggleWishlist
+            fetchItemDatabase, updateSingleItemPrice, toggleWishlist,
+            APP_VERSION
         };
     }
 })
@@ -740,4 +769,5 @@ createApp({
 .component('comp-ammo', CompAmmo)
 .component('comp-memo', CompMemo)
 .component('comp-item-search', CompItemSearch)
+.component('comp-notice', CompNotice)
 .mount('#app');

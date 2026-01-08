@@ -7,7 +7,8 @@ const CompItemSearch = {
         'wishlist',        
         'isLoadingDb',     
         'itemDbLastUpdated', 
-        'updatingItemIds'    
+        'updatingItemIds',
+        'hideoutData'
     ],
     emits: ['fetch-db', 'update-single-price', 'toggle-wishlist', 'open-task-from-name'],
     data() {
@@ -77,24 +78,15 @@ const CompItemSearch = {
             this.selectedBarter = null;
         },
 
-        // 【修正】購入ソースの取得ロジックを刷新
         getBuySources(item) {
             const sources = [];
-
-            // 1. 現金購入 (buyFor)
             if (item.buyFor) {
                 item.buyFor.forEach(offer => {
-                    // フリーマーケットと、アイテム要求が含まれる(バーターの)ものを除外
-                    // (バーターは bartersFor で正確に取れるため)
                     if (offer.vendor.name === 'Flea Market') return;
-                    
                     const isBarter = offer.requirements.some(r => r.type === 'item');
                     if (isBarter) return;
-
-                    // レベル要件を取得
                     const llReq = offer.requirements.find(r => r.type === 'loyaltyLevel');
                     const level = llReq ? `LL${llReq.value}` : '';
-
                     sources.push({
                         type: 'cash',
                         vendor: offer.vendor.name,
@@ -104,8 +96,6 @@ const CompItemSearch = {
                     });
                 });
             }
-
-            // 2. バーター交換 (bartersFor)
             if (item.bartersFor) {
                 item.bartersFor.forEach(barter => {
                     sources.push({
@@ -116,15 +106,49 @@ const CompItemSearch = {
                     });
                 });
             }
-
             return sources;
+        },
+
+        isBarterOffer(offer) {
+            return offer.type === 'barter';
+        },
+
+        getBarterReqs(offer) {
+            return offer.requiredItems;
+        },
+
+        getTraderLevel(offer) {
+            return offer.level || '';
+        },
+
+        getHideoutUsage(item) {
+            if (!this.hideoutData) return [];
+            const usages = [];
+            
+            this.hideoutData.forEach(station => {
+                if (station.levels) {
+                    station.levels.forEach(lvl => {
+                        if (lvl.itemRequirements) {
+                            const req = lvl.itemRequirements.find(r => r.item.id === item.id);
+                            if (req) {
+                                usages.push({
+                                    stationName: station.name,
+                                    level: lvl.level,
+                                    count: req.count
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            return usages;
         }
     },
     template: `
     <div class="card h-100 border-secondary" style="position: relative;">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center gap-2">
-                <span class="fs-5">🔍 Item Database</span>
+                <span class="fs-5">🔍 アイテム検索</span>
                 <span v-if="itemDbLastUpdated" class="badge bg-secondary ms-2 small">
                     Updated: {{ itemDbLastUpdated }}
                 </span>
@@ -235,8 +259,10 @@ const CompItemSearch = {
                                         </div>
 
                                         <div class="col-md-6 col-lg-3">
-                                            <h6 class="text-info border-bottom border-info pb-1 small">📦 タスク</h6>
-                                            <div v-if="item.usedInTasks && item.usedInTasks.length > 0">
+                                            <h6 class="text-info border-bottom border-info pb-1 small">📦 タスク / 🏠 隠れ家</h6>
+                                            
+                                            <div v-if="item.usedInTasks && item.usedInTasks.length > 0" class="mb-2">
+                                                <div class="small text-muted fw-bold mb-1" style="font-size: 0.7rem;">[タスク]</div>
                                                 <ul class="list-unstyled mb-0 ps-1">
                                                     <li v-for="t in item.usedInTasks" :key="t.name" class="small mb-1">
                                                         <span 
@@ -249,7 +275,21 @@ const CompItemSearch = {
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <div v-else class="small text-muted">特になし</div>
+
+                                            <div v-if="getHideoutUsage(item).length > 0">
+                                                <div class="small text-muted fw-bold mb-1" style="font-size: 0.7rem;">[ハイドアウト]</div>
+                                                <ul class="list-unstyled mb-0 ps-1">
+                                                    <li v-for="(h, hIdx) in getHideoutUsage(item)" :key="hIdx" class="mb-1 text-light">
+                                                        <span class="small">🏠 {{ h.stationName }}</span>
+                                                        <span class="badge bg-secondary border border-dark ms-2">Lv.{{ h.level }}</span>
+                                                        <span class="text-info fw-bold ms-2">x{{ h.count }}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div v-if="(!item.usedInTasks || item.usedInTasks.length === 0) && getHideoutUsage(item).length === 0" class="small text-muted">
+                                                特になし
+                                            </div>
                                         </div>
 
                                         <div class="col-md-6 col-lg-3">
@@ -311,9 +351,9 @@ const CompItemSearch = {
         </div>
 
         <div v-if="selectedBarter" 
-            class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start pt-5"
-            style="background: rgba(0,0,0,0.7); z-index: 1050;"
-            @click.self="closeBarterPopup">
+             class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start pt-5"
+             style="background: rgba(0,0,0,0.7); z-index: 1050;"
+             @click.self="closeBarterPopup">
             
             <div class="card bg-dark border-secondary shadow" style="width: 400px; max-width: 90%;">
                 <div class="card-header border-secondary d-flex justify-content-between align-items-center">

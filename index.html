@@ -62,6 +62,10 @@
             :last-updated="lastUpdated" 
             :is-loading="isLoading" 
             v-model:player-level="playerLevel"
+            :game-mode="gameMode"
+            :api-lang="apiLang"
+            @update:game-mode="gameMode = $event"
+            @update:api-lang="apiLang = $event"
             @fetch-data="fetchData"
             @export-data="exportData"
             @trigger-import="triggerImport">
@@ -69,7 +73,7 @@
 
         <input type="file" ref="fileInput" class="d-none" accept=".json" @change="importData">
 
-<ul class="nav nav-tabs mb-3">
+        <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'input'}" @click="currentTab = 'input'" href="#">
                     📝 進捗入力
@@ -87,32 +91,32 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'flowchart'}" @click="currentTab = 'flowchart'" href="#">
-                    🗺️ Flowchart
+                    🗺️ フローチャート
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'ammo'}" @click="currentTab = 'ammo'" href="#">
-                    🔫 Ammo
+                    🔫 弾薬
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{ active: currentTab === 'search' }" href="#" @click.prevent="currentTab = 'search'">
-                    🔍 Item Search
+                    🔍 アイテム検索
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'memo'}" @click="currentTab = 'memo'" href="#">
-                    📝 Memo
+                    📝 メモ
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'chat'}" @click="currentTab = 'chat'" href="#">
-                    🤖 Chat
+                    🤖 チャット
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-secondary" :class="{active: currentTab === 'debug'}" @click="currentTab = 'debug'" href="#">
-                    🐞 Debug
+                    🐞 デバッグ
                 </a>
             </li>
         </ul>
@@ -199,7 +203,7 @@
             </comp-flowchart>
         </div>
 
-        <div v-if="currentTab === 'debug'">
+       <div v-if="currentTab === 'debug'">
             <comp-debug
                 :task-data="taskData"
                 :hideout-data="hideoutData"
@@ -213,7 +217,7 @@
             ></comp-debug>
         </div>
 
-        <div v-show="currentTab === 'chat'">
+        <div v-if="currentTab === 'chat'">
             <comp-chat
                 :task-data="taskData"
                 :hideout-data="hideoutData"
@@ -225,7 +229,7 @@
             ></comp-chat>
         </div>
 
-        <div v-show="currentTab === 'search'">
+        <div v-if="currentTab === 'search'">
             <comp-item-search
                 :item-db="itemDb"
                 :completed-tasks="completedTasks"
@@ -233,7 +237,8 @@
                 :is-loading-db="itemDbLoading"
                 :item-db-last-updated="itemDbLastUpdated"
                 :updating-item-ids="updatingItemIds"
-                @fetch-db="fetchItemDatabase"
+                
+                :hideout-data="hideoutData"  @fetch-db="fetchItemDatabase"
                 @update-single-price="updateSingleItemPrice"
                 @toggle-wishlist="toggleWishlist"
                 @open-task-from-name="openTaskFromName"
@@ -252,6 +257,8 @@
         ></comp-modal>
 
         <comp-footer></comp-footer>
+
+        <comp-notice :app-version="APP_VERSION"></comp-notice>
 
     </div>
 
@@ -284,6 +291,8 @@
     <script src="js/components/memo/CompMemoTraders.js?=v1.4.0"></script>
     <script src="js/components/memo/CompMemoItems.js?=v1.4.0"></script>
     <script src="js/components/CompMemo.js?=v1.4.0"></script>
+
+    <script src="js/components/CompNotice.js?=v2.0.0"></script>
 
     <script src="js/app.js?=v1.4.5"></script>
 </body>
