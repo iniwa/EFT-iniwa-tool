@@ -434,12 +434,21 @@ createApp({
                         requirements {
                             type
                             value
-                            # item { name } はエラー回避のため除外
                         }
                     }
                     bartersFor {
                         trader { name }
                         level
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    # ★修正: これを作るレシピ
+                    craftsFor {
+                        station { name }
+                        level
+                        duration
                         requiredItems {
                             count
                             item { name iconLink }
@@ -454,6 +463,15 @@ createApp({
                             item { name iconLink }
                         }
                         requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    # ★修正: これを素材にするレシピ
+                    craftsUsing {
+                        station { name }
+                        level
+                        rewardItems {
                             count
                             item { name iconLink }
                         }
@@ -520,6 +538,16 @@ createApp({
                     bartersFor {
                         trader { name }
                         level
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    # ★修正
+                    craftsFor {
+                        station { name }
+                        level
+                        duration
                         requiredItems {
                             count
                             item { name iconLink }
