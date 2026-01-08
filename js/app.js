@@ -406,11 +406,9 @@ createApp({
             itemDbLoading.value = true;
             console.log("Fetching Item DB from API...");
 
-            // ★修正: gameModeと言語変数を適用
             const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
             const lang = apiLang.value;
 
-            // ★修正: クエリに gameMode: ${mode} を追加
             const query = `
             {
                 items(gameMode: ${mode}, lang: ${lang}) {
@@ -434,7 +432,6 @@ createApp({
                         requirements {
                             type
                             value
-                            # item { name } はエラー回避のため除外
                         }
                     }
                     bartersFor {
@@ -445,10 +442,37 @@ createApp({
                             item { name iconLink }
                         }
                     }
+                    # ★修正: 生成個数を知るために rewardItems を追加
+                    craftsFor {
+                        station { name }
+                        level
+                        duration
+                        rewardItems {
+                            item { id }
+                            count
+                        }
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
                     usedInTasks { name }
                     bartersUsing {
                         trader { name }
                         level
+                        rewardItems {
+                            count
+                            item { name iconLink }
+                        }
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    craftsUsing {
+                        station { name }
+                        level
+                        duration
                         rewardItems {
                             count
                             item { name iconLink }
@@ -494,7 +518,6 @@ createApp({
         const updateSingleItemPrice = async (itemId) => {
             updatingItemIds.value.push(itemId);
             
-            // ★修正: gameModeと言語変数を適用
             const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
             const lang = apiLang.value;
 
@@ -520,6 +543,33 @@ createApp({
                     bartersFor {
                         trader { name }
                         level
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    # ★修正: こちらも rewardItems を追加
+                    craftsFor {
+                        station { name }
+                        level
+                        duration
+                        rewardItems {
+                            item { id }
+                            count
+                        }
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    craftsUsing {
+                        station { name }
+                        level
+                        duration
+                        rewardItems {
+                            count
+                            item { name iconLink }
+                        }
                         requiredItems {
                             count
                             item { name iconLink }
