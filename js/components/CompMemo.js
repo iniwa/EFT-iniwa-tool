@@ -104,7 +104,7 @@ const CompMemo = {
 
     <div class="card border-0 bg-black mb-4 memo-wrapper">
         <div class="card-header bg-black text-info border-bottom border-secondary py-3">
-            <div class="fw-bold fs-5">📝 Tactical Memo (データ一覧)</div>
+            <div class="fw-bold fs-5">📝 メモ書き (データ一覧)</div>
         </div>
         
         <div class="card-body bg-black p-0">

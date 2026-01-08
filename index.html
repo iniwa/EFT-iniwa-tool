@@ -62,6 +62,10 @@
             :last-updated="lastUpdated" 
             :is-loading="isLoading" 
             v-model:player-level="playerLevel"
+            :game-mode="gameMode"
+            :api-lang="apiLang"
+            @update:game-mode="gameMode = $event"
+            @update:api-lang="apiLang = $event"
             @fetch-data="fetchData"
             @export-data="exportData"
             @trigger-import="triggerImport">
@@ -69,7 +73,7 @@
 
         <input type="file" ref="fileInput" class="d-none" accept=".json" @change="importData">
 
-<ul class="nav nav-tabs mb-3">
+        <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'input'}" @click="currentTab = 'input'" href="#">
                     📝 進捗入力
@@ -87,27 +91,32 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'flowchart'}" @click="currentTab = 'flowchart'" href="#">
-                    🗺️ Flowchart
+                    🗺️ フローチャート
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'ammo'}" @click="currentTab = 'ammo'" href="#">
-                    🔫 Ammo
+                    🔫 弾薬
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" :class="{ active: currentTab === 'search' }" href="#" @click.prevent="currentTab = 'search'">
+                    🔍 アイテム検索
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'memo'}" @click="currentTab = 'memo'" href="#">
-                    📝 Memo
+                    📝 メモ
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="showChatTab">
                 <a class="nav-link" :class="{active: currentTab === 'chat'}" @click="currentTab = 'chat'" href="#">
-                    🤖 Chat
+                    🤖 チャット
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-secondary" :class="{active: currentTab === 'debug'}" @click="currentTab = 'debug'" href="#">
-                    🐞 Debug
+                    🐞 デバッグ
                 </a>
             </li>
         </ul>
@@ -200,15 +209,23 @@
                 :hideout-data="hideoutData"
                 :items-data="itemsData"
                 :ammo-data="ammoData"
+                :item-db="itemDb"
                 :user-hideout="userHideout"
                 :completed-tasks="completedTasks"
                 :owned-keys="ownedKeys"
                 :key-user-data="keyUserData"
                 :prioritized-tasks="prioritizedTasks"
+                :collected-items="collectedItems"
+                :wishlist="wishlist"
+                :player-level="playerLevel"
+                :game-mode="gameMode"
+                :api-lang="apiLang"
+                :show-chat-tab="showChatTab"
+                @update:show-chat-tab="showChatTab = $event"
             ></comp-debug>
         </div>
 
-        <div v-show="currentTab === 'chat'">
+        <div v-if="currentTab === 'chat'">
             <comp-chat
                 :task-data="taskData"
                 :hideout-data="hideoutData"
@@ -218,6 +235,22 @@
                 :player-level="playerLevel"
                 :ammo-data="ammoData" 
             ></comp-chat>
+        </div>
+
+        <div v-if="currentTab === 'search'">
+            <comp-item-search
+                :item-db="itemDb"
+                :completed-tasks="completedTasks"
+                :wishlist="wishlist"
+                :is-loading-db="itemDbLoading"
+                :item-db-last-updated="itemDbLastUpdated"
+                :updating-item-ids="updatingItemIds"
+                
+                :hideout-data="hideoutData"  @fetch-db="fetchItemDatabase"
+                @update-single-price="updateSingleItemPrice"
+                @toggle-wishlist="toggleWishlist"
+                @open-task-from-name="openTaskFromName"
+            ></comp-item-search>
         </div>
 
         <comp-modal
@@ -231,37 +264,46 @@
             @close="selectedTask = null"
         ></comp-modal>
 
-        <comp-footer></comp-footer>
+        <comp-footer 
+            :app-version="APP_VERSION" 
+            @show-notice="openNotice">
+        </comp-footer>
+
+        <comp-notice ref="noticeRef" :app-version="APP_VERSION"></comp-notice>
 
     </div>
 
-    <script src="data.js?=v1.4.0"></script>
-    <script src="js/queries.js?=v1.4.0"></script>
-    <script src="js/key_presets.js?=v1.4.0"></script> 
-    <script src="js/logic_hideout.js?=v1.4.0"></script>
-    <script src="js/logic_tasks.js?=v1.4.4"></script>
-    <script src="js/logic_keys.js?=v1.4.0"></script>
+    <script src="data.js?=v2.0.0"></script>
+    <script src="js/queries.js?=v2.0.0"></script>
+    <script src="js/key_presets.js?=v2.0.0"></script> 
+    <script src="js/logic_hideout.js?=v2.0.0"></script>
+    <script src="js/logic_tasks.js?=v2.0.0"></script>
+    <script src="js/logic_keys.js?=v2.0.0"></script>
+    <script src="js/logic_items.js?=v2.0.0"></script>
 
-    <script src="js/components/CompHeader.js?=v1.4.3"></script>
-    <script src="js/components/CompInput.js?=v1.4.2"></script>
-    <script src="js/components/CompResult.js?=v1.4.0"></script>
-    <script src="js/components/CompKeys.js?=v1.4.0"></script>
-    <script src="js/components/CompFlowchart.js?=v1.4.4"></script>
-    <script src="js/components/CompModal.js?=v1.4.0"></script>
-    <script src="js/components/CompDebug.js?=v1.4.0"></script>
-    <script src="js/components/CompChat.js?=v1.4.0"></script>
-    <script src="js/components/CompAmmo.js?v=1.4.0"></script>
-    <script src="js/components/CompFooter.js?=v1.4.4"></script>
+    <script src="js/components/CompHeader.js?=v2.0.0"></script>
+    <script src="js/components/CompInput.js?=v2.0.0"></script>
+    <script src="js/components/CompResult.js?=v2.0.0"></script>
+    <script src="js/components/CompKeys.js?=v2.0.0"></script>
+    <script src="js/components/CompFlowchart.js?=v2.0.0"></script>
+    <script src="js/components/CompModal.js?=v2.0.0"></script>
+    <script src="js/components/CompDebug.js?=v2.0.0"></script>
+    <script src="js/components/CompChat.js?=v2.0.0"></script>
+    <script src="js/components/CompAmmo.js?v=2.0.0"></script>
+    <script src="js/components/CompFooter.js?=v2.0.0"></script>
+    <script src="js/components/CompItemSearch.js?=v2.0.0"></script>
 
-    <script src="js/components/memo/CompMemoHealth.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoWeapon.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoArmor.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoStims.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoGrenade.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoTraders.js?=v1.4.0"></script>
-    <script src="js/components/memo/CompMemoItems.js?=v1.4.0"></script>
-    <script src="js/components/CompMemo.js?=v1.4.0"></script>
+    <script src="js/components/memo/CompMemoHealth.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoWeapon.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoArmor.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoStims.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoGrenade.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoTraders.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoItems.js?=v2.0.0"></script>
+    <script src="js/components/CompMemo.js?=v2.0.0"></script>
 
-    <script src="js/app.js?=v1.4.4"></script>
+    <script src="js/components/CompNotice.js?=v2.0.0"></script>
+
+    <script src="js/app.js?=v2.0.0"></script>
 </body>
 </html>

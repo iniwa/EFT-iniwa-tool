@@ -4,8 +4,32 @@ const { createApp, ref, shallowRef, computed, onMounted, watch } = Vue;
 
 createApp({
     setup() {
+        // --- 0. ヘルパー関数 (定義順序を一番上に配置) ---
+        const loadLS = (key, def) => {
+            try {
+                const val = localStorage.getItem(key);
+                return val ? JSON.parse(val) : def;
+            } catch (e) { 
+                console.warn(`LS Load Error (${key}):`, e);
+                return def; 
+            }
+        };
+        
+        const saveLS = (key, val) => {
+            try {
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch (e) { console.warn("LS Save Error:", e); }
+        };
+
+        const APP_VERSION = '2.0.0';
+
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
+        
+        // ★ゲームモードとデータ言語
+        const gameMode = ref(loadLS('eft_gamemode', 'pve')); 
+        const apiLang = ref(loadLS('eft_apilang', 'ja'));
+
         const taskViewMode = ref('list'); 
         
         const isLoading = ref(false);
@@ -13,7 +37,8 @@ createApp({
         const lastUpdated = ref(null);
 
         // キャッシュキー
-        const APP_CACHE_KEY = 'eft_api_cache_v29_idb'; 
+        const APP_CACHE_KEY = 'eft_api_cache_v30_idb'; 
+        const ITEM_DB_CACHE_KEY = 'eft_item_db_cache';
 
         const hideoutData = shallowRef([]);
         const taskData = shallowRef([]);
@@ -35,31 +60,19 @@ createApp({
         const expandedItems = ref({});
         const selectedTask = ref(null);
         const fileInput = ref(null);
+        const noticeRef = ref(null);
 
-        // --- 設定値の読み書き (LocalStorage) ---
-        
-        // データを正しく復元するための関数 (JSONパース付き)
-        const loadLS = (key, def) => {
-            try {
-                const val = localStorage.getItem(key);
-                // 値があればJSONとしてパースして返す。なければデフォルト値を返す
-                return val ? JSON.parse(val) : def;
-            } catch (e) { 
-                console.warn(`LS Load Error (${key}):`, e);
-                return def; 
-            }
-        };
-        
-        const saveLS = (key, val) => {
-            try {
-                localStorage.setItem(key, JSON.stringify(val));
-            } catch (e) { console.warn("LS Save Error:", e); }
-        };
+        // アイテムDB関連
+        const itemDb = shallowRef([]);
+        const itemDbLoading = ref(false);
+        const itemDbLastUpdated = ref(null);
+        const updatingItemIds = ref([]);
+        const wishlist = ref([]);
 
         const showCompleted = ref(loadLS('eft_show_completed', false));
         const showFuture = ref(loadLS('eft_show_future', false));
-        
         const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
+        const showChatTab = ref(loadLS('eft_show_chat_tab', false));
         const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
         const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
@@ -94,9 +107,7 @@ createApp({
                     req.onsuccess = () => resolve();
                     req.onerror = () => reject(req.error);
                 });
-            } catch (e) {
-                console.error("IDB Save Error:", e);
-            }
+            } catch (e) { console.error("IDB Save Error:", e); }
         };
 
         const loadDB = async (key) => {
@@ -109,10 +120,7 @@ createApp({
                     req.onsuccess = () => resolve(req.result);
                     req.onerror = () => resolve(null); 
                 });
-            } catch (e) {
-                console.warn("IDB Load Error:", e);
-                return null;
-            }
+            } catch (e) { console.warn("IDB Load Error:", e); return null; }
         };
 
         // --- 3. ロジック関数 ---
@@ -127,13 +135,11 @@ createApp({
             if (!keyUserData.value[id]) keyUserData.value[id] = { rating: '-', memo: '' };
             keyUserData.value[id][field] = value;
         };
-
         const togglePriority = (taskName) => {
             const idx = prioritizedTasks.value.indexOf(taskName);
             if (idx > -1) prioritizedTasks.value.splice(idx, 1);
             else prioritizedTasks.value.push(taskName);
         };
-
         const applyKeyPresets = (allItems) => {
             if (!allItems || typeof KEY_PRESETS === 'undefined') return;
             const currentData = { ...keyUserData.value };
@@ -144,21 +150,15 @@ createApp({
                     if (!currentData[item.id].rating || currentData[item.id].rating === '-') {
                         currentData[item.id].rating = preset.rating || '-';
                     }
-                    if (!currentData[item.id].memo) {
-                        currentData[item.id].memo = preset.memo || '';
-                    }
+                    if (!currentData[item.id].memo) currentData[item.id].memo = preset.memo || '';
                 }
             });
             keyUserData.value = currentData;
         };
-
-        // タスクを一括完了する関数
         const batchCompleteTask = (taskName) => {
             if (!taskData.value) return;
-            
             const prereqs = TaskLogic.getAllPrerequisites(taskName, taskData.value);
             const targets = [...prereqs, taskName];
-
             let count = 0;
             targets.forEach(t => {
                 if (!completedTasks.value.includes(t)) {
@@ -166,11 +166,9 @@ createApp({
                     count++;
                 }
             });
-
             console.log(`${count} tasks batch completed.`);
         };
 
-        // --- データ加工・整形 ---
         const processTasks = (tasks) => {
             if (!tasks) return [];
             const uniqueTasks = [];
@@ -241,6 +239,7 @@ createApp({
             };
         };
 
+        // ★修正: 弾薬データの加工（caliberが空の場合の安全策を追加）
         const processAmmo = (rawAmmo, taskList) => {
             const taskMap = new Map((taskList || []).map(t => [t.id, t.name]));
             return (rawAmmo || []).map(a => {
@@ -264,6 +263,9 @@ createApp({
                 }
                 return {
                     ...a,
+                    // ★安全策: caliberがundefinedの場合は 'Unknown' にする
+                    caliber: a.caliber || 'Unknown', 
+                    
                     id: a.item ? a.item.id : Math.random(),
                     name: a.item ? a.item.name : 'Unknown Ammo',
                     shortName: a.item ? a.item.shortName : null,
@@ -281,20 +283,17 @@ createApp({
             });
         };
 
-        const fetchData = async () => {
+        const fetchData = async (force = false) => {
             const MIN_INTERVAL = 5 * 60 * 1000; 
-            
             const cache = await loadDB(APP_CACHE_KEY);
             
-            if (cache) {
+            if (!force && cache) {
                 try {
                     const lastTime = cache.lastFetchTime || 0;
                     const nowTime = Date.now();
-
                     if ((nowTime - lastTime < MIN_INTERVAL) && cache.tasks && cache.tasks.length > 0) {
                         const remainSec = Math.ceil((MIN_INTERVAL - (nowTime - lastTime)) / 1000);
                         alert(`データは最新です (あと ${remainSec} 秒)。`);
-                        
                         hideoutData.value = cache.hideoutStations;
                         taskData.value = cache.tasks;
                         itemsData.value = cache.items;
@@ -304,10 +303,12 @@ createApp({
                     }
                 } catch (e) { console.error("Cache check error", e); }
             }
-
             isLoading.value = true;
             loadError.value = null;
-            const query = GRAPHQL_QUERY;
+
+            // ★修正: ゲームモードと言語を適用してクエリ生成
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const query = getMainQuery(mode, apiLang.value);
 
             try {
                 const response = await fetch('https://api.tarkov.dev/graphql', {
@@ -316,7 +317,6 @@ createApp({
                     body: JSON.stringify({ query })
                 });
                 const result = await response.json();
-
                 if (result.errors) throw new Error(`GraphQL Error: ${result.errors[0].message}`);
                 if (!result.data) throw new Error(`No Data`);
                 
@@ -324,7 +324,6 @@ createApp({
                 taskData.value = processTasks(result.data.tasks || []);
                 itemsData.value = processItems(result.data.items, result.data.maps);
                 ammoData.value = processAmmo(result.data.ammo, taskData.value);
-
                 applyKeyPresets(result.data.items);
                 
                 const now = new Date().toLocaleString('ja-JP');
@@ -342,7 +341,6 @@ createApp({
                 hideoutData.value.forEach(s => {
                     if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
                 });
-
             } catch (err) {
                 console.error(err);
                 loadError.value = `更新失敗: ${err.message}`;
@@ -369,9 +367,7 @@ createApp({
             a.click();
             URL.revokeObjectURL(url);
         };
-
         const triggerImport = () => { if (fileInput.value) fileInput.value.click(); };
-
         const importData = (event) => {
             const file = event.target.files[0];
             if (!file) return;
@@ -392,18 +388,200 @@ createApp({
             reader.readAsText(file);
             event.target.value = '';
         };
-
         const toggleTask = (taskName) => {
             const idx = completedTasks.value.indexOf(taskName);
             if (idx > -1) completedTasks.value.splice(idx, 1);
             else completedTasks.value.push(taskName);
         };
 
-        // --- 5. ライフサイクル & 監視 ---
+        // --- アイテムDB関連のロジック ---
+        const fetchItemDatabase = async (forceUpdate = false) => {
+            if (itemDbLoading.value) return;
+
+            if (!forceUpdate && itemDb.value.length > 0) {
+                console.log("Using cached Item DB.");
+                return;
+            }
+
+            itemDbLoading.value = true;
+            console.log("Fetching Item DB from API...");
+
+            // ★修正: gameModeと言語変数を適用
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const lang = apiLang.value;
+
+            // ★修正: クエリに gameMode: ${mode} を追加
+            const query = `
+            {
+                items(gameMode: ${mode}, lang: ${lang}) {
+                    id
+                    name
+                    shortName
+                    normalizedName
+                    iconLink
+                    wikiLink
+                    avg24hPrice
+                    sellFor {
+                        price
+                        currency
+                        priceRUB
+                        vendor { name }
+                    }
+                    buyFor {
+                        vendor { name }
+                        price
+                        currency
+                        requirements {
+                            type
+                            value
+                            # item { name } はエラー回避のため除外
+                        }
+                    }
+                    bartersFor {
+                        trader { name }
+                        level
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                    usedInTasks { name }
+                    bartersUsing {
+                        trader { name }
+                        level
+                        rewardItems {
+                            count
+                            item { name iconLink }
+                        }
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                }
+            }`;
+            
+            try {
+                const response = await fetch('https://api.tarkov.dev/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const result = await response.json();
+                
+                if (result.errors) throw new Error(result.errors[0].message);
+                
+                itemDb.value = result.data.items || [];
+                const now = new Date().toLocaleString('ja-JP');
+                itemDbLastUpdated.value = now;
+                
+                await saveDB(ITEM_DB_CACHE_KEY, {
+                    timestamp: now,
+                    items: itemDb.value
+                });
+                
+                if (forceUpdate) {
+                    alert(`アイテムデータを更新しました。\n(${itemDb.value.length} items)`);
+                }
+
+            } catch (err) {
+                alert(`DB取得失敗: ${err.message}`);
+            } finally {
+                itemDbLoading.value = false;
+            }
+        };
+
+        const updateSingleItemPrice = async (itemId) => {
+            updatingItemIds.value.push(itemId);
+            
+            // ★修正: gameModeと言語変数を適用
+            const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
+            const lang = apiLang.value;
+
+            const query = `
+            {
+                item(id: "${itemId}", gameMode: ${mode}, lang: ${lang}) {
+                    avg24hPrice
+                    sellFor {
+                        price
+                        currency
+                        priceRUB
+                        vendor { name }
+                    }
+                    buyFor {
+                        vendor { name }
+                        price
+                        currency
+                        requirements {
+                            type
+                            value
+                        }
+                    }
+                    bartersFor {
+                        trader { name }
+                        level
+                        requiredItems {
+                            count
+                            item { name iconLink }
+                        }
+                    }
+                }
+            }`;
+            
+            try {
+                const response = await fetch('https://api.tarkov.dev/graphql', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query })
+                });
+                const result = await response.json();
+                if (result.data && result.data.item) {
+                    const targetIndex = itemDb.value.findIndex(i => i.id === itemId);
+                    if (targetIndex > -1) {
+                        const oldItem = itemDb.value[targetIndex];
+                        const newItem = { 
+                            ...oldItem, 
+                            ...result.data.item,
+                            bartersUsing: oldItem.bartersUsing,
+                            usedInTasks: oldItem.usedInTasks
+                        };
+                        
+                        const newDb = [...itemDb.value];
+                        newDb[targetIndex] = newItem;
+                        itemDb.value = newDb;
+                        
+                        await saveDB(ITEM_DB_CACHE_KEY, {
+                            timestamp: itemDbLastUpdated.value,
+                            items: itemDb.value
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                alert("価格更新に失敗しました");
+            } finally {
+                const idx = updatingItemIds.value.indexOf(itemId);
+                if (idx > -1) updatingItemIds.value.splice(idx, 1);
+            }
+        };
+
+        const toggleWishlist = (id) => {
+            const idx = wishlist.value.indexOf(id);
+            if (idx > -1) wishlist.value.splice(idx, 1);
+            else wishlist.value.push(id);
+        };
+
+        // --- ライフサイクル ---
         onMounted(async () => {
+            const dbCache = await loadDB(ITEM_DB_CACHE_KEY);
+            if (dbCache && dbCache.items) {
+                console.log(`Loaded Item DB from Cache (${dbCache.items.length} items)`);
+                itemDb.value = dbCache.items;
+                itemDbLastUpdated.value = dbCache.timestamp || 'Unknown';
+            }
+
             const cache = await loadDB(APP_CACHE_KEY);
             const AUTO_UPDATE_THRESHOLD = 20 * 60 * 60 * 1000; 
-            
             let shouldFetch = true;
 
             if (cache && cache.tasks) {
@@ -413,25 +591,11 @@ createApp({
                 itemsData.value = cache.items || { items: [], maps: [] };
                 ammoData.value = cache.ammo || [];
                 lastUpdated.value = cache.timestamp;
-
                 const lastTime = cache.lastFetchTime || 0;
                 const now = Date.now();
-                
                 if ((now - lastTime) < AUTO_UPDATE_THRESHOLD) {
                     shouldFetch = false;
-                    console.log(`Cache is valid. (${((now - lastTime)/1000/60/60).toFixed(1)} hours passed)`);
-                } else {
-                    console.log("Cache is too old. Auto-fetching...");
                 }
-
-            } else if (typeof TARKOV_DATA !== 'undefined' && TARKOV_DATA.data) {
-                console.log("Loading from TARKOV_DATA...");
-                hideoutData.value = TARKOV_DATA.data.hideoutStations || [];
-                taskData.value = processTasks(TARKOV_DATA.data.tasks || []);
-                itemsData.value = processItems(TARKOV_DATA.data.items, TARKOV_DATA.data.maps);
-                ammoData.value = processAmmo(TARKOV_DATA.data.ammo, taskData.value);
-                lastUpdated.value = 'Backup File';
-                shouldFetch = false;
             }
 
             userHideout.value = loadLS('eft_hideout', {});
@@ -441,32 +605,23 @@ createApp({
             keyUserData.value = loadLS('eft_key_user_data', {}); 
             prioritizedTasks.value = loadLS('eft_prioritized', []);
             playerLevel.value = parseInt(loadLS('eft_level', 0), 10);
-            
-            if (itemsData.value.items.length > 0) {
-                applyKeyPresets(itemsData.value.items);
-            }
-            if (hideoutData.value.length > 0) {
-                hideoutData.value.forEach(s => {
-                    if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0;
-                });
-            }
-            
-            window.addEventListener('mermaid-task-click', (e) => {
-                openTaskFromName(e.detail);
-            });
+            wishlist.value = loadLS('eft_wishlist', []); 
 
-            if (shouldFetch) {
-                fetchData();
+            if (itemsData.value.items.length > 0) applyKeyPresets(itemsData.value.items);
+            if (hideoutData.value.length > 0) {
+                hideoutData.value.forEach(s => { if (userHideout.value[s.name] === undefined) userHideout.value[s.name] = 0; });
             }
+            window.addEventListener('mermaid-task-click', (e) => openTaskFromName(e.detail));
+
+            if (shouldFetch) fetchData();
         });
 
-        // 監視と保存
+        // 監視
         watch(playerLevel, (newVal) => saveLS('eft_level', newVal));
         watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
         watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
         watch(showCompleted, (val) => saveLS('eft_show_completed', val));
         watch(showFuture, (val) => saveLS('eft_show_future', val));
-
         watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
@@ -475,35 +630,32 @@ createApp({
             saveLS('eft_key_user_data', keyUserData.value);
             saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
-
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
+        watch(showChatTab, (val) => saveLS('eft_show_chat_tab', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
-        
-        watch(currentTab, (newTab) => {
-            if (typeof gtag === 'function') {
-                gtag('event', 'page_view', {
-                    page_title: newTab,
-                    page_location: location.href.split('#')[0] + '#' + newTab
-                });
-            }
+        watch(wishlist, (val) => saveLS('eft_wishlist', val));
+
+        // ★追加: 設定変更時に保存＆再取得
+        watch([gameMode, apiLang], ([newMode, newLang]) => {
+            saveLS('eft_gamemode', newMode);
+            saveLS('eft_apilang', newLang);
+            
+            // 設定が変わったら強制リロード
+            fetchData(true);
+            
+            // アイテムDBもクリアして再取得させる
+            itemDb.value = []; 
+            saveDB(ITEM_DB_CACHE_KEY, { timestamp: 0, items: [] });
         });
 
-        // --- 6. 計算ロジック ---
+        // ... (計算ロジック shoppingList等はそのまま) ...
         const visibleTasks = computed(() => TaskLogic.filterActiveTasks(
-            taskData.value, 
-            completedTasks.value, 
-            playerLevel.value, 
-            searchTask.value, 
-            showCompleted.value, 
-            showFuture.value,
-            showKappaOnly.value,
-            showLightkeeperOnly.value
+            taskData.value, completedTasks.value, playerLevel.value, searchTask.value, 
+            showCompleted.value, showFuture.value, showKappaOnly.value, showLightkeeperOnly.value
         ));
-
         const filteredTasksList = computed(() => visibleTasks.value.slice(0, 100));
-        
         const tasksByTrader = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByTrader(visibleTasks.value);
             const traderOrder = ['Prapor', 'Therapist', 'Fence', 'Skier', 'Peacekeeper', 'Mechanic', 'Ragman', 'Jaeger', 'Ref', 'Lightkeeper'];
@@ -512,39 +664,20 @@ createApp({
             Object.keys(rawGrouped).forEach(key => { sortedGrouped[key] = rawGrouped[key]; });
             return sortedGrouped;
         });
-
         const tasksByMap = computed(() => {
             const rawGrouped = TaskLogic.groupTasksByMap(visibleTasks.value);
-            const mapOrder = [
-                "Any / Multiple",
-                "Customs",
-                "Woods",
-                "Interchange",
-                "Factory",
-                "Shoreline",
-                "Lighthouse",
-                "Reserve",
-                "Streets of Tarkov",
-                "Ground Zero",
-                "The Lab",
-                "The Labyrinth"
-            ];
+            const mapOrder = ["Any / Multiple", "Customs", "Woods", "Interchange", "Factory", "Shoreline", "Lighthouse", "Reserve", "Streets of Tarkov", "Ground Zero", "The Lab", "The Labyrinth"];
             const sortedGrouped = {};
             mapOrder.forEach(name => { if (rawGrouped[name]) { sortedGrouped[name] = rawGrouped[name]; delete rawGrouped[name]; } });
             Object.keys(rawGrouped).sort().forEach(key => { sortedGrouped[key] = rawGrouped[key]; });
             return sortedGrouped;
         });
-        
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
             const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
                 const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
                 if (!res[cat][uid]) {
-                    res[cat][uid] = { 
-                        id, uid, name, count: 0, sources: [], 
-                        mapName, wikiLink: wiki, 
-                        shortName, normalizedName
-                    };
+                    res[cat][uid] = { id, uid, name, count: 0, sources: [], mapName, wikiLink: wiki, shortName, normalizedName };
                 }
                 if (cat === 'keys') {
                     if (sourceName && !res[cat][uid].sources.some(s => s.name === sourceName)) {
@@ -557,27 +690,19 @@ createApp({
                     else res[cat][uid].sources.push({ name: sourceName, type: sourceType, count });
                 }
             };
-
             HideoutLogic.calculate(hideoutData.value, userHideout.value, false, addItem);
             TaskLogic.calculate(taskData.value, completedTasks.value, addItem);
-            
             const rawItems = itemsData.value.items || [];
             const rawMaps = itemsData.value.maps || [];
             KeyLogic.calculate(rawItems, rawMaps, taskData.value, addItem);
-            
             const toArr = (o) => Object.values(o).sort((a,b) => b.count - a.count);
-
             let keysArray = Object.values(res.keys);
-            if (keysViewMode.value === 'owned') {
-                keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
-            }
-
+            if (keysViewMode.value === 'owned') keysArray = keysArray.filter(k => ownedKeys.value.includes(k.id));
             const getRateVal = (id) => {
                 const r = keyUserData.value[id]?.rating || '-';
                 const map = {'S':10, 'A':8, 'B':6, 'C':4, 'D':2, 'F':0, '?':1, '-': -1};
                 return map[r] !== undefined ? map[r] : -1;
             };
-
             keysArray.sort((a, b) => {
                 const isOwnedA = ownedKeys.value.includes(a.id);
                 const isOwnedB = ownedKeys.value.includes(b.id);
@@ -592,7 +717,6 @@ createApp({
                 if (mapCmp !== 0) return mapCmp;
                 return a.name.localeCompare(b.name);
             });
-
             return { 
                 hideoutFir: toArr(res.hideoutFir), 
                 hideoutBuy: toArr(res.hideoutBuy), 
@@ -602,25 +726,31 @@ createApp({
                 keys: keysArray 
             };
         });
-
         const totalItemsNeeded = computed(() => shoppingList.value.hideoutFir.length + shoppingList.value.hideoutBuy.length + shoppingList.value.taskFir.length + shoppingList.value.taskNormal.length + shoppingList.value.collector.length);
         const totalKeysNeeded = computed(() => shoppingList.value.keys.length);
         const toggleItemDetails = (uid) => { if(expandedItems.value[uid]) delete expandedItems.value[uid]; else expandedItems.value[uid]=true; };
         const toggleCollected = (uid) => { const idx = collectedItems.value.indexOf(uid); if (idx > -1) collectedItems.value.splice(idx, 1); else collectedItems.value.push(uid); };
         const toggleOwnedKey = (id) => { const idx = ownedKeys.value.indexOf(id); if (idx > -1) ownedKeys.value.splice(idx, 1); else ownedKeys.value.push(id); };
-        
         const displayLists = computed(() => ({
-            hideoutFir: { title: '🏠 Hideout (FIR必須)', items: shoppingList.value.hideoutFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
-            hideoutBuy: { title: '🏠 Hideout (購入で可)', items: shoppingList.value.hideoutBuy, borderClass: '', headerClass: 'bg-dark text-info border-info', badgeClass: 'bg-primary' },
-            taskFir: { title: '✅ Task (FIR必須)', items: shoppingList.value.taskFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
+            // Hideout -> ハイドアウト, Task -> タスク に変更
+            hideoutFir: { title: '🏠 ハイドアウト (FIR必須)', items: shoppingList.value.hideoutFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
+            hideoutBuy: { title: '🏠 ハイドアウト (購入で可)', items: shoppingList.value.hideoutBuy, borderClass: '', headerClass: 'bg-dark text-info border-info', badgeClass: 'bg-primary' },
+            taskFir: { title: '✅ タスク (FIR必須)', items: shoppingList.value.taskFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
             collector: { title: '👑 Collector (FIR)', items: shoppingList.value.collector, borderClass: 'border-danger', headerClass: 'bg-dark text-danger border-danger', badgeClass: 'bg-danger' },
-            taskNormal: { title: '📦 Task (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
+            taskNormal: { title: '📦 タスク (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
         }));
+
+        const openNotice = () => {
+            if (noticeRef.value) {
+                noticeRef.value.show();
+            }
+        };
 
         return {
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             showKappaOnly, showLightkeeperOnly,
+            showChatTab,
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
             playerLevel, searchTask,ammoData,
@@ -628,10 +758,12 @@ createApp({
             expandedItems, toggleItemDetails, selectedTask, openTaskDetails: (t) => selectedTask.value = t,
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
             exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData,
-            
-            // 新規追加
-            isInitialSetupMode,
-            batchCompleteTask
+            isInitialSetupMode, batchCompleteTask,
+            noticeRef, openNotice,
+            gameMode, apiLang, 
+            itemDb, itemDbLoading, itemDbLastUpdated, updatingItemIds, wishlist,
+            fetchItemDatabase, updateSingleItemPrice, toggleWishlist,
+            APP_VERSION
         };
     }
 })
@@ -646,4 +778,6 @@ createApp({
 .component('comp-footer', CompFooter)
 .component('comp-ammo', CompAmmo)
 .component('comp-memo', CompMemo)
+.component('comp-item-search', CompItemSearch)
+.component('comp-notice', CompNotice)
 .mount('#app');
