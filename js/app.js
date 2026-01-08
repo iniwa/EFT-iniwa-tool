@@ -60,6 +60,7 @@ createApp({
         const expandedItems = ref({});
         const selectedTask = ref(null);
         const fileInput = ref(null);
+        const noticeRef = ref(null);
 
         // アイテムDB関連
         const itemDb = shallowRef([]);
@@ -71,6 +72,7 @@ createApp({
         const showCompleted = ref(loadLS('eft_show_completed', false));
         const showFuture = ref(loadLS('eft_show_future', false));
         const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
+        const showChatTab = ref(loadLS('eft_show_chat_tab', false));
         const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
         const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
@@ -629,6 +631,7 @@ createApp({
             saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
+        watch(showChatTab, (val) => saveLS('eft_show_chat_tab', val));
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
@@ -737,10 +740,17 @@ createApp({
             taskNormal: { title: '📦 タスク (購入で可)', items: shoppingList.value.taskNormal, borderClass: '', headerClass: 'bg-dark text-secondary border-secondary', badgeClass: 'bg-secondary' }
         }));
 
+        const openNotice = () => {
+            if (noticeRef.value) {
+                noticeRef.value.show();
+            }
+        };
+
         return {
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
             showKappaOnly, showLightkeeperOnly,
+            showChatTab,
             isLoading, loadError, lastUpdated, fetchData,
             taskData, hideoutData, userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, 
             playerLevel, searchTask,ammoData,
@@ -749,7 +759,7 @@ createApp({
             toggleCollected, toggleOwnedKey, togglePriority, updateKeyUserData, displayLists,
             exportData, importData, fileInput, triggerImport, toggleTask, openTaskFromName, itemsData,
             isInitialSetupMode, batchCompleteTask,
-            // ★追加
+            noticeRef, openNotice,
             gameMode, apiLang, 
             itemDb, itemDbLoading, itemDbLastUpdated, updatingItemIds, wishlist,
             fetchItemDatabase, updateSingleItemPrice, toggleWishlist,

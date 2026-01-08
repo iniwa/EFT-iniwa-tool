@@ -211,7 +211,7 @@ const CompFlowchart = {
     <div class="card h-100 border-secondary">
         <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center gap-3">
-                <span>🗺️ Flowchart</span>
+                <span>🗺️ フローチャート</span>
                 <select class="form-select form-select-sm bg-dark text-white border-secondary" 
                         style="width: 180px;" 
                         :value="selectedTrader"

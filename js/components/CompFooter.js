@@ -1,9 +1,12 @@
+// js/components/CompFooter.js
+
 const CompFooter = {
-    data() {
-        return {
-            appVersion: 'v2.0.0' // バージョン表記もついでに更新しておきます
-        };
-    },
+    // ★修正: data() を削除し、props で appVersion を受け取るように変更
+    props: ['appVersion'],
+    emits: ['show-notice'],
+    
+    // data() { return { appVersion: '...' } } は不要なので削除
+
     template: `
     <footer class="mt-5 py-4 border-top border-secondary text-center small text-secondary" style="background-color: #121212;">
         <div class="container">
@@ -34,9 +37,14 @@ const CompFooter = {
                     プライバシーポリシー & 免責事項
                 </button>
                 <span class="text-dark">|</span>
-                <a href="#" class="btn btn-link btn-sm text-muted text-decoration-none mx-2" onclick="return false;" style="cursor: default;">
-                    {{ appVersion }}
+                
+                <a href="#" class="btn btn-link btn-sm text-muted text-decoration-none mx-2" 
+                    @click.prevent="$emit('show-notice')" 
+                    style="cursor: pointer;" 
+                    title="お知らせを再表示">
+                    v{{ appVersion }}
                 </a>
+                
                 <span class="text-dark">|</span>
                 <a href="https://twitter.com/iniwach" target="_blank" class="btn btn-link btn-sm text-muted text-decoration-none mx-2">
                     Developer: @iniwach
