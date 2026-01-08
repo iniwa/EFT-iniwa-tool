@@ -7,15 +7,16 @@ const ItemLogic = {
     getBestSellPrice(item) {
         if (!item.sellFor || item.sellFor.length === 0) return null;
 
-        // フリーマーケットを除外し、RUB換算で最高値を出す
-        // ※簡易的に 1 USD = 150 RUB, 1 EUR = 160 RUB 程度で計算、またはAPIがrub価格を持っていればそれを使う
-        // tarkov.devのAPIは priceRUB を持っていることが多い
         let best = null;
 
         item.sellFor.forEach(offer => {
-            if (offer.vendor.name === 'Flea Market') return;
+            const vName = offer.vendor.name;
+            
+            // 【修正】英語名 'Flea Market' と 日本語名 'フリーマーケット' の両方を明示的に除外
+            if (vName === 'Flea Market' || vName === 'フリーマーケット') return;
             
             // priceRUBがAPIから来ない場合は簡易計算
+            // ※レートは変動するため概算値
             let priceRub = offer.priceRUB; 
             if (!priceRub) {
                 if (offer.currency === 'USD') priceRub = offer.price * 162;
@@ -25,7 +26,7 @@ const ItemLogic = {
 
             if (!best || priceRub > best.priceRUB) {
                 best = {
-                    vendor: offer.vendor.name,
+                    vendor: vName,
                     price: offer.price,
                     currency: offer.currency,
                     priceRUB: priceRub
@@ -55,7 +56,6 @@ const ItemLogic = {
             result = result.filter(i => {
                 const matchName = i.name.toLowerCase().includes(q);
                 const matchShort = i.shortName && i.shortName.toLowerCase().includes(q);
-                // normalizedNameがあればそれもチェック（英語名など）
                 const matchNorm = i.normalizedName && i.normalizedName.toLowerCase().includes(q);
                 
                 return matchName || matchShort || matchNorm;

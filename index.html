@@ -231,9 +231,12 @@
                 :completed-tasks="completedTasks"
                 :wishlist="wishlist"
                 :is-loading-db="itemDbLoading"
+                :item-db-last-updated="itemDbLastUpdated"
+                :updating-item-ids="updatingItemIds"
                 @fetch-db="fetchItemDatabase"
                 @update-single-price="updateSingleItemPrice"
                 @toggle-wishlist="toggleWishlist"
+                @open-task-from-name="openTaskFromName"
             ></comp-item-search>
         </div>
 
