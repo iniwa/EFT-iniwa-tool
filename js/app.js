@@ -21,7 +21,7 @@ createApp({
             } catch (e) { console.warn("LS Save Error:", e); }
         };
 
-        const APP_VERSION = '2.0.0';
+        const APP_VERSION = '2.0.1';
 
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
@@ -68,6 +68,10 @@ createApp({
         const itemDbLastUpdated = ref(null);
         const updatingItemIds = ref([]);
         const wishlist = ref([]);
+
+        const itemSearchQuery = ref('');
+        const itemSearchShowWishlist = ref(false);
+        const itemSearchPage = ref(1);
 
         const showCompleted = ref(loadLS('eft_show_completed', false));
         const showFuture = ref(loadLS('eft_show_future', false));
@@ -812,6 +816,7 @@ createApp({
             noticeRef, openNotice,
             gameMode, apiLang, 
             itemDb, itemDbLoading, itemDbLastUpdated, updatingItemIds, wishlist,
+            itemSearchQuery, itemSearchShowWishlist, itemSearchPage,
             fetchItemDatabase, updateSingleItemPrice, toggleWishlist,
             APP_VERSION
         };
