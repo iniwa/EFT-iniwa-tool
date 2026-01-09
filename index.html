@@ -245,8 +245,13 @@
                 :is-loading-db="itemDbLoading"
                 :item-db-last-updated="itemDbLastUpdated"
                 :updating-item-ids="updatingItemIds"
+                :hideout-data="hideoutData"
                 
-                :hideout-data="hideoutData"  @fetch-db="fetchItemDatabase"
+                v-model:search-query="itemSearchQuery"
+                v-model:show-wishlist-only="itemSearchShowWishlist"
+                v-model:current-page="itemSearchPage"
+
+                @fetch-db="fetchItemDatabase"
                 @update-single-price="updateSingleItemPrice"
                 @toggle-wishlist="toggleWishlist"
                 @open-task-from-name="openTaskFromName"
@@ -290,8 +295,8 @@
     <script src="js/components/CompDebug.js?=v2.0.0"></script>
     <script src="js/components/CompChat.js?=v2.0.0"></script>
     <script src="js/components/CompAmmo.js?v=2.0.0"></script>
-    <script src="js/components/CompFooter.js?=v2.0.0"></script>
-    <script src="js/components/CompItemSearch.js?=v2.0.1"></script>
+    <script src="js/components/CompFooter.js?=v2.0.1"></script>
+    <script src="js/components/CompItemSearch.js?=v2.0.11"></script>
 
     <script src="js/components/memo/CompMemoHealth.js?=v2.0.0"></script>
     <script src="js/components/memo/CompMemoWeapon.js?=v2.0.0"></script>
@@ -302,8 +307,8 @@
     <script src="js/components/memo/CompMemoItems.js?=v2.0.0"></script>
     <script src="js/components/CompMemo.js?=v2.0.0"></script>
 
-    <script src="js/components/CompNotice.js?=v2.0.0"></script>
+    <script src="js/components/CompNotice.js?=v2.0.1"></script>
 
-    <script src="js/app.js?=v2.0.1"></script>
+    <script src="js/app.js?=v2.0.11"></script>
 </body>
 </html>

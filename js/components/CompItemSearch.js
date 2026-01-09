@@ -2,14 +2,16 @@
 
 const CompItemSearch = {
     props: [
-        'itemDb', 'completedTasks', 'wishlist', 'isLoadingDb', 'itemDbLastUpdated', 'updatingItemIds', 'hideoutData'
+        'itemDb', 'completedTasks', 'wishlist', 'isLoadingDb', 'itemDbLastUpdated', 'updatingItemIds', 'hideoutData',
+        // ★追加: 親から受け取る状態
+        'searchQuery', 'showWishlistOnly', 'currentPage'
     ],
-    emits: ['fetch-db', 'update-single-price', 'toggle-wishlist', 'open-task-from-name'],
+    // ★追加: 更新イベントを定義
+    emits: ['fetch-db', 'update-single-price', 'toggle-wishlist', 'open-task-from-name', 'update:searchQuery', 'update:showWishlistOnly', 'update:currentPage'],
+    
     data() {
         return {
-            searchQuery: '',
-            showWishlistOnly: false,
-            currentPage: 1,
+            // searchQuery, showWishlistOnly, currentPage は削除 (propsに移行)
             itemsPerPage: 50,
             expandedItems: {},
             selectedBarter: null,
@@ -17,10 +19,22 @@ const CompItemSearch = {
         };
     },
     computed: {
+        // ★追加: v-model 用の Computed プロパティ
+        localSearchQuery: {
+            get() { return this.searchQuery; },
+            set(val) { this.$emit('update:searchQuery', val); }
+        },
+        localShowWishlistOnly: {
+            get() { return this.showWishlistOnly; },
+            set(val) { this.$emit('update:showWishlistOnly', val); }
+        },
+        
         filteredItems() {
+            // this.searchQuery (props) を使用
             return ItemLogic.filterItems(this.itemDb, this.searchQuery, this.showWishlistOnly, this.wishlist);
         },
         paginatedItems() {
+            // this.currentPage (props) を使用
             const start = (this.currentPage - 1) * this.itemsPerPage;
             return this.filteredItems.slice(start, start + this.itemsPerPage);
         },
@@ -29,8 +43,9 @@ const CompItemSearch = {
         }
     },
     watch: {
-        searchQuery() { this.currentPage = 1; },
-        showWishlistOnly() { this.currentPage = 1; }
+        // 検索条件が変わったらページを1に戻す (emitを使用)
+        searchQuery() { this.$emit('update:currentPage', 1); },
+        showWishlistOnly() { this.$emit('update:currentPage', 1); }
     },
     methods: {
         formatPrice(num, currency) {
@@ -50,12 +65,13 @@ const CompItemSearch = {
         getBestSell(item) {
             return ItemLogic.getBestSellPrice(item);
         },
-        prevPage() { if (this.currentPage > 1) this.currentPage--; },
-        nextPage() { if (this.currentPage < this.totalPages) this.currentPage++; },
+        // ページ送り (emitを使用)
+        prevPage() { if (this.currentPage > 1) this.$emit('update:currentPage', this.currentPage - 1); },
+        nextPage() { if (this.currentPage < this.totalPages) this.$emit('update:currentPage', this.currentPage + 1); },
+        
         handleTaskClick(taskName) { this.$emit('open-task-from-name', taskName); },
         isUpdating(id) { return this.updatingItemIds && this.updatingItemIds.includes(id); },
 
-        // ポップアップ制御
         openBarterPopup(barter) { this.selectedBarter = barter; },
         closeBarterPopup() { this.selectedBarter = null; },
         openCraftPopup(craft) { this.selectedCraft = craft; },
@@ -103,7 +119,6 @@ const CompItemSearch = {
             const m = Math.floor((sec % 3600) / 60);
             return `${h}h ${m}m`;
         },
-        // ★追加: クラフト成果物の中から自分自身の個数を取得
         getCraftCount(craft, itemId) {
             if (!craft.rewardItems) return null;
             const selfReward = craft.rewardItems.find(r => r.item.id === itemId);
@@ -125,8 +140,15 @@ const CompItemSearch = {
                     <span v-if="isLoadingDb" class="spinner-border spinner-border-sm"></span>
                     <span v-else>🔄 Update All</span>
                 </button>
-                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" v-model="searchQuery" placeholder="名前検索 (JP/EN)..." style="width: 200px;">
-                <button class="btn btn-sm" :class="showWishlistOnly ? 'btn-warning' : 'btn-outline-secondary'" @click="showWishlistOnly = !showWishlistOnly">★ Wishlist</button>
+                
+                <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" 
+                    v-model="localSearchQuery" placeholder="名前検索 (JP/EN)..." style="width: 200px;">
+                
+                <button class="btn btn-sm" 
+                    :class="localShowWishlistOnly ? 'btn-warning' : 'btn-outline-secondary'" 
+                    @click="localShowWishlistOnly = !localShowWishlistOnly">
+                    ★ Wishlist
+                </button>
             </div>
         </div>
 
@@ -208,7 +230,6 @@ const CompItemSearch = {
                                                     <li v-for="(c, cIdx) in item.craftsFor" :key="cIdx" class="mb-1 text-light">
                                                         <span class="badge bg-secondary border border-light me-1">🔧 {{ c.station.name }} Lv{{ c.level }}</span>
                                                         <span v-if="getCraftCount(c, item.id) > 1" class="badge bg-success border border-light ms-1">x{{ getCraftCount(c, item.id) }}</span>
-                                                        
                                                         <span class="text-info text-decoration-underline cursor-pointer small ms-1" 
                                                               style="cursor: pointer;" 
                                                               @click.stop="openCraftPopup(c)">レシピ</span>
