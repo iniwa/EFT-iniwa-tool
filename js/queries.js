@@ -105,6 +105,8 @@ query GetData {
     name
     shortName
     normalizedName
+    # ★修正: ここに wikiLink を追加しました
+    wikiLink
     image512pxLink
     
     sellFor {
@@ -115,6 +117,9 @@ query GetData {
     }
     
     containsItems { item { id } }
+    
+    # 鍵としての属性判定用
+    types
   }
   
   # gameModeなし

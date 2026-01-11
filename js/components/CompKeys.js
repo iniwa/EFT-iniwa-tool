@@ -25,15 +25,10 @@ const CompKeys = {
         }
     },
     mounted() {
-        // ★修正: LocalStorageから開閉状態を復元
         const savedState = localStorage.getItem('eft_keys_collapsed_state');
-        
         if (savedState) {
             try {
-                // 保存された状態をロード
                 this.collapsedMaps = JSON.parse(savedState);
-                
-                // もし新しいマップが増えていたら、それは閉じておく
                 this.mapOrder.forEach(m => {
                     if (this.collapsedMaps[m] === undefined) {
                         this.collapsedMaps[m] = true;
@@ -44,15 +39,13 @@ const CompKeys = {
                 }
             } catch (e) {
                 console.warn("Failed to load collapsed state", e);
-                this.collapseAll(); // エラー時は初期化
+                this.collapseAll();
             }
         } else {
-            // 保存データがない場合は全部閉じる (初回)
             this.collapseAll();
         }
     },
     watch: {
-        // ★追加: 開閉状態が変わるたびに保存
         collapsedMaps: {
             handler(newVal) {
                 localStorage.setItem('eft_keys_collapsed_state', JSON.stringify(newVal));
@@ -62,10 +55,7 @@ const CompKeys = {
     },
     computed: {
         filteredKeys() {
-            // APIからの全アイテムデータ
             let rawSource = (this.itemsData && this.itemsData.items) ? this.itemsData.items : [];
-            
-            // LogicKeysで生成された「正解の鍵リスト」からIDセットを作成
             const validKeyIds = new Set();
             const sourceLookup = {};
 
@@ -84,7 +74,6 @@ const CompKeys = {
                 });
             }
 
-            // Unknownフィルタリング再適用
             let source = rawSource
                 .filter(item => validKeyIds.has(item.id))
                 .map(item => {
@@ -94,12 +83,10 @@ const CompKeys = {
                     };
                 });
             
-            // View Mode フィルタ
             if (this.viewMode === 'owned') {
                 source = source.filter(k => this.ownedKeys.includes(k.id));
             }
 
-            // 検索フィルタ
             const query = this.searchQuery.toLowerCase();
             if (!query) return source;
             
@@ -156,7 +143,6 @@ const CompKeys = {
             this.collapsedMaps[mapName] = !this.collapsedMaps[mapName];
         },
         collapseAll() {
-            // 全てのグループを閉じる
             Object.keys(this.groupedKeys).forEach(mapName => {
                 this.collapsedMaps[mapName] = true;
             });

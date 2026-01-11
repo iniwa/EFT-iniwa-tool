@@ -21,7 +21,7 @@ createApp({
             } catch (e) { console.warn("LS Save Error:", e); }
         };
 
-        const APP_VERSION = '2.0.1';
+        const APP_VERSION = '2.0.2';
 
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');

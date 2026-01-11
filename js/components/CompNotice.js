@@ -74,9 +74,10 @@ const CompNotice = {
                     <div class="vstack gap-4">
                         
                         <div class="bg-info bg-opacity-10 p-2 rounded border border-info">
-                            <h6 class="text-info small mb-1">🔄 v2.0.1 Update (Minor Fix)</h6>
+                            <h6 class="text-info small mb-1">🔄 v2.0.2 Update (Minor Fix)</h6>
                             <ul class="list-unstyled small text-light mb-0 ps-1">
-                                <li>・アイテム検索機能にて、他タブから戻ってきた時も検索状況を保持するように改善</li>
+                                <li>・「鍵管理」画面にて、Wikiボタンが表示されない不具合を修正</li>
+                                <li>・アイテム検索機能にて、他タブから戻ってきた時も検索状況を保持するように改善 (v2.0.1)</li>
                             </ul>
                         </div>
 
