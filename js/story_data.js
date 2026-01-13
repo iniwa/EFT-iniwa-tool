@@ -134,7 +134,7 @@ const STORY_CHAPTERS = [
             { id: 'ba_loc_ryabina', type: 'check', text: 'WoodsのRyabina Outpost (スナイパーロック付近) を特定する', parallel: true },
             { id: 'ba_loc_carousel', type: 'check', text: 'InterchangeのCarousel Outpost (IDEA店舗内) を特定する', parallel: true },
             { id: 'ba_loc_gnezdo', type: 'check', text: 'InterchangeのGnezdo Outpost (西側の森) を特定する', parallel: true },
-            { id: 'ba_items', type: 'check', text: '各拠点で部隊の遺留品(Personal files, Tapes等)を回収する' },
+            { id: 'ba_items', type: 'check', text: '各拠点で部隊の遺留品(Personal files, Tapes等)を回収する', parallel: true },
             { id: 'ba_woods_ambush', type: 'check', text: 'Woodsの待ち伏せ地点(ZB-016近く)でMoremanの遺体と電話を見つける' },
             { id: 'ba_craft_tape', type: 'check', text: 'Workbenchで回収したテープを修復・解析する' },
             { id: 'ba_visit_lk', type: 'check', text: 'Lightkeeperを訪ね、回収した遺留品5つを渡す' },
