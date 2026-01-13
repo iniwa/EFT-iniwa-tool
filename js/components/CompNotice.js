@@ -4,8 +4,7 @@ const CompNotice = {
     props: ['appVersion'],
     data() {
         return {
-            isVisible: false,
-            step: 1
+            isVisible: false
         };
     },
     mounted() {
@@ -13,17 +12,15 @@ const CompNotice = {
     },
     methods: {
         checkVisibility() {
-            // 1. 永久非表示フラグの確認
             const permHidden = localStorage.getItem('eft_notice_permanently_hidden');
             if (permHidden === 'true') {
                 this.isVisible = false;
                 return;
             }
 
-            // 2. バージョン確認
             const lastSeenVersion = localStorage.getItem('eft_notice_last_seen_version');
             
-            // v2.0.0を見た人にはv2.0.1の自動表示はしない（パッチバージョンの違いは無視）
+            // マイナーバージョンアップなので表示する (2.0.x -> 2.1.0)
             const isSameMajorMinor = (v1, v2) => {
                 if (!v1 || !v2) return false;
                 const p1 = v1.split('.');
@@ -73,73 +70,91 @@ const CompNotice = {
                 <div class="modal-body">
                     <div class="vstack gap-4">
                         
-                        <div class="bg-info bg-opacity-10 p-2 rounded border border-info">
-                            <h6 class="text-info small mb-1">🔄 v2.0.2 Update (Minor Fix)</h6>
-                            <ul class="list-unstyled small text-light mb-0 ps-1">
-                                <li>・「鍵管理」画面にて、Wikiボタンが表示されない不具合を修正</li>
-                                <li>・アイテム検索機能にて、他タブから戻ってきた時も検索状況を保持するように改善 (v2.0.1)</li>
+                        <div class="p-3 rounded border border-primary bg-primary bg-opacity-10">
+                            <h5 class="text-primary fw-bold mb-2">
+                                📖 ストーリータスク (Story Chapters) 実装！
+                            </h5>
+                            <p class="small text-light mb-2">
+                                EFT v1.0.0.0より追加された「ストーリータスク」の進捗管理タブを追加しました。<br>
+                                手順や分岐も、チェックリスト形式でスムーズに管理できます。
+                            </p>
+                            <ul class="small text-light mb-0">
+                                <li><strong>分岐対応：</strong> 選択肢によって次のタスクが変化します（例：Falling Skiesの選択）。</li>
+                                <li><strong>非表示設定：</strong> 「🐞 デバッグ」タブからストーリータブ自体を非表示に設定できます。</li>
+                                <li><strong>Wiki連携：</strong> 各チャプターのタイトル横から、海外Wikiの詳細ページへ飛べます。</li>
                             </ul>
                         </div>
 
                         <div>
                             <h6 class="text-warning border-bottom border-secondary pb-2">
-                                ⚔️ PvP / PvE & 🌐 JP / EN 切り替え (v2.0.0)
+                                🐞 その他の機能改善・修正 (v2.1.0)
                             </h6>
-                            <p class="small text-light">
-                                画面右上のヘッダーから、ゲームモード（PvP/PvE）と言語（日本語/英語）を切り替えられるようになりました。<br>
-                                選択したモードに応じて、タスクの要件やアイテム価格が自動的に切り替わります。
-                            </p>
-                        </div>
-
-                        <div>
-                            <h6 class="text-success border-bottom border-secondary pb-2">
-                                🔍 アイテム図鑑 & 逆引き検索 (v2.0.0)
-                            </h6>
-                            <p class="small text-light">
-                                新しいタブ「アイテム検索」を追加しました。アイテム名で検索し、以下の情報を確認できます。
-                            </p>
-                            <ul class="small text-muted">
-                                <li>使用するタスク / 隠れ家 / 交換レシピ（逆引き）</li>
-                                <li><strong>トレーダー最高買取価格</strong> と <strong>24時間平均フレア価格</strong></li>
-                                <li>アイテム自体の入手方法（交換/購入）</li>
+                            <ul class="small text-light ps-3">
+                                <li>
+                                    <strong>ストーリータブの表示設定：</strong><br>
+                                    ネタバレを完全に避けたい方や、まだストーリーを進めていない方のために、
+                                    <span class="text-info">「🐞 デバッグ」タブからストーリータブ自体を非表示</span>に設定できるようになりました。
+                                </li>
+                                <li>
+                                    <strong>データリセット機能の追加：</strong><br>
+                                    「🐞 デバッグ」タブにて、タスク進捗やハイドアウト情報など、項目ごとに選択してデータをリセット（初期化）できるようになりました。
+                                </li>
+                                <li>
+                                    <strong>データ保存の改善：</strong><br>
+                                    ストーリーの進捗状況もバックアップ（エクスポート）に含まれるようになりました。
+                                </li>
                             </ul>
-                            <p class="small text-warning">
-                                ※ フレア価格は「リアルタイム」ではなく「過去24時間の平均値」です。目安としてご利用ください。
-                            </p>
                         </div>
 
-                        <div>
-                            <h6 class="text-secondary border-bottom border-secondary pb-2">
-                                🤖 チャット機能について
-                            </h6>
-                            <p class="small text-light">
-                                「チャット」タブはデフォルトで非表示になりました。<br>
-                                利用される場合は、<strong>「🐞 デバッグ」タブの左下にあるスイッチをON</strong>にしてください。
-                            </p>
-                        </div>
+                        <details class="border border-secondary rounded p-2 bg-black bg-opacity-25">
+                            <summary class="text-secondary small fw-bold cursor-pointer">📜 過去のアップデート履歴 (v2.0.x)</summary>
+                            <div class="mt-3 vstack gap-3 ps-2">
+                                
+                                <div class="bg-info bg-opacity-10 p-2 rounded border border-info">
+                                    <h6 class="text-info small mb-1">🔄 v2.0.2 Update (Minor Fix)</h6>
+                                    <ul class="list-unstyled small text-light mb-0 ps-1">
+                                        <li>・「鍵管理」画面にて、Wikiボタンが表示されない不具合を修正</li>
+                                        <li>・アイテム検索機能にて、他タブから戻ってきた時も検索状況を保持するように改善 (v2.0.1)</li>
+                                    </ul>
+                                </div>
 
-                        <div>
-                            <h6 class="text-info border-bottom border-secondary pb-2">
-                                🗺️ フローチャート：初期設定モード (v2.0.0)
-                            </h6>
-                            <p class="small text-light">
-                                フローチャート画面に「初期設定モード」を追加しました。<br>
-                                これをONにしてタスクをクリックすると、<strong>その前提タスクを含めて一括で完了状態</strong>にできます。<br>
-                                ツールの使い始めや、ワイプ後の進捗入力が劇的に楽になります。
-                            </p>
-                        </div>
+                                <div>
+                                    <h6 class="text-warning border-bottom border-secondary pb-1 small">
+                                        ⚔️ PvP / PvE & 🌐 JP / EN 切り替え (v2.0.0)
+                                    </h6>
+                                    <p class="small text-muted mb-0">
+                                        画面右上のヘッダーから、ゲームモード（PvP/PvE）と言語（日本語/英語）を切り替えられるようになりました。
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-success border-bottom border-secondary pb-1 small">
+                                        🔍 アイテム図鑑 & 逆引き検索 (v2.0.0)
+                                    </h6>
+                                    <p class="small text-muted mb-0">
+                                        新しいタブ「アイテム検索」を追加しました。トレーダー買取価格やフレア平均価格、使用用途（逆引き）を確認できます。
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h6 class="text-info border-bottom border-secondary pb-1 small">
+                                        🗺️ フローチャート：初期設定モード (v2.0.0)
+                                    </h6>
+                                    <p class="small text-muted mb-0">
+                                        フローチャート画面に「初期設定モード」を追加。前提タスクを含めて一括で完了状態にできます。
+                                    </p>
+                                </div>
+                            </div>
+                        </details>
 
                         <div class="bg-secondary bg-opacity-10 p-3 rounded border border-secondary">
                             <h6 class="text-white mb-3">📢 開発者からのお願い</h6>
-                            
                             <p class="small">
                                 <strong>📮 ご意見・不具合報告</strong><br>
                                 ページ最下部（フッター）の「ご意見箱」より、Googleフォーム経由で匿名にて送信いただけます。<br>
-                                どのような方が利用されているか把握するため、簡単なアンケートにもご協力いただけると励みになります！
+                                ストーリータスクのデータに誤りがあれば教えていただけると助かります！
                             </p>
-
                             <hr class="border-secondary">
-
                             <p class="small mb-0">
                                 <strong>☕ 将来的な広告設置について</strong><br>
                                 今後の運営維持のため、Google AdSenseによる広告設置を目標としています。<br>

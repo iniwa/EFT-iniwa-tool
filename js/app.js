@@ -21,7 +21,8 @@ createApp({
             } catch (e) { console.warn("LS Save Error:", e); }
         };
 
-        const APP_VERSION = '2.0.2';
+        // ★バージョン 2.1.0
+        const APP_VERSION = '2.1.0';
 
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
@@ -53,9 +54,15 @@ createApp({
         const keyUserData = ref({}); 
         const playerLevel = ref(0);
         
-        // ★ストーリー進捗 (定義位置を他のStateと一緒に)
-        const storyProgress = ref(loadLS('eft_story_progress', {}));
-        
+        // --- 修正: ストーリー進捗読み込み（クリーン版） ---
+        let loadedStory = loadLS('eft_story_progress', {});
+        // データ破損（配列化）チェック
+        if (Array.isArray(loadedStory)) {
+            loadedStory = {};
+        }
+        const storyProgress = ref(loadedStory);
+        // ---------------------------------------------
+
         const searchTask = ref("");
         
         // 初期設定モード
@@ -81,7 +88,10 @@ createApp({
         const showFuture = ref(loadLS('eft_show_future', false));
         const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
         const showChatTab = ref(loadLS('eft_show_chat_tab', false));
+        
+        // ★ストーリータブの表示設定 (デフォルトON)
         const showStoryTab = ref(loadLS('eft_show_story_tab', true));
+
         const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
         const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
@@ -408,13 +418,15 @@ createApp({
             else completedTasks.value.push(taskName);
         };
         
-        // ★追加: ストーリー進捗更新関数
+        // ★ストーリー進捗更新関数
         const updateStoryProgress = (payload) => {
+            console.log('[DEBUG] Update Request Received:', payload); // ←追記
             const { chapterId, stepId, value } = payload;
             if (!storyProgress.value[chapterId]) {
                 storyProgress.value[chapterId] = {};
             }
             storyProgress.value[chapterId][stepId] = value;
+            console.log('[DEBUG] State After Update:', JSON.parse(JSON.stringify(storyProgress.value))); // ←追記
         };
 
         // --- アイテムDB関連のロジック ---
@@ -702,12 +714,16 @@ createApp({
             saveLS('eft_keys', ownedKeys.value);
             saveLS('eft_key_user_data', keyUserData.value);
             saveLS('eft_prioritized', prioritizedTasks.value);
-            saveLS('eft_story_progress', storyProgress.value);
+        }, { deep: true });
+
+        watch(storyProgress, (val) => {
+            // デバッグ用ログ（動作確認後、削除してもOKです）
+            saveLS('eft_story_progress', val);
         }, { deep: true });
         
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(showChatTab, (val) => saveLS('eft_show_chat_tab', val));
-        watch(showStoryTab, (val) => saveLS('eft_show_story_tab', val));
+        watch(showStoryTab, (val) => saveLS('eft_show_story_tab', val)); // ★ストーリータブ設定の保存
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
@@ -817,6 +833,49 @@ createApp({
             }
         };
 
+        // ★追加: データリセット処理
+        const resetUserData = (targets) => {
+            if (targets.tasks) {
+                completedTasks.value = [];
+                prioritizedTasks.value = [];
+            }
+            if (targets.hideout) {
+                // ハイドアウトは station名: レベル のMapなので、全て0にするか空にする
+                // 既存の hideoutData を元に 0 で初期化しなおす
+                const resetHideout = {};
+                hideoutData.value.forEach(s => resetHideout[s.name] = 0);
+                userHideout.value = resetHideout;
+            }
+            if (targets.keys) {
+                ownedKeys.value = [];
+                keyUserData.value = {};
+            }
+            if (targets.story) {
+                storyProgress.value = {};
+            }
+            if (targets.items) {
+                collectedItems.value = [];
+            }
+            if (targets.wishlist) {
+                wishlist.value = [];
+            }
+            if (targets.settings) {
+                // ローカルストレージを直接削除し、リロードを促すのが安全
+                localStorage.removeItem('eft_level');
+                localStorage.removeItem('eft_gamemode');
+                localStorage.removeItem('eft_apilang');
+                localStorage.removeItem('eft_show_completed');
+                localStorage.removeItem('eft_show_future');
+                localStorage.removeItem('eft_show_kappa');
+                localStorage.removeItem('eft_show_lk');
+                
+                // 変数も初期値に戻す
+                playerLevel.value = 0;
+                alert("設定を削除しました。変更を完全に適用するためページをリロードします。");
+                location.reload();
+            }
+        };
+
         return {
             showMaxedHideout, keysViewMode, keysSortMode, flowchartTrader,
             currentTab, taskViewMode, showCompleted, showFuture, 
@@ -836,7 +895,9 @@ createApp({
             itemSearchQuery, itemSearchShowWishlist, itemSearchPage,
             fetchItemDatabase, updateSingleItemPrice, toggleWishlist,
             APP_VERSION,
-            storyProgress,updateStoryProgress,
+            storyProgress,
+            updateStoryProgress,
+            resetUserData,
             showStoryTab
         };
     }
