@@ -94,6 +94,11 @@
                     🗺️ フローチャート
                 </a>
             </li>
+            <li class="nav-item" v-if="showStoryTab">
+                <a class="nav-link" :class="{active: currentTab === 'story'}" @click="currentTab = 'story'" href="#">
+                    📖 ストーリー
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" :class="{active: currentTab === 'ammo'}" @click="currentTab = 'ammo'" href="#">
                     🔫 弾薬
@@ -176,6 +181,13 @@
             ></comp-keys>
         </div>
 
+        <div v-if="currentTab === 'story'">
+            <comp-story
+                :story-progress="storyProgress"
+                @update-progress="updateStoryProgress"
+            ></comp-story>
+        </div>
+
         <div v-if="currentTab === 'ammo'">
             <comp-ammo
                 :ammo-data="ammoData"
@@ -222,6 +234,9 @@
                 :api-lang="apiLang"
                 :show-chat-tab="showChatTab"
                 @update:show-chat-tab="showChatTab = $event"
+                :show-story-tab="showStoryTab"
+                @update:show-story-tab="showStoryTab = $event"
+                @reset-data="resetUserData" 
             ></comp-debug>
         </div>
 
@@ -278,37 +293,39 @@
 
     </div>
 
-    <script src="data.js?=v2.0.0"></script>
-    <script src="js/queries.js?=v2.0.2"></script>
-    <script src="js/key_presets.js?=v2.0.0"></script> 
-    <script src="js/logic_hideout.js?=v2.0.0"></script>
-    <script src="js/logic_tasks.js?=v2.0.0"></script>
-    <script src="js/logic_keys.js?=v2.0.0"></script>
-    <script src="js/logic_items.js?=v2.0.0"></script>
+    <script src="data.js?=v2.1.0"></script>
+    <script src="js/queries.js?=v2.1.0"></script>
+    <script src="js/key_presets.js?=v2.1.0"></script> 
+    <script src="js/logic_hideout.js?=v2.1.0"></script>
+    <script src="js/logic_tasks.js?=v2.1.0"></script>
+    <script src="js/logic_keys.js?=v2.1.0"></script>
+    <script src="js/logic_items.js?=v2.1.0"></script>
+    <script src="js/story_data.js?=v1.1.0"></script>
 
-    <script src="js/components/CompHeader.js?=v2.0.0"></script>
-    <script src="js/components/CompInput.js?=v2.0.0"></script>
-    <script src="js/components/CompResult.js?=v2.0.0"></script>
-    <script src="js/components/CompKeys.js?=v2.0.2"></script>
-    <script src="js/components/CompFlowchart.js?=v2.0.0"></script>
-    <script src="js/components/CompModal.js?=v2.0.0"></script>
-    <script src="js/components/CompDebug.js?=v2.0.0"></script>
-    <script src="js/components/CompChat.js?=v2.0.0"></script>
-    <script src="js/components/CompAmmo.js?v=2.0.0"></script>
-    <script src="js/components/CompFooter.js?=v2.0.1"></script>
-    <script src="js/components/CompItemSearch.js?=v2.0.11"></script>
+    <script src="js/components/CompHeader.js?=v2.1.0"></script>
+    <script src="js/components/CompStory.js?=v1.1.0"></script>
+    <script src="js/components/CompInput.js?=v2.1.0"></script>
+    <script src="js/components/CompResult.js?=v2.1.0"></script>
+    <script src="js/components/CompKeys.js?=v2.1.0"></script>
+    <script src="js/components/CompFlowchart.js?=v2.1.0"></script>
+    <script src="js/components/CompModal.js?=v2.1.0"></script>
+    <script src="js/components/CompDebug.js?=v2.1.0"></script>
+    <script src="js/components/CompChat.js?=v2.1.0"></script>
+    <script src="js/components/CompAmmo.js?v=2.1.0"></script>
+    <script src="js/components/CompFooter.js?=v2.1.0"></script>
+    <script src="js/components/CompItemSearch.js?=v2.1.01"></script>
 
-    <script src="js/components/memo/CompMemoHealth.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoWeapon.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoArmor.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoStims.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoGrenade.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoTraders.js?=v2.0.0"></script>
-    <script src="js/components/memo/CompMemoItems.js?=v2.0.0"></script>
-    <script src="js/components/CompMemo.js?=v2.0.0"></script>
+    <script src="js/components/memo/CompMemoHealth.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoWeapon.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoArmor.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoStims.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoGrenade.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoTraders.js?=v2.1.0"></script>
+    <script src="js/components/memo/CompMemoItems.js?=v2.1.0"></script>
+    <script src="js/components/CompMemo.js?=v2.1.0"></script>
 
-    <script src="js/components/CompNotice.js?=v2.0.2"></script>
+    <script src="js/components/CompNotice.js?=v2.1.0"></script>
 
-    <script src="js/app.js?=v2.0.2"></script>
+    <script src="js/app.js?=v2.1.0"></script>
 </body>
 </html>

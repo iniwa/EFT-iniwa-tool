@@ -21,7 +21,8 @@ createApp({
             } catch (e) { console.warn("LS Save Error:", e); }
         };
 
-        const APP_VERSION = '2.0.2';
+        // ★バージョン 2.1.0
+        const APP_VERSION = '2.1.0';
 
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
@@ -52,6 +53,16 @@ createApp({
         const prioritizedTasks = ref([]);
         const keyUserData = ref({}); 
         const playerLevel = ref(0);
+        
+        // --- 修正: ストーリー進捗読み込み（クリーン版） ---
+        let loadedStory = loadLS('eft_story_progress', {});
+        // データ破損（配列化）チェック
+        if (Array.isArray(loadedStory)) {
+            loadedStory = {};
+        }
+        const storyProgress = ref(loadedStory);
+        // ---------------------------------------------
+
         const searchTask = ref("");
         
         // 初期設定モード
@@ -77,6 +88,10 @@ createApp({
         const showFuture = ref(loadLS('eft_show_future', false));
         const showMaxedHideout = ref(loadLS('eft_show_maxed_hideout', false));
         const showChatTab = ref(loadLS('eft_show_chat_tab', false));
+        
+        // ★ストーリータブの表示設定 (デフォルトON)
+        const showStoryTab = ref(loadLS('eft_show_story_tab', true));
+
         const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
         const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map')); 
         const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
@@ -243,7 +258,7 @@ createApp({
             };
         };
 
-        // ★修正: 弾薬データの加工（caliberが空の場合の安全策を追加）
+        // 弾薬データの加工
         const processAmmo = (rawAmmo, taskList) => {
             const taskMap = new Map((taskList || []).map(t => [t.id, t.name]));
             return (rawAmmo || []).map(a => {
@@ -267,7 +282,6 @@ createApp({
                 }
                 return {
                     ...a,
-                    // ★安全策: caliberがundefinedの場合は 'Unknown' にする
                     caliber: a.caliber || 'Unknown', 
                     
                     id: a.item ? a.item.id : Math.random(),
@@ -310,7 +324,6 @@ createApp({
             isLoading.value = true;
             loadError.value = null;
 
-            // ★修正: ゲームモードと言語を適用してクエリ生成
             const mode = gameMode.value === 'pvp' ? 'regular' : 'pve';
             const query = getMainQuery(mode, apiLang.value);
 
@@ -361,7 +374,9 @@ createApp({
                 ownedKeys: ownedKeys.value,
                 keyUserData: keyUserData.value,
                 playerLevel: playerLevel.value,
-                prioritizedTasks: prioritizedTasks.value 
+                prioritizedTasks: prioritizedTasks.value,
+                storyProgress: storyProgress.value,
+                wishlist: wishlist.value 
             };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -386,6 +401,11 @@ createApp({
                     if(parsed.keyUserData) keyUserData.value = parsed.keyUserData;
                     if(parsed.playerLevel) playerLevel.value = parsed.playerLevel;
                     if(parsed.prioritizedTasks) prioritizedTasks.value = parsed.prioritizedTasks;
+                    
+                    // ★ストーリー進捗読み込み
+                    if(parsed.storyProgress) storyProgress.value = parsed.storyProgress;
+                    
+                    if(parsed.wishlist) wishlist.value = parsed.wishlist;
                     alert("インポート完了");
                 } catch (err) { alert("読み込み失敗"); }
             };
@@ -396,6 +416,17 @@ createApp({
             const idx = completedTasks.value.indexOf(taskName);
             if (idx > -1) completedTasks.value.splice(idx, 1);
             else completedTasks.value.push(taskName);
+        };
+        
+        // ★ストーリー進捗更新関数
+        const updateStoryProgress = (payload) => {
+            console.log('[DEBUG] Update Request Received:', payload); // ←追記
+            const { chapterId, stepId, value } = payload;
+            if (!storyProgress.value[chapterId]) {
+                storyProgress.value[chapterId] = {};
+            }
+            storyProgress.value[chapterId][stepId] = value;
+            console.log('[DEBUG] State After Update:', JSON.parse(JSON.stringify(storyProgress.value))); // ←追記
         };
 
         // --- アイテムDB関連のロジック ---
@@ -446,7 +477,6 @@ createApp({
                             item { name iconLink }
                         }
                     }
-                    # ★修正: 生成個数を知るために rewardItems を追加
                     craftsFor {
                         station { name }
                         level
@@ -552,7 +582,6 @@ createApp({
                             item { name iconLink }
                         }
                     }
-                    # ★修正: こちらも rewardItems を追加
                     craftsFor {
                         station { name }
                         level
@@ -676,7 +705,9 @@ createApp({
         watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
         watch(showCompleted, (val) => saveLS('eft_show_completed', val));
         watch(showFuture, (val) => saveLS('eft_show_future', val));
-        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks], () => {
+        
+        // ★ストーリー進捗をここで一括保存
+        watch([userHideout, completedTasks, collectedItems, ownedKeys, keyUserData, prioritizedTasks, storyProgress], () => {
             saveLS('eft_hideout', userHideout.value);
             saveLS('eft_tasks', completedTasks.value);
             saveLS('eft_collected', collectedItems.value);
@@ -684,22 +715,25 @@ createApp({
             saveLS('eft_key_user_data', keyUserData.value);
             saveLS('eft_prioritized', prioritizedTasks.value);
         }, { deep: true });
+
+        watch(storyProgress, (val) => {
+            // デバッグ用ログ（動作確認後、削除してもOKです）
+            saveLS('eft_story_progress', val);
+        }, { deep: true });
+        
         watch(showMaxedHideout, (val) => saveLS('eft_show_maxed_hideout', val));
         watch(showChatTab, (val) => saveLS('eft_show_chat_tab', val));
+        watch(showStoryTab, (val) => saveLS('eft_show_story_tab', val)); // ★ストーリータブ設定の保存
         watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
         watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
         watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
         watch(wishlist, (val) => saveLS('eft_wishlist', val));
 
-        // ★追加: 設定変更時に保存＆再取得
         watch([gameMode, apiLang], ([newMode, newLang]) => {
             saveLS('eft_gamemode', newMode);
             saveLS('eft_apilang', newLang);
             
-            // 設定が変わったら強制リロード
             fetchData(true);
-            
-            // アイテムDBもクリアして再取得させる
             itemDb.value = []; 
             saveDB(ITEM_DB_CACHE_KEY, { timestamp: 0, items: [] });
         });
@@ -786,7 +820,6 @@ createApp({
         const toggleCollected = (uid) => { const idx = collectedItems.value.indexOf(uid); if (idx > -1) collectedItems.value.splice(idx, 1); else collectedItems.value.push(uid); };
         const toggleOwnedKey = (id) => { const idx = ownedKeys.value.indexOf(id); if (idx > -1) ownedKeys.value.splice(idx, 1); else ownedKeys.value.push(id); };
         const displayLists = computed(() => ({
-            // Hideout -> ハイドアウト, Task -> タスク に変更
             hideoutFir: { title: '🏠 ハイドアウト (FIR必須)', items: shoppingList.value.hideoutFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
             hideoutBuy: { title: '🏠 ハイドアウト (購入で可)', items: shoppingList.value.hideoutBuy, borderClass: '', headerClass: 'bg-dark text-info border-info', badgeClass: 'bg-primary' },
             taskFir: { title: '✅ タスク (FIR必須)', items: shoppingList.value.taskFir, borderClass: 'border-warning', headerClass: 'bg-dark text-warning border-warning', badgeClass: 'bg-warning text-dark' },
@@ -797,6 +830,49 @@ createApp({
         const openNotice = () => {
             if (noticeRef.value) {
                 noticeRef.value.show();
+            }
+        };
+
+        // ★追加: データリセット処理
+        const resetUserData = (targets) => {
+            if (targets.tasks) {
+                completedTasks.value = [];
+                prioritizedTasks.value = [];
+            }
+            if (targets.hideout) {
+                // ハイドアウトは station名: レベル のMapなので、全て0にするか空にする
+                // 既存の hideoutData を元に 0 で初期化しなおす
+                const resetHideout = {};
+                hideoutData.value.forEach(s => resetHideout[s.name] = 0);
+                userHideout.value = resetHideout;
+            }
+            if (targets.keys) {
+                ownedKeys.value = [];
+                keyUserData.value = {};
+            }
+            if (targets.story) {
+                storyProgress.value = {};
+            }
+            if (targets.items) {
+                collectedItems.value = [];
+            }
+            if (targets.wishlist) {
+                wishlist.value = [];
+            }
+            if (targets.settings) {
+                // ローカルストレージを直接削除し、リロードを促すのが安全
+                localStorage.removeItem('eft_level');
+                localStorage.removeItem('eft_gamemode');
+                localStorage.removeItem('eft_apilang');
+                localStorage.removeItem('eft_show_completed');
+                localStorage.removeItem('eft_show_future');
+                localStorage.removeItem('eft_show_kappa');
+                localStorage.removeItem('eft_show_lk');
+                
+                // 変数も初期値に戻す
+                playerLevel.value = 0;
+                alert("設定を削除しました。変更を完全に適用するためページをリロードします。");
+                location.reload();
             }
         };
 
@@ -818,7 +894,11 @@ createApp({
             itemDb, itemDbLoading, itemDbLastUpdated, updatingItemIds, wishlist,
             itemSearchQuery, itemSearchShowWishlist, itemSearchPage,
             fetchItemDatabase, updateSingleItemPrice, toggleWishlist,
-            APP_VERSION
+            APP_VERSION,
+            storyProgress,
+            updateStoryProgress,
+            resetUserData,
+            showStoryTab
         };
     }
 })
@@ -835,4 +915,5 @@ createApp({
 .component('comp-memo', CompMemo)
 .component('comp-item-search', CompItemSearch)
 .component('comp-notice', CompNotice)
+.component('comp-story', CompStory)
 .mount('#app');
