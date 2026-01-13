@@ -1,15 +1,14 @@
 // js/components/CompDebug.js
 
 const CompDebug = {
-    // ★修正: showChatTab を props に追加
     props: [
         'taskData', 'hideoutData', 'itemsData', 'ammoData', 'itemDb', 
         'userHideout', 'completedTasks', 'ownedKeys', 'keyUserData', 'prioritizedTasks',
         'collectedItems', 'wishlist', 'playerLevel', 'gameMode', 'apiLang',
-        'showChatTab' 
+        'showChatTab',
+        'showStoryTab' // ★追加: ストーリータブ設定を受け取る
     ],
-    // ★修正: イベント定義を追加
-    emits: ['update:showChatTab'],
+    emits: ['update:showChatTab', 'update:showStoryTab'], // ★追加
     
     data() {
         return {
@@ -30,7 +29,8 @@ const CompDebug = {
                         level: this.playerLevel,
                         gameMode: this.gameMode,
                         language: this.apiLang,
-                        showChatTab: this.showChatTab // 設定値も確認用に表示
+                        showChatTab: this.showChatTab,
+                        showStoryTab: this.showStoryTab
                     },
                     userHideout: this.userHideout,
                     completedTasks: this.completedTasks,
@@ -38,7 +38,8 @@ const CompDebug = {
                     ownedKeys: this.ownedKeys,
                     keyUserData: this.keyUserData,
                     collectedItems: this.collectedItems,
-                    wishlist: this.wishlist
+                    wishlist: this.wishlist,
+                    storyProgress: JSON.parse(localStorage.getItem('eft_story_progress') || '{}')
                 };
                 default: return {};
             }
@@ -93,6 +94,14 @@ const CompDebug = {
 
                     <div class="p-3 border-top border-secondary text-white">
                         <div class="small fw-bold text-secondary mb-2">Options</div>
+                        
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="storySwitch"
+                                :checked="showStoryTab"
+                                @change="$emit('update:showStoryTab', $event.target.checked)">
+                            <label class="form-check-label small" for="storySwitch">ストーリータブを表示</label>
+                        </div>
+
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="chatSwitch"
                                 :checked="showChatTab"
