@@ -32,8 +32,8 @@ const CompNotice = {
             };
 
             if (isSameMajorMinor(lastSeenVersion, this.appVersion)) {
-                this.isVisible = false;
-                return;
+                    this.isVisible = false;
+                    return;
             }
 
             this.isVisible = true;
@@ -87,9 +87,14 @@ const CompNotice = {
 
                         <div>
                             <h6 class="text-warning border-bottom border-secondary pb-2">
-                                🐞 その他の機能改善・修正 (v2.1.0)
+                                🐞 その他の機能改善・修正 (v2.1.1)
                             </h6>
                             <ul class="small text-light ps-3">
+                                <li class="mb-2">
+                                    <strong>アクセス解析の変更 (テスト運用)：</strong><br>
+                                    Google Analyticsから、よりプライバシーに配慮した「Umami」へ変更しました。<br>
+                                    <span class="text-muted">Cookieを使用せず、個人を特定しない形で計測を行います。</span>
+                                </li>
                                 <li>
                                     <strong>ストーリータブの表示設定：</strong><br>
                                     ネタバレを完全に避けたい方や、まだストーリーを進めていない方のために、

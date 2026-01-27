@@ -1,11 +1,8 @@
 // js/components/CompFooter.js
 
 const CompFooter = {
-    // ★修正: data() を削除し、props で appVersion を受け取るように変更
     props: ['appVersion'],
     emits: ['show-notice'],
-    
-    // data() { return { appVersion: '...' } } は不要なので削除
 
     template: `
     <footer class="mt-5 py-4 border-top border-secondary text-center small text-secondary" style="background-color: #121212;">
@@ -76,8 +73,8 @@ const CompFooter = {
                                 <h6 class="text-white border-bottom border-secondary pb-1 mb-2">プライバシーポリシー</h6>
                                 <p>
                                     <strong>1. アクセス解析について</strong><br>
-                                    当サイトでは、利用状況の把握とサービス向上のため、Google Analyticsを使用しています。
-                                    これに伴い、Cookieを使用して匿名のトラフィックデータを収集する場合があります。このデータに個人を特定する情報は含まれません。
+                                    当サイトでは、サイトの利用状況を把握し、コンテンツの品質向上を図るために、アクセス解析ツール「Umami」を使用しています。<br>
+                                    Umamiは、<strong>Cookie（クッキー）を使用せず</strong>、個人を特定できない匿名化された情報を収集します。また、収集されたデータは当サイト管理者のみが管理するサーバー内に保存され、広告配信目的などで第三者へ提供されることはありません。
                                 </p>
                                 <p>
                                     <strong>2. 入力データの扱い</strong><br>
