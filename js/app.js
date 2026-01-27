@@ -700,6 +700,13 @@ createApp({
         });
 
         // 監視
+        watch(currentTab, (newTab) => {
+            if (window.umami) {
+                umami.track('Tab Switch', { name: newTab });
+            }
+        });
+        watch(playerLevel, (newVal) => saveLS('eft_level', newVal));
+        watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
         watch(playerLevel, (newVal) => saveLS('eft_level', newVal));
         watch(showKappaOnly, (val) => saveLS('eft_show_kappa', val));
         watch(showLightkeeperOnly, (val) => saveLS('eft_show_lk', val));
