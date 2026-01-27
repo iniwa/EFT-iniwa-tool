@@ -22,7 +22,7 @@ createApp({
         };
 
         // ★バージョン 2.1.0
-        const APP_VERSION = '2.1.0';
+        const APP_VERSION = '2.1.1';
 
         // --- 1. 状態変数の定義 ---
         const currentTab = ref('input');
