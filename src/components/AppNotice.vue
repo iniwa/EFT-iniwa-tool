@@ -89,17 +89,39 @@ defineExpose({ show })
       <div class="vstack gap-4">
         <div class="p-3 rounded border border-primary bg-primary bg-opacity-10">
           <h5 class="text-primary fw-bold mb-2">
-            🔄 v3.0.0 - Vite SFC リビルド
+            🔄 v3.0.0 - アプリケーション全面リビルド
           </h5>
           <p class="small text-light mb-2">
-            アプリケーション全体をVite + Vue SFCベースにリビルドしました。<br>
-            パフォーマンスの向上と今後の開発効率改善を目的としたリファクタリングです。
+            本バージョンでは、アプリケーション全体をゼロからリビルドしました。<br>
+            見た目や機能は従来とほぼ同じですが、内部構造が大きく変わっています。
           </p>
           <ul class="small text-light mb-0">
-            <li><strong>高速化:</strong> Viteによるビルドシステム導入で、読み込み速度が大幅に改善されました。</li>
-            <li><strong>コンポーネント構成:</strong> Vue SFC (Single File Component) への移行により、保守性が向上しました。</li>
-            <li><strong>状態管理:</strong> Composableパターンによるシングルトン状態管理を導入しました。</li>
+            <li><strong>高速化:</strong> Viteビルドシステムの導入により、ページの読み込み速度が大幅に改善されました。</li>
+            <li><strong>内部構造の刷新:</strong> Vue SFC (Single File Component) への全面移行で、今後の機能追加・修正がしやすくなりました。</li>
+            <li><strong>データの互換性:</strong> これまでの進捗データ（タスク完了状況、鍵管理など）はそのまま引き継がれます。</li>
           </ul>
+        </div>
+
+        <!-- 不具合報告のお願い (大型アップデート用) -->
+        <div class="p-3 rounded border border-warning bg-warning bg-opacity-10">
+          <h6 class="text-warning fw-bold mb-2">
+            ⚠️ 不具合報告のお願い
+          </h6>
+          <p class="small text-light mb-2">
+            大型アップデートのため、意図しない不具合が発生している可能性があります。<br>
+            もし以下のような問題を見つけた場合は、ぜひご報告ください。
+          </p>
+          <ul class="small text-light mb-2">
+            <li>表示が崩れている・おかしい</li>
+            <li>ボタンや操作が効かない</li>
+            <li>データが正しく表示されない</li>
+            <li>以前できていたことができなくなった</li>
+            <li>その他、気になる点なんでも</li>
+          </ul>
+          <p class="small text-light mb-0">
+            📮 ページ最下部の「<strong>意見箱</strong>」から、Googleフォーム経由で匿名にて送信いただけます。<br>
+            些細なことでもお気軽にお知らせいただけると助かります。
+          </p>
         </div>
 
         <details class="border border-secondary rounded p-2 bg-black bg-opacity-25">
@@ -126,12 +148,6 @@ defineExpose({ show })
 
         <div class="bg-secondary bg-opacity-10 p-3 rounded border border-secondary">
           <h6 class="text-white mb-3">📢 開発者からのお願い</h6>
-          <p class="small">
-            <strong>📮 ご意見・不具合報告</strong><br>
-            ページ最下部（フッター）の「ご意見箱」より、Googleフォーム経由で匿名にて送信いただけます。<br>
-            不具合やご要望がありましたらお気軽にお知らせください。
-          </p>
-          <hr class="border-secondary">
           <p class="small mb-0">
             <strong>☕ 将来的な広告設置について</strong><br>
             今後の運営維持のため、Google AdSenseによる広告設置を目標としています。<br>
