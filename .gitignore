@@ -1,0 +1,32 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Serena (managed separately)
+.serena/memories/
+
+# Claude Code
+.claude/

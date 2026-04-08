@@ -1,0 +1,36 @@
+# Git internal files
+.git/
+
+# OS / Editor generated files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Logs / Temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*~
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+secrets/
+
+# Images (binary, not useful for code analysis)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.svg
+
+# Serena memories (managed by Serena)
+.serena/memories/
