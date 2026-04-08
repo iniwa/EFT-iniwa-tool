@@ -2,7 +2,7 @@
 // デバッグ / データ確認タブ
 // 内部データの閲覧とユーザーデータのリセット機能
 
-import { ref, computed } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
@@ -83,11 +83,33 @@ const displayData = computed(() => {
   }
 })
 
-// --- JSON整形テキスト ---
-const formattedJson = computed(() => {
-  if (currentView.value === 'reset' || !displayData.value) return ''
-  return JSON.stringify(displayData.value, null, 2)
-})
+// --- JSON整形テキスト（非同期生成でUIブロック防止） ---
+const formattedJson = ref('')
+const isGenerating = ref(false)
+let generateId = 0
+
+watch([currentView, displayData], () => {
+  const id = ++generateId
+  if (currentView.value === 'reset' || !displayData.value) {
+    formattedJson.value = ''
+    isGenerating.value = false
+    return
+  }
+  isGenerating.value = true
+  formattedJson.value = ''
+  // nextTick + setTimeout でスピナー描画後に重い処理を実行
+  nextTick(() => {
+    setTimeout(() => {
+      if (id !== generateId) return // ビュー切替済みならキャンセル
+      try {
+        formattedJson.value = JSON.stringify(displayData.value, null, 2)
+      } catch {
+        formattedJson.value = '(JSON変換エラー)'
+      }
+      isGenerating.value = false
+    }, 50)
+  })
+}, { immediate: true })
 
 // --- クリップボードにコピー ---
 async function copyToClipboard() {
@@ -199,7 +221,15 @@ function executeReset() {
         <div class="col-md-10 bg-dark">
           <!-- データビューア (リセット以外) -->
           <div v-if="currentView !== 'reset'" class="h-100 p-2">
+            <!-- 生成中スピナー -->
+            <div v-if="isGenerating" class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+              <div class="text-center text-muted">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                データを読み込み中...
+              </div>
+            </div>
             <textarea
+              v-else
               class="form-control bg-dark text-white border-secondary font-monospace h-100"
               style="min-height: 60vh; resize: none;"
               readonly
