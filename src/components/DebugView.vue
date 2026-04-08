@@ -49,29 +49,43 @@ const viewButtons = [
   { key: 'reset', label: 'リセット' },
 ]
 
-// --- JSON整形テキスト（Web Worker + IndexedDB直接読み取りでメインスレッド負荷ゼロ） ---
+// --- JSON整形テキスト（Web Worker + IndexedDB直接読み取り + 表示行数制限） ---
 const formattedJson = ref('')
 const isGenerating = ref(false)
+const truncatedInfo = ref(null) // { totalLines, totalChars } or null
 
-// WorkerがIndexedDBから直接データを読んでJSON.stringifyする
-// メインスレッドでは大量データの転送もシリアライズも一切行わない
+// WorkerがIndexedDBから直接データを読み、表示用に先頭行だけ返す
+// 全文はコピー用に別途保持（fullフィールド）
+const MAX_DISPLAY_LINES = 500
 const workerCode = `
 var DB='EFT_APP_DB',ST='api_cache',MC='eft_api_cache_v31_idb',IC='eft_item_db_cache';
 var FM={tasks:'tasks',hideout:'hideoutStations',items:'items',ammoData:'ammo'};
+var MAX=${MAX_DISPLAY_LINES};
 function rd(k){return new Promise(function(ok,ng){var r=indexedDB.open(DB,1);r.onsuccess=function(){var d=r.result,t=d.transaction(ST,'readonly'),g=t.objectStore(ST).get(k);g.onsuccess=function(){d.close();ok(g.result)};g.onerror=function(){d.close();ng(g.error)}};r.onerror=function(){ng(r.error)}})}
+function fmt(id,json){
+  var lines=json.split('\\n');var tl=lines.length;var tc=json.length;
+  if(tl<=MAX){self.postMessage({id:id,display:json,full:json,totalLines:tl,totalChars:tc,truncated:false})}
+  else{self.postMessage({id:id,display:lines.slice(0,MAX).join('\\n'),full:json,totalLines:tl,totalChars:tc,truncated:true})}
+}
 self.onmessage=function(e){var m=e.data,id=m.id,v=m.view;
-if(m.directData!==undefined){try{self.postMessage({id:id,json:JSON.stringify(m.directData,null,2)})}catch(er){self.postMessage({id:id,json:'(エラー: '+er.message+')'})}return}
+if(m.directData!==undefined){try{fmt(id,JSON.stringify(m.directData,null,2))}catch(er){self.postMessage({id:id,display:'(エラー: '+er.message+')',full:'',totalLines:0,totalChars:0,truncated:false})}return}
 var p=FM[v]?rd(MC):v==='itemDb'?rd(IC):Promise.resolve(null);
-p.then(function(c){var d=null;if(c){d=FM[v]?c[FM[v]]:v==='itemDb'?c.items:null}self.postMessage({id:id,json:d!=null?JSON.stringify(d,null,2):'(データなし)'})}).catch(function(er){self.postMessage({id:id,json:'(読み取りエラー: '+er.message+')'})})}`
+p.then(function(c){var d=null;if(c){d=FM[v]?c[FM[v]]:v==='itemDb'?c.items:null}if(d!=null){fmt(id,JSON.stringify(d,null,2))}else{self.postMessage({id:id,display:'(データなし)',full:'',totalLines:0,totalChars:0,truncated:false})}}).catch(function(er){self.postMessage({id:id,display:'(読み取りエラー: '+er.message+')',full:'',totalLines:0,totalChars:0,truncated:false})})}`
 
 const workerBlob = new Blob([workerCode], { type: 'application/javascript' })
 const workerUrl = URL.createObjectURL(workerBlob)
 const worker = new Worker(workerUrl)
 let requestId = 0
+let fullJsonForCopy = '' // コピー用全文（非リアクティブ、DOM描画なし）
 
 worker.onmessage = (e) => {
-  if (e.data.id !== requestId) return // 古いリクエストは無視
-  formattedJson.value = e.data.json
+  const msg = e.data
+  if (msg.id !== requestId) return // 古いリクエストは無視
+  formattedJson.value = msg.display
+  fullJsonForCopy = msg.full
+  truncatedInfo.value = msg.truncated
+    ? { totalLines: msg.totalLines, totalChars: msg.totalChars }
+    : null
   isGenerating.value = false
 }
 
@@ -114,10 +128,10 @@ watch(currentView, (view) => {
   }
 }, { immediate: true })
 
-// --- クリップボードにコピー ---
+// --- クリップボードにコピー（切り詰め前の全文をコピー） ---
 async function copyToClipboard() {
   try {
-    await navigator.clipboard.writeText(formattedJson.value)
+    await navigator.clipboard.writeText(fullJsonForCopy || formattedJson.value)
     copyButtonText.value = 'コピーしました！'
     setTimeout(() => {
       copyButtonText.value = 'コピー'
@@ -231,13 +245,19 @@ function executeReset() {
                 データを読み込み中...
               </div>
             </div>
-            <textarea
-              v-else
-              class="form-control bg-dark text-white border-secondary font-monospace h-100"
-              style="min-height: 60vh; resize: none;"
-              readonly
-              :value="formattedJson"
-            ></textarea>
+            <template v-else>
+              <div v-if="truncatedInfo" class="alert alert-warning py-1 px-2 mb-1 small">
+                全 {{ truncatedInfo.totalLines.toLocaleString() }} 行 /
+                {{ (truncatedInfo.totalChars / 1024 / 1024).toFixed(1) }}MB —
+                先頭 {{ MAX_DISPLAY_LINES }} 行を表示中（コピーは全文）
+              </div>
+              <textarea
+                class="form-control bg-dark text-white border-secondary font-monospace"
+                :style="{ minHeight: truncatedInfo ? '57vh' : '60vh', resize: 'none' }"
+                readonly
+                :value="formattedJson"
+              ></textarea>
+            </template>
           </div>
 
           <!-- リセットパネル -->
