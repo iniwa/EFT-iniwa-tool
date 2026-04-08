@@ -21,7 +21,7 @@ import AmmoChart from './components/AmmoChart.vue'
 import ItemSearch from './components/ItemSearch.vue'
 import FlowchartView from './components/FlowchartView.vue'
 import MemoView from './components/MemoView.vue'
-import StoryPlaceholder from './components/StoryPlaceholder.vue'
+import StoryView from './components/StoryView.vue'
 import DebugView from './components/DebugView.vue'
 
 // ---------------------------------------------------------------------------
@@ -214,7 +214,7 @@ watch(hideoutData, (stations) => {
         </div>
 
         <div v-if="currentTab === 'story'">
-            <StoryPlaceholder />
+            <StoryView />
         </div>
 
         <div v-if="currentTab === 'ammo'">

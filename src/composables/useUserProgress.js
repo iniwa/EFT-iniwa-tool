@@ -29,6 +29,9 @@ const prioritizedTasks = ref(loadLS('eft_prioritized', []));
 /** Wishlist item IDs */
 const wishlist = ref(loadLS('eft_wishlist', []));
 
+/** Story chapter progress — { chapterId: { stepId: value } } */
+const storyProgress = ref(loadLS('eft_story_progress', {}));
+
 // ---------------------------------------------------------------------------
 // Filter / display preferences (also persisted)
 // ---------------------------------------------------------------------------
@@ -54,6 +57,7 @@ watch(ownedKeys, (val) => saveLS('eft_keys', val), { deep: true });
 watch(keyUserData, (val) => saveLS('eft_key_user_data', val), { deep: true });
 watch(prioritizedTasks, (val) => saveLS('eft_prioritized', val), { deep: true });
 watch(wishlist, (val) => saveLS('eft_wishlist', val), { deep: true });
+watch(storyProgress, (val) => saveLS('eft_story_progress', val), { deep: true });
 
 watch(showCompleted, (val) => saveLS('eft_show_completed', val));
 watch(showFuture, (val) => saveLS('eft_show_future', val));
@@ -148,9 +152,22 @@ function updateKeyUserData(id, field, value) {
 }
 
 /**
+ * Update a story step's progress value.
+ * @param {string} chapterId
+ * @param {string} stepId
+ * @param {*} value
+ */
+function updateStoryProgress(chapterId, stepId, value) {
+  if (!storyProgress.value[chapterId]) {
+    storyProgress.value[chapterId] = {};
+  }
+  storyProgress.value[chapterId][stepId] = value;
+}
+
+/**
  * Reset selected categories of user data.
  *
- * @param {{ tasks?: boolean, hideout?: boolean, keys?: boolean, items?: boolean, wishlist?: boolean, settings?: boolean }} targets
+ * @param {{ tasks?: boolean, hideout?: boolean, keys?: boolean, items?: boolean, wishlist?: boolean, story?: boolean, settings?: boolean }} targets
  * @param {import('vue').ShallowRef<Array>} hideoutData - current hideout station data (needed when resetting hideout)
  */
 function resetUserData(targets, hideoutData) {
@@ -180,6 +197,10 @@ function resetUserData(targets, hideoutData) {
 
   if (targets.wishlist) {
     wishlist.value = [];
+  }
+
+  if (targets.story) {
+    storyProgress.value = {};
   }
 
   if (targets.settings) {
@@ -318,6 +339,7 @@ export function useUserProgress() {
     keyUserData,
     prioritizedTasks,
     wishlist,
+    storyProgress,
 
     // Filter / display preferences
     showCompleted,
@@ -337,6 +359,7 @@ export function useUserProgress() {
     togglePriority,
     toggleWishlist,
     updateKeyUserData,
+    updateStoryProgress,
     resetUserData,
     migrateFromV2,
     normalizeHideoutKeys,
