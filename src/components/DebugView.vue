@@ -2,7 +2,7 @@
 // デバッグ / データ確認タブ
 // 内部データの閲覧とユーザーデータのリセット機能
 
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, toRaw } from 'vue'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
@@ -83,13 +83,21 @@ const displayData = computed(() => {
   }
 })
 
-// --- JSON整形テキスト（非同期生成でUIブロック防止） ---
+// --- JSON整形テキスト（Web Workerで別スレッド処理、UIブロック完全防止） ---
 const formattedJson = ref('')
 const isGenerating = ref(false)
-let generateId = 0
+
+const workerCode = `self.onmessage=function(e){try{self.postMessage(JSON.stringify(e.data,null,2))}catch(err){self.postMessage("(JSON変換エラー: "+err.message+")")}}`
+const workerBlob = new Blob([workerCode], { type: 'application/javascript' })
+const workerUrl = URL.createObjectURL(workerBlob)
+let activeWorker = null
 
 watch([currentView, displayData], () => {
-  const id = ++generateId
+  // 前回のWorkerをキャンセル
+  if (activeWorker) {
+    activeWorker.terminate()
+    activeWorker = null
+  }
   if (currentView.value === 'reset' || !displayData.value) {
     formattedJson.value = ''
     isGenerating.value = false
@@ -97,18 +105,23 @@ watch([currentView, displayData], () => {
   }
   isGenerating.value = true
   formattedJson.value = ''
-  // nextTick + setTimeout でスピナー描画後に重い処理を実行
-  nextTick(() => {
-    setTimeout(() => {
-      if (id !== generateId) return // ビュー切替済みならキャンセル
-      try {
-        formattedJson.value = JSON.stringify(displayData.value, null, 2)
-      } catch {
-        formattedJson.value = '(JSON変換エラー)'
-      }
-      isGenerating.value = false
-    }, 50)
-  })
+
+  const worker = new Worker(workerUrl)
+  activeWorker = worker
+  worker.onmessage = (e) => {
+    if (worker !== activeWorker) return // 既にキャンセル済み
+    formattedJson.value = e.data
+    isGenerating.value = false
+    activeWorker = null
+  }
+  worker.onerror = () => {
+    if (worker !== activeWorker) return
+    formattedJson.value = '(Worker エラー)'
+    isGenerating.value = false
+    activeWorker = null
+  }
+  // toRaw でVueプロキシを剥がしてからWorkerへ送信
+  worker.postMessage(toRaw(displayData.value))
 }, { immediate: true })
 
 // --- クリップボードにコピー ---
