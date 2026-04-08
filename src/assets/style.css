@@ -1,0 +1,421 @@
+/* ============================================================
+   EFT Iniwa's Intel Center - Global Styles (v3.0)
+   CSS変数ベースのダークテーマ
+   ============================================================ */
+
+/* --- CSS変数（テーマ定義） --- */
+:root {
+    --bg-body: #121212;
+    --bg-card: #1e1e1e;
+    --bg-card-header: #252525;
+    --bg-input: #2a2a2a;
+    --bg-input-focus: #333;
+    --bg-hover: #2a2a2a;
+    --bg-check-container: #2c2c2c;
+    --bg-check-hover: #383838;
+    --bg-checked: #1a3d24;
+
+    --color-text: #e8e8e8;
+    --color-text-secondary: #adb5bd;
+    --color-text-muted: #8b949e;
+    --color-accent: #ffd700;
+    --color-info: #0dcaf0;
+    --color-success: #198754;
+    --color-danger: #dc3545;
+    --color-key-owned: #77dfdf;
+
+    --border-color: #333;
+    --border-light: #444;
+    --border-lighter: #555;
+
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Bootstrap ダークモード変数の上書き --- */
+[data-bs-theme=dark] {
+    --bs-body-bg: #121212;
+    --bs-body-color: #e8e8e8;
+    --bs-secondary-color: #8b949e;
+    --bs-tertiary-color: rgba(139, 148, 158, 0.5);
+    --bs-tertiary-bg: #1e1e1e;
+    --bs-emphasis-color: #fff;
+    --bs-border-color: #333;
+}
+
+/* --- グローバルリセット --- */
+body {
+    background-color: var(--bg-body);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+/* --- テキスト選択の制御 --- */
+input:not([readonly]), textarea:not([readonly]) {
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: text;
+}
+
+input[readonly], textarea[readonly] {
+    cursor: default;
+    caret-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* --- フォーム --- */
+.form-control, .form-select {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-light);
+    color: var(--color-text);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--bg-input-focus);
+    color: var(--color-text);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+    outline: none;
+}
+
+::placeholder {
+    color: #bbb;
+    opacity: 1;
+}
+
+input[readonly], textarea[readonly] {
+    background-color: #1a1a1a;
+    color: #888;
+    border-color: var(--border-color);
+}
+
+input:disabled, textarea:disabled, select:disabled {
+    background-color: #151515;
+    color: #777;
+}
+
+input[type="range"] {
+    background-color: transparent;
+    border: none;
+}
+
+/* --- クリック可能要素 --- */
+a, button, .btn, .form-check-input, .list-group-item-action,
+label, select, .task-name-link, .source-task-link, .map-header {
+    cursor: pointer;
+}
+
+/* --- リンク --- */
+.task-name-link {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-decoration-color: var(--border-lighter);
+}
+.task-name-link:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+}
+
+.source-task-link {
+    color: var(--color-info);
+    text-decoration: underline;
+    text-decoration-color: var(--color-info);
+}
+.source-task-link:hover {
+    color: var(--color-text);
+    text-decoration-color: var(--color-text);
+}
+
+/* --- カード・リスト --- */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 2px;
+}
+
+.card-header {
+    background-color: var(--bg-card-header);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--color-accent);
+    font-weight: bold;
+}
+
+.list-group-item {
+    background-color: #181818;
+    border: 1px solid var(--border-color);
+    color: var(--color-text);
+}
+.list-group-item:hover {
+    background-color: var(--bg-hover);
+}
+
+/* --- タブ --- */
+.nav-tabs {
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.nav-tabs .nav-link {
+    color: #999;
+    white-space: nowrap;
+}
+.nav-tabs .nav-link:hover {
+    border-color: var(--border-color);
+    color: #ccc;
+}
+.nav-tabs .nav-link.active {
+    background-color: var(--bg-card);
+    color: var(--color-accent);
+    border-color: var(--border-color) var(--border-color) var(--bg-card);
+}
+
+/* --- ボタン --- */
+.btn-outline-info {
+    color: var(--color-info);
+    border-color: var(--color-info);
+}
+.btn-outline-info:hover {
+    color: #000;
+    background-color: var(--color-info);
+}
+.btn-outline-warning {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+.btn-outline-warning:hover {
+    color: #000;
+    background-color: var(--color-accent);
+}
+
+/* --- バッジ --- */
+.badge {
+    font-size: 0.75em;
+    vertical-align: middle;
+}
+.badge.bg-dark { border: 1px solid var(--border-lighter); }
+.badge-kappa { background-color: var(--color-info); color: #000; }
+.badge-lk { background-color: #fd7e14; color: #fff; }
+
+/* --- ユーティリティ --- */
+/* Bootstrap 5.3 ダークモードで text-* は自動的に適切な色になる。
+   カスタム色はBootstrap CSS変数 ([data-bs-theme=dark]) で上書き済み。 */
+
+.item-collected {
+    text-decoration: line-through;
+    color: var(--border-lighter);
+}
+.item-collected-badge {
+    background-color: var(--border-color);
+    color: #666;
+    border-color: var(--border-light);
+}
+
+/* --- モーダル --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content-custom {
+    background: var(--bg-card);
+    border: 1px solid var(--color-accent);
+    padding: 25px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    color: var(--color-text);
+}
+
+/* --- 鍵テーブル --- */
+.key-table th {
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--border-light);
+}
+.key-table td {
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    color: var(--color-text);
+}
+.key-row:hover {
+    background-color: var(--bg-card-header);
+}
+
+.key-owned,
+.key-owned .item-collected {
+    text-decoration: none;
+    opacity: 1;
+}
+.key-owned,
+.key-owned td,
+.key-owned .item-collected {
+    color: var(--color-key-owned);
+}
+
+.map-header:hover {
+    background-color: #3e5871;
+}
+
+/* --- スクロールバー --- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #666; }
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-light) #111;
+}
+
+/* --- カスタムチェックボックス --- */
+.custom-check-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background-color: var(--bg-check-container);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+.custom-check-container:hover {
+    background-color: var(--bg-check-hover);
+}
+.custom-check-container.is-checked {
+    background-color: var(--bg-checked);
+    border-color: var(--color-success);
+}
+
+.custom-check-input {
+    display: none;
+}
+
+.custom-check-box {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 2px solid #aaa;
+    border-radius: 3px;
+    position: relative;
+    background-color: #111;
+}
+.custom-check-container.is-checked .custom-check-box {
+    border-color: var(--color-accent);
+    background-color: var(--color-success);
+}
+.custom-check-container.is-checked .custom-check-box::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    width: 7px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.custom-check-label {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #ddd;
+}
+.custom-check-container.is-checked .custom-check-label {
+    color: var(--color-accent);
+}
+
+/* --- Mermaid フローチャート --- */
+#app .mermaid .node rect,
+#app .mermaid .node polygon,
+#app .mermaid .node circle,
+#app .mermaid .node ellipse {
+    transition: all 0.2s ease-in-out;
+    transform-origin: center center;
+}
+
+#app .mermaid .node:hover rect,
+#app .mermaid .node:hover polygon,
+#app .mermaid .node:hover circle,
+#app .mermaid .node:hover ellipse {
+    filter: brightness(1.2);
+    stroke: #ffc107;
+    stroke-width: 2px;
+    cursor: pointer;
+}
+
+.edgePath path,
+.edgeLabel {
+    pointer-events: none;
+}
+
+/* --- トースト通知 --- */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast-item {
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: var(--color-text);
+    font-size: 0.9em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    animation: toast-in 0.3s ease-out;
+}
+.toast-item.info { background-color: #1a3a5c; border: 1px solid var(--color-info); }
+.toast-item.success { background-color: #1a3d24; border: 1px solid var(--color-success); }
+.toast-item.warning { background-color: #3d3a1a; border: 1px solid var(--color-accent); }
+.toast-item.error { background-color: #3d1a1a; border: 1px solid var(--color-danger); }
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- レスポンシブ --- */
+@media (max-width: 768px) {
+    .nav-tabs {
+        font-size: 0.85em;
+    }
+    .nav-tabs .nav-link {
+        padding: 0.4rem 0.6rem;
+    }
+    .modal-content-custom {
+        width: 95%;
+        padding: 15px;
+    }
+    .container-fluid {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8em;
+    }
+}

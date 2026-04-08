@@ -25,6 +25,13 @@ Desktop.ini
 *.pem
 *.key
 
+# Node.js
+node_modules/
+dist/
+
+# Playwright MCP (debug snapshots)
+.playwright-mcp/
+
 # Serena (managed separately)
 .serena/memories/
 

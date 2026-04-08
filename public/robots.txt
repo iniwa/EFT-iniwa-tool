@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://efttool.iniwach.com/sitemap.xml

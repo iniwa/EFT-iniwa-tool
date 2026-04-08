@@ -17,6 +17,14 @@ Thumbs.db
 *.orig
 *~
 
+# Node.js
+node_modules/
+dist/
+package-lock.json
+
+# Playwright MCP (debug snapshots)
+.playwright-mcp/
+
 # Secrets
 .env
 .env.*
