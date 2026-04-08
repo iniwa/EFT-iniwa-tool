@@ -21,7 +21,7 @@ const {
   resetUserData,
 } = useUserProgress()
 
-const { taskData, hideoutData, itemsData, ammoData, itemDb } = useApiData()
+const { hideoutData } = useApiData()
 
 // --- ローカル状態 ---
 const currentView = ref('tasks')
@@ -49,79 +49,69 @@ const viewButtons = [
   { key: 'reset', label: 'リセット' },
 ]
 
-// --- 表示データの切り替え ---
-const displayData = computed(() => {
-  switch (currentView.value) {
-    case 'tasks':
-      return taskData.value
-    case 'hideout':
-      return hideoutData.value
-    case 'items':
-      return itemsData.value
-    case 'ammoData':
-      return ammoData.value
-    case 'itemDb':
-      return itemDb.value
-    case 'userProgress':
-      return {
+// --- JSON整形テキスト（Web Worker + IndexedDB直接読み取りでメインスレッド負荷ゼロ） ---
+const formattedJson = ref('')
+const isGenerating = ref(false)
+
+// WorkerがIndexedDBから直接データを読んでJSON.stringifyする
+// メインスレッドでは大量データの転送もシリアライズも一切行わない
+const workerCode = `
+var DB='EFT_APP_DB',ST='api_cache',MC='eft_api_cache_v31_idb',IC='eft_item_db_cache';
+var FM={tasks:'tasks',hideout:'hideoutStations',items:'items',ammoData:'ammo'};
+function rd(k){return new Promise(function(ok,ng){var r=indexedDB.open(DB,1);r.onsuccess=function(){var d=r.result,t=d.transaction(ST,'readonly'),g=t.objectStore(ST).get(k);g.onsuccess=function(){d.close();ok(g.result)};g.onerror=function(){d.close();ng(g.error)}};r.onerror=function(){ng(r.error)}})}
+self.onmessage=function(e){var m=e.data,id=m.id,v=m.view;
+if(m.directData!==undefined){try{self.postMessage({id:id,json:JSON.stringify(m.directData,null,2)})}catch(er){self.postMessage({id:id,json:'(エラー: '+er.message+')'})}return}
+var p=FM[v]?rd(MC):v==='itemDb'?rd(IC):Promise.resolve(null);
+p.then(function(c){var d=null;if(c){d=FM[v]?c[FM[v]]:v==='itemDb'?c.items:null}self.postMessage({id:id,json:d!=null?JSON.stringify(d,null,2):'(データなし)'})}).catch(function(er){self.postMessage({id:id,json:'(読み取りエラー: '+er.message+')'})})}`
+
+const workerBlob = new Blob([workerCode], { type: 'application/javascript' })
+const workerUrl = URL.createObjectURL(workerBlob)
+const worker = new Worker(workerUrl)
+let requestId = 0
+
+worker.onmessage = (e) => {
+  if (e.data.id !== requestId) return // 古いリクエストは無視
+  formattedJson.value = e.data.json
+  isGenerating.value = false
+}
+
+watch(currentView, (view) => {
+  const id = ++requestId
+
+  if (view === 'reset') {
+    formattedJson.value = ''
+    isGenerating.value = false
+    return
+  }
+
+  isGenerating.value = true
+  formattedJson.value = ''
+
+  if (view === 'userProgress') {
+    // ユーザー進捗は軽量データなので直接送信（IndexedDBに保存されていない）
+    worker.postMessage({
+      id,
+      view,
+      directData: {
         _settings: {
           level: playerLevel.value,
           gameMode: gameMode.value,
           language: apiLang.value,
           showStoryTab: showStoryTab.value,
         },
-        userHideout: userHideout.value,
-        completedTasks: completedTasks.value,
-        prioritizedTasks: prioritizedTasks.value,
-        ownedKeys: ownedKeys.value,
-        keyUserData: keyUserData.value,
-        collectedItems: collectedItems.value,
-        wishlist: wishlist.value,
-      }
-    default:
-      return null
+        userHideout: toRaw(userHideout.value),
+        completedTasks: toRaw(completedTasks.value),
+        prioritizedTasks: toRaw(prioritizedTasks.value),
+        ownedKeys: toRaw(ownedKeys.value),
+        keyUserData: toRaw(keyUserData.value),
+        collectedItems: toRaw(collectedItems.value),
+        wishlist: toRaw(wishlist.value),
+      },
+    })
+  } else {
+    // APIデータはWorkerがIndexedDBから直接読み取り（メインスレッド負荷ゼロ）
+    worker.postMessage({ id, view })
   }
-})
-
-// --- JSON整形テキスト（Web Workerで別スレッド処理、UIブロック完全防止） ---
-const formattedJson = ref('')
-const isGenerating = ref(false)
-
-const workerCode = `self.onmessage=function(e){try{self.postMessage(JSON.stringify(e.data,null,2))}catch(err){self.postMessage("(JSON変換エラー: "+err.message+")")}}`
-const workerBlob = new Blob([workerCode], { type: 'application/javascript' })
-const workerUrl = URL.createObjectURL(workerBlob)
-let activeWorker = null
-
-watch([currentView, displayData], () => {
-  // 前回のWorkerをキャンセル
-  if (activeWorker) {
-    activeWorker.terminate()
-    activeWorker = null
-  }
-  if (currentView.value === 'reset' || !displayData.value) {
-    formattedJson.value = ''
-    isGenerating.value = false
-    return
-  }
-  isGenerating.value = true
-  formattedJson.value = ''
-
-  const worker = new Worker(workerUrl)
-  activeWorker = worker
-  worker.onmessage = (e) => {
-    if (worker !== activeWorker) return // 既にキャンセル済み
-    formattedJson.value = e.data
-    isGenerating.value = false
-    activeWorker = null
-  }
-  worker.onerror = () => {
-    if (worker !== activeWorker) return
-    formattedJson.value = '(Worker エラー)'
-    isGenerating.value = false
-    activeWorker = null
-  }
-  // toRaw でVueプロキシを剥がしてからWorkerへ送信
-  worker.postMessage(toRaw(displayData.value))
 }, { immediate: true })
 
 // --- クリップボードにコピー ---
