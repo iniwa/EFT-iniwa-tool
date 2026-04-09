@@ -10,7 +10,7 @@ const emit = defineEmits(['show-notice'])
     <footer class="text-center mt-4 py-3" style="font-size: 0.85em; color: var(--color-text-muted);">
         <div class="mb-2">
             <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSdPxm6rz7tYni2E6cUxUjn6k8y8qYIgqBPmXUDhzpGH5s3AqA/viewform"
+                href="https://docs.google.com/forms/d/e/1FAIpQLScFPBXovafedEgQY10uTH1vAbyOA9r1l6kurIfkTuwN64eyqA/viewform?usp=dialog"
                 target="_blank"
                 class="btn btn-sm btn-outline-info me-2"
             >📮 意見箱</a>

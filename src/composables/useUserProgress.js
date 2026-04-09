@@ -3,34 +3,62 @@
 
 import { ref, watch } from 'vue';
 import { loadLS, saveLS } from './useStorage.js';
+import { useAppState } from './useAppState.js';
 
 // ---------------------------------------------------------------------------
-// Persisted progress refs
+// モード別ストレージ
+// ---------------------------------------------------------------------------
+
+const { gameMode } = useAppState();
+
+/** 現在のゲームモードに対応するストレージキーを返す */
+function modeKey(base) {
+  return `eft_${gameMode.value}_${base}`;
+}
+
+// マイグレーション: 旧キー → モード別キー（初回のみ）
+;(function migrateToModeKeys() {
+  if (loadLS('eft_mode_data_migrated', false)) return;
+  const mode = gameMode.value;
+  const bases = ['tasks', 'hideout', 'collected', 'keys', 'key_user_data', 'prioritized', 'wishlist', 'story_progress'];
+  bases.forEach((base) => {
+    const oldKey = `eft_${base}`;
+    const newKey = `eft_${mode}_${base}`;
+    const raw = localStorage.getItem(oldKey);
+    if (raw !== null && localStorage.getItem(newKey) === null) {
+      localStorage.setItem(newKey, raw);
+    }
+  });
+  saveLS('eft_mode_data_migrated', true);
+})();
+
+// ---------------------------------------------------------------------------
+// Persisted progress refs (per game mode)
 // ---------------------------------------------------------------------------
 
 /** Completed task IDs (migrated from task names to IDs) */
-const completedTasks = ref(loadLS('eft_tasks', []));
+const completedTasks = ref(loadLS(modeKey('tasks'), []));
 
 /** Hideout station levels — { stationName: level } */
-const userHideout = ref(loadLS('eft_hideout', {}));
+const userHideout = ref(loadLS(modeKey('hideout'), {}));
 
 /** Collected item UIDs (category_mapName_itemId pattern) */
-const collectedItems = ref(loadLS('eft_collected', []));
+const collectedItems = ref(loadLS(modeKey('collected'), []));
 
 /** Owned key IDs */
-const ownedKeys = ref(loadLS('eft_keys', []));
+const ownedKeys = ref(loadLS(modeKey('keys'), []));
 
 /** Per-key user metadata — { keyId: { rating, memo } } */
-const keyUserData = ref(loadLS('eft_key_user_data', {}));
+const keyUserData = ref(loadLS(modeKey('key_user_data'), {}));
 
 /** Prioritized task IDs */
-const prioritizedTasks = ref(loadLS('eft_prioritized', []));
+const prioritizedTasks = ref(loadLS(modeKey('prioritized'), []));
 
 /** Wishlist item IDs */
-const wishlist = ref(loadLS('eft_wishlist', []));
+const wishlist = ref(loadLS(modeKey('wishlist'), []));
 
 /** Story chapter progress — { chapterId: { stepId: value } } */
-const storyProgress = ref(loadLS('eft_story_progress', {}));
+const storyProgress = ref(loadLS(modeKey('story_progress'), {}));
 
 // ---------------------------------------------------------------------------
 // Filter / display preferences (also persisted)
@@ -50,14 +78,37 @@ const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
 // Individual watchers for persistence (one per ref)
 // ---------------------------------------------------------------------------
 
-watch(completedTasks, (val) => saveLS('eft_tasks', val), { deep: true });
-watch(userHideout, (val) => saveLS('eft_hideout', val), { deep: true });
-watch(collectedItems, (val) => saveLS('eft_collected', val), { deep: true });
-watch(ownedKeys, (val) => saveLS('eft_keys', val), { deep: true });
-watch(keyUserData, (val) => saveLS('eft_key_user_data', val), { deep: true });
-watch(prioritizedTasks, (val) => saveLS('eft_prioritized', val), { deep: true });
-watch(wishlist, (val) => saveLS('eft_wishlist', val), { deep: true });
-watch(storyProgress, (val) => saveLS('eft_story_progress', val), { deep: true });
+watch(completedTasks, (val) => saveLS(modeKey('tasks'), val), { deep: true });
+watch(userHideout, (val) => saveLS(modeKey('hideout'), val), { deep: true });
+watch(collectedItems, (val) => saveLS(modeKey('collected'), val), { deep: true });
+watch(ownedKeys, (val) => saveLS(modeKey('keys'), val), { deep: true });
+watch(keyUserData, (val) => saveLS(modeKey('key_user_data'), val), { deep: true });
+watch(prioritizedTasks, (val) => saveLS(modeKey('prioritized'), val), { deep: true });
+watch(wishlist, (val) => saveLS(modeKey('wishlist'), val), { deep: true });
+watch(storyProgress, (val) => saveLS(modeKey('story_progress'), val), { deep: true });
+
+// ゲームモード切り替え時にプログレスデータをスワップ
+watch(gameMode, (newMode, oldMode) => {
+  // 現在のデータを旧モードキーに保存
+  saveLS(`eft_${oldMode}_tasks`, completedTasks.value);
+  saveLS(`eft_${oldMode}_hideout`, userHideout.value);
+  saveLS(`eft_${oldMode}_collected`, collectedItems.value);
+  saveLS(`eft_${oldMode}_keys`, ownedKeys.value);
+  saveLS(`eft_${oldMode}_key_user_data`, keyUserData.value);
+  saveLS(`eft_${oldMode}_prioritized`, prioritizedTasks.value);
+  saveLS(`eft_${oldMode}_wishlist`, wishlist.value);
+  saveLS(`eft_${oldMode}_story_progress`, storyProgress.value);
+
+  // 新モードのデータを読み込み
+  completedTasks.value = loadLS(`eft_${newMode}_tasks`, []);
+  userHideout.value = loadLS(`eft_${newMode}_hideout`, {});
+  collectedItems.value = loadLS(`eft_${newMode}_collected`, []);
+  ownedKeys.value = loadLS(`eft_${newMode}_keys`, []);
+  keyUserData.value = loadLS(`eft_${newMode}_key_user_data`, {});
+  prioritizedTasks.value = loadLS(`eft_${newMode}_prioritized`, []);
+  wishlist.value = loadLS(`eft_${newMode}_wishlist`, []);
+  storyProgress.value = loadLS(`eft_${newMode}_story_progress`, {});
+});
 
 watch(showCompleted, (val) => saveLS('eft_show_completed', val));
 watch(showFuture, (val) => saveLS('eft_show_future', val));
@@ -204,7 +255,8 @@ function resetUserData(targets, hideoutData) {
   }
 
   if (targets.settings) {
-    localStorage.removeItem('eft_level');
+    localStorage.removeItem('eft_pve_level');
+    localStorage.removeItem('eft_regular_level');
     localStorage.removeItem('eft_gamemode');
     localStorage.removeItem('eft_apilang');
     localStorage.removeItem('eft_show_completed');

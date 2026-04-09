@@ -20,7 +20,7 @@ export function useImportExport() {
     wishlist,
   } = useUserProgress();
 
-  const { playerLevel } = useAppState();
+  const { playerLevel, gameMode } = useAppState();
   const { taskData, hideoutData } = useApiData();
 
   // -----------------------------------------------------------------------
@@ -32,6 +32,7 @@ export function useImportExport() {
    */
   function exportData() {
     const data = {
+      gameMode: gameMode.value,
       userHideout: userHideout.value,
       completedTasks: completedTasks.value,
       collectedItems: collectedItems.value,

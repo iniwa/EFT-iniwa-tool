@@ -87,46 +87,42 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <div class="p-3 rounded border border-primary bg-primary bg-opacity-10">
-          <h5 class="text-primary fw-bold mb-2">
-            🔄 v3.0.0 - アプリケーション全面リビルド
+        <div class="p-3 rounded border border-success bg-success bg-opacity-10">
+          <h5 class="text-success fw-bold mb-2">
+            🎮 v3.0.1 - PvP/PvEセーブデータ分離
           </h5>
           <p class="small text-light mb-2">
-            本バージョンでは、アプリケーション全体をゼロからリビルドしました。<br>
-            見た目や機能は従来とほぼ同じですが、内部構造が大きく変わっています。
+            ゲームモード（PvP / PvE）ごとにセーブデータが独立するようになりました。
           </p>
           <ul class="small text-light mb-0">
-            <li><strong>高速化:</strong> Viteビルドシステムの導入により、ページの読み込み速度が大幅に改善されました。</li>
-            <li><strong>内部構造の刷新:</strong> Vue SFC (Single File Component) への全面移行で、今後の機能追加・修正がしやすくなりました。</li>
-            <li><strong>データの互換性:</strong> これまでの進捗データ（タスク完了状況、鍵管理など）はそのまま引き継がれます。</li>
+            <li><strong>モード別進捗:</strong> タスク完了、ハイドアウト、鍵、収集アイテム、ウィッシュリスト、ストーリー進捗、プレイヤーレベルがモードごとに保存されます。</li>
+            <li><strong>自動マイグレーション:</strong> 既存のデータは現在選択中のモードに自動的に引き継がれます。</li>
+            <li><strong>即時切り替え:</strong> ヘッダーのモード切り替えで、各モードのデータが即座にスワップされます。</li>
           </ul>
         </div>
 
-        <!-- 不具合報告のお願い (大型アップデート用) -->
+        <!-- 不具合報告のお願い -->
         <div class="p-3 rounded border border-warning bg-warning bg-opacity-10">
           <h6 class="text-warning fw-bold mb-2">
             ⚠️ 不具合報告のお願い
           </h6>
-          <p class="small text-light mb-2">
-            大型アップデートのため、意図しない不具合が発生している可能性があります。<br>
-            もし以下のような問題を見つけた場合は、ぜひご報告ください。
-          </p>
-          <ul class="small text-light mb-2">
-            <li>表示が崩れている・おかしい</li>
-            <li>ボタンや操作が効かない</li>
-            <li>データが正しく表示されない</li>
-            <li>以前できていたことができなくなった</li>
-            <li>その他、気になる点なんでも</li>
-          </ul>
           <p class="small text-light mb-0">
-            📮 ページ最下部の「<strong>意見箱</strong>」から、Googleフォーム経由で匿名にて送信いただけます。<br>
-            些細なことでもお気軽にお知らせいただけると助かります。
+            もし不具合や気になる点を見つけた場合は、ページ最下部の「<strong>意見箱</strong>」からお気軽にご報告ください。
           </p>
         </div>
 
         <details class="border border-secondary rounded p-2 bg-black bg-opacity-25">
           <summary class="text-secondary small fw-bold" style="cursor: pointer;">📜 過去のアップデート履歴</summary>
           <div class="mt-3 vstack gap-3 ps-2">
+            <div class="bg-info bg-opacity-10 p-2 rounded border border-info">
+              <h6 class="text-info small mb-1">🔄 v3.0.0 - アプリケーション全面リビルド</h6>
+              <ul class="list-unstyled small text-light mb-0 ps-1">
+                <li>・Viteビルドシステム導入による高速化</li>
+                <li>・Vue SFC全面移行による内部構造刷新</li>
+                <li>・既存の進捗データはそのまま引き継ぎ</li>
+              </ul>
+            </div>
+
             <div class="bg-info bg-opacity-10 p-2 rounded border border-info">
               <h6 class="text-info small mb-1">📖 v2.1.0 - ストーリータスク対応</h6>
               <ul class="list-unstyled small text-light mb-0 ps-1">
