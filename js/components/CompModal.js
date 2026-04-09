@@ -69,7 +69,24 @@ const CompModal = {
                 <ul class="list-group">
                     <li v-for="(obj, idx) in selectedTask.objectives" :key="idx" class="list-group-item bg-dark text-light border-secondary py-2">
                         
-                        <div v-if="obj.item">
+                        <div v-if="obj.items && obj.items.length > 0">
+                            <div v-if="obj.items.length === 1">
+                                <span class="text-warning fw-bold">{{ obj.items[0].name }}</span> x {{ obj.count }}
+                            </div>
+                            <div v-else>
+                                <span class="text-warning fw-bold">{{ obj.description }}</span> x {{ obj.count }}
+                                <div class="mt-1 small text-muted">
+                                    <div>対象アイテム (いずれか合計):</div>
+                                    <div v-for="alt in obj.items" :key="alt.id" class="ms-2">・{{ alt.name }}</div>
+                                </div>
+                            </div>
+                            <div class="mt-1">
+                                <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>
+                                <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary me-1">Find</span>
+                                <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark me-1">Give</span>
+                            </div>
+                        </div>
+                        <div v-else-if="obj.item">
                             <span class="text-warning fw-bold">{{ obj.item.name }}</span> x {{ obj.count }}
                             <div class="mt-1">
                                 <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>

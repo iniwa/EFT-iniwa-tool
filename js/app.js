@@ -769,10 +769,10 @@ createApp({
         });
         const shoppingList = computed(() => {
             const res = { hideoutFir:{}, hideoutBuy:{}, taskFir:{}, taskNormal:{}, collector:{}, keys:{} };
-            const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null) => {
+            const addItem = (cat, id, name, count, sourceName, sourceType, mapName = null, wiki = null, shortName = null, normalizedName = null, altItems = null) => {
                 const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
                 if (!res[cat][uid]) {
-                    res[cat][uid] = { id, uid, name, count: 0, sources: [], mapName, wikiLink: wiki, shortName, normalizedName };
+                    res[cat][uid] = { id, uid, name, count: 0, sources: [], mapName, wikiLink: wiki, shortName, normalizedName, altItems };
                 }
                 if (cat === 'keys') {
                     if (sourceName && !res[cat][uid].sources.some(s => s.name === sourceName)) {

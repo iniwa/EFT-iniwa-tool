@@ -156,8 +156,10 @@ const TaskLogic = {
             // 必要なアイテム (Objectives)
             if (t.objectives) {
                 t.objectives.forEach(obj => {
-                    if (obj.type === 'giveItem' && obj.item) {
-                        
+                    // items (複数) または item (単数・後方互換) のいずれかが存在する場合
+                    const items = obj.items || (obj.item ? [obj.item] : null);
+                    if (obj.type === 'giveItem' && items && items.length > 0) {
+
                         // カテゴリ判定ロジック
                         // Collectorタスクは専用カテゴリへ、それ以外はFIR有無で振り分け
                         const isCollector = t.name === 'Collector';
@@ -170,20 +172,39 @@ const TaskLogic = {
 
                         // タスク名そのままを使用 ('Task: ' を付けない)
                         const srcName = t.name;
-                        
+
                         // ソースタイプの設定
                         const srcType = isCollector ? 'collector' : 'task';
-                        
-                        addItemFunc(
-                            cat, 
-                            obj.item.id, 
-                            obj.item.name, 
-                            obj.count, 
-                            srcName, 
-                            srcType, 
-                            t.map ? t.map.name : null,
-                            t.wikiLink
-                        );
+
+                        if (items.length === 1) {
+                            // 単一アイテム: 従来通り
+                            addItemFunc(
+                                cat,
+                                items[0].id,
+                                items[0].name,
+                                obj.count,
+                                srcName,
+                                srcType,
+                                t.map ? t.map.name : null,
+                                t.wikiLink
+                            );
+                        } else {
+                            // 複数アイテム: いずれかで合計count個を納品
+                            // グループIDを生成 (同一アイテム群は統合される)
+                            const groupId = 'multi_' + items.map(i => i.id).sort().join('_');
+                            addItemFunc(
+                                cat,
+                                groupId,
+                                obj.description,
+                                obj.count,
+                                srcName,
+                                srcType,
+                                t.map ? t.map.name : null,
+                                t.wikiLink,
+                                null, null,
+                                items
+                            );
+                        }
                     }
                 });
             }

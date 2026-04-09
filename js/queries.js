@@ -34,10 +34,10 @@ query GetData {
       description
       type 
       
-      ... on TaskObjectiveItem { 
-        count 
-        foundInRaid 
-        item { id name } 
+      ... on TaskObjectiveItem {
+        count
+        foundInRaid
+        items { id name }
       }
       
       ... on TaskObjectiveShoot {
