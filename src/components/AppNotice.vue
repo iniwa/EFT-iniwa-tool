@@ -89,6 +89,19 @@ defineExpose({ show })
       <div class="vstack gap-4">
         <div class="p-3 rounded border border-success bg-success bg-opacity-10">
           <h5 class="text-success fw-bold mb-2">
+            🛠️ v3.0.2 - タスク必要アイテム表示の修正
+          </h5>
+          <p class="small text-light mb-2">
+            複数アイテムから合計個数を納品するタスク（Drip-Out等）の必要数表示を修正しました。
+          </p>
+          <ul class="small text-light mb-0">
+            <li><strong>修正内容:</strong> 各アイテムにcount全量が付与されていた不具合を修正し、合計数として正しく1エントリに集約するようにしました。</li>
+            <li><strong>対象アイテム表示:</strong> ショッピングリスト・タスク詳細の両方で、対象となるアイテム候補の一覧を確認できます。</li>
+          </ul>
+        </div>
+
+        <div class="p-3 rounded border border-secondary bg-secondary bg-opacity-10">
+          <h5 class="text-secondary fw-bold mb-2">
             🎮 v3.0.1 - PvP/PvEセーブデータ分離
           </h5>
           <p class="small text-light mb-2">
@@ -101,8 +114,8 @@ defineExpose({ show })
           </ul>
         </div>
 
-        <div class="p-3 rounded border border-primary bg-primary bg-opacity-10">
-          <h5 class="text-primary fw-bold mb-2">
+        <div class="p-3 rounded border border-secondary bg-secondary bg-opacity-10">
+          <h5 class="text-secondary fw-bold mb-2">
             🔄 v3.0.0 - アプリケーション全面リビルド
           </h5>
           <p class="small text-light mb-2">
