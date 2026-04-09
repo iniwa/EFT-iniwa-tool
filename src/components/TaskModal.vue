@@ -140,13 +140,20 @@ const emit = defineEmits(['close'])
           >
             <!-- TaskObjectiveItem: items配列 or 単体item -->
             <div v-if="obj.items && obj.items.length > 0">
-              <div v-for="(objItem, iIdx) in obj.items" :key="'oi' + iIdx">
-                <span class="text-warning fw-bold">{{ objItem.name }}</span> x {{ obj.count }}
-                <div class="mt-1">
-                  <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>
-                  <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary me-1">Find</span>
-                  <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark me-1">Give</span>
+              <div v-if="obj.items.length === 1">
+                <span class="text-warning fw-bold">{{ obj.items[0].name }}</span> x {{ obj.count }}
+              </div>
+              <div v-else>
+                <span class="text-warning fw-bold">{{ obj.description }}</span> x {{ obj.count }}
+                <div class="mt-1 small text-muted">
+                  <div>対象アイテム (いずれか合計):</div>
+                  <div v-for="alt in obj.items" :key="alt.id" class="ms-2">・{{ alt.name }}</div>
                 </div>
+              </div>
+              <div class="mt-1">
+                <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>
+                <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary me-1">Find</span>
+                <span v-if="obj.type === 'giveItem'" class="badge bg-info text-dark me-1">Give</span>
               </div>
             </div>
             <div v-else-if="obj.item">

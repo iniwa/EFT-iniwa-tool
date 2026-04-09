@@ -75,6 +75,10 @@ function toggleItemDetails(uid) {
                   ・{{ source.name }} (x{{ source.count }})
                 </span>
               </div>
+              <div v-if="item.altItems" class="mt-1 border-top border-secondary pt-1">
+                <div class="text-info mb-1">対象アイテム (いずれか合計):</div>
+                <div v-for="alt in item.altItems" :key="alt.id" class="ms-2">・{{ alt.name }}</div>
+              </div>
             </div>
           </li>
         </ul>

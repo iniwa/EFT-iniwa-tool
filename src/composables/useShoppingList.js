@@ -82,6 +82,7 @@ export function useShoppingList() {
       wikiLink: wiki = null,
       shortName = null,
       normalizedName = null,
+      altItems = null,
     }) => {
       const uid = cat === 'keys' ? `key_${mapName}_${id}` : `${cat}_${id}`;
 
@@ -96,6 +97,7 @@ export function useShoppingList() {
           wikiLink: wiki,
           shortName,
           normalizedName,
+          altItems,
         };
       }
 

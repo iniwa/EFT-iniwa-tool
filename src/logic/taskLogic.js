@@ -239,27 +239,45 @@ export function calculateShoppingList(tasks, completedTaskIds, addItemFn) {
         const objItems = obj.items || (obj.item ? [obj.item] : []);
 
         if (obj.type === 'giveItem' && objItems.length > 0) {
-          objItems.forEach((item) => {
-            // カテゴリ判定: Collectorは専用カテゴリ、それ以外はFIR有無で振り分け
-            const isCollector = t.name === 'Collector';
-            let category;
-            if (isCollector) {
-              category = 'collector';
-            } else {
-              category = obj.foundInRaid ? 'taskFir' : 'taskNormal';
-            }
+          // カテゴリ判定: Collectorは専用カテゴリ、それ以外はFIR有無で振り分け
+          const isCollector = t.name === 'Collector';
+          let category;
+          if (isCollector) {
+            category = 'collector';
+          } else {
+            category = obj.foundInRaid ? 'taskFir' : 'taskNormal';
+          }
 
+          const sourceType = isCollector ? 'collector' : 'task';
+
+          if (objItems.length === 1) {
+            // 単一アイテム: 従来通り
             addItemFn({
               category,
-              itemId: item.id,
-              itemName: item.name,
+              itemId: objItems[0].id,
+              itemName: objItems[0].name,
               count: obj.count || 1,
               sourceName: t.name,
-              sourceType: isCollector ? 'collector' : 'task',
+              sourceType,
               mapName: t.map ? t.map.name : null,
               wikiLink: t.wikiLink,
             });
-          });
+          } else {
+            // 複数アイテム: いずれかで合計count個を納品
+            // グループIDを生成 (同一アイテム群は統合される)
+            const groupId = 'multi_' + objItems.map((i) => i.id).sort().join('_');
+            addItemFn({
+              category,
+              itemId: groupId,
+              itemName: obj.description,
+              count: obj.count || 1,
+              sourceName: t.name,
+              sourceType,
+              mapName: t.map ? t.map.name : null,
+              wikiLink: t.wikiLink,
+              altItems: objItems,
+            });
+          }
         }
       });
     }
