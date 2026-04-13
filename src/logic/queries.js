@@ -13,7 +13,7 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
     name
     minPlayerLevel
     wikiLink
-    trader { name }
+    trader { name imageLink }
     map { name }
 
     neededKeys {

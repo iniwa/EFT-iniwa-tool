@@ -6,6 +6,7 @@ import { ref, computed, watch, toRaw } from 'vue'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
+import { useOverlay } from '../composables/useOverlay.js'
 
 const { playerLevel, gameMode, apiLang } = useAppState()
 
@@ -22,6 +23,7 @@ const {
 } = useUserProgress()
 
 const { hideoutData } = useApiData()
+const { overlayEnabled } = useOverlay()
 
 // --- ローカル状態 ---
 const currentView = ref('tasks')
@@ -229,6 +231,17 @@ function executeReset() {
               >
               <label class="form-check-label small" for="debugShowStory">
                 ストーリータブ
+              </label>
+            </div>
+            <div class="form-check form-switch mt-1">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="debugOverlayEnabled"
+                v-model="overlayEnabled"
+              >
+              <label class="form-check-label small" for="debugOverlayEnabled">
+                配信者用オーバーレイ
               </label>
             </div>
           </div>

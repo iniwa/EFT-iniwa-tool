@@ -3,6 +3,7 @@
 // タスク情報の閲覧、完了/優先トグル、鍵の所持トグル
 
 import { useUserProgress } from '../composables/useUserProgress.js'
+import { useOverlay } from '../composables/useOverlay.js'
 import BaseModal from './ui/BaseModal.vue'
 
 const {
@@ -13,6 +14,8 @@ const {
   togglePriority,
   toggleOwnedKey,
 } = useUserProgress()
+
+const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
 
 const props = defineProps({
   task: { type: Object, default: null },
@@ -50,6 +53,15 @@ const emit = defineEmits(['close'])
             @click="togglePriority(task.id)"
           >
             {{ prioritizedTasks.includes(task.id) ? '★ 優先 (Prioritized)' : '☆ 優先にする' }}
+          </button>
+
+          <button
+            v-if="overlayEnabled"
+            class="btn btn-sm"
+            :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
+            @click="toggleFocusedTask(task.id)"
+          >
+            {{ focusedTaskIds.includes(task.id) ? '📌 表示中' : '📌 配信オーバーレイに表示' }}
           </button>
         </div>
         <button

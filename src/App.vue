@@ -7,6 +7,7 @@ import { useUserProgress } from './composables/useUserProgress.js'
 import { useApiData } from './composables/useApiData.js'
 import { useShoppingList } from './composables/useShoppingList.js'
 import { useImportExport } from './composables/useImportExport.js'
+import { useOverlay } from './composables/useOverlay.js'
 
 // Components
 import AppHeader from './components/AppHeader.vue'
@@ -22,6 +23,7 @@ import ItemSearch from './components/ItemSearch.vue'
 import FlowchartView from './components/FlowchartView.vue'
 import MemoView from './components/MemoView.vue'
 import StoryView from './components/StoryView.vue'
+import OverlaySettings from './components/OverlaySettings.vue'
 import DebugView from './components/DebugView.vue'
 
 // ---------------------------------------------------------------------------
@@ -45,6 +47,7 @@ const {
 
 const { shoppingList } = useShoppingList()
 const { exportData, importData } = useImportExport()
+const { overlayEnabled } = useOverlay()
 
 // タスク詳細モーダル
 const selectedTask = ref(null)
@@ -70,11 +73,13 @@ const tabs = [
     { id: 'ammo', label: '🔫 弾薬' },
     { id: 'search', label: '🔍 アイテム検索' },
     { id: 'memo', label: '📋 メモ' },
+    { id: 'overlay', label: '📺 配信オーバーレイ', requiresFlag: 'overlayEnabled' },
     { id: 'debug', label: 'デバッグ', cssClass: 'text-secondary' },
 ]
 
 function isTabVisible(tab) {
     if (tab.requiresFlag === 'showStoryTab') return showStoryTab.value
+    if (tab.requiresFlag === 'overlayEnabled') return overlayEnabled.value
     return true
 }
 
@@ -227,6 +232,10 @@ watch(hideoutData, (stations) => {
 
         <div v-if="currentTab === 'memo'">
             <MemoView @open-task-from-name="openTaskFromName" />
+        </div>
+
+        <div v-if="currentTab === 'overlay' && overlayEnabled">
+            <OverlaySettings @open-task-details="openTaskDetails" />
         </div>
 
         <div v-if="currentTab === 'debug'">

@@ -57,7 +57,7 @@ export const USD_RATE = 162;
 export const EUR_RATE = 175;
 
 /** アプリバージョン */
-export const APP_VERSION = '3.0.2';
+export const APP_VERSION = '3.1.0';
 
 /** API エンドポイント */
 export const API_URL = 'https://api.tarkov.dev/graphql';

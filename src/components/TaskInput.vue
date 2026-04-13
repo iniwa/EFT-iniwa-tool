@@ -6,9 +6,12 @@ import { ref, computed } from 'vue'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
+import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 
 const { playerLevel } = useAppState()
+
+const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
 
 const {
   completedTasks,
@@ -235,6 +238,14 @@ function getSortedTasks(tasks) {
                 @change="toggleTask(task.id)"
                 style="cursor: pointer;"
               >
+              <button
+                v-if="overlayEnabled"
+                class="btn btn-sm py-0 px-2 flex-shrink-0"
+                :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
+                @click.stop="toggleFocusedTask(task.id)"
+                :title="focusedTaskIds.includes(task.id) ? '配信オーバーレイから外す' : '配信オーバーレイに表示'"
+                style="font-size: 0.85em;"
+              >📌</button>
               <div
                 class="w-100 d-flex justify-content-between align-items-center"
                 :class="{ 'opacity-50': isLocked(task) }"
@@ -284,6 +295,14 @@ function getSortedTasks(tasks) {
                     @change="toggleTask(task.id)"
                     style="cursor: pointer;"
                   >
+                  <button
+                    v-if="overlayEnabled"
+                    class="btn btn-sm py-0 px-2 flex-shrink-0"
+                    :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
+                    @click.stop="toggleFocusedTask(task.id)"
+                    :title="focusedTaskIds.includes(task.id) ? '配信オーバーレイから外す' : '配信オーバーレイに表示'"
+                    style="font-size: 0.85em;"
+                  >📌</button>
                   <div
                     class="d-flex justify-content-between w-100"
                     :class="{ 'opacity-50': isLocked(task) }"
