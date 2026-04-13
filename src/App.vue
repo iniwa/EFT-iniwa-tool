@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 
 // Composables
 import { useAppState } from './composables/useAppState.js'
@@ -77,11 +77,18 @@ const tabs = [
     { id: 'debug', label: 'デバッグ', cssClass: 'text-secondary' },
 ]
 
-function isTabVisible(tab) {
+const visibleTabs = computed(() => tabs.filter((tab) => {
     if (tab.requiresFlag === 'showStoryTab') return showStoryTab.value
     if (tab.requiresFlag === 'overlayEnabled') return overlayEnabled.value
     return true
-}
+}))
+
+// 現在開いているタブが非表示になったら input タブに戻す
+watch(visibleTabs, (list) => {
+    if (!list.some((t) => t.id === currentTab.value)) {
+        currentTab.value = 'input'
+    }
+})
 
 // ---------------------------------------------------------------------------
 // Event handlers
@@ -184,8 +191,7 @@ watch(hideoutData, (stations) => {
         <!-- タブナビゲーション -->
         <ul class="nav nav-tabs mb-3" role="tablist">
             <li
-                v-for="tab in tabs"
-                v-show="isTabVisible(tab)"
+                v-for="tab in visibleTabs"
                 :key="tab.id"
                 class="nav-item"
                 role="presentation"
