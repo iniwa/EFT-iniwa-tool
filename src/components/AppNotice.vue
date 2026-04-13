@@ -87,46 +87,65 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <div class="p-3 rounded border border-success bg-success bg-opacity-10">
-          <h5 class="text-success fw-bold mb-2">
-            🛠️ v3.0.2 - タスク必要アイテム表示の修正
-          </h5>
-          <p class="small text-light mb-2">
-            複数アイテムから合計個数を納品するタスク（Drip-Out等）の必要数表示を修正しました。
-          </p>
-          <ul class="small text-light mb-0">
-            <li><strong>修正内容:</strong> 各アイテムにcount全量が付与されていた不具合を修正し、合計数として正しく1エントリに集約するようにしました。</li>
-            <li><strong>対象アイテム表示:</strong> ショッピングリスト・タスク詳細の両方で、対象となるアイテム候補の一覧を確認できます。</li>
-          </ul>
-        </div>
-
-        <div class="p-3 rounded border border-secondary bg-secondary bg-opacity-10">
-          <h5 class="text-secondary fw-bold mb-2">
-            🎮 v3.0.1 - PvP/PvEセーブデータ分離
-          </h5>
-          <p class="small text-light mb-2">
-            ゲームモード（PvP / PvE）ごとにセーブデータが独立するようになりました。
-          </p>
-          <ul class="small text-light mb-0">
-            <li><strong>モード別進捗:</strong> タスク完了、ハイドアウト、鍵、収集アイテム、ウィッシュリスト、ストーリー進捗、プレイヤーレベルがモードごとに保存されます。</li>
-            <li><strong>自動マイグレーション:</strong> 既存のデータは現在選択中のモードに自動的に引き継がれます。</li>
-            <li><strong>即時切り替え:</strong> ヘッダーのモード切り替えで、各モードのデータが即座にスワップされます。</li>
-          </ul>
-        </div>
-
-        <div class="p-3 rounded border border-secondary bg-secondary bg-opacity-10">
-          <h5 class="text-secondary fw-bold mb-2">
-            🔄 v3.0.0 - アプリケーション全面リビルド
-          </h5>
-          <p class="small text-light mb-2">
+        <!-- メジャーアップデート: v3.0.0 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-info text-dark">MAJOR</span>
+            <h4 class="text-info fw-bold mb-0">
+              🔄 v3.0.0 - アプリケーション全面リビルド
+            </h4>
+          </div>
+          <p class="text-light mb-3">
             本バージョンでは、アプリケーション全体をゼロからリビルドしました。<br>
             見た目や機能は従来とほぼ同じですが、内部構造が大きく変わっています。
           </p>
-          <ul class="small text-light mb-0">
+          <ul class="text-light mb-0">
             <li><strong>高速化:</strong> Viteビルドシステムの導入により、ページの読み込み速度が大幅に改善されました。</li>
             <li><strong>内部構造の刷新:</strong> Vue SFC (Single File Component) への全面移行で、今後の機能追加・修正がしやすくなりました。</li>
             <li><strong>データの互換性:</strong> これまでの進捗データ（タスク完了状況、鍵管理など）はそのまま引き継がれます。</li>
           </ul>
+        </div>
+
+        <!-- マイナーアップデート -->
+        <div>
+          <h6 class="text-secondary fw-bold mb-2 ps-1">▼ マイナーアップデート</h6>
+          <div class="vstack gap-2">
+            <!-- 最新: v3.0.2 -->
+            <div class="p-3 rounded border border-success bg-success bg-opacity-10">
+              <h6 class="text-success fw-bold mb-2">
+                🛠️ v3.0.2 - タスク必要アイテム表示の修正
+              </h6>
+              <p class="small text-light mb-2">
+                複数アイテムから合計個数を納品するタスク（Drip-Out等）の必要数表示を修正しました。
+              </p>
+              <ul class="small text-light mb-0">
+                <li><strong>修正内容:</strong> 各アイテムにcount全量が付与されていた不具合を修正し、合計数として正しく1エントリに集約するようにしました。</li>
+                <li><strong>対象アイテム表示:</strong> ショッピングリスト・タスク詳細の両方で、対象となるアイテム候補の一覧を確認できます。</li>
+              </ul>
+            </div>
+
+            <!-- 古いマイナー: 折りたたみ -->
+            <details class="border border-secondary rounded p-2 bg-secondary bg-opacity-10">
+              <summary class="text-secondary small fw-bold" style="cursor: pointer;">
+                📋 過去のマイナーアップデート (1件)
+              </summary>
+              <div class="mt-3 ps-2">
+                <div class="p-2 rounded border border-secondary bg-black bg-opacity-25">
+                  <h6 class="text-secondary small fw-bold mb-2">
+                    🎮 v3.0.1 - PvP/PvEセーブデータ分離
+                  </h6>
+                  <p class="small text-light mb-2">
+                    ゲームモード（PvP / PvE）ごとにセーブデータが独立するようになりました。
+                  </p>
+                  <ul class="small text-light mb-0">
+                    <li><strong>モード別進捗:</strong> タスク完了、ハイドアウト、鍵、収集アイテム、ウィッシュリスト、ストーリー進捗、プレイヤーレベルがモードごとに保存されます。</li>
+                    <li><strong>自動マイグレーション:</strong> 既存のデータは現在選択中のモードに自動的に引き継がれます。</li>
+                    <li><strong>即時切り替え:</strong> ヘッダーのモード切り替えで、各モードのデータが即座にスワップされます。</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
         </div>
 
         <!-- 不具合報告のお願い -->
