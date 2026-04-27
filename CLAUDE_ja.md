@@ -13,33 +13,36 @@
 
 - タスク管理・フィルタリング (Kappa/Lightkeeper対応)
 - ハイドアウト進捗管理
-- 必要FIRアイテム(インレイド品)の自動リストアップ
+- 必要 FIR アイテム (インレイド品) の自動リストアップ
 - 鍵管理
 - 弾薬チャート (ペネ値・ダメージ)
 - アイテム検索
 - データのインポート/エクスポート (JSON)
-- ストーリー/フローチャート表示
+- ストーリー / フローチャート表示
 - メモ機能 (武器・アーマー・グレネード・ヘルス・スティム・トレーダー・アイテム)
+- 配信オーバーレイモード (`?overlay=tasks`)
+- AdSense 審査向けの静的ページ群 (About / Privacy / Terms / Guide / FAQ)
 
 ### データソース
 
 - tarkov.dev API (GraphQL) を使用
-- API呼び出しは5分間隔の制限あり
-- ゲームモード: PvE / Regular 切替可能
-- 言語: 日本語 / 英語 切替可能
+- API 呼び出しは 5 分間隔のレート制限あり
+- ゲームモード: PvE / Regular（PvP）切替
+- 言語: 日本語 / 英語切替
 
 ---
 
 ## コミュニケーション規約
 
 - コードは軽量・効率的なものを基本とする
+- 後方互換シム・`_var` リネーム・`// removed` コメント等のハックは作らない
 
 ---
 
 ## 作業環境の判定
 
 - 作業ディレクトリが `D:/Git/` → **自宅のサブPC**（メイン PC / サブ PC を使用可能）
-- 作業ディレクトリが `C:/Git/` → **自宅のメインPC**（メイン PC / サブ PC を使用可能）
+- 作業ディレクトリが `C:/Git/` → **自宅のメイン PC**（メイン PC / サブ PC を使用可能）
 - 作業ディレクトリが `C:/Users/**/Documents/git/` → **リモート PC**
   - リモート PC には必要な環境（例: ollama）がない。コード修正のみに集中すること。
 - ラズパイには `ssh iniwapi` で接続できるため、ラズパイからコードやログを読み取っても良い
@@ -50,52 +53,72 @@
 
 | 項目 | 技術 |
 |------|------|
-| フレームワーク | Vue.js 3 (CDN版、Composition API) |
-| UI | Bootstrap 5 + カスタムCSS (ダークテーマ) |
+| フレームワーク | Vue 3.5 (Composition API, `<script setup>` SFC) |
+| ルーター | Vue Router 4 (`createWebHistory`) |
+| ビルド | Vite 8 + `@vitejs/plugin-vue` |
+| UI | Bootstrap 5.3 + カスタムCSS (ダークテーマ) |
+| 図 | Mermaid 11 |
+| Markdown | marked 15 + DOMPurify |
+| 状態管理 | composables 内 `ref` / `computed` のシングルトン (Vuex/Pinia なし) |
 | データソース | tarkov.dev GraphQL API |
-| チャート | Mermaid.js (フローチャート) |
-| Markdown | marked.js |
-| ビルドツール | **なし** (静的HTML/JS/CSS) |
-| 状態管理 | setup()内のref/computed (Vuex/Piniaなし) |
 | データ永続化 | localStorage |
-| アクセス解析 | Umami (self-hosted) |
+| アクセス解析 | Umami (self-hosted, Cookie 不使用) |
 
 ---
 
-## ビルドシステムについて
+## ビルド・実行
 
-- npm, webpack, vite 等のビルドツールは**使用していない**
-- 全てのJSファイルを `index.html` の `<script>` タグで直接読み込み
-- `index.html` をブラウザで直接開いても動作する
-- ローカルサーバーで確認する場合: `npx serve .` または `python -m http.server 8000`
+リンター・フォーマッター・テストフレームワークは未導入。
+
+```bash
+npm install
+npm run dev       # http://localhost:5173
+npm run build     # dist/ に成果物
+npm run preview
+```
+
+`createWebHistory()` を採用しているため、本番側で SPA fallback の設定が必須:
+
+- 当サイトのホスト先（Cloudflare Pages）では `public/_redirects` に
+  `/*  /index.html  200` を置いて対応 (本リポジトリ済み)
+- 他環境への移植時の参考:
+  - nginx: `try_files $uri $uri/ /index.html;`
+  - Apache: `.htaccess` で RewriteRule
+  - Caddy: `try_files {path} /index.html`
+
+未対応のままデプロイすると `/keys` 等の直接アクセスが 404 になり SEO 上致命的。
+
+---
+
+## ホスティング・デプロイ
+
+- 本番サイト (https://efttool.iniwach.com/) は **Cloudflare Pages** でホスト
+- ソースは Gitea (`gitea:iniwa/EFT-iniwa-tool`) を GitHub にミラーリングし、
+  Cloudflare Pages は GitHub 側を監視
+- デプロイ対象ブランチは **`main`**。Cloudflare Pages 側で `npm run build` を実行し、
+  `dist/` を公開
+- `main` への push（ミラーリング反映後）で自動デプロイされる
+- SPA fallback は `public/_redirects` で実現（ファイル削除厳禁）
 
 ---
 
 ## コードスタイル
 
-### JavaScript
+### Vue / JavaScript
 
-- ES6+ 構文 (const/let, arrow functions, template literals, destructuring)
-- Vue 3 Composition API (setup関数) 使用
-- コンポーネントはオブジェクトリテラル形式 (`const CompXxx = { ... }`)
-- テンプレートは template リテラル文字列
-- ロジックは別ファイルに分離 (TaskLogic, ItemLogic, HideoutLogic)
-- キャメルケース (変数・関数)
-- コメントは日本語
-
-### 命名規則
-
-| 対象 | 規則 | 例 |
-|------|------|-----|
-| コンポーネント | PascalCase + `Comp` プレフィックス | `CompHeader`, `CompInput` |
-| ロジックモジュール | snake_case + `logic_` プレフィックス | `logic_tasks.js` |
-| 変数・関数 | camelCase | `fetchData`, `playerLevel` |
+- ES Modules + `<script setup>` SFC
+- ファイル名 PascalCase: `AppHeader.vue`, `KeyManager.vue` 等
+- 旧 `Comp*` プレフィックスは廃止
+- ロジック層は `src/logic/*Logic.js` (camelCase)、単一の `const ... = { ... }` を `export`
+- 状態は composable シングルトン (`useXxx()`) で共有
+- 永続化値は `useStorage.js` の `loadLS` / `saveLS` + `watch` で localStorage に同期
+- コメントは日本語、書くのは「なぜ」が非自明な箇所のみ
 
 ### CSS
 
-- ダークテーマ基調 (#121212 背景、白文字)
-- Bootstrap 5 ユーティリティクラス多用
-- カスタムスタイルは `style.css` に集約
+- ダークテーマ。`:root` の CSS 変数 (`--color-accent`, `--color-info` 等) を共通参照
+- Bootstrap ユーティリティクラスを多用
+- コンポーネント固有スタイルは `<style scoped>`
 
 ---
 
@@ -103,60 +126,81 @@
 
 ```
 EFT-iniwa-tool/
-├── index.html              # エントリーポイント (Vue appマウント)
-├── style.css               # グローバルCSS (ダークテーマ)
-├── data.js                 # TARKOV_DATA 定数 (ハイドアウトのローカルデータ)
-├── js/
-│   ├── app.js              # Vue アプリ本体 (setup関数、状態管理)
-│   ├── queries.js          # GraphQL クエリ生成
-│   ├── logic_tasks.js      # タスク関連ロジック
-│   ├── logic_items.js      # アイテム関連ロジック
-│   ├── logic_hideout.js    # ハイドアウト関連ロジック
-│   ├── logic_keys.js       # 鍵関連ロジック
-│   ├── key_presets.js      # 鍵プリセットデータ
-│   ├── story_data.js       # ストーリーデータ
-│   └── components/
-│       ├── Comp*.js        # 15個のVueコンポーネント
-│       └── memo/
-│           └── CompMemo*.js # メモ系サブコンポーネント
-├── example/
-│   └── sample.json         # サンプルデータ
-└── (静的ファイル: favicon, ogp_image, sitemap, robots.txt 等)
+├── index.html                # Vite エントリ HTML
+├── vite.config.js
+├── package.json
+├── public/                   # ビルド時にそのまま dist/ ルートへコピーされる静的アセット
+│   ├── favicon.png
+│   ├── ogp_image.png
+│   ├── robots.txt
+│   └── sitemap.xml           # 12 URL (タブ + 静的ページ) に拡張済み
+├── src/
+│   ├── main.js               # ?overlay=tasks 判定 → OverlayWindow / App を分岐
+│   ├── App.vue               # ヘッダ + タブ + <router-view> + モーダル + フッタ
+│   ├── router/
+│   │   └── index.js          # ルート定義 + afterEach (title/Umami)
+│   ├── components/
+│   │   ├── AppHeader.vue / AppFooter.vue / AppNotice.vue
+│   │   ├── TaskInput.vue / ResultList.vue / KeyManager.vue
+│   │   ├── FlowchartView.vue / StoryView.vue / StoryPlaceholder.vue
+│   │   ├── AmmoChart.vue / ItemSearch.vue / MemoView.vue
+│   │   ├── OverlaySettings.vue / DebugView.vue / TaskModal.vue
+│   │   ├── OverlayWindow.vue (?overlay=tasks 専用ビュー)
+│   │   ├── pages/            # AdSense 審査向け静的ページ
+│   │   │   ├── AboutPage.vue / PrivacyPage.vue / TermsPage.vue
+│   │   │   └── GuidePage.vue / FaqPage.vue
+│   │   ├── memo/Memo*.vue    # メモ系サブコンポーネント
+│   │   └── ui/{BaseModal,ToastNotify}.vue
+│   ├── composables/          # useAppState, useUserProgress, useApiData,
+│   │                         #  useImportExport, useOverlay, useShoppingList, useStorage
+│   ├── logic/                # taskLogic / itemLogic / hideoutLogic / keyLogic / queries
+│   ├── data/                 # constants / caliberData / keyPresets / storyChapters*
+│   └── assets/style.css
+├── example/sample.json
+├── .docs/                    # 設計判断・知見
+│   └── adsense-prep-design.md
+├── CLAUDE.md / CLAUDE_ja.md / README.md / LICENSE
+└── (node_modules, dist, etc.)
 ```
 
-### アーキテクチャ
+### 親子コンポーネント契約
 
-- SPA (Single Page Application) — タブ切替で画面遷移（ルーティングなし）
-- 状態管理は `app.js` の `setup()` 内で `ref` / `computed` を使用
-- コンポーネントはグローバル登録
-- データ永続化は localStorage
+子は `@open-task-details` / `@open-task-from-name` を emit してタスクモーダルを開く。
+`App.vue` の `<router-view v-slot>` でこの 2 emit を共通バインドしているため、
+ルーティング導入時に子コンポーネント側を一切変更していない。
+
+### `?overlay=tasks` モード
+
+`src/main.js` で Router 作成より前に分岐し、`OverlayWindow.vue` を独立マウントする。
+ルーター非介在のため通常のタブ UI とは完全に切り離されている。
 
 ---
 
 ## テスト・動作確認
 
-リンター・フォーマッター・テストフレームワークは導入されていない。
-変更後は以下を手動確認すること:
+リンター・フォーマッター・テストフレームワーク未導入。変更後は以下を手動確認:
 
-1. ブラウザで `index.html` を開いて該当機能をテスト
+1. `npm run dev` でブラウザを開いて該当機能をテスト
 2. コンソールエラーがないことを確認
-3. 変更が他のタブ/機能に影響していないことを確認
+3. 隣接タブも触って回帰がないことを確認
+4. 必要に応じて Playwright MCP で URL 直叩き・タブ active 状態・タイトル更新を自動検証
 
 ---
 
 ## ツール活用
 
-- コードの読み取り・編集には **Serena MCP** ツールを積極的に使う（シンボル検索・概要取得・置換・挿入など）
-- Web 上の情報収集には **Tavily MCP** ツールを使う:
-  - `tavily_search` — ドキュメント、エラーメッセージ、ライブラリの使い方などの一般的な Web 検索
-  - `tavily_crawl` — 特定の Web サイトを巡回して詳細な情報を取得
-  - `tavily_extract` — URL から構造化されたコンテンツを抽出
-  - `tavily_research` — トピックについての詳細なリサーチ（複雑・多面的な調査に使用）
+- コードの読み取り・編集には **Serena MCP** ツール (`find_symbol`, `replace_symbol_body`, `replace_content` 等)
+- Web 上の情報収集には **Tavily MCP** ツール:
+  - `tavily_search` — 一般的な Web 検索
+  - `tavily_crawl` — 特定サイト巡回
+  - `tavily_extract` — URL から構造化抽出
+  - `tavily_research` — 詳細リサーチ
+- UI 検証には **Playwright MCP** で dev サーバを駆動
 
 ---
 
 ## 知見の永続化
 
-- 設計判断・アーキテクチャの選定理由・利用フレームワークの知見など、流用できる情報は `docs/*.md` に積極的に残す
-- 作業開始時には `docs/` に既存の文脈がないか確認する
-- `/clear` で会話をリセットしても、`CLAUDE.md` と `docs/` に残した情報が次の会話で引き継がれる
+- 設計判断・アーキテクチャの選定理由など、流用できる情報は `.docs/*.md` に積極的に残す
+- 作業開始時には `.docs/` に既存の文脈がないか確認する
+- `/clear` で会話をリセットしても、`CLAUDE.md` と `.docs/` に残した情報が次の会話で引き継がれる

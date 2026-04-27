@@ -87,10 +87,32 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <!-- マイナーアップデート: v3.1.0 -->
+        <!-- マイナーアップデート: v3.1.2 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-info text-dark">NEW</span>
+            <h4 class="text-info fw-bold mb-0">
+              🔗 v3.1.2 - URLルーティング & お知らせページの追加
+            </h4>
+          </div>
+          <p class="text-light mb-3">
+            各タブに個別の URL を割り当て、ブラウザの戻る／進む・ブックマーク・URL 共有ができるようになりました。<br>
+            合わせて、サイトの使い方や運営方針を案内する静的ページ群を追加しています。
+          </p>
+          <ul class="text-light mb-3">
+            <li><strong>🌐 タブの URL 化:</strong> <code>/result</code>, <code>/keys</code>, <code>/flowchart</code> などタブごとに URL が変わるようになり、特定タブを直接ブックマークできます。</li>
+            <li><strong>↩️ ブラウザバック対応:</strong> 戻る／進むボタンや、スマホのスワイプ操作でタブを行き来できます。</li>
+            <li><strong>📖 お知らせページ追加:</strong> フッターから「<strong>About</strong>」「<strong>使い方</strong>」「<strong>FAQ</strong>」「<strong>プライバシーポリシー</strong>」「<strong>利用規約</strong>」へ移動できます。</li>
+            <li><strong>🧹 内部整理:</strong> 旧コード（pre-Vite 時代の遺物）を整理し、ビルドサイズと将来のメンテナンス性を改善しました。</li>
+          </ul>
+          <div class="small text-info-emphasis bg-info bg-opacity-10 border border-info rounded p-2 mb-0">
+            💡 進捗データ・設定・配信オーバーレイの動作はそのまま引き継がれます。
+          </div>
+        </div>
+
+        <!-- マイナーアップデート: v3.1.0 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <h4 class="text-info fw-bold mb-0">
               📺 v3.1.0 - 配信者向けオーバーレイ機能の追加
             </h4>
