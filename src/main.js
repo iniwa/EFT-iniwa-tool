@@ -15,7 +15,10 @@ if (isOverlay) {
     createApp(OverlayWindow).mount('#app')
   })
 } else {
-  import('./App.vue').then(({ default: App }) => {
-    createApp(App).mount('#app')
+  Promise.all([
+    import('./App.vue'),
+    import('./router/index.js'),
+  ]).then(([{ default: App }, { default: router }]) => {
+    createApp(App).use(router).mount('#app')
   })
 }
