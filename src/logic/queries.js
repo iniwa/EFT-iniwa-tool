@@ -46,7 +46,6 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
         count
         target
         bodyParts
-        usingWeapon { name }
       }
 
       ... on TaskObjectiveExtract {

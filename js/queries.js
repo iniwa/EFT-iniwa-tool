@@ -44,7 +44,6 @@ query GetData {
         count
         target
         bodyParts
-        usingWeapon { name }
       }
       
       ... on TaskObjectiveExtract {

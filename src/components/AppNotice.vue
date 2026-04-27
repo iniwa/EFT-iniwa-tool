@@ -131,6 +131,23 @@ defineExpose({ show })
           </ul>
         </div>
 
+        <!-- パッチアップデート: v3.1.1 -->
+        <div class="p-4 rounded border border-success border-2 bg-success bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-success">FIX</span>
+            <h4 class="text-success fw-bold mb-0">
+              🛠️ v3.1.1 - データ更新エラーの修正
+            </h4>
+          </div>
+          <p class="text-light mb-3">
+            ページを開いた際に「<code>更新失敗: GraphQL Error: No item found with id undefined</code>」と表示され、データの更新ができない不具合を修正しました。
+          </p>
+          <ul class="text-light mb-0">
+            <li><strong>原因:</strong> tarkov.dev API 側の一部タスクで武器データの ID が不整合になっており、GraphQL リゾルバーがエラーを返していました。</li>
+            <li><strong>対応:</strong> アプリ内で未使用だったフィールド（<code>usingWeapon</code>）をクエリから除外することで回避しました。</li>
+          </ul>
+        </div>
+
         <!-- 不具合報告のお願い -->
         <div class="p-3 rounded border border-warning bg-warning bg-opacity-10">
           <h6 class="text-warning fw-bold mb-2">
