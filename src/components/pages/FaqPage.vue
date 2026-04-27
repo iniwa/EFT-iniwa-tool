@@ -153,9 +153,17 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. 自分でも似たツールを作りたいです。ソースは公開されていますか？</summary>
                     <p>
-                        本サービスのコードは個人開発のため、現時点でリポジトリの公開は予定していません。
-                        ただし、tarkov.dev API は誰でも使える公開 API なので、独自に実装することは可能です。
-                        実装の参考にしたい点があればお気軽にご連絡ください。
+                        はい、本サービスのソースコードは <strong>GitHub で公開</strong>しています。
+                    </p>
+                    <ul>
+                        <li>リポジトリ: <a href="https://github.com/iniwa/EFT-iniwa-tool" target="_blank" rel="noopener">github.com/iniwa/EFT-iniwa-tool</a></li>
+                        <li>ライセンス: <strong>MIT</strong>（フォーク・改変・再配布いずれも自由）</li>
+                    </ul>
+                    <p>
+                        独自実装の参考にしていただいて構いませんが、データ取得元の
+                        <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev API</a>
+                        には<strong>5分間隔のレート制限</strong>があります。フォーク版を運用される場合も、
+                        利用者側で過剰なリクエストが飛ばないよう配慮してください。
                     </p>
                 </details>
 
