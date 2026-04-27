@@ -15,7 +15,7 @@ Live at: https://efttool.iniwach.com/
 - **Bootstrap 5** + custom CSS (dark theme)
 - **Mermaid 11** — flowchart rendering
 - **marked 15** + DOMPurify — Markdown rendering
-- **Data source**: tarkov.dev GraphQL API (5-min rate limit)
+- **Data source**: tarkov.dev GraphQL API (no API-side limit; we self-impose a 5-min cooldown for politeness)
 - **Persistence**: localStorage (no backend)
 - **Analytics**: Umami (self-hosted, cookieless)
 

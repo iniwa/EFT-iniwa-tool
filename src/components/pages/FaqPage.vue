@@ -96,7 +96,9 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. データ更新ボタンを押しても更新されません</summary>
                     <p>
-                        tarkov.dev API には <strong>5分間のレート制限</strong>を設けています。
+                        本ツールでは tarkov.dev API への負荷を抑えるため、
+                        <strong>5分間隔のクールダウン</strong>を自主的に設けています
+                        （tarkov.dev 側で課された制限ではありません）。
                         前回の更新から5分以内は再取得できません。少し待ってから再度お試しください。
                     </p>
                     <p>
@@ -160,10 +162,11 @@ import { RouterLink } from 'vue-router'
                         <li>ライセンス: <strong>MIT</strong>（フォーク・改変・再配布いずれも自由）</li>
                     </ul>
                     <p>
-                        独自実装の参考にしていただいて構いませんが、データ取得元の
-                        <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev API</a>
-                        には<strong>5分間隔のレート制限</strong>があります。フォーク版を運用される場合も、
-                        利用者側で過剰なリクエストが飛ばないよう配慮してください。
+                        独自実装の参考にしていただいて構いません。
+                        データ取得元の <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev API</a>
+                        は無料で公開されている公共リソースなので、フォーク版を運用される場合も
+                        過剰なリクエストが飛ばないよう配慮してください
+                        （本ツールでは負荷軽減のため 5 分間隔のクールダウンを自主的に設けています）。
                     </p>
                 </details>
 

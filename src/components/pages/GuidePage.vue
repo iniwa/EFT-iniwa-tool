@@ -38,7 +38,8 @@ import { RouterLink } from 'vue-router'
                     </ul>
                     <p>
                         右上の <kbd>🔄 データ更新</kbd> ボタンで最新のゲームデータを取得します。
-                        APIには 5分間のレート制限があるため、頻繁な再読み込みは避けてください。
+                        tarkov.dev API への負荷を抑えるため、本ツールでは <strong>5分間隔のクールダウン</strong>を自主的に設けています。
+                        前回の更新から5分以内は再取得できません。
                     </p>
                 </section>
 
