@@ -34,6 +34,16 @@ The repo root `index.html` is the Vite entry; `src/` is the real source tree.
 Static assets (favicon, OGP image, sitemap, robots) live under `public/` and are
 copied to `dist/` root by Vite at build time.
 
+## Hosting / Deploy
+
+- **Cloudflare Pages** hosts the production site (https://efttool.iniwach.com/).
+- Source is mirrored from this Gitea repo to GitHub; Cloudflare Pages watches the
+  GitHub mirror and builds the **`main`** branch with `npm run build`, publishing
+  the `dist/` directory.
+- Pushing to `main` (after the mirror replays) triggers an automatic deploy.
+- SPA fallback for the History API is provided by `public/_redirects`
+  (`/*  /index.html  200`) — keep this file when editing `public/`.
+
 ## Work Location Detection
 
 - Working in `D:/Git/` → **Home (Sub PC)** (Main PC / Sub PC available)

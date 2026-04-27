@@ -79,11 +79,26 @@ npm run preview
 
 `createWebHistory()` を採用しているため、本番側で SPA fallback の設定が必須:
 
-- nginx: `try_files $uri $uri/ /index.html;`
-- Apache: `.htaccess` で RewriteRule
-- Caddy: `try_files {path} /index.html`
+- 当サイトのホスト先（Cloudflare Pages）では `public/_redirects` に
+  `/*  /index.html  200` を置いて対応 (本リポジトリ済み)
+- 他環境への移植時の参考:
+  - nginx: `try_files $uri $uri/ /index.html;`
+  - Apache: `.htaccess` で RewriteRule
+  - Caddy: `try_files {path} /index.html`
 
 未対応のままデプロイすると `/keys` 等の直接アクセスが 404 になり SEO 上致命的。
+
+---
+
+## ホスティング・デプロイ
+
+- 本番サイト (https://efttool.iniwach.com/) は **Cloudflare Pages** でホスト
+- ソースは Gitea (`gitea:iniwa/EFT-iniwa-tool`) を GitHub にミラーリングし、
+  Cloudflare Pages は GitHub 側を監視
+- デプロイ対象ブランチは **`main`**。Cloudflare Pages 側で `npm run build` を実行し、
+  `dist/` を公開
+- `main` への push（ミラーリング反映後）で自動デプロイされる
+- SPA fallback は `public/_redirects` で実現（ファイル削除厳禁）
 
 ---
 
