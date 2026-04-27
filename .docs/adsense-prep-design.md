@@ -195,10 +195,18 @@ Umami 上の集計は途切れずに継続できる。
 未対応のままデプロイすると、検索エンジンからのランディングが全部 404 になり SEO 上致命的。
 **マージ前にデプロイ環境の設定を確認する必要がある。**
 
-### 2. ルートディレクトリの legacy ファイル
+### 2. ルートディレクトリの legacy ファイル （対応済み）
 
-Pre-Vite 時代の `data.js`, `js/`, `style.css`, ルート直下の `sitemap.xml` などが残っている。
-ビルドには影響しないが、誤解を招くので別途クリーンアップしたい（このブランチでは触らない）。
+当初は別タスクとする予定だったが、本ブランチ内で追加対応した。
+削除対象:
+
+- `data.js` (旧 TARKOV_DATA, 5.3 MB)
+- `js/` ディレクトリ一式 (旧 CDN 版 Vue コンポーネント `Comp*.js` とロジック `logic_*.js`)
+- `style.css` (旧グローバル CSS — `src/assets/style.css` に移行済み)
+- ルート直下の `sitemap.xml` / `robots.txt` / `favicon.png` / `ogp_image.png`
+  （いずれも `public/` 配下に同一コピーがあり Vite が `dist/` ルートにコピーするため、ルート直下のものは死蔵していた）
+
+`index.html` は Vite エントリ (`<script type="module" src="/src/main.js">`) として現役なので残置。
 
 ### 3. Umami の Tab Switch 計測の方向性
 
