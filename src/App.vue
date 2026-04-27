@@ -1,11 +1,11 @@
 <script setup>
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // Composables
 import { useAppState } from './composables/useAppState.js'
 import { useUserProgress } from './composables/useUserProgress.js'
 import { useApiData } from './composables/useApiData.js'
-import { useShoppingList } from './composables/useShoppingList.js'
 import { useImportExport } from './composables/useImportExport.js'
 import { useOverlay } from './composables/useOverlay.js'
 
@@ -14,38 +14,30 @@ import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
 import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
-import TaskInput from './components/TaskInput.vue'
 import TaskModal from './components/TaskModal.vue'
-import ResultList from './components/ResultList.vue'
-import KeyManager from './components/KeyManager.vue'
-import AmmoChart from './components/AmmoChart.vue'
-import ItemSearch from './components/ItemSearch.vue'
-import FlowchartView from './components/FlowchartView.vue'
-import MemoView from './components/MemoView.vue'
-import StoryView from './components/StoryView.vue'
-import OverlaySettings from './components/OverlaySettings.vue'
-import DebugView from './components/DebugView.vue'
 
 // ---------------------------------------------------------------------------
 // State
 // ---------------------------------------------------------------------------
 
+const route = useRoute()
+const router = useRouter()
+
 const {
-    currentTab, isLoading, loadError,
+    isLoading, loadError,
     gameMode, apiLang, playerLevel, APP_VERSION,
 } = useAppState()
 
 const {
-    completedTasks, showStoryTab, flowchartTrader,
+    showStoryTab,
     migrateFromV2, normalizeHideoutKeys,
 } = useUserProgress()
 
 const {
-    taskData, hideoutData, itemsData, ammoData,
+    taskData, hideoutData,
     lastUpdated, fetchData, initFromCache,
 } = useApiData()
 
-const { shoppingList } = useShoppingList()
 const { exportData, importData } = useImportExport()
 const { overlayEnabled } = useOverlay()
 
@@ -57,36 +49,28 @@ const showTaskModal = ref(false)
 const fileInput = ref(null)
 
 // Toast / Notice refs
-const toastRef = ref(null)
 const noticeRef = ref(null)
 
 // ---------------------------------------------------------------------------
-// Tabs
+// Tabs (router 経由で表示)
 // ---------------------------------------------------------------------------
 
-const tabs = [
-    { id: 'input', label: '📝 進捗入力' },
-    { id: 'result', label: '📦 必要なアイテム' },
-    { id: 'keys', label: '🔑 鍵管理' },
-    { id: 'flowchart', label: '🗺️ フローチャート' },
-    { id: 'story', label: '📖 ストーリー', requiresFlag: 'showStoryTab' },
-    { id: 'ammo', label: '🔫 弾薬' },
-    { id: 'search', label: '🔍 アイテム検索' },
-    { id: 'memo', label: '📋 メモ' },
-    { id: 'overlay', label: '📺 配信オーバーレイ', requiresFlag: 'overlayEnabled' },
-    { id: 'debug', label: 'デバッグ', cssClass: 'text-secondary' },
-]
+const visibleTabs = computed(() => {
+    return router.options.routes
+        .filter((r) => r.meta?.tab)
+        .filter((r) => {
+            if (r.meta.requiresFlag === 'showStoryTab') return showStoryTab.value
+            if (r.meta.requiresFlag === 'overlayEnabled') return overlayEnabled.value
+            return true
+        })
+})
 
-const visibleTabs = computed(() => tabs.filter((tab) => {
-    if (tab.requiresFlag === 'showStoryTab') return showStoryTab.value
-    if (tab.requiresFlag === 'overlayEnabled') return overlayEnabled.value
-    return true
-}))
-
-// 現在開いているタブが非表示になったら input タブに戻す
-watch(visibleTabs, (list) => {
-    if (!list.some((t) => t.id === currentTab.value)) {
-        currentTab.value = 'input'
+// ルートが非表示タブを指していたらトップへ戻す
+watch([visibleTabs, () => route.name], ([list, name]) => {
+    const current = router.options.routes.find((r) => r.name === name)
+    if (!current?.meta?.tab) return
+    if (!list.some((t) => t.name === name)) {
+        router.replace({ name: 'input' })
     }
 })
 
@@ -192,61 +176,28 @@ watch(hideoutData, (stations) => {
         <ul class="nav nav-tabs mb-3" role="tablist">
             <li
                 v-for="tab in visibleTabs"
-                :key="tab.id"
+                :key="tab.name"
                 class="nav-item"
                 role="presentation"
             >
-                <a
+                <router-link
                     class="nav-link"
-                    :class="[{ active: currentTab === tab.id }, tab.cssClass]"
-                    href="#"
+                    :class="[{ active: route.name === tab.name }, tab.meta.cssClass]"
+                    :to="{ name: tab.name }"
                     role="tab"
-                    :aria-selected="currentTab === tab.id"
-                    @click.prevent="currentTab = tab.id"
-                >{{ tab.label }}</a>
+                    :aria-selected="route.name === tab.name"
+                >{{ tab.meta.label }}</router-link>
             </li>
         </ul>
 
-        <!-- タブコンテンツ -->
-        <div v-if="currentTab === 'input'">
-            <TaskInput @open-task-details="openTaskDetails" />
-        </div>
-
-        <div v-if="currentTab === 'result'">
-            <ResultList @open-task-from-name="openTaskFromName" />
-        </div>
-
-        <div v-if="currentTab === 'keys'">
-            <KeyManager @open-task-from-name="openTaskFromName" />
-        </div>
-
-        <div v-if="currentTab === 'flowchart'">
-            <FlowchartView @open-task-details="openTaskDetails" />
-        </div>
-
-        <div v-if="currentTab === 'story'">
-            <StoryView />
-        </div>
-
-        <div v-if="currentTab === 'ammo'">
-            <AmmoChart @open-task-from-name="openTaskFromName" />
-        </div>
-
-        <div v-if="currentTab === 'search'">
-            <ItemSearch @open-task-from-name="openTaskFromName" />
-        </div>
-
-        <div v-if="currentTab === 'memo'">
-            <MemoView @open-task-from-name="openTaskFromName" />
-        </div>
-
-        <div v-if="currentTab === 'overlay' && overlayEnabled">
-            <OverlaySettings @open-task-details="openTaskDetails" />
-        </div>
-
-        <div v-if="currentTab === 'debug'">
-            <DebugView />
-        </div>
+        <!-- ルートビュー（既存コンポーネントの emit をここで吸収） -->
+        <router-view v-slot="{ Component }">
+            <component
+                :is="Component"
+                @open-task-details="openTaskDetails"
+                @open-task-from-name="openTaskFromName"
+            />
+        </router-view>
 
         <!-- タスク詳細モーダル -->
         <TaskModal
@@ -259,7 +210,7 @@ watch(hideoutData, (stations) => {
         <AppNotice ref="noticeRef" :app-version="APP_VERSION" />
 
         <!-- Toast通知 -->
-        <ToastNotify ref="toastRef" />
+        <ToastNotify />
 
         <AppFooter
             :app-version="APP_VERSION"

@@ -210,19 +210,19 @@ function getKeyNormalizedName(id) {
   <div class="card border-info">
     <!-- ヘッダー: 検索 + 表示モード + ソート + 折りたたみボタン -->
     <div class="card-header bg-dark text-info border-bottom border-info">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="d-flex align-items-center gap-3">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+        <div class="d-flex align-items-center flex-wrap gap-2">
           <div class="fw-bold fs-5">鍵管理</div>
           <div class="btn-group btn-group-sm">
             <button
-              class="btn btn-outline-secondary text-light"
+              class="btn btn-outline-secondary text-light text-nowrap"
               @click="collapseAll"
               title="全てのマップを閉じる"
             >
               全て収納
             </button>
             <button
-              class="btn btn-outline-secondary text-light"
+              class="btn btn-outline-secondary text-light text-nowrap"
               @click="expandAll"
               title="全てのマップを開く"
             >
@@ -232,8 +232,7 @@ function getKeyNormalizedName(id) {
         </div>
         <input
           type="text"
-          class="form-control form-control-sm"
-          style="width: 200px"
+          class="form-control form-control-sm key-search"
           placeholder="鍵名で検索..."
           v-model="searchQuery"
         />
@@ -469,5 +468,15 @@ function getKeyNormalizedName(id) {
 /* マップヘッダーのホバー効果 */
 .map-header:hover {
   background-color: #34495e;
+}
+
+/* 検索欄: デスクトップは固定幅、モバイルは1行使い切る */
+.key-search {
+  width: 200px;
+}
+@media (max-width: 575.98px) {
+  .key-search {
+    width: 100%;
+  }
 }
 </style>

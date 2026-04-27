@@ -9,9 +9,6 @@ import { APP_VERSION } from '../data/constants.js';
 // State — created once, shared across all consumers
 // ---------------------------------------------------------------------------
 
-/** Currently active tab */
-const currentTab = ref('input');
-
 /** Global loading flag for main data fetch */
 const isLoading = ref(false);
 
@@ -39,12 +36,6 @@ const playerLevel = ref(parseInt(loadLS(`eft_${gameMode.value}_level`, 0), 10));
 // Watchers — individual for each persisted value
 // ---------------------------------------------------------------------------
 
-watch(currentTab, (newTab) => {
-  if (window.umami?.track) {
-    window.umami.track('Tab Switch', { name: newTab });
-  }
-});
-
 watch(gameMode, (val) => saveLS('eft_gamemode', val));
 watch(apiLang, (val) => saveLS('eft_apilang', val));
 watch(playerLevel, (val) => saveLS(`eft_${gameMode.value}_level`, val));
@@ -61,7 +52,6 @@ watch(gameMode, (newMode, oldMode) => {
 
 export function useAppState() {
   return {
-    currentTab,
     isLoading,
     loadError,
     gameMode,

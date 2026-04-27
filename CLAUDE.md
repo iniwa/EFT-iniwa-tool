@@ -9,18 +9,40 @@ Live at: https://efttool.iniwach.com/
 
 ## Tech Stack
 
-- **Vue.js 3** (CDN, no build tools) — Composition API with `setup()`, object-literal components
-- **Bootstrap 5** (CDN) — dark theme with custom CSS
-- **Mermaid.js** — flowchart rendering
-- **marked.js** — Markdown rendering
-- **Data source**: tarkov.dev GraphQL API (5-min rate limit)
+- **Vue 3.5** (Composition API, `<script setup>` SFC)
+- **Vue Router 4** (`createWebHistory` mode)
+- **Vite 8** (`@vitejs/plugin-vue`)
+- **Bootstrap 5** + custom CSS (dark theme)
+- **Mermaid 11** — flowchart rendering
+- **marked 15** + DOMPurify — Markdown rendering
+- **Data source**: tarkov.dev GraphQL API (no API-side limit; we self-impose a 5-min cooldown for politeness)
 - **Persistence**: localStorage (no backend)
-- **Analytics**: Umami (self-hosted)
+- **Analytics**: Umami (self-hosted, cookieless)
 
-## No Build System
+## Build & Run
 
-There is no npm/webpack/vite. All JS files are loaded via `<script>` tags in `index.html`.
-Open `index.html` directly in a browser to run. For local dev server: `npx serve .`
+Vite is the build system. There is no test framework, linter, or formatter configured.
+
+```bash
+npm install
+npm run dev       # http://localhost:5173
+npm run build     # outputs to dist/
+npm run preview
+```
+
+The repo root `index.html` is the Vite entry; `src/` is the real source tree.
+Static assets (favicon, OGP image, sitemap, robots) live under `public/` and are
+copied to `dist/` root by Vite at build time.
+
+## Hosting / Deploy
+
+- **Cloudflare Pages** hosts the production site (https://efttool.iniwach.com/).
+- Source is mirrored from this Gitea repo to GitHub; Cloudflare Pages watches the
+  GitHub mirror and builds the **`main`** branch with `npm run build`, publishing
+  the `dist/` directory.
+- Pushing to `main` (after the mirror replays) triggers an automatic deploy.
+- SPA fallback for the History API is provided by `public/_redirects`
+  (`/*  /index.html  200`) — keep this file when editing `public/`.
 
 ## Work Location Detection
 
@@ -28,42 +50,72 @@ Open `index.html` directly in a browser to run. For local dev server: `npx serve
 - Working in `C:/Git/` → **Home (Main PC)** (Main PC / Sub PC available)
 - Working in `C:/Users/**/Documents/git/` → **Remote PC**
   - Remote PC lacks required environments. Focus on code adjustments only.
-- Can SSH into Raspberry Pi via `ssh iniwapi` to read code/logs from the Pi
 
 ## Code Style
 
-- Components: `CompXxx` (PascalCase), defined as object literals with `template` string
-- Logic modules: `logic_xxx.js` (snake_case), export a single const object (e.g. `TaskLogic`)
-- State management: `ref()` / `computed()` in `app.js` setup — no Vuex/Pinia
-- Comments in Japanese
-- Keep code simple and readable; no unnecessary abstractions
+- Components: `.vue` SFC with `<script setup>`, PascalCase filenames (e.g. `AppHeader.vue`, `KeyManager.vue`)
+- The legacy `Comp*` prefix is no longer used in `src/`
+- Logic modules: `src/logic/*Logic.js` (camelCase), each exporting a single const object (e.g. `TaskLogic`)
+- State management: composable singletons in `src/composables/*.js` — module-level `ref()` returned via `useXxx()`. No Vuex/Pinia.
+- Persistent values use `loadLS` / `saveLS` from `useStorage.js` with a `watch` for sync
+- Comments in Japanese; only write comments when the *why* is non-obvious
+- Avoid backwards-compatibility shims, `_var` renames, and `// removed` markers — just delete
 
 ## Codebase Structure
 
 ```
-index.html          — Entry point, mounts Vue app
-style.css           — Global dark-theme CSS
-data.js             — TARKOV_DATA (local hideout data)
-js/
-  app.js            — Vue app (setup, state, all logic integration)
-  queries.js        — GraphQL query builder (getMainQuery)
-  logic_tasks.js    — TaskLogic
-  logic_items.js    — ItemLogic
-  logic_hideout.js  — HideoutLogic
-  logic_keys.js     — Key logic
-  key_presets.js    — Key preset data
-  story_data.js     — Story data
-  components/       — 15 Vue components (CompHeader, CompInput, CompResult, etc.)
-    memo/           — Memo sub-components (weapon, armor, grenade, health, stims, traders, items)
+src/
+  main.js                       Entry. Branches on ?overlay=tasks before mounting.
+  App.vue                       Header + tabs + <router-view> + modal + footer.
+  router/index.js               Routes (9 tab + 5 static + catch-all). meta.tab gates tab nav.
+                                afterEach updates document.title and tracks Umami "Tab Switch".
+  components/
+    AppHeader.vue, AppFooter.vue, AppNotice.vue
+    TaskInput.vue, ResultList.vue, KeyManager.vue, FlowchartView.vue,
+    StoryView.vue, StoryPlaceholder.vue, AmmoChart.vue, ItemSearch.vue,
+    MemoView.vue, OverlaySettings.vue, DebugView.vue, TaskModal.vue
+    OverlayWindow.vue           Mounted independently for ?overlay=tasks (no router).
+    pages/                      Static pages for AdSense readiness:
+      AboutPage.vue, PrivacyPage.vue, TermsPage.vue, GuidePage.vue, FaqPage.vue
+    memo/Memo*.vue              Memo subcomponents (weapon/armor/grenade/health/stims/traders/items)
+    ui/BaseModal.vue, ui/ToastNotify.vue
+  composables/
+    useAppState.js              gameMode / apiLang / playerLevel / loading / error
+    useUserProgress.js          Task/hideout progress + persistence
+    useApiData.js               tarkov.dev GraphQL fetch + 5-min cache
+    useImportExport.js          JSON import/export
+    useOverlay.js               Overlay enabled flag
+    useShoppingList.js          Required items aggregation
+    useStorage.js               loadLS / saveLS wrappers
+  logic/                        Pure-function logic (taskLogic, itemLogic, hideoutLogic, keyLogic, queries)
+  data/                         Static data (constants, caliberData, keyPresets, storyChapters*)
+  assets/style.css
+
+public/
+  sitemap.xml                   12 URLs covering tabs + static pages
 ```
+
+## Parent/Child Contract
+
+Children emit `@open-task-details` and `@open-task-from-name` to open the task modal.
+`App.vue` binds both listeners on `<router-view v-slot>`, so the router was added without
+modifying any child component.
+
+## Routing Notes
+
+- `createWebHistory()` requires SPA fallback in production (e.g. nginx `try_files $uri $uri/ /index.html;`).
+  Without it, direct hits like `/keys` return 404.
+- `?overlay=tasks` is handled in `src/main.js` *before* the router is created — overlay mode
+  mounts `OverlayWindow.vue` without ever instantiating the router.
 
 ## Testing
 
-No test framework. Verify changes manually in browser:
-1. Open `index.html` in browser
-2. Check console for errors
-3. Verify affected features work correctly
-4. Confirm other tabs/features are unaffected
+No automated tests. Verify changes manually:
+
+1. `npm run dev` — open browser, exercise the affected feature
+2. Check the console for errors
+3. Walk neighboring tabs to confirm no regressions
+4. For broader validation, drive the dev server with Playwright MCP
 
 ## Tooling
 
@@ -73,3 +125,9 @@ No test framework. Verify changes manually in browser:
   - `tavily_crawl` — Crawl a specific website for detailed information
   - `tavily_extract` — Extract structured content from a URL
   - `tavily_research` — In-depth research on a topic (use for complex or multi-faceted questions)
+- Use **Playwright MCP** tools to run the dev server in a real browser when verifying UI changes.
+
+## Persisting Design Knowledge
+
+- Save non-obvious design decisions and rationale to `.docs/*.md` so future sessions inherit context.
+- Check `.docs/` at the start of work — e.g. `.docs/adsense-prep-design.md` documents this branch's design.

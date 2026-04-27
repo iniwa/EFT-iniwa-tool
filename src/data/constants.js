@@ -57,12 +57,13 @@ export const USD_RATE = 162;
 export const EUR_RATE = 175;
 
 /** アプリバージョン */
-export const APP_VERSION = '3.1.1';
+export const APP_VERSION = '3.1.2';
 
 /** API エンドポイント */
 export const API_URL = 'https://api.tarkov.dev/graphql';
 
-/** レート制限: 最小リクエスト間隔 (5分) */
+/** 自主的なクールダウン: 最小リクエスト間隔 (5分)
+ *  tarkov.dev API 側に課された制限ではなく、サーバ負荷軽減のため当ツール側で設定。 */
 export const RATE_LIMIT_MS = 300000;
 
 /** 自動更新間隔 (20時間) */

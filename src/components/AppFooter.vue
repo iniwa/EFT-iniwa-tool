@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router'
+
 const props = defineProps({
     appVersion: { type: String, default: '' },
 })
@@ -15,6 +17,19 @@ const emit = defineEmits(['show-notice'])
                 class="btn btn-sm btn-outline-info me-2"
             >📮 意見箱</a>
         </div>
+
+        <div class="footer-links mb-2">
+            <RouterLink to="/about">About</RouterLink>
+            <span class="sep">|</span>
+            <RouterLink to="/guide">使い方</RouterLink>
+            <span class="sep">|</span>
+            <RouterLink to="/faq">FAQ</RouterLink>
+            <span class="sep">|</span>
+            <RouterLink to="/privacy">プライバシーポリシー</RouterLink>
+            <span class="sep">|</span>
+            <RouterLink to="/terms">利用規約</RouterLink>
+        </div>
+
         <div>
             &copy; 2025 <a href="https://twitter.com/iniwach" target="_blank" style="color: var(--color-info);">@iniwach</a>
             | Data by <a href="https://tarkov.dev" target="_blank" style="color: var(--color-info);">tarkov.dev</a>
@@ -26,3 +41,18 @@ const emit = defineEmits(['show-notice'])
         </div>
     </footer>
 </template>
+
+<style scoped>
+.footer-links a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+}
+.footer-links a:hover {
+    color: var(--color-info);
+    text-decoration: underline;
+}
+.footer-links .sep {
+    margin: 0 8px;
+    color: var(--border-light);
+}
+</style>
