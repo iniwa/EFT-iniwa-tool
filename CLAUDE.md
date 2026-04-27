@@ -50,7 +50,6 @@ copied to `dist/` root by Vite at build time.
 - Working in `C:/Git/` → **Home (Main PC)** (Main PC / Sub PC available)
 - Working in `C:/Users/**/Documents/git/` → **Remote PC**
   - Remote PC lacks required environments. Focus on code adjustments only.
-- Can SSH into Raspberry Pi via `ssh iniwapi` to read code/logs from the Pi
 
 ## Code Style
 
