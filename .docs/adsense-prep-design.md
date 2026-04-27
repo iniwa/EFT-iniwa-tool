@@ -1,13 +1,13 @@
-# AdSense 導入準備ブランチ 設計仕様書
+# AdSense 導入準備 設計仕様書
 
 > 作成日: 2026-04-27
-> ブランチ: `test/adsense-prep`
-> ベース: `main` (v3.1.1)
+> 当初ブランチ: `test/adsense-prep` (main へマージ済み)
+> リリース: v3.1.2
 
 ## 背景と目的
 
 将来的に Google AdSense による広告配信を行うにあたり、
-**コードと運営体制の両面で「審査通過率を上げる土台」を整える**ことを目的とする。
+**コードと運営体制の両面で「審査通過率を上げる土台」を整える**ことを目的とした作業の記録。
 
 AdSense 審査では下記が落とし穴になりやすい:
 
@@ -15,14 +15,14 @@ AdSense 審査では下記が落とし穴になりやすい:
 2. **コンテンツが薄い**判定 — ツール中心でテキストが少ないサイトは要注意
 3. **ページビュー計測の機会損失** — SPA で URL が変わらないとページ単位の最適化が効かない
 
-このブランチでは上記 3 点に対応するため、**ルーティング基盤の整備と静的ページの拡充** を行う。
+このリリースでは上記 3 点に対応するため、**ルーティング基盤の整備と静的ページの拡充** を行った。
 広告タグ埋め込み・CMP（Cookie 同意管理）・ads.txt 配置は **次フェーズ**として保留。
 
 ---
 
 ## スコープ判断
 
-| やる | やらない（次フェーズ） |
+| 完了 | 次フェーズ |
 |---|---|
 | Vue Router 導入とタブの URL 化 | AdSense タグの埋め込み |
 | Privacy / Terms / About ページ追加 | Cookie 同意バナー（CMP）の実装 |
@@ -126,12 +126,10 @@ AdSense 審査では下記が落とし穴になりやすい:
 - ブラウザの戻る／進むがネイティブに動作
 
 トレードオフ:
-- **配信サーバーで SPA fallback の設定が必要**
-  全ての不明 URL を `index.html` に流す nginx/Apache の rewrite ルールが要る
-- 自前ホスト（Raspberry Pi 等）の場合、サーバー設定の追加対応が必須
-
-サーバー設定が困難な場合は `createWebHashHistory()` への切替で回避可能。
-今回は SEO を優先して history モードで進めた。
+- 配信サーバーで SPA fallback の設定が必要
+  → 本プロジェクトは Cloudflare Pages ホストなので `public/_redirects` に
+  `/*  /index.html  200` を1行置くだけで対応 (ビルド時に `dist/_redirects` に展開される)
+- nginx / Apache / Caddy へ移植する場合は `try_files` 系の rewrite 設定が必要
 
 ### Overlay モードとの干渉
 
@@ -168,54 +166,14 @@ router.afterEach((to) => {
 イベント名 `Tab Switch` とプロパティ名 `name` を維持したため、
 Umami 上の集計は途切れずに継続できる。
 
+ただし `router.replace` などプログラム遷移でも発火するため集計上は微増する可能性があり、
+**過去データとの厳密比較は避けたほうが安全**。
+
 ### sitemap.xml の更新
 
 旧版はルート 1 つのみ（`/`）。
 ルーター導入で `/result`, `/keys`, `/guide` などが実 URL として独立したため、
 12 URL に拡張。タブ系を `priority 0.7-0.9`、ポリシー系を `priority 0.3` で重み付けした。
-
-**注意**: ルートディレクトリにも legacy `sitemap.xml` が残っている（pre-Vite 時代の遺物）。
-今回は `public/sitemap.xml` のみ更新した。Vite の `public/` 配下が `dist/` ルートに展開されるので、
-本番反映には十分。ルート側 sitemap.xml の整理は別タスクとする。
-
----
-
-## 既知の懸念事項
-
-### 1. デプロイ時の SPA fallback (再掲・要対応)
-
-`https://efttool.iniwach.com/keys` 等を直接叩くと、
-サーバーが対応していない場合 **404 を返す**。
-
-対応策:
-- nginx: `try_files $uri $uri/ /index.html;`
-- Apache: `.htaccess` で RewriteRule
-- Caddy: `try_files {path} /index.html`
-
-未対応のままデプロイすると、検索エンジンからのランディングが全部 404 になり SEO 上致命的。
-**マージ前にデプロイ環境の設定を確認する必要がある。**
-
-### 2. ルートディレクトリの legacy ファイル （対応済み）
-
-当初は別タスクとする予定だったが、本ブランチ内で追加対応した。
-削除対象:
-
-- `data.js` (旧 TARKOV_DATA, 5.3 MB)
-- `js/` ディレクトリ一式 (旧 CDN 版 Vue コンポーネント `Comp*.js` とロジック `logic_*.js`)
-- `style.css` (旧グローバル CSS — `src/assets/style.css` に移行済み)
-- ルート直下の `sitemap.xml` / `robots.txt` / `favicon.png` / `ogp_image.png`
-  （いずれも `public/` 配下に同一コピーがあり Vite が `dist/` ルートにコピーするため、ルート直下のものは死蔵していた）
-
-`index.html` は Vite エントリ (`<script type="module" src="/src/main.js">`) として現役なので残置。
-
-### 3. Umami の Tab Switch 計測の方向性
-
-旧: `currentTab` watcher（タブ切替時のみ発火）
-新: `router.afterEach`（履歴遷移すべてで発火）
-
-`router.replace` などプログラム遷移でも発火するため、
-集計上は微増する可能性がある。差分を許容できる範囲だが、
-過去データとの厳密比較は避けたほうが安全。
 
 ---
 
@@ -232,47 +190,3 @@ CLAUDE 提案の着手順における **4 / 5** に相当:
    - 同意取得まで広告タグをロードしない実装が必須（GDPR / 改正電通事業法）
 
 これらは AdSense アカウントの取得状況や審査結果に応じて柔軟に進める。
-
----
-
-## 検証チェックリスト
-
-ローカル開発環境で以下を確認してからマージ判断:
-
-- [ ] `npm run dev` で開発サーバ起動
-- [ ] 各タブ (`/`, `/result`, `/keys`, …) に直接アクセスできる
-- [ ] タブ切替で URL が変わる、ブラウザバックが効く
-- [ ] フッターから `/about`, `/privacy`, `/terms`, `/guide`, `/faq` へ遷移できる
-- [ ] `?overlay=tasks` でオーバーレイモードが正常に開く
-- [ ] タスクモーダル開閉が全タブで動作する
-- [ ] ストーリータブ・配信オーバーレイタブのフラグ表示が機能する
-- [ ] Umami の Tab Switch が新しい route name で計測されている
-- [ ] `npm run build` 成功（自動チェック済み）
-- [ ] 本番デプロイ環境の SPA fallback 設定が済んでいる
-
----
-
-## ファイル変更サマリ
-
-### 新規作成
-
-```
-src/router/index.js                       — ルート定義 + ナビゲーションフック
-src/components/pages/AboutPage.vue
-src/components/pages/PrivacyPage.vue
-src/components/pages/TermsPage.vue
-src/components/pages/GuidePage.vue
-src/components/pages/FaqPage.vue
-.docs/adsense-prep-design.md              — このドキュメント
-```
-
-### 修正
-
-```
-src/main.js                               — router 注入
-src/App.vue                               — router-view ベースに刷新
-src/composables/useAppState.js            — currentTab 削除
-src/components/AppFooter.vue              — 静的ページへのリンク追加
-public/sitemap.xml                        — URL を 12 件に拡張
-package.json / package-lock.json          — vue-router@4 追加
-```
