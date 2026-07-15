@@ -1,146 +1,78 @@
 # AGENTS.md
 
 ## Purpose
-This file is the Codex-side working agreement for `EFT-iniwa-tool`.
 
-Codex uses this file to preserve design intent, decide whether work should stay in Codex or be handed off to Claude Code, and review implementation results.
-Claude Code uses `CLAUDE.md` for execution rules.
+This is the Codex-side working agreement for `EFT-iniwa-tool`. It records design intent, delegation policy, review rules, and durable project constraints. `CLAUDE.md` contains Claude Code execution rules.
 
 ## Project Summary
-- Project name: `EFT-iniwa-tool`
-- Purpose: Static browser tool for Escape from Tarkov task, hideout, key, ammo, and item tracking.
-- Summary from project docs: Electron-based Escape from Tarkov support tool for local Windows use.
-- Runtime target: Browser static app
-- Repository path: `D:\Git\EFT-iniwa-tool`
-- Stack: Vue 3, Vite, Bootstrap, Mermaid, marked, localStorage
 
-## Base References
-- Codex base: `D:/Git/CLAUDEmdStrage/_base/AGENTS.md`
-- Claude Code base for Windows/local projects: `D:/Git/CLAUDEmdStrage/_base/CLAUDE_windows.md`
-- Claude Code base for Raspberry Pi Docker projects: `D:/Git/CLAUDEmdStrage/_base/CLAUDE_docker.md`
+- Static browser tool for Escape from Tarkov task, hideout, key, ammo, item, memo, and story tracking.
+- Vue 3.5 and Vite 8 single-page application with no backend.
+- User data stays in `localStorage`; tarkov.dev API cache data stays in IndexedDB.
+- Production is hosted on Cloudflare Pages. Preserve the existing deployment branch, domain, SPA fallback, and external exposure unless a task explicitly changes them.
 
-## Role Split
-Codex is responsible for:
-- clarifying requirements, non-goals, and success criteria
-- identifying change type and design risk
-- preserving responsibility boundaries and design intent
-- preparing scoped Claude Code handoffs when execution is clear
-- reviewing Claude Code output against this file and the handoff
-- recording durable decisions in `AGENTS.md` or `docs/*.md`
+## Read First
 
-Claude Code is responsible for:
-- following the current Codex handoff and `CLAUDE.md`
-- editing only allowed files unless it explains why more files are required
-- running requested verification where possible
-- reporting changed files, summary, verification results, blocked checks, and design questions
+Before meaningful work, inspect:
 
-## Decision Rule
-Keep work in Codex when:
-- requirements are ambiguous
-- design intent or responsibility boundaries may change
-- the task is small enough to edit and review in one context
-- the main value is planning, review, or documentation consistency
+- `CLAUDE.md`.
+- `README.md`.
+- `package.json` and the affected files under `src/` or `public/`.
+- Relevant active records under `docs/` and any applicable legacy design note under `.docs/`.
 
-Hand off to Claude Code when:
-- goal, files, constraints, non-goals, and verification are clear
-- the task is mostly implementation or mechanical editing
-- the allowed edit scope can be stated explicitly
-- Claude Code tooling or iteration speed is useful
+## Model and Role Policy
 
-## Project-Specific Guidance
-- Use Windows / local tool guidance from `D:/Git/CLAUDEmdStrage/_base`.
-- Respect the existing package manager and scripts.
-- Do not introduce new build tooling unless explicitly requested.
+- Use GPT-5.3-Codex-Spark (`gpt-5.3-codex-spark`) proactively, when available, for low-risk, well-scoped, independently verifiable supporting work that requires no material design judgment or source-code implementation.
+- GPT-5.6 Terra (`gpt-5.6-terra`) or Sol (`gpt-5.6-sol`) owns requirements and design. Whenever Terra is used, set its reasoning level to `high`. Prefer Sol for substantial ambiguity, risk, or cross-boundary reasoning.
+- After design is fixed, delegate source-code implementation first to Claude Code Sonnet 5 at effort medium from the repository root.
+- Only when Sonnet 5 is unavailable because of usage limits or service availability, use GPT-5.6 Luna (`gpt-5.6-luna`) with reasoning level `max` for the same implementation slice.
+- Implementation failure, failed verification, or a design question is not model unavailability. Return it to Codex.
+- Apply this policy to every coordinating Codex model and its subagents. Do not create coordinator-specific exceptions.
+- Codex may retain requirements, design, read-only investigation, synthesis, review, and small documentation-consistency changes in one context.
 
-## Files To Inspect First
-- CLAUDE.md
-- CLAUDE_ja.md
-- README.md
-- src/
-- package.json
+## Durable Project Rules
 
-## Files Claude Code May Edit In Scoped Tasks
-- src/
-- index.html
-- package.json
-- vite.config.js
+- Do not add a backend, account system, or authentication unless explicitly approved.
+- Preserve browser-local persistence, existing storage keys and migrations, and import/export compatibility.
+- Preserve overlay behavior, including the `?overlay=tasks` entry path.
+- Respect the tarkov.dev GraphQL cooldown and do not add abusive or automatic polling.
+- Preserve Vue single-file components, Composition API patterns, and the existing composable-singleton state approach unless a design explicitly changes them.
+- Keep `public/_redirects`; Vue Router history mode requires the SPA fallback for direct routes.
+- Do not change Cloudflare Pages configuration, deployment branch, custom domain, analytics wiring, or external exposure outside an approved task.
+- Keep dependencies minimal and do not introduce new build tooling without an approved design.
 
-## Constraints
-- No backend; persistence is localStorage.
-- Respect tarkov.dev GraphQL cooldown and avoid abusive polling.
-- Do not add a backend or authentication unless explicitly requested.
-- Keep overlay and import/export compatibility in mind.
-- Do not commit automatically unless explicitly requested.
-- Do not revert user or other-agent changes unless explicitly requested.
-- Do not edit secrets, credentials, `.env`, local runtime data, or generated heavy artifacts unless explicitly requested.
+## Safety and Scope
 
-## Handoff Template
-When Codex hands work to Claude Code, create `docs/handoffs/YYYY-MM-DD-<short-task>.md`. Create the `docs/handoffs/` directory if it does not exist. Use this format in that file.
+- Preserve unrelated user and other-agent changes. Treat unexpected diffs as having unknown authorship and keep them outside the current task or commit.
+- Do not edit secrets, credentials, `.env` files, local settings, browser runtime data, or generated `dist/`, `.vite/`, and heavy artifacts unless explicitly required.
+- Do not add dependencies or change build tooling, packaging, CI/CD, deployment, or external exposure outside the approved scope.
+- Do not commit, push, or deploy unless explicitly requested.
 
-```md
-Read AGENTS.md, CLAUDE.md, and this handoff file before implementation.
-If implementation would violate constraints or require files outside this handoff, stop and ask before editing.
+## Handoff Workflow
 
-## Goal
-...
+- Keep work in Codex when its main value is policy, design, review, synthesis, read-only investigation, or a small documentation-only correction.
+- For substantive implementation, create `docs/handoffs/YYYY-MM-DD-<short-task>.md` with the goal, background, files to inspect, files to edit, constraints, non-goals, verification, and expected report.
+- One handoff covers one cohesive, independently verifiable change and its direct verification. Run unresolved discovery as a separate read-only slice.
+- Size the slice so the first intended edit is reachable after reading the listed files. Do not combine broad discovery, unresolved design, and implementation.
+- If a handoff times out before its intended edit, do not rerun it unchanged. Narrow the behavior, files, and verification first.
+- Sonnet 5 implements only the approved slice. Luna at reasoning level `max` may implement that same slice only under the model-unavailability condition above.
+- Codex reviews the report and diff before preparing a later slice. Material design questions return to Terra or Sol.
+- Keep only active or blocked handoffs in `docs/handoffs/`. Move a handoff to `docs/handoffs/archive/` only after implementation, verification, review, required runtime work, and follow-up are complete.
 
-## Background
-...
+## Codex Review
 
-## Files To Inspect
-- ...
+Verify that:
 
-## Files To Edit
-- ...
+- Only approved files and behavior changed and unrelated diffs remain untouched.
+- Browser persistence, API cooldown, overlay, routing, import/export, and deployment constraints were preserved.
+- No unexpected dependency, build, CI/CD, deployment, domain, analytics, or external-exposure change appeared.
+- Verification supports the scoped change and blocked checks are explicit.
+- Reusable discoveries are recorded in the correct document without adding history to this file.
 
-## Constraints
-- ...
+## Documentation Lifecycle
 
-## Non Goals
-- ...
-
-## Verification
-- ...
-
-## Expected Report
-- Changed files
-- Summary
-- Verification results
-- Blocked checks
-- Design questions for Codex
-```
-
-## Codex Review Checklist
-After Claude Code returns, review:
-- Did the diff stay inside the handoff?
-- Did any file outside `Files To Edit` change? If yes, was it necessary?
-- Did the implementation preserve stated constraints and non-goals?
-- Did it introduce dependencies, build tooling, packaging, CI/CD, deployment changes, or external exposure changes unexpectedly?
-- Did it touch secrets, credentials, `.env`, local settings, or runtime data?
-- Did verification run, and are blocked checks explained?
-- Does any discovery need to become a new `AGENTS.md` or `docs/*.md` decision?
-
-## Knowledge Persistence
-- Use `AGENTS.md` for durable workflow and design decisions.
-- Use `docs/*.md` for reusable technical notes, architecture details, procedures, and project-specific knowledge.
-- Before meaningful work, check relevant existing docs.
-- Do not silently encode durable design decisions only in code.
-
-## Decision Log
-
-### YYYY-MM-DD: Decision title
-
-Context:
-- What problem or requirement caused this decision?
-
-Decision:
-- What did we decide?
-
-Reason:
-- Why is this the right tradeoff now?
-
-Constraints Introduced:
-- What should future implementation preserve?
-
-Do Not Change Casually:
-- What would cause design drift if changed without review?
+- Keep `AGENTS.md` limited to short, current, durable rules and links.
+- Put detailed decisions, evidence, rejected options, and rollout history in `docs/decisions/`.
+- Move a decision to `docs/decisions/archive/` only after it is fully implemented and no longer needed as current guidance.
+- Put reusable procedures in an appropriate `docs/` location.
+- Do not rewrite completed handoffs or archived decisions merely to match a newer shared policy.

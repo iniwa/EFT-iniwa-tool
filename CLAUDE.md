@@ -1,143 +1,74 @@
 # CLAUDE.md
 
-> Detailed notes (Japanese): CLAUDE_ja.md
+## Purpose
 
+This file contains Claude Code execution rules for `EFT-iniwa-tool`. `AGENTS.md` owns design intent, delegation policy, and Codex review.
 
-## Codex / Claude Code Workflow
-- This `CLAUDE.md` is for Claude Code execution rules.
-- Codex handoffs should normally be saved under `docs/handoffs/`; when a handoff file path is provided, read it before editing.
-- If the project also has `AGENTS.md`, treat it as the Codex-side source of design intent, handoff rules, and review criteria.
-- When the user provides a Codex handoff, follow that handoff first, then this file, then local project conventions.
-- If the task is ambiguous, requires changing documented design intent, or needs files outside the handoff, stop and ask before editing.
-- Do not commit automatically unless explicitly requested.
-- Report changed files, summary, verification results, blocked checks, and any design questions that should return to Codex.
+## Read Before Editing
 
-## Project
+Read:
 
-Static browser tool for Escape from Tarkov (EFT) — task/hideout/key/ammo tracker.
-Live at: https://efttool.iniwach.com/
+- `AGENTS.md`.
+- The supplied handoff, when present.
+- `README.md`, `package.json`, and every file listed for inspection.
+- Relevant active records under `docs/` and applicable legacy design notes under `.docs/`.
 
-## Tech Stack
+## Project Facts
 
-- **Vue 3.5** (Composition API, `<script setup>` SFC)
-- **Vue Router 4** (`createWebHistory` mode)
-- **Vite 8** (`@vitejs/plugin-vue`)
-- **Bootstrap 5** + custom CSS (dark theme)
-- **Mermaid 11** — flowchart rendering
-- **marked 15** + DOMPurify — Markdown rendering
-- **Data source**: tarkov.dev GraphQL API (no API-side limit; we self-impose a 5-min cooldown for politeness)
-- **Persistence**: localStorage (no backend)
-- **Analytics**: Umami (self-hosted, cookieless)
+- Vue 3.5 and Vite 8 single-page browser application.
+- Vue Router uses history mode.
+- User data is stored in `localStorage`; tarkov.dev API cache data is stored in IndexedDB.
+- There is no backend, authentication service, automated test suite, linter, or formatter configured.
+- Production is a Cloudflare Pages static deployment.
 
-## Build & Run
+## Execution Rules
 
-Vite is the build system. There is no test framework, linter, or formatter configured.
+- Implement and report only the current independently verifiable slice.
+- A handoff defines task scope but does not override durable constraints in `AGENTS.md`.
+- If the listed files are insufficient to reach the first scoped edit, stop and report the missing discovery or proposed split instead of broadening the task.
+- Return unresolved requirements and design choices to Codex.
+- Stop before adding a dependency or changing build tooling, packaging, CI/CD, deployment, analytics, custom domains, or external exposure unless the task explicitly includes it.
+- Subagents are optional and limited to clearly parallel mechanical work within the same files, scope, and constraints.
+- Preserve unrelated user and other-agent changes. Treat unexpected diffs as having unknown authorship and exclude them from the current task.
+- Do not commit, push, or deploy unless explicitly requested.
 
-```bash
-npm install
-npm run dev       # http://localhost:5173
-npm run build     # outputs to dist/
-npm run preview
-```
+## Project Constraints
 
-The repo root `index.html` is the Vite entry; `src/` is the real source tree.
-Static assets (favicon, OGP image, sitemap, robots) live under `public/` and are
-copied to `dist/` root by Vite at build time.
+- Keep the application backend-free unless the approved design says otherwise.
+- Preserve storage keys, migrations, import/export compatibility, and the split between `localStorage` user data and IndexedDB API cache data.
+- Preserve the tarkov.dev request cooldown and avoid automatic or abusive polling.
+- Preserve overlay behavior, including `?overlay=tasks`.
+- Keep `public/_redirects`; direct routes require the SPA fallback.
+- Follow existing Vue single-file component, Composition API, composable-singleton, naming, and styling patterns.
+- Prefer small, readable changes and minimal dependencies.
 
-## Hosting / Deploy
+## Protected Files and Data
 
-- **Cloudflare Pages** hosts the production site (https://efttool.iniwach.com/).
-- Source is mirrored from this Gitea repo to GitHub; Cloudflare Pages watches the
-  GitHub mirror and builds the **`main`** branch with `npm run build`, publishing
-  the `dist/` directory.
-- Pushing to `main` (after the mirror replays) triggers an automatic deploy.
-- SPA fallback for the History API is provided by `public/_redirects`
-  (`/*  /index.html  200`) — keep this file when editing `public/`.
+Do not edit or delete unless explicitly required:
 
-## Work Location Detection
+- Secrets, credentials, `.env` files, keys, and local settings.
+- Browser runtime data.
+- Generated `dist/`, `.vite/`, `node_modules/`, and heavy artifacts.
+- Cloudflare Pages branch, domain, analytics, and deployment configuration outside an approved deployment task.
 
-- Working in `D:/Git/` → **Home (Sub PC)** (Main PC / Sub PC available)
-- Working in `C:/Git/` → **Home (Main PC)** (Main PC / Sub PC available)
-- Working in `C:/Users/**/Documents/git/` → **Remote PC**
-  - Remote PC lacks required environments. Focus on code adjustments only.
+## Verification
 
-## Code Style
+Run the smallest check that demonstrates the scoped change:
 
-- Components: `.vue` SFC with `<script setup>`, PascalCase filenames (e.g. `AppHeader.vue`, `KeyManager.vue`)
-- The legacy `Comp*` prefix is no longer used in `src/`
-- Logic modules: `src/logic/*Logic.js` (camelCase), each exporting a single const object (e.g. `TaskLogic`)
-- State management: composable singletons in `src/composables/*.js` — module-level `ref()` returned via `useXxx()`. No Vuex/Pinia.
-- Persistent values use `loadLS` / `saveLS` from `useStorage.js` with a `watch` for sync
-- Comments in Japanese; only write comments when the *why* is non-obvious
-- Avoid backwards-compatibility shims, `_var` renames, and `// removed` markers — just delete
+- Documentation-only changes: `git diff --check` and a focused reference scan.
+- Source changes: `npm run build`.
+- Interactive or routing changes: run `npm run dev`, exercise the affected behavior in a browser, check the console, and inspect neighboring routes where regression risk exists.
+- Use `npm run preview` when the production build output or SPA routing needs verification.
 
-## Codebase Structure
+No automated tests or lint command are configured. Report that limitation rather than inventing a check.
 
-```
-src/
-  main.js                       Entry. Branches on ?overlay=tasks before mounting.
-  App.vue                       Header + tabs + <router-view> + modal + footer.
-  router/index.js               Routes (9 tab + 5 static + catch-all). meta.tab gates tab nav.
-                                afterEach updates document.title and tracks Umami "Tab Switch".
-  components/
-    AppHeader.vue, AppFooter.vue, AppNotice.vue
-    TaskInput.vue, ResultList.vue, KeyManager.vue, FlowchartView.vue,
-    StoryView.vue, StoryPlaceholder.vue, AmmoChart.vue, ItemSearch.vue,
-    MemoView.vue, OverlaySettings.vue, DebugView.vue, TaskModal.vue
-    OverlayWindow.vue           Mounted independently for ?overlay=tasks (no router).
-    pages/                      Static pages for AdSense readiness:
-      AboutPage.vue, PrivacyPage.vue, TermsPage.vue, GuidePage.vue, FaqPage.vue
-    memo/Memo*.vue              Memo subcomponents (weapon/armor/grenade/health/stims/traders/items)
-    ui/BaseModal.vue, ui/ToastNotify.vue
-  composables/
-    useAppState.js              gameMode / apiLang / playerLevel / loading / error
-    useUserProgress.js          Task/hideout progress + persistence
-    useApiData.js               tarkov.dev GraphQL fetch + 5-min cache
-    useImportExport.js          JSON import/export
-    useOverlay.js               Overlay enabled flag
-    useShoppingList.js          Required items aggregation
-    useStorage.js               loadLS / saveLS wrappers
-  logic/                        Pure-function logic (taskLogic, itemLogic, hideoutLogic, keyLogic, queries)
-  data/                         Static data (constants, caliberData, keyPresets, storyChapters*)
-  assets/style.css
+## Report
 
-public/
-  sitemap.xml                   12 URLs covering tabs + static pages
-```
+Report:
 
-## Parent/Child Contract
-
-Children emit `@open-task-details` and `@open-task-from-name` to open the task modal.
-`App.vue` binds both listeners on `<router-view v-slot>`, so the router was added without
-modifying any child component.
-
-## Routing Notes
-
-- `createWebHistory()` requires SPA fallback in production (e.g. nginx `try_files $uri $uri/ /index.html;`).
-  Without it, direct hits like `/keys` return 404.
-- `?overlay=tasks` is handled in `src/main.js` *before* the router is created — overlay mode
-  mounts `OverlayWindow.vue` without ever instantiating the router.
-
-## Testing
-
-No automated tests. Verify changes manually:
-
-1. `npm run dev` — open browser, exercise the affected feature
-2. Check the console for errors
-3. Walk neighboring tabs to confirm no regressions
-4. For broader validation, drive the dev server with Playwright MCP
-
-## Tooling
-
-- Use **Serena MCP** tools for code navigation and editing (symbol search, overview, replace, insert, etc.)
-- Use **Tavily MCP** tools for web search and research:
-  - `tavily_search` — General web search for documentation, error messages, library usage, etc.
-  - `tavily_crawl` — Crawl a specific website for detailed information
-  - `tavily_extract` — Extract structured content from a URL
-  - `tavily_research` — In-depth research on a topic (use for complex or multi-faceted questions)
-- Use **Playwright MCP** tools to run the dev server in a real browser when verifying UI changes.
-
-## Persisting Design Knowledge
-
-- Save non-obvious design decisions and rationale to `.docs/*.md` so future sessions inherit context.
-- Check `.docs/` at the start of work — e.g. `.docs/adsense-prep-design.md` documents this branch's design.
+- Changed files.
+- Concise summary.
+- Verification commands and results.
+- Blocked checks.
+- Subagent usage.
+- Design questions for Codex.
