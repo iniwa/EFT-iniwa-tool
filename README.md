@@ -9,7 +9,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 > 著者本人はコードをほぼ読んでおらず、深い知識もありません。
 > いかなる問題が起きても**全てにおいて自己責任**でお願いします。
 
-> 🛰 データ取得元として [tarkov.dev](https://tarkov.dev/) の GraphQL API を利用しています。
+> 🛰 データ取得元として [tarkov.dev](https://tarkov.dev/) の JSON API を利用しています（レガシーの GraphQL API はメンテナンスモードのため、JSON API 失敗時の最終フォールバックとしてのみ利用）。
 > tarkov.dev サーバへの負荷を抑えるため、本ツール側で **5 分間隔のクールダウン** を自主的に設けています。
 > 更新ボタンの連打はおやめください（API 側で課された制限ではなく、運営者の自主規制です）。
 
@@ -43,7 +43,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | 図 | Mermaid 11 |
 | Markdown | marked + DOMPurify |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
-| データソース | [tarkov.dev GraphQL API](https://tarkov.dev/api/) |
+| データソース | [tarkov.dev JSON API](https://tarkov.dev/api/)（レガシー GraphQL API はフォールバック） |
 | 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |
 | アクセス解析 | [Umami](https://umami.is/) (self-hosted, Cookie 不使用) |
 | ホスティング | [Cloudflare Pages](https://pages.cloudflare.com/) |

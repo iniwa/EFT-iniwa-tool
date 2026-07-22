@@ -35,7 +35,7 @@ const {
 
 const {
     taskData, hideoutData,
-    lastUpdated, fetchData, initFromCache,
+    lastUpdated, dataWarning, fetchData, initFromCache,
 } = useApiData()
 
 const { exportData, importData } = useImportExport()
@@ -113,8 +113,17 @@ async function handleFileImport(event) {
 }
 
 // gameMode / apiLang 変更時にデータを再取得
-watch([gameMode, apiLang], () => {
-    fetchData(gameMode.value, apiLang.value, true, isLoading, loadError)
+// (force=false: 切り替え先のコンテキストにキャッシュがあればそれを表示しつつ、
+//  5分間のクールダウンはコンテキストごとに独立して適用される)
+watch([gameMode, apiLang], async () => {
+    // initFromCache invalidates the old request; release its visual loading/error
+    // state immediately while the selected context is restored.
+    isLoading.value = false
+    loadError.value = null
+    const shouldFetch = await initFromCache(gameMode.value, apiLang.value)
+    if (shouldFetch) {
+        await fetchData(gameMode.value, apiLang.value, false, isLoading, loadError)
+    }
 })
 
 // ---------------------------------------------------------------------------
@@ -122,7 +131,7 @@ watch([gameMode, apiLang], () => {
 // ---------------------------------------------------------------------------
 
 onMounted(async () => {
-    const shouldFetch = await initFromCache()
+    const shouldFetch = await initFromCache(gameMode.value, apiLang.value)
     if (shouldFetch) {
         await fetchData(gameMode.value, apiLang.value, false, isLoading, loadError)
     }
@@ -147,6 +156,7 @@ watch(hideoutData, (stations) => {
 <template>
     <div class="container-fluid py-4">
         <div v-if="loadError" class="alert alert-danger text-center">{{ loadError }}</div>
+        <div v-if="dataWarning" class="alert alert-warning text-center">{{ dataWarning }}</div>
 
         <AppHeader
             :last-updated="lastUpdated"
@@ -207,7 +217,7 @@ watch(hideoutData, (stations) => {
         />
 
         <!-- 更新通知 -->
-        <AppNotice ref="noticeRef" :app-version="APP_VERSION" />
+        <AppNotice ref="noticeRef" />
 
         <!-- Toast通知 -->
         <ToastNotify />

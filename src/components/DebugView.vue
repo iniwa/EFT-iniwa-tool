@@ -24,6 +24,9 @@ const {
 
 const { hideoutData } = useApiData()
 const { overlayEnabled } = useOverlay()
+const apiCacheContext = computed(() =>
+  `${gameMode.value === 'pvp' ? 'regular' : gameMode.value}:${apiLang.value}`
+)
 
 // --- ローカル状態 ---
 const currentView = ref('tasks')
@@ -72,7 +75,7 @@ function fmt(id,json){
 self.onmessage=function(e){var m=e.data,id=m.id,v=m.view;
 if(m.directData!==undefined){try{fmt(id,JSON.stringify(m.directData,null,2))}catch(er){self.postMessage({id:id,display:'(エラー: '+er.message+')',full:'',totalLines:0,totalChars:0,truncated:false})}return}
 var p=FM[v]?rd(MC):v==='itemDb'?rd(IC):Promise.resolve(null);
-p.then(function(c){var d=null;if(c){d=FM[v]?c[FM[v]]:v==='itemDb'?c.items:null}if(d!=null){fmt(id,JSON.stringify(d,null,2))}else{self.postMessage({id:id,display:'(データなし)',full:'',totalLines:0,totalChars:0,truncated:false})}}).catch(function(er){self.postMessage({id:id,display:'(読み取りエラー: '+er.message+')',full:'',totalLines:0,totalChars:0,truncated:false})})}`
+p.then(function(c){var d=null;if(c){var a=c.contexts?(c.contexts[m.context]||null):c;if(a){d=FM[v]?a[FM[v]]:v==='itemDb'?a.items:null}}if(d!=null){fmt(id,JSON.stringify(d,null,2))}else{self.postMessage({id:id,display:'(データなし)',full:'',totalLines:0,totalChars:0,truncated:false})}}).catch(function(er){self.postMessage({id:id,display:'(読み取りエラー: '+er.message+')',full:'',totalLines:0,totalChars:0,truncated:false})})}`
 
 const workerBlob = new Blob([workerCode], { type: 'application/javascript' })
 const workerUrl = URL.createObjectURL(workerBlob)
@@ -91,7 +94,7 @@ worker.onmessage = (e) => {
   isGenerating.value = false
 }
 
-watch(currentView, (view) => {
+watch([currentView, gameMode, apiLang], ([view]) => {
   const id = ++requestId
 
   if (view === 'reset') {
@@ -126,7 +129,7 @@ watch(currentView, (view) => {
     })
   } else {
     // APIデータはWorkerがIndexedDBから直接読み取り（メインスレッド負荷ゼロ）
-    worker.postMessage({ id, view })
+    worker.postMessage({ id, view, context: apiCacheContext.value })
   }
 }, { immediate: true })
 

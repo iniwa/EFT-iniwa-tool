@@ -150,12 +150,12 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
         duration
         requiredItems {
           count
-          item { name }
+          item { id name }
           attributes { name }
         }
         rewardItems {
           count
-          item { name }
+          item { id name }
         }
         taskUnlock { name }
       }
@@ -221,9 +221,13 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
     bartersFor {
       trader { name }
       level
+      rewardItems {
+        count
+        item { id name iconLink }
+      }
       requiredItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
     }
     craftsFor {
@@ -231,12 +235,12 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
       level
       duration
       rewardItems {
-        item { id }
+        item { id name iconLink }
         count
       }
       requiredItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
     }
     usedInTasks { name }
@@ -245,11 +249,11 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
       level
       rewardItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
       requiredItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
     }
     craftsUsing {
@@ -258,11 +262,11 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
       duration
       rewardItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
       requiredItems {
         count
-        item { name iconLink }
+        item { id name iconLink }
       }
     }
   }

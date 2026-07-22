@@ -12,11 +12,9 @@ const {
   itemDb,
   itemDbLoading,
   itemDbLastUpdated,
-  updatingItemIds,
   hideoutData,
   taskData,
   fetchItemDatabase,
-  updateSingleItemPrice,
 } = useApiData()
 
 const { gameMode, apiLang } = useAppState()
@@ -145,10 +143,6 @@ function getCraftCount(craft, itemId) {
   if (!craft.rewardItems) return null
   const selfReward = craft.rewardItems.find((r) => r.item.id === itemId)
   return selfReward ? selfReward.count : null
-}
-
-function isUpdating(id) {
-  return updatingItemIds.value && updatingItemIds.value.includes(id)
 }
 
 // ポップアップ操作
@@ -602,31 +596,11 @@ function nextPage() {
                         Wiki
                       </a>
 
-                      <button
-                        class="btn btn-sm py-1 px-2"
-                        style="font-size: 0.8rem"
-                        :class="
-                          isUpdating(item.id)
-                            ? 'btn-secondary'
-                            : 'btn-success'
-                        "
-                        @click.stop="
-                          updateSingleItemPrice(item.id, gameMode, apiLang)
-                        "
-                        :disabled="isUpdating(item.id)"
-                      >
-                        <span v-if="isUpdating(item.id)">
-                          <span class="spinner-border spinner-border-sm me-1"></span>
-                          更新中...
-                        </span>
-                        <span v-else>個別更新</span>
-                      </button>
-
                       <small
                         class="text-muted"
                         style="font-size: 0.7rem; line-height: 1.2"
                       >
-                        ※フリーマーケット・トレーダー買取価格のみ更新
+                        ※価格情報はヘッダの「データ更新」または上部の「Update All」で一括更新されます
                       </small>
                     </div>
                   </div>

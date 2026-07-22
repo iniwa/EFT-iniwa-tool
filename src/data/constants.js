@@ -59,8 +59,11 @@ export const EUR_RATE = 175;
 /** アプリバージョン */
 export const APP_VERSION = '3.1.3';
 
-/** API エンドポイント */
+/** API エンドポイント (GraphQL: レガシー/メンテナンスモード。JSON API失敗時の最終フォールバックにのみ使用) */
 export const API_URL = 'https://api.tarkov.dev/graphql';
+
+/** JSON API ベースURL (主データソース) */
+export const JSON_API_URL = 'https://json.tarkov.dev';
 
 /** 自主的なクールダウン: 最小リクエスト間隔 (5分)
  *  tarkov.dev API 側に課された制限ではなく、サーバ負荷軽減のため当ツール側で設定。 */

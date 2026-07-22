@@ -92,6 +92,49 @@ export function useIndexedDB() {
       });
     } catch (e) {
       console.error('IDB Save Error:', e);
+      throw e;
+    }
+  }
+
+  /**
+   * Atomically read and replace one value inside a single read/write
+   * transaction. IndexedDB serializes these transactions across tabs, which
+   * prevents concurrent context updates from overwriting each other.
+   *
+   * @param {string} key
+   * @param {(currentValue: any) => any} updater
+   * @returns {Promise<any>} the committed replacement value
+   */
+  async function updateDB(key, updater) {
+    try {
+      const db = await getDB();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        const getRequest = store.get(key);
+        let nextValue;
+
+        getRequest.onsuccess = () => {
+          try {
+            nextValue = updater(getRequest.result ?? null);
+            store.put(nextValue, key);
+          } catch (error) {
+            reject(error);
+            try {
+              tx.abort();
+            } catch {
+              // The transaction may already be inactive after a request error.
+            }
+          }
+        };
+        getRequest.onerror = () => reject(getRequest.error);
+        tx.oncomplete = () => resolve(nextValue);
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error || new Error('IndexedDB update aborted'));
+      });
+    } catch (e) {
+      console.error('IDB Update Error:', e);
+      throw e;
     }
   }
 
@@ -117,5 +160,5 @@ export function useIndexedDB() {
     }
   }
 
-  return { saveDB, loadDB };
+  return { saveDB, updateDB, loadDB };
 }

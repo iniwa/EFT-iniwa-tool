@@ -92,24 +92,18 @@ defineExpose({ show })
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-success">FIX</span>
             <h4 class="text-success fw-bold mb-0">
-              🛠️ v3.1.3 - データ更新エラー表示の修正
+              🛠️ v3.1.3 - データ取得元を JSON API に切り替え
             </h4>
           </div>
           <p class="text-light mb-3">
-            tarkov.dev API が一時的に利用できない際に「<code>更新失敗: GraphQL Error: undefined</code>」と表示される問題を修正しました。
+            上流の tarkov.dev 側で GraphQL API がメンテナンスモードとなり HTTP 503 を返し続けていた問題に対応しました。
+            この影響で、キャッシュデータを持たない新規ユーザーの方はデータを取得できず、本ツールを利用できない状態となっていました。ご不便をおかけし、申し訳ありませんでした。
+            データ取得元を tarkov.dev の公式 JSON API (<code>json.tarkov.dev</code>) に切り替え、キャッシュデータを持たない新規ユーザーの方も再びデータを読み込めるようになりました。
           </p>
-          <div class="p-3 rounded border border-warning bg-warning bg-opacity-10 text-light mb-3">
-            <p class="text-warning fw-bold mb-2">⚠️ 現在の API 状況</p>
-            <p class="mb-2">
-              現在、上流の tarkov.dev API が一時的に利用できない状態です。その影響で、キャッシュデータを持たない新規ユーザーの方はデータを取得できず、本ツールを利用できない状態となっています。
-            </p>
-            <p class="mb-0">
-              現在、代替策を検討しています。ご不便をおかけしており、申し訳ありません。
-            </p>
-          </div>
           <ul class="text-light mb-0">
-            <li><strong>原因:</strong> HTTP 503 応答ではエラーが文字列形式で返る場合があり、アプリがオブジェクト形式だけを想定していました。</li>
-            <li><strong>対応:</strong> 文字列／オブジェクト形式と HTTP ステータスを共通処理し、API 停止時は時間をおいて再試行するよう明確に案内します。</li>
+            <li><strong>原因:</strong> tarkov.dev が公式サイトを JSON API に移行済みで、GraphQL API はレガシー/メンテナンスモード扱いとなっており、キャッシュミス時の応答が不安定でした。</li>
+            <li><strong>対応:</strong> JSON API を主データソースとして採用し、レガシー GraphQL は JSON API 失敗時の最終フォールバックとしてのみ利用するようにしました。</li>
+            <li><strong>影響なし:</strong> 進捗データ・設定・鍵レーティング・配信オーバーレイなどはそのまま引き継がれます。</li>
           </ul>
         </div>
 

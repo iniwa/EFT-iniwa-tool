@@ -156,7 +156,7 @@ import { RouterLink } from 'vue-router'
                         当サイトは以下の外部サービスを利用しています：
                     </p>
                     <ul>
-                        <li><a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev GraphQL API</a> — ゲームデータの取得（個人情報は送信しません）</li>
+                        <li><a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev JSON API</a>（レガシー GraphQL API はフォールバック） — ゲームデータの取得（個人情報は送信しません）</li>
                         <li>X (Twitter)、Google フォーム等への外部リンク</li>
                     </ul>
                     <p>

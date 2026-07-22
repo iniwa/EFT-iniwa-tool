@@ -73,7 +73,7 @@ const { focusedTaskIds, overlayConfig, getObjectiveCount } = useOverlay();
 const { gameMode, apiLang, isLoading, loadError } = useAppState();
 
 onMounted(async () => {
-  const shouldFetch = await initFromCache();
+  const shouldFetch = await initFromCache(gameMode.value, apiLang.value);
   if (shouldFetch) {
     await fetchData(gameMode.value, apiLang.value, false, isLoading, loadError);
   }

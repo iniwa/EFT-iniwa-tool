@@ -53,7 +53,7 @@ import { RouterLink } from 'vue-router'
                 <section class="mb-4">
                     <h4>データの出典</h4>
                     <ul>
-                        <li>タスク・ハイドアウト・アイテム情報: <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev</a> の GraphQL API</li>
+                        <li>タスク・ハイドアウト・アイテム情報: <a href="https://tarkov.dev" target="_blank" rel="noopener">tarkov.dev</a> の JSON API（レガシーの GraphQL API はメンテナンスモードのため、JSON API 失敗時のフォールバックとしてのみ使用）</li>
                         <li>鍵レーティング: コミュニティの慣習的なランク付けを参考に、運営者の主観で初期値を設定</li>
                         <li>ストーリーデータ: 各種 Wiki／プレイヤー有志のまとめを参照</li>
                     </ul>
