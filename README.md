@@ -44,11 +44,11 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | Markdown | marked + DOMPurify |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
 | データソース | [tarkov.dev GraphQL API](https://tarkov.dev/api/) |
-| 永続化 | localStorage |
+| 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |
 | アクセス解析 | [Umami](https://umami.is/) (self-hosted, Cookie 不使用) |
 | ホスティング | [Cloudflare Pages](https://pages.cloudflare.com/) |
 
-データはすべて利用者のブラウザ内 (`localStorage`) に保存されます。サーバ側にユーザーデータは保存しません。
+データはすべて利用者のブラウザ内（`localStorage` / IndexedDB）に保存されます。サーバ側にユーザーデータは保存しません。
 
 ---
 
@@ -74,6 +74,20 @@ npm run preview  # ビルド結果のプレビュー
 
 `example/sample.json` に開発者の進捗状況のスナップショットを置いてあります。
 ヘッダの `Import` ボタンから読み込むと、自分でゼロから入力する手間を省けます。
+
+---
+
+## 開発ワークフロー
+
+本プロジェクトは AI エージェント主体で開発しています。
+
+- **Codex** が設計判断と handoff（`docs/handoffs/`）の作成を担当し、
+  **Claude Code** が handoff に沿った実装・検証を担当します
+  （合意事項は `AGENTS.md` / `CLAUDE.md` を参照）。
+- 改善候補は `docs/improvements.md` のチェックリストで管理します
+  （機能追加のアイデアは対象外）。
+- 自動テスト・リンターは未導入のため、検証は `npm run build` と
+  `npm run dev` での手動確認が基本です。
 
 ---
 
