@@ -87,10 +87,26 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <!-- パッチアップデート: v3.1.3 -->
+        <div class="p-4 rounded border border-success border-2 bg-success bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-success">FIX</span>
+            <h4 class="text-success fw-bold mb-0">
+              🛠️ v3.1.3 - データ更新エラー表示の修正
+            </h4>
+          </div>
+          <p class="text-light mb-3">
+            tarkov.dev API が一時的に利用できない際に「<code>更新失敗: GraphQL Error: undefined</code>」と表示される問題を修正しました。
+          </p>
+          <ul class="text-light mb-0">
+            <li><strong>原因:</strong> HTTP 503 応答ではエラーが文字列形式で返る場合があり、アプリがオブジェクト形式だけを想定していました。</li>
+            <li><strong>対応:</strong> 文字列／オブジェクト形式と HTTP ステータスを共通処理し、API 停止時は時間をおいて再試行するよう明確に案内します。</li>
+          </ul>
+        </div>
+
         <!-- マイナーアップデート: v3.1.2 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
-            <span class="badge bg-info text-dark">NEW</span>
             <h4 class="text-info fw-bold mb-0">
               🔗 v3.1.2 - URLルーティング & お知らせページの追加
             </h4>

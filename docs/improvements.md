@@ -53,12 +53,10 @@ handoff を挟むまでもない小粒な項目は Claude Code に直接依頼�
   - 対応案: ファイル削除し、`CLAUDE.md` / `CLAUDE_ja.md` の構成リストから除去する。
   - 制約: なし（挙動不変の削除）。
 
-- [ ] **【低】package.json の version をアプリバージョンと同期する**
-  - 現状: `package.json:4` は `3.1.1`、表示用の `APP_VERSION`
-    （`src/data/constants.js:60`）は `3.1.2` で不一致。
-  - 対応案: リリース時に両方を更新する運用にするか、`package.json` を
-    正としてビルド時に注入（`import.meta.env` 経由）するかを Codex が決めてから対応。
-  - 制約: `AppNotice.vue` のバージョン既読判定（`eft_notice_last_seen_version`）を壊さない。
+- [x] **【低】package.json の version をアプリバージョンと同期する**
+  - 対応: v3.1.3 で `package.json`、`package-lock.json` のルート版、表示用の
+    `APP_VERSION`（`src/data/constants.js`）を `3.1.3` に同期。
+  - 運用: 今後もリリース時に3か所を同じバージョンへ更新する。
 
 - [ ] **【低】本番でも出力される `console.log` を整理する**
   - 現状: `src/composables/useApiData.js:384,389,502,512` などデバッグ用の

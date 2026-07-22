@@ -284,6 +284,100 @@ function processAmmo(rawAmmo, taskList) {
 }
 
 // ---------------------------------------------------------------------------
+// GraphQL request / error handling
+// ---------------------------------------------------------------------------
+
+function normalizeGraphQLErrors(errors) {
+  const errorList = Array.isArray(errors) ? errors : errors ? [errors] : [];
+
+  return errorList
+    .map((error) => {
+      if (typeof error === 'string') return error.trim();
+      if (error && typeof error.message === 'string') {
+        return error.message.trim();
+      }
+      return '';
+    })
+    .filter(Boolean)
+    .join('; ');
+}
+
+function getApiResponseDetail(result) {
+  const graphQLError = normalizeGraphQLErrors(result?.errors);
+  if (graphQLError) return graphQLError;
+
+  if (typeof result?.message === 'string' && result.message.trim()) {
+    return result.message.trim();
+  }
+  if (typeof result?.error === 'string' && result.error.trim()) {
+    return result.error.trim();
+  }
+
+  return '';
+}
+
+export async function requestGraphQL(query, variables) {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  const responseText = await response.text();
+  let result;
+  let invalidJson = false;
+
+  if (responseText.trim()) {
+    try {
+      result = JSON.parse(responseText);
+    } catch {
+      invalidJson = true;
+    }
+  }
+
+  const upstreamDetail = invalidJson ? '' : getApiResponseDetail(result);
+  const httpDetail = upstreamDetail || response.statusText || '';
+  const detailSuffix = httpDetail ? ` 詳細: ${httpDetail}` : '';
+
+  if (!response.ok) {
+    if (response.status === 503) {
+      throw new Error(
+        `tarkov.dev APIが一時的に利用できません (HTTP 503)。しばらく時間をおいて再試行してください。${detailSuffix}`,
+      );
+    }
+    throw new Error(
+      `tarkov.dev APIへの接続に失敗しました (HTTP ${response.status})。${detailSuffix}`,
+    );
+  }
+
+  if (invalidJson) {
+    throw new Error(
+      'tarkov.dev APIから読み取れない応答を受信しました。しばらく時間をおいて再試行してください。',
+    );
+  }
+
+  if (!responseText.trim()) {
+    throw new Error(
+      'tarkov.dev APIから空の応答を受信しました。しばらく時間をおいて再試行してください。',
+    );
+  }
+
+  const hasGraphQLErrors = Array.isArray(result?.errors)
+    ? result.errors.length > 0
+    : Boolean(result?.errors);
+
+  if (hasGraphQLErrors) {
+    throw new Error(
+      `GraphQL Error: ${upstreamDetail || '詳細不明のエラー'}`,
+    );
+  }
+
+  return result;
+}
+
+// ---------------------------------------------------------------------------
 // Fetch: main data
 // ---------------------------------------------------------------------------
 
@@ -325,19 +419,8 @@ async function fetchData(gameMode, lang, force = false, isLoading, loadError) {
   const { query, variables } = getMainQuery(mode, lang);
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({ query, variables }),
-    });
-    const result = await response.json();
+    const result = await requestGraphQL(query, variables);
 
-    if (result.errors) {
-      throw new Error(`GraphQL Error: ${result.errors[0].message}`);
-    }
     if (!result.data) {
       throw new Error('No Data');
     }
@@ -392,19 +475,7 @@ async function fetchItemDatabase(gameMode, lang, forceUpdate = false) {
   const { query, variables } = getItemDbQuery(mode, lang);
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({ query, variables }),
-    });
-    const result = await response.json();
-
-    if (result.errors) {
-      throw new Error(result.errors[0].message);
-    }
+    const result = await requestGraphQL(query, variables);
 
     itemDb.value = result.data.items || [];
     const now = new Date().toLocaleString('ja-JP');
@@ -443,15 +514,7 @@ async function updateSingleItemPrice(itemId, gameMode, lang) {
   const { query, variables } = getSingleItemQuery(itemId, mode, lang);
 
   try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify({ query, variables }),
-    });
-    const result = await response.json();
+    const result = await requestGraphQL(query, variables);
 
     if (result.data && result.data.item) {
       const targetIndex = itemDb.value.findIndex((i) => i.id === itemId);
