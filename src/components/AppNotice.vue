@@ -98,6 +98,15 @@ defineExpose({ show })
           <p class="text-light mb-3">
             tarkov.dev API が一時的に利用できない際に「<code>更新失敗: GraphQL Error: undefined</code>」と表示される問題を修正しました。
           </p>
+          <div class="p-3 rounded border border-warning bg-warning bg-opacity-10 text-light mb-3">
+            <p class="text-warning fw-bold mb-2">⚠️ 現在の API 状況</p>
+            <p class="mb-2">
+              現在、上流の tarkov.dev API が一時的に利用できない状態です。その影響で、キャッシュデータを持たない新規ユーザーの方はデータを取得できず、本ツールを利用できない状態となっています。
+            </p>
+            <p class="mb-0">
+              現在、代替策を検討しています。ご不便をおかけしており、申し訳ありません。
+            </p>
+          </div>
           <ul class="text-light mb-0">
             <li><strong>原因:</strong> HTTP 503 応答ではエラーが文字列形式で返る場合があり、アプリがオブジェクト形式だけを想定していました。</li>
             <li><strong>対応:</strong> 文字列／オブジェクト形式と HTTP ステータスを共通処理し、API 停止時は時間をおいて再試行するよう明確に案内します。</li>
