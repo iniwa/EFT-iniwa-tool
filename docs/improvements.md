@@ -2,9 +2,10 @@
 
 コードベースを調査して洗い出した改善候補の一覧。
 
-**運用方法**: 着手したい項目にチェック `[x]` を入れる → Codex が handoff
-（`docs/handoffs/`）を作成し、Claude Code（Sonnet 実務・auto モード）が実装する。
-handoff を挟むまでもない小粒な項目は Claude Code に直接依頼してもよい。
+**運用方法**: 着手する項目を選び、`AGENTS.md` の実行方針に従って現在の
+Codex タスク内で実装・検証する。要件と検証条件が確定した複数ステップの変更は、
+必要に応じて native Codex subagent に委譲する。`docs/handoffs/` は中断・別セッション・
+運用上の承認境界など、再開状態を永続化する必要がある場合だけ使用する。
 実装完了した項目は「完了アーカイブ」へ移動する。
 
 - 機能追加・未検証項目はこのファイルの対象外（`docs/issues.md` 等で管理）。
@@ -41,7 +42,7 @@ handoff を挟むまでもない小粒な項目は Claude Code に直接依頼�
     `useUserProgress.js:270`）。UI 通知がデータ層に埋め込まれており、
     ブラウザをブロックする。`src/components/ui/ToastNotify.vue` は既存。
   - 対応案: composable はエラー/結果を ref か戻り値で返し、表示は呼び出し側
-    コンポーネントで行う。1 handoff = 1 composable 単位に分割してよい。
+    コンポーネントで行う。必要なら composable 単位の独立して検証可能な変更へ分割する。
   - 制約: リロード前の確認（`useUserProgress.js:270` はリロードを伴う）など
     既存のユーザーフローは変えない。
 

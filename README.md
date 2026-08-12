@@ -81,9 +81,12 @@ npm run preview  # ビルド結果のプレビュー
 
 本プロジェクトは AI エージェント主体で開発しています。
 
-- **Codex** が設計判断と handoff（`docs/handoffs/`）の作成を担当し、
-  **Claude Code** が handoff に沿った実装・検証を担当します
-  （合意事項は `AGENTS.md` / `CLAUDE.md` を参照）。
+- リポジトリ作業の実行方針・保護対象・検証条件は `AGENTS.md` を正本とします。
+- 通常の作業は現在の Codex タスク内で完結させ、要件と検証条件が確定した
+  複数ステップの実装だけを必要に応じて native Codex subagent に委譲します。
+- `docs/handoffs/` は、中断からの再開、セッションをまたぐ作業、運用上の承認境界など、
+  状態を永続化する必要がある場合だけ使用します。完了済みの記録は
+  `docs/handoffs/archive/` に保管します。
 - 改善候補は `docs/improvements.md` のチェックリストで管理します
   （機能追加のアイデアは対象外）。
 - 自動テスト・リンターは未導入のため、検証は `npm run build` と
