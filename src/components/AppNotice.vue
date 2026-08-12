@@ -87,6 +87,24 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <div class="p-4 rounded border border-warning border-2 bg-warning bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-warning text-dark">NEW</span>
+            <h4 class="text-warning fw-bold mb-0">🌟 v3.2.0 - Seasonal PvP / Patch 1.1.0.0</h4>
+          </div>
+          <p class="text-light mb-2">
+            EFT Patch 1.1.0.0 と、tarkov.dev の新しい <code>pvp-season</code> データに対応しました。
+          </p>
+          <ul class="text-light mb-2">
+            <li><strong>Seasonal PvP:</strong> 通常PvP・PvEとは別のAPIキャッシュと進捗で管理します。</li>
+            <li><strong>新しい解放条件:</strong> タスクの進行中／失敗ステータスと、任意のトレーダーLL・評判判定を追加しました。</li>
+            <li><strong>データ追従:</strong> 同名の別タスクをID単位で保持し、Icebreaker、Terminal、5.8x42mm弾などを追加しました。</li>
+          </ul>
+          <p class="small text-warning mb-0">
+            Seasonal Characterはシーズンごとにリセットされます。新シーズン開始時は本ツールのSeasonal PvP進捗もリセットしてください。
+            Storyタブは静的な案内で、KORD BREACH / Boreasの完全な攻略手順ではありません。
+          </p>
+        </div>
         <!-- パッチアップデート: v3.1.3 -->
         <div class="p-4 rounded border border-success border-2 bg-success bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">

@@ -12,6 +12,10 @@ export const CALIBER_GROUPS = [
         ids: ['Caliber556x45NATO', 'Caliber762x35', 'Caliber68x51'],
       },
       {
+        title: '🇨🇳 East Asian',
+        ids: ['Caliber58x42'],
+      },
+      {
         title: '🇷🇺 Eastern / RUS',
         ids: [
           'Caliber545x39',
@@ -94,6 +98,7 @@ export const CALIBER_MAP = {
   Caliber366TKM: { name: '.366 TKM', examples: 'VPO-209, VPO-215' },
   Caliber127x55: { name: '12.7x55mm', examples: 'ASh-12, RSh-12' },
   Caliber68x51: { name: '6.8x51mm', examples: 'SIG Spear' },
+  Caliber58x42: { name: '5.8x42mm', examples: 'QBZ-191' },
   Caliber93x64: { name: '9.3x64mm Brenneke', examples: 'SVDK' },
   Caliber9x39: { name: '9x39mm', examples: 'VSS, AS VAL' },
   Caliber9x19PARA: { name: '9x19mm Parabellum', examples: 'MP5, Vector, Glock' },

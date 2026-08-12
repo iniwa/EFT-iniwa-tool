@@ -64,7 +64,7 @@ function tr(token, langDict, enDict) {
 
 /**
  * メインデータとアイテムDBの両方を構築するのに必要な生データを一括取得する。
- * @param {string} mode - 'regular' | 'pve'
+ * @param {string} mode - 'regular' | 'pve' | 'pvp-season'
  * @param {string} lang - 'ja' | 'en'
  * @returns {Promise<object>} bundle
  */
@@ -199,6 +199,28 @@ function itemRef(id, itemsById, fallbackName = 'Unknown Item') {
   return { id, name: found ? found.name : fallbackName };
 }
 
+function traderRef(id, tradersById) {
+  const found = tradersById[id];
+  return {
+    id,
+    name: found?.name || 'Unknown',
+    normalizedName: found?.normalizedName || null,
+    imageLink: found?.imageLink || null,
+  };
+}
+
+function convertOtherRequirement(requirement, tradersById) {
+  return {
+    ...requirement,
+    ...(requirement.trader
+      ? { trader: traderRef(requirement.trader, tradersById) }
+      : {}),
+    ...(Array.isArray(requirement.traders)
+      ? { traders: requirement.traders.map((id) => traderRef(id, tradersById)) }
+      : {}),
+  };
+}
+
 function itemDetailRef(id, itemsById, fallbackName = 'Unknown Item') {
   const found = itemsById[id];
   return {
@@ -330,14 +352,7 @@ export function convertMainData(bundle) {
     name: tr(raw.name, tasksDict, tasksEnDict),
     minPlayerLevel: raw.minPlayerLevel || 0,
     wikiLink: raw.wikiLink,
-    trader: raw.trader
-      ? {
-          id: raw.trader,
-          name: tradersById[raw.trader]?.name || 'Unknown',
-          normalizedName: tradersById[raw.trader]?.normalizedName || null,
-          imageLink: tradersById[raw.trader]?.imageLink || null,
-        }
-      : null,
+    trader: raw.trader ? traderRef(raw.trader, tradersById) : null,
     map: raw.map
       ? { id: raw.map, name: mapsById[raw.map]?.name || null }
       : null,
@@ -355,9 +370,15 @@ export function convertMainData(bundle) {
     })),
     traderLevelRequirements: (raw.traderRequirements || []).map((r) => ({
       ...r,
-      // GraphQL exposed `level` as an alias of the JSON `value` field.
-      level: r.level ?? r.value,
+      trader: traderRef(r.trader, tradersById),
+      requirementType: r.requirementType || 'level',
+      compareMethod: r.compareMethod || '>=',
+      level: r.level ?? (r.requirementType === 'level' ? r.value : undefined),
+      value: r.value,
     })),
+    otherRequirements: (raw.otherRequirements || []).map((requirement) =>
+      convertOtherRequirement(requirement, tradersById),
+    ),
     kappaRequired: !!raw.kappaRequired,
     lightkeeperRequired: !!raw.lightkeeperRequired,
     objectives: (raw.objectives || []).map((o) =>
@@ -834,6 +855,15 @@ export function validateJsonBundle(bundle) {
     (task.taskRequirements || []).forEach((requirement) =>
       requireRef(tasks, requirement.task, `タスク ${task.id}`),
     );
+    (task.traderRequirements || []).forEach((requirement) =>
+      requireRef(traders, requirement.trader, `タスク ${task.id} のトレーダー条件`),
+    );
+    (task.otherRequirements || []).forEach((requirement) => {
+      requireRef(traders, requirement.trader, `タスク ${task.id} の追加条件`);
+      (requirement.traders || []).forEach((traderId) =>
+        requireRef(traders, traderId, `タスク ${task.id} の追加条件`),
+      );
+    });
     (task.neededKeys || []).forEach((group) => {
       requireRef(maps, group.map, `タスク ${task.id} の必要鍵`);
       visitItemRefs(group.keys, `タスク ${task.id} の必要鍵`);
@@ -855,6 +885,12 @@ export function validateJsonBundle(bundle) {
         objective.usingWeaponMods,
         objective.requiredKeys,
       ].forEach((value) => visitItemRefs(value, `タスク ${task.id} の目標`));
+      requireRef(items, objective.questItem, `タスク ${task.id} のクエストアイテム目標`);
+      requireRef(tasks, objective.task, `タスク ${task.id} のタスク状態目標`);
+      requireRef(traders, objective.trader, `タスク ${task.id} のトレーダー目標`);
+      (objective.traders || []).forEach((traderId) =>
+        requireRef(traders, traderId, `タスク ${task.id} のトレーダー目標`),
+      );
     });
     (task.finishRewards?.items || []).forEach((reward) =>
       requireRef(items, reward.item, `タスク ${task.id} の報酬`),
@@ -960,6 +996,17 @@ export function validateMainData(mainData) {
       (task.taskRequirements || []).some(
         (requirement) =>
           !requirement.task?.id || unresolvedName(requirement.task.name),
+      ) ||
+      (task.traderLevelRequirements || []).some(
+        (requirement) =>
+          !requirement.trader?.id || unresolvedName(requirement.trader.name),
+      ) ||
+      (task.otherRequirements || []).some((requirement) =>
+        (requirement.trader &&
+          (!requirement.trader.id || unresolvedName(requirement.trader.name))) ||
+        (requirement.traders || []).some(
+          (trader) => !trader.id || unresolvedName(trader.name),
+        ),
       ) ||
       (task.neededKeys || []).some((group) =>
         (group.keys || []).some(

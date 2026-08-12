@@ -62,6 +62,11 @@ function onLevelInput(e) {
                         @change="emit('update:game-mode', 'regular')"
                     > PvP
                 </label>
+                <label class="form-check-label ms-2" title="通常PvPと独立した進捗。新シーズン開始時にSeasonal PvP側の進捗をリセットします。">
+                    <input type="radio" name="gmode" value="pvp-season" class="form-check-input me-1"
+                        :checked="gameMode === 'pvp-season'" @change="emit('update:game-mode', 'pvp-season')">
+                    Seasonal PvP
+                </label>
             </div>
 
             <div class="d-flex align-items-center gap-1">

@@ -14,7 +14,8 @@ Use conditional revalidation through `fetch(..., { cache: 'no-cache' })`. Keep t
 
 - tarkov.dev moved its official website to the JSON API in the 2026-03-25 `dacd1739` commit.
 - Current official documentation labels GraphQL as a legacy API in maintenance mode and recommends the JSON API for future use.
-- The official JSON manifest exposes tasks, hideout, items, maps, traders, crafts, barters, and price history for both `regular` and `pve`, with Japanese and English translations.
+- On 2026-07-22, the official JSON manifest exposed the required resources for `regular` and `pve`, with Japanese and English translations.
+- On 2026-08-12, the same manifest also exposed `pvp-season`; its tasks, hideout, items, maps, traders, crafts, and barters passed the existing conversion and reference validation pipeline.
 - Live browser-origin checks on 2026-07-22 returned CORS `Access-Control-Allow-Origin: *` and current data for all resources needed by this application.
 - The current JSON resources resolve every task, hideout, craft, barter, trader, map, and item reference used by the application.
 - The 2026-06-29 infrastructure change moved GraphQL cache-miss execution away from the Worker to a VM origin and disabled Worker-side execution. The endpoint was observed returning HTTP 503 afterward; together, these facts indicate the new delivery path was the practical source of the outage seen by this client.

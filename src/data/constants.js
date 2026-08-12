@@ -34,6 +34,10 @@ export const MAP_ORDER = [
   'Reserve',
   'Streets of Tarkov',
   'Ground Zero',
+  'Icebreaker',
+  'Ground Zero Tutorial',
+  'The Lab (Dark)',
+  'Terminal',
   'The Lab',
   'The Labyrinth',
 ];
@@ -57,7 +61,7 @@ export const USD_RATE = 162;
 export const EUR_RATE = 175;
 
 /** アプリバージョン */
-export const APP_VERSION = '3.1.3';
+export const APP_VERSION = '3.2.0';
 
 /** API エンドポイント (GraphQL: レガシー/メンテナンスモード。JSON API失敗時の最終フォールバックにのみ使用) */
 export const API_URL = 'https://api.tarkov.dev/graphql';

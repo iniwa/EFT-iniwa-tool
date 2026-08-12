@@ -8,8 +8,9 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
+import { TRADER_ORDER } from '../data/constants.js'
 
-const { playerLevel } = useAppState()
+const { playerLevel, gameMode } = useAppState()
 
 const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
 
@@ -24,6 +25,9 @@ const {
   showLightkeeperOnly,
   toggleTask,
   togglePriority,
+  taskStatuses,
+  traderProgress,
+  traderRequirementsEnabled,
 } = useUserProgress()
 
 const { taskData, hideoutData } = useApiData()
@@ -34,6 +38,47 @@ const emit = defineEmits(['open-task-details'])
 const taskSortMode = ref('default')
 const taskViewMode = ref('list')
 const searchTask = ref('')
+
+const traderRequirementProfiles = computed(() => {
+  const profiles = new Map()
+  ;(taskData.value || []).forEach((task) => {
+    ;(task.traderLevelRequirements || []).forEach((requirement) => {
+      const trader = requirement.trader
+      if (!trader?.id) return
+      const current = profiles.get(trader.id) || {
+        id: trader.id,
+        name: trader.name || 'Unknown',
+        needsReputation: false,
+      }
+      if (['reputation', 'standing'].includes(requirement.requirementType)) {
+        current.needsReputation = true
+      }
+      profiles.set(trader.id, current)
+    })
+  })
+
+  return Array.from(profiles.values()).sort((a, b) => {
+    const indexA = TRADER_ORDER.indexOf(a.name)
+    const indexB = TRADER_ORDER.indexOf(b.name)
+    if (indexA === -1 && indexB === -1) return a.name.localeCompare(b.name)
+    if (indexA === -1) return 1
+    if (indexB === -1) return -1
+    return indexA - indexB
+  })
+})
+
+function updateTraderProgress(traderId, field, rawValue) {
+  const nextProgress = { ...traderProgress.value }
+  const nextTrader = { ...(nextProgress[traderId] || {}) }
+  const value = rawValue === '' ? null : Number(rawValue)
+
+  if (value == null || !Number.isFinite(value)) delete nextTrader[field]
+  else nextTrader[field] = value
+
+  if (Object.keys(nextTrader).length === 0) delete nextProgress[traderId]
+  else nextProgress[traderId] = nextTrader
+  traderProgress.value = nextProgress
+}
 
 // --- ハイドアウト: 最大レベル済みステーションの表示制御 ---
 const visibleHideoutStations = computed(() => {
@@ -55,6 +100,9 @@ const filteredTasksList = computed(() => {
     showFuture: showFuture.value,
     showKappaOnly: showKappaOnly.value,
     showLightkeeperOnly: showLightkeeperOnly.value,
+    taskStatuses: taskStatuses.value,
+    traderProgress: traderProgress.value,
+    traderRequirementsEnabled: traderRequirementsEnabled.value,
   })
 })
 
@@ -64,15 +112,10 @@ const tasksByMap = computed(() => TaskLogic.groupTasksByMap(filteredTasksList.va
 
 // --- タスク: ロック判定 (前提タスク未完了 or レベル不足) ---
 function isLocked(task) {
-  if (completedTasks.value.includes(task.id)) return false
-  if (playerLevel.value !== 0 && task.minPlayerLevel > playerLevel.value) return true
-  if (task.taskRequirements) {
-    const reqsMet = task.taskRequirements.every((r) =>
-      completedTasks.value.includes(r.task.id),
-    )
-    if (!reqsMet) return true
-  }
-  return false
+  return TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
+    playerLevel: playerLevel.value, taskStatuses: taskStatuses.value,
+    traderProgress: traderProgress.value, traderRequirementsEnabled: traderRequirementsEnabled.value,
+  }).locked
 }
 
 // --- タスク: ソート ---
@@ -216,10 +259,85 @@ function getSortedTasks(tasks) {
 
         <!-- タスクリスト本体 -->
         <div class="card-body overflow-auto" style="max-height: 70vh;">
+          <div
+            v-if="gameMode === 'pvp-season'"
+            class="alert alert-warning py-2 px-3 small"
+            role="status"
+          >
+            <strong>Seasonal PvP:</strong>
+            通常PvPとは別の進捗として保存されます。新しいシーズン開始時は、このモードの進捗をリセットしてください。
+          </div>
+
+          <details
+            v-if="traderRequirementProfiles.length > 0"
+            class="border border-secondary rounded bg-dark bg-opacity-25 p-2 mb-3"
+          >
+            <summary class="text-warning small fw-bold" style="cursor: pointer;">
+              トレーダー進捗条件
+              <span
+                class="badge ms-1"
+                :class="traderRequirementsEnabled ? 'bg-success' : 'bg-secondary'"
+              >{{ traderRequirementsEnabled ? '判定中' : '表示のみ' }}</span>
+            </summary>
+
+            <div class="pt-2">
+              <div class="form-check form-switch mb-2">
+                <input
+                  id="enable-trader-requirements"
+                  v-model="traderRequirementsEnabled"
+                  class="form-check-input"
+                  type="checkbox"
+                >
+                <label class="form-check-label small" for="enable-trader-requirements">
+                  入力したLL・評判をタスクのロック判定に使用する
+                </label>
+              </div>
+              <p class="text-muted small mb-2">
+                未入力の条件は未達として扱います。会話やゲーム内変数など、本ツールで判定できない条件はタスク詳細で確認してください。
+              </p>
+
+              <div class="row g-2">
+                <div
+                  v-for="trader in traderRequirementProfiles"
+                  :key="trader.id"
+                  class="col-12 col-sm-6 col-xl-4"
+                >
+                  <div class="border border-secondary rounded p-2 h-100">
+                    <div class="small fw-bold mb-1">{{ trader.name }}</div>
+                    <div class="d-flex align-items-center gap-2">
+                      <label class="small text-muted" :for="`trader-level-${trader.id}`">LL</label>
+                      <select
+                        :id="`trader-level-${trader.id}`"
+                        class="form-select form-select-sm bg-dark text-white border-secondary"
+                        :value="traderProgress[trader.id]?.level ?? ''"
+                        @change="updateTraderProgress(trader.id, 'level', $event.target.value)"
+                      >
+                        <option value="">未設定</option>
+                        <option v-for="level in 4" :key="level" :value="level">{{ level }}</option>
+                      </select>
+                    </div>
+                    <div v-if="trader.needsReputation" class="d-flex align-items-center gap-2 mt-2">
+                      <label class="small text-muted" :for="`trader-reputation-${trader.id}`">評判</label>
+                      <input
+                        :id="`trader-reputation-${trader.id}`"
+                        class="form-control form-control-sm bg-dark text-white border-secondary"
+                        type="number"
+                        step="0.01"
+                        placeholder="未設定"
+                        :value="traderProgress[trader.id]?.reputation ?? ''"
+                        @input="updateTraderProgress(trader.id, 'reputation', $event.target.value)"
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
           <input
             type="text"
             class="form-control mb-3"
-            placeholder="タスク名で検索..."
+            placeholder="タスク名・マップ・トレーダーで検索..."
             v-model="searchTask"
           >
 
@@ -259,12 +377,14 @@ function getSortedTasks(tasks) {
                   @click="emit('open-task-details', task)"
                 >
                   <span v-if="isLocked(task)" class="me-1">🔒</span>
-                  {{ task.name }}
+                   {{ task.name }}
+                  <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark ms-1">進行中</span>
+                  <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger ms-1">失敗</span>
                   <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                   <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                   <span v-if="task.mapLabel" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.mapLabel }}</span>
                 </span>
-                <span class="badge bg-secondary">{{ task.trader.name }}</span>
+                <span class="badge bg-secondary">{{ task.trader?.name || 'Unknown' }}</span>
               </div>
             </div>
 
@@ -317,11 +437,13 @@ function getSortedTasks(tasks) {
                     >
                       <span v-if="isLocked(task)" class="me-1">🔒</span>
                       {{ task.name }}
+                      <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark ms-1">進行中</span>
+                      <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger ms-1">失敗</span>
                       <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                       <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                     </span>
                     <small class="text-muted">
-                      {{ taskViewMode === 'trader' ? task.mapLabel : task.trader.name }}
+                      {{ taskViewMode === 'trader' ? task.mapLabel : (task.trader?.name || 'Unknown') }}
                     </small>
                   </div>
                 </div>

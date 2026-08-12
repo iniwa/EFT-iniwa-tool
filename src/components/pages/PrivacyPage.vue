@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
         <div class="card">
             <div class="card-body">
                 <h2 class="mb-3" style="color: var(--color-accent);">プライバシーポリシー</h2>
-                <p class="text-muted" style="font-size: 0.9em;">最終更新: 2026年4月27日</p>
+                <p class="text-muted" style="font-size: 0.9em;">最終更新: 2026年8月12日</p>
 
                 <section class="mb-4">
                     <h4>1. はじめに</h4>
@@ -34,12 +34,15 @@ import { RouterLink } from 'vue-router'
                         <summary>📂 実際に保存されるキーの一覧（クリックで展開）</summary>
                         <p class="small text-muted mt-2 mb-2">
                             すべて <code>eft_</code> または <code>memo_</code> プレフィックスで始まる key として保存されます。
-                            下記の <code>&#123;mode&#125;</code> はゲームモード（<code>pve</code> または <code>pvp</code>）に置き換わります。
+                            下記の <code>&#123;mode&#125;</code> はゲームモード（<code>pve</code>、<code>regular</code>、<code>pvp-season</code>）に置き換わります。
                         </p>
 
                         <h6 class="mt-3">進捗データ（ゲームモードごとに別々に保存）</h6>
                         <ul class="small">
                             <li><code>eft_&#123;mode&#125;_tasks</code> — 完了したタスクの ID 配列</li>
+                            <li><code>eft_&#123;mode&#125;_task_statuses</code> — 進行中・失敗に設定したタスク</li>
+                            <li><code>eft_&#123;mode&#125;_trader_progress</code> — 入力したトレーダーLL・評判</li>
+                            <li><code>eft_&#123;mode&#125;_trader_requirements_enabled</code> — トレーダー条件をロック判定に使うか</li>
                             <li><code>eft_&#123;mode&#125;_prioritized</code> — 優先タスクの ID 配列</li>
                             <li><code>eft_&#123;mode&#125;_hideout</code> — ハイドアウト各モジュールのレベル</li>
                             <li><code>eft_&#123;mode&#125;_collected</code> — 収集済みアイテムの識別子</li>
@@ -48,11 +51,12 @@ import { RouterLink } from 'vue-router'
                             <li><code>eft_&#123;mode&#125;_wishlist</code> — ウィッシュリストのアイテム</li>
                             <li><code>eft_&#123;mode&#125;_story_progress</code> — ストーリータブの進捗</li>
                             <li><code>eft_&#123;mode&#125;_level</code> — プレイヤーレベル</li>
+                            <li><code>eft_&#123;mode&#125;_focused_tasks</code> / <code>eft_&#123;mode&#125;_overlay_item_counts</code> — 配信オーバーレイに表示するタスクと目標数</li>
                         </ul>
 
                         <h6 class="mt-3">UI 設定（モード横断）</h6>
                         <ul class="small">
-                            <li><code>eft_gamemode</code> — 現在のゲームモード（pve / pvp）</li>
+                            <li><code>eft_gamemode</code> — 現在のゲームモード（pve / regular / pvp-season）</li>
                             <li><code>eft_apilang</code> — API 言語（ja / en）</li>
                             <li><code>eft_show_completed</code> / <code>eft_show_future</code> / <code>eft_show_kappa</code> / <code>eft_show_lk</code> / <code>eft_show_maxed_hideout</code> — 表示フィルタの ON/OFF</li>
                             <li><code>eft_show_story_tab</code> — ストーリータブの表示有無</li>
@@ -67,6 +71,7 @@ import { RouterLink } from 'vue-router'
                         <h6 class="mt-3">マイグレーション・通知系（自動管理）</h6>
                         <ul class="small">
                             <li><code>eft_mode_data_migrated</code> — モード別ストレージへの移行完了フラグ</li>
+                            <li><code>eft_pvp_regular_migrated</code> — 旧PvP保存キーから現在の通常PvPキーへの互換移行フラグ</li>
                             <li><code>eft_v3_migrated</code> — v2 → v3 データ形式の移行完了フラグ</li>
                             <li><code>eft_notice_last_seen_version</code> — 通知モーダルで「次回アップデートまで非表示」を選択したバージョン</li>
                             <li><code>eft_notice_permanently_hidden</code> — 通知モーダル「今後一切表示しない」フラグ</li>

@@ -15,8 +15,51 @@ const isLoading = ref(false);
 /** Human-readable error message when a fetch fails */
 const loadError = ref(null);
 
-/** Game mode: 'pve' | 'pvp' — persisted */
-const gameMode = ref(loadLS('eft_gamemode', 'pve'));
+// Compatibility migration for releases that persisted normal PvP as `pvp`.
+// Keep the source keys recoverable and only fill missing `regular` destinations.
+;(function migrateLegacyPvpKeys() {
+  if (loadLS('eft_pvp_regular_migrated', false)) return;
+  const suffixes = [
+    'level',
+    'tasks',
+    'task_statuses',
+    'trader_progress',
+    'trader_requirements_enabled',
+    'hideout',
+    'collected',
+    'keys',
+    'key_user_data',
+    'prioritized',
+    'wishlist',
+    'story_progress',
+    'focused_tasks',
+    'overlay_item_counts',
+  ];
+
+  try {
+    suffixes.forEach((suffix) => {
+      const sourceKey = `eft_pvp_${suffix}`;
+      const destinationKey = `eft_regular_${suffix}`;
+      const sourceValue = localStorage.getItem(sourceKey);
+      if (sourceValue !== null && localStorage.getItem(destinationKey) === null) {
+        localStorage.setItem(destinationKey, sourceValue);
+      }
+    });
+    saveLS('eft_pvp_regular_migrated', true);
+  } catch (error) {
+    console.warn('Legacy PvP storage migration failed', error);
+  }
+})();
+
+/** Game mode: 'pve' | 'regular' | 'pvp-season' — persisted */
+function normalizeGameMode(value) {
+  if (value === 'pvp') return 'regular';
+  return ['pve', 'regular', 'pvp-season'].includes(value) ? value : 'pve';
+}
+const storedGameMode = loadLS('eft_gamemode', 'pve');
+const normalizedGameMode = normalizeGameMode(storedGameMode);
+if (storedGameMode !== normalizedGameMode) saveLS('eft_gamemode', normalizedGameMode);
+const gameMode = ref(normalizedGameMode);
 
 /** API language: 'ja' | 'en' — persisted */
 const apiLang = ref(loadLS('eft_apilang', 'ja'));
@@ -58,5 +101,6 @@ export function useAppState() {
     apiLang,
     playerLevel,
     APP_VERSION,
+    normalizeGameMode,
   };
 }

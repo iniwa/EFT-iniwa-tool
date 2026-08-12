@@ -18,6 +18,9 @@ const {
   keyUserData,
   prioritizedTasks,
   wishlist,
+  taskStatuses,
+  traderProgress,
+  traderRequirementsEnabled,
   showStoryTab,
   resetUserData,
 } = useUserProgress()
@@ -25,7 +28,7 @@ const {
 const { hideoutData } = useApiData()
 const { overlayEnabled } = useOverlay()
 const apiCacheContext = computed(() =>
-  `${gameMode.value === 'pvp' ? 'regular' : gameMode.value}:${apiLang.value}`
+  `${gameMode.value}:${apiLang.value}`
 )
 
 // --- ローカル状態 ---
@@ -125,6 +128,9 @@ watch([currentView, gameMode, apiLang], ([view]) => {
         keyUserData: toRaw(keyUserData.value),
         collectedItems: toRaw(collectedItems.value),
         wishlist: toRaw(wishlist.value),
+        taskStatuses: toRaw(taskStatuses.value),
+        traderProgress: toRaw(traderProgress.value),
+        traderRequirementsEnabled: traderRequirementsEnabled.value,
       },
     })
   } else {
@@ -292,7 +298,7 @@ function executeReset() {
                   v-model="resetTargets.tasks"
                 >
                 <label class="form-check-label" for="resetTasks">
-                  タスク（完了済み・優先タスク）
+                  タスク（完了・進行中・失敗・優先・トレーダー進捗）
                 </label>
               </div>
 

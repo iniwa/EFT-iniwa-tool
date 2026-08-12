@@ -16,11 +16,40 @@ function modeKey(base) {
   return `eft_${gameMode.value}_${base}`;
 }
 
+export function sanitizeTaskStatuses(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      ([id, status]) =>
+        typeof id === 'string' &&
+        id.length > 0 &&
+        (status === 'active' || status === 'failed'),
+    ),
+  );
+}
+
+export function sanitizeTraderProgress(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+
+  const sanitized = {};
+  Object.entries(value).forEach(([id, progress]) => {
+    if (!id || !progress || typeof progress !== 'object' || Array.isArray(progress)) return;
+    const next = {};
+    const level = Number(progress.level);
+    const hasReputation = progress.reputation !== '' && progress.reputation != null;
+    const reputation = Number(progress.reputation);
+    if (Number.isInteger(level) && level >= 1 && level <= 4) next.level = level;
+    if (hasReputation && Number.isFinite(reputation)) next.reputation = reputation;
+    if (Object.keys(next).length > 0) sanitized[id] = next;
+  });
+  return sanitized;
+}
+
 // マイグレーション: 旧キー → モード別キー（初回のみ）
 ;(function migrateToModeKeys() {
   if (loadLS('eft_mode_data_migrated', false)) return;
   const mode = gameMode.value;
-  const bases = ['tasks', 'hideout', 'collected', 'keys', 'key_user_data', 'prioritized', 'wishlist', 'story_progress'];
+  const bases = ['tasks', 'hideout', 'collected', 'keys', 'key_user_data', 'prioritized', 'wishlist', 'story_progress', 'task_statuses', 'trader_progress', 'trader_requirements_enabled'];
   bases.forEach((base) => {
     const oldKey = `eft_${base}`;
     const newKey = `eft_${mode}_${base}`;
@@ -38,6 +67,11 @@ function modeKey(base) {
 
 /** Completed task IDs (migrated from task names to IDs) */
 const completedTasks = ref(loadLS(modeKey('tasks'), []));
+const taskStatuses = ref(sanitizeTaskStatuses(loadLS(modeKey('task_statuses'), {})));
+const traderProgress = ref(sanitizeTraderProgress(loadLS(modeKey('trader_progress'), {})));
+const traderRequirementsEnabled = ref(
+  loadLS(modeKey('trader_requirements_enabled'), false) === true,
+);
 
 /** Hideout station levels — { stationName: level } */
 const userHideout = ref(loadLS(modeKey('hideout'), {}));
@@ -79,6 +113,9 @@ const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
 // ---------------------------------------------------------------------------
 
 watch(completedTasks, (val) => saveLS(modeKey('tasks'), val), { deep: true });
+watch(taskStatuses, (val) => saveLS(modeKey('task_statuses'), val), { deep: true });
+watch(traderProgress, (val) => saveLS(modeKey('trader_progress'), val), { deep: true });
+watch(traderRequirementsEnabled, (val) => saveLS(modeKey('trader_requirements_enabled'), val));
 watch(userHideout, (val) => saveLS(modeKey('hideout'), val), { deep: true });
 watch(collectedItems, (val) => saveLS(modeKey('collected'), val), { deep: true });
 watch(ownedKeys, (val) => saveLS(modeKey('keys'), val), { deep: true });
@@ -91,6 +128,9 @@ watch(storyProgress, (val) => saveLS(modeKey('story_progress'), val), { deep: tr
 watch(gameMode, (newMode, oldMode) => {
   // 現在のデータを旧モードキーに保存
   saveLS(`eft_${oldMode}_tasks`, completedTasks.value);
+  saveLS(`eft_${oldMode}_task_statuses`, taskStatuses.value);
+  saveLS(`eft_${oldMode}_trader_progress`, traderProgress.value);
+  saveLS(`eft_${oldMode}_trader_requirements_enabled`, traderRequirementsEnabled.value);
   saveLS(`eft_${oldMode}_hideout`, userHideout.value);
   saveLS(`eft_${oldMode}_collected`, collectedItems.value);
   saveLS(`eft_${oldMode}_keys`, ownedKeys.value);
@@ -101,6 +141,10 @@ watch(gameMode, (newMode, oldMode) => {
 
   // 新モードのデータを読み込み
   completedTasks.value = loadLS(`eft_${newMode}_tasks`, []);
+  taskStatuses.value = sanitizeTaskStatuses(loadLS(`eft_${newMode}_task_statuses`, {}));
+  traderProgress.value = sanitizeTraderProgress(loadLS(`eft_${newMode}_trader_progress`, {}));
+  traderRequirementsEnabled.value =
+    loadLS(`eft_${newMode}_trader_requirements_enabled`, false) === true;
   userHideout.value = loadLS(`eft_${newMode}_hideout`, {});
   collectedItems.value = loadLS(`eft_${newMode}_collected`, []);
   ownedKeys.value = loadLS(`eft_${newMode}_keys`, []);
@@ -134,6 +178,27 @@ function toggleTask(id) {
     completedTasks.value.splice(idx, 1);
   } else {
     completedTasks.value.push(id);
+    delete taskStatuses.value[id];
+  }
+}
+
+function getTaskStatus(id) {
+  if (completedTasks.value.includes(id)) return 'complete';
+  return taskStatuses.value[id] === 'active' || taskStatuses.value[id] === 'failed'
+    ? taskStatuses.value[id]
+    : 'unstarted';
+}
+
+function setTaskStatus(id, status) {
+  const allowed = ['unstarted', 'active', 'failed', 'complete'];
+  if (!allowed.includes(status)) return;
+  if (status === 'complete') {
+    if (!completedTasks.value.includes(id)) completedTasks.value.push(id);
+    delete taskStatuses.value[id];
+  } else {
+    completedTasks.value = completedTasks.value.filter((x) => x !== id);
+    if (status === 'unstarted') delete taskStatuses.value[id];
+    else taskStatuses.value[id] = status;
   }
 }
 
@@ -225,6 +290,9 @@ function resetUserData(targets, hideoutData) {
   if (targets.tasks) {
     completedTasks.value = [];
     prioritizedTasks.value = [];
+    taskStatuses.value = {};
+    traderProgress.value = {};
+    traderRequirementsEnabled.value = false;
   }
 
   if (targets.hideout) {
@@ -257,6 +325,7 @@ function resetUserData(targets, hideoutData) {
   if (targets.settings) {
     localStorage.removeItem('eft_pve_level');
     localStorage.removeItem('eft_regular_level');
+    localStorage.removeItem('eft_pvp-season_level');
     localStorage.removeItem('eft_gamemode');
     localStorage.removeItem('eft_apilang');
     localStorage.removeItem('eft_show_completed');
@@ -385,6 +454,9 @@ export function useUserProgress() {
   return {
     // Progress data
     completedTasks,
+    taskStatuses,
+    traderProgress,
+    traderRequirementsEnabled,
     userHideout,
     collectedItems,
     ownedKeys,
@@ -406,6 +478,8 @@ export function useUserProgress() {
 
     // Methods
     toggleTask,
+    getTaskStatus,
+    setTaskStatus,
     toggleOwnedKey,
     toggleCollected,
     togglePriority,

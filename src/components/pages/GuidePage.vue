@@ -28,13 +28,14 @@ import { RouterLink } from 'vue-router'
                 <section id="step1" class="mb-4">
                     <h4>1. 最初の設定</h4>
                     <p>
-                        画面上部のヘッダーで <strong>ゲームモード（PvE/PvP）</strong>、<strong>API言語（JP/EN）</strong>、
+                        画面上部のヘッダーで <strong>ゲームモード（PvE/PvP/Seasonal PvP）</strong>、<strong>API言語（JP/EN）</strong>、
                         <strong>プレイヤーレベル（Lv）</strong> を設定します。
                     </p>
                     <ul>
-                        <li><strong>ゲームモード:</strong> PvE と PvP（旧 regular）でタスクの解放条件が異なるため、自分のモードを選んでください。</li>
+                        <li><strong>ゲームモード:</strong> PvE、通常PvP、Seasonal PvP から選びます。データと進捗はモードごとに独立しています。</li>
+                        <li><strong>Seasonal PvP:</strong> ゲーム内のSeasonal Character用です。通常PvPとは別に保存されるため、新しいシーズン開始時はSeasonal PvP側の進捗をリセットしてください。</li>
                         <li><strong>API言語:</strong> JP を選ぶと tarkov.dev の日本語データを取得します。一部の固有名詞は英語のまま表示されることがあります。</li>
-                        <li><strong>プレイヤーレベル:</strong> 0 にするとレベル制限を無視して全タスクを表示します。自分のレベルを入れると、未解放タスクが薄く表示されます。</li>
+                        <li><strong>プレイヤーレベル:</strong> 0 にするとプレイヤーレベル条件だけを無視します。前提条件を含むロック中タスクも見る場合は「ロック中も表示」を有効にします。</li>
                     </ul>
                     <p>
                         右上の <kbd>🔄 データ更新</kbd> ボタンで最新のゲームデータを取得します。
@@ -46,11 +47,14 @@ import { RouterLink } from 'vue-router'
                 <section id="step2" class="mb-4">
                     <h4>2. タスクの完了をチェックする <small class="text-muted">📝 進捗入力タブ</small></h4>
                     <p>
-                        トレーダーごとにタスクが一覧表示されます。完了したタスクの左端のチェックボックスをクリックしてください。
+                        タスクが一覧表示されます。完了したタスクは左端のチェックボックスをクリックしてください。
                     </p>
                     <ul>
                         <li>タスク名をクリックすると、必要アイテムや報酬の詳細モーダルが開きます。</li>
-                        <li>前提タスクが未完了のものは薄く表示されます。</li>
+                        <li>詳細モーダルでは「未受注／進行中／完了／失敗」を記録できます。分岐タスクの <code>active</code> / <code>failed</code> 条件にも利用します。</li>
+                        <li>「トレーダー進捗条件」を開くとLL・評判を入力できます。判定を有効にした場合だけ、これらをタスクのロック表示に反映します。</li>
+                        <li>前提条件が未達のタスクは非表示になります。「ロック中も表示」を有効にすると薄く表示されます。</li>
+                        <li>会話やゲーム内進行値など自動判定できない条件は、タスク詳細に「自動判定なし」と表示されます。</li>
                         <li>進捗は自動でブラウザに保存されます（保存ボタンは不要）。</li>
                     </ul>
                 </section>
@@ -113,6 +117,7 @@ import { RouterLink } from 'vue-router'
                     <p>
                         ヘッダー右上の <kbd>Export</kbd> ボタンで定期的に JSON ファイルをダウンロードしてバックアップしてください。
                         新しい端末では <kbd>Import</kbd> でその JSON を読み込めば進捗を復元できます。
+                        バックアップ対象は、Export時に選択しているゲームモードの進捗です。
                     </p>
                 </section>
 

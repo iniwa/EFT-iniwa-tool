@@ -8,14 +8,18 @@ const mapKeywords = {
   'Customs': ['customs', 'カスタム'],
   'Factory': ['factory', '工場', 'night factory'],
   'Interchange': ['interchange', 'インターチェンジ'],
+  'The Lab (Dark)': ['the lab (dark)', 'lab dark'],
+  'The Labyrinth': ['labyrinth', 'ラビリンス'],
   'The Lab': ['the lab'],
   'Lighthouse': ['lighthouse', 'ライトハウス'],
   'Reserve': ['reserve', 'リザーブ', '軍事基地', 'military base'],
   'Shoreline': ['shoreline', 'ショアライン'],
   'Streets of Tarkov': ['streets of tarkov', 'streets', 'ストリート'],
   'Woods': ['woods', 'ウッズ'],
+  'Icebreaker': ['icebreaker', 'アイスブレーカー'],
+  'Ground Zero Tutorial': ['ground zero tutorial', 'ground zero チュートリアル'],
   'Ground Zero': ['ground zero', 'グラウンドゼロ'],
-  'The Labyrinth': ['labyrinth', 'ラビリンス'],
+  'Terminal': ['terminal', 'ターミナル'],
 };
 
 /**
@@ -41,13 +45,16 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     showFuture = false,
     showKappaOnly = false,
     showLightkeeperOnly = false,
+    taskStatuses = {},
+    traderProgress = {},
+    traderRequirementsEnabled = false,
   } = options;
 
   const q = searchQuery.toLowerCase();
-  const ignoreLevel = playerLevel === 0; // Lv0なら制限解除
 
   return tasks.filter((task) => {
-    const isCompleted = completedTaskIds.includes(task.id);
+    const status = getTaskStatus(task.id, completedTaskIds, taskStatuses);
+    const isCompleted = status === 'complete';
 
     // モードによる表示/非表示の切り分け
     if (showCompleted) {
@@ -68,22 +75,15 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
 
     // 未完了タスクの表示条件
     if (!isCompleted) {
-      // 前提タスクチェック (IDベース)
-      let reqMet = true;
-      if (task.taskRequirements) {
-        task.taskRequirements.forEach((r) => {
-          if (!completedTaskIds.includes(r.task.id)) reqMet = false;
-        });
-      }
-
-      // レベルチェック
-      let levelMet = true;
-      if (!ignoreLevel && task.minPlayerLevel > playerLevel) levelMet = false;
+      const availability = evaluateTaskAvailability(task, completedTaskIds, {
+        playerLevel,
+        taskStatuses,
+        traderProgress,
+        traderRequirementsEnabled,
+      });
 
       // showFuture=false (ロック中を表示しない) なら、条件未達は隠す
-      if (!showFuture) {
-        if (!reqMet || !levelMet) return false;
-      }
+      if (!showFuture && availability.locked) return false;
     }
 
     // Kappa判定
@@ -96,6 +96,78 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
   });
 }
 
+export function getTaskStatus(id, completedTaskIds = [], taskStatuses = {}) {
+  if (completedTaskIds.includes(id)) return 'complete';
+  return ['active', 'failed'].includes(taskStatuses?.[id]) ? taskStatuses[id] : 'unstarted';
+}
+
+export function compareRequirement(actual, expected, method = '>=') {
+  if (actual == null || expected == null) return null;
+  const a = Number(actual);
+  const e = Number(expected);
+  if (!Number.isNaN(a) && !Number.isNaN(e)) {
+    switch (method) {
+      case '>=': return a >= e;
+      case '>': return a > e;
+      case '<=': return a <= e;
+      case '<': return a < e;
+      case '=':
+      case '==': return a === e;
+      default: return a === e;
+    }
+  }
+  return String(actual) === String(expected);
+}
+
+export function evaluateTraderRequirement(requirement, traderProgress = {}) {
+  const traderId = requirement?.trader?.id || requirement?.trader;
+  const progress = traderProgress?.[traderId] || traderProgress?.[requirement?.trader?.name];
+  const isReputation = ['reputation', 'standing'].includes(requirement?.requirementType);
+  const field = isReputation ? 'reputation' : 'level';
+  const expected = requirement?.value ?? requirement?.level;
+  const actual = progress?.[field];
+  const result = compareRequirement(actual, expected, requirement?.compareMethod);
+
+  return {
+    actual,
+    expected,
+    field,
+    supported: typeof traderId === 'string' && traderId.length > 0,
+    met: result === true,
+    unknown: result === null,
+  };
+}
+
+export function evaluateTraderRequirements(task, traderProgress = {}) {
+  const requirements = task?.traderLevelRequirements || task?.traderRequirements || [];
+  const results = requirements.map((requirement) => ({
+    requirement,
+    ...evaluateTraderRequirement(requirement, traderProgress),
+  }));
+
+  return {
+    met: results.every((result) => !result.supported || result.met),
+    unknown: results.some((result) => result.unknown),
+    results,
+  };
+}
+
+export function evaluateTaskAvailability(task, completedTaskIds = [], options = {}) {
+  const {
+    playerLevel = 0,
+    taskStatuses = {},
+    traderProgress = {},
+    traderRequirementsEnabled = false,
+  } = options;
+  const reqMet = (task.taskRequirements || []).every((r) => {
+    const allowed = Array.isArray(r.status) && r.status.length ? r.status : ['complete'];
+    return allowed.includes(getTaskStatus(r.task.id, completedTaskIds, taskStatuses));
+  });
+  const levelMet = !playerLevel || !task.minPlayerLevel || task.minPlayerLevel <= playerLevel;
+  const trader = evaluateTraderRequirements(task, traderProgress);
+  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, trader };
+}
+
 /**
  * タスクに関連するマップ名の配列を取得する
  * APIの objectives.maps を優先し、フォールバックとしてキーワードマッチングを使用
@@ -105,12 +177,18 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
 export function getTaskMaps(task) {
   const maps = new Set();
 
+  const normalizeMapName = (mapName) => {
+    if (mapName.includes('Night')) return 'Factory';
+    if (mapName.includes('Ground Zero') && /tutorial|チュートリアル/i.test(mapName)) {
+      return 'Ground Zero Tutorial';
+    }
+    if (mapName.includes('21+')) return 'Ground Zero';
+    return mapName;
+  };
+
   // 1. APIのマップ情報があれば追加 (最優先)
   if (task.map && task.map.name) {
-    let apiMapName = task.map.name;
-    if (apiMapName.includes('Night')) apiMapName = 'Factory';
-    if (apiMapName.includes('21+')) apiMapName = 'Ground Zero';
-    maps.add(apiMapName);
+    maps.add(normalizeMapName(task.map.name));
   }
 
   // 2. objectives の maps フィールドから取得 (API v2)
@@ -119,10 +197,7 @@ export function getTaskMaps(task) {
       if (obj.maps && Array.isArray(obj.maps)) {
         obj.maps.forEach((m) => {
           if (m.name) {
-            let name = m.name;
-            if (name.includes('Night')) name = 'Factory';
-            if (name.includes('21+')) name = 'Ground Zero';
-            maps.add(name);
+            maps.add(normalizeMapName(m.name));
           }
         });
       }
@@ -135,6 +210,11 @@ export function getTaskMaps(task) {
       const desc = (obj.description || '').toLowerCase();
       for (const [officialName, keywords] of Object.entries(mapKeywords)) {
         if (maps.has(officialName)) continue;
+        if (
+          officialName === 'The Lab' &&
+          (maps.has('The Lab (Dark)') || maps.has('The Labyrinth'))
+        ) continue;
+        if (officialName === 'Ground Zero' && maps.has('Ground Zero Tutorial')) continue;
 
         for (const key of keywords) {
           if (desc.includes(key.toLowerCase())) {
@@ -152,7 +232,14 @@ export function getTaskMaps(task) {
   }
 
   if (maps.size === 0) return [];
-  return Array.from(maps).sort();
+  return Array.from(maps).sort((a, b) => {
+    const indexA = MAP_ORDER.indexOf(a);
+    const indexB = MAP_ORDER.indexOf(b);
+    if (indexA === -1 && indexB === -1) return a.localeCompare(b);
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
 }
 
 /**

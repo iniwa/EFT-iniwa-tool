@@ -210,7 +210,7 @@ const sideChapters = computed(() => STORY_CHAPTERS.filter(c => c.category === 's
               <h6 class="card-title text-danger fw-bold mb-2">注意事項 (Spoiler Warning)</h6>
               <ul class="small mb-0 ps-3 text-light" style="line-height: 1.6;">
                 <li>このタブは「DEBUG」タブにて非表示に設定可能です。</li>
-                <li>EFT v1.0.x 時点の<a href="https://escapefromtarkov.fandom.com/wiki/Story_chapters" target="_blank" rel="noopener" class="text-info">英語wiki</a>情報を基に作成しています。今後のアップデートにより内容が変更される可能性があります。</li>
+                <li>静的な<a href="https://escapefromtarkov.fandom.com/wiki/Story_chapters" target="_blank" rel="noopener" class="text-info">英語wiki</a>情報を基にした案内です。KORD BREACH / Boreasの完全な攻略手順ではなく、今後のアップデートで内容が変わる可能性があります。</li>
                 <li>チャプター間の選択肢は自動連動します（例: Falling Skiesの選択 → The Ticketのルート分岐）。</li>
               </ul>
             </div>

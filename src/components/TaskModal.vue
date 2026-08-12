@@ -1,21 +1,28 @@
 <script setup>
 // タスク詳細モーダル
-// タスク情報の閲覧、完了/優先トグル、鍵の所持トグル
+// タスク情報の閲覧、進捗/優先トグル、鍵の所持トグル
 
+import { computed } from 'vue'
+import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
+import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
 
 const {
   completedTasks,
   prioritizedTasks,
   ownedKeys,
-  toggleTask,
   togglePriority,
   toggleOwnedKey,
+  taskStatuses,
+  traderProgress,
+  traderRequirementsEnabled,
+  setTaskStatus,
 } = useUserProgress()
 
 const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
+const { playerLevel } = useAppState()
 
 const props = defineProps({
   task: { type: Object, default: null },
@@ -23,29 +30,86 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+const taskStatus = computed(() => {
+  if (!props.task) return 'unstarted'
+  return TaskLogic.getTaskStatus(props.task.id, completedTasks.value, taskStatuses.value)
+})
+
+const availability = computed(() => {
+  if (!props.task) return null
+  return TaskLogic.evaluateTaskAvailability(props.task, completedTasks.value, {
+    playerLevel: playerLevel.value,
+    taskStatuses: taskStatuses.value,
+    traderProgress: traderProgress.value,
+    traderRequirementsEnabled: traderRequirementsEnabled.value,
+  })
+})
+
+const statusLabels = {
+  unstarted: '未受注',
+  active: '進行中',
+  complete: '完了',
+  failed: '失敗',
+}
+
+function prerequisiteStatus(requirement) {
+  return TaskLogic.getTaskStatus(
+    requirement.task.id,
+    completedTasks.value,
+    taskStatuses.value,
+  )
+}
+
+function prerequisiteMet(requirement) {
+  const allowed = Array.isArray(requirement.status) && requirement.status.length > 0
+    ? requirement.status
+    : ['complete']
+  return allowed.includes(prerequisiteStatus(requirement))
+}
+
+function traderRequirementResult(requirement) {
+  return TaskLogic.evaluateTraderRequirement(requirement, traderProgress.value)
+}
+
+function traderRequirementLabel(requirement) {
+  const isReputation = ['reputation', 'standing'].includes(requirement.requirementType)
+  const field = isReputation ? '評判' : 'LL'
+  return `${requirement.trader?.name || 'Unknown'} ${field} ${requirement.compareMethod || '>='} ${requirement.value ?? requirement.level}`
+}
+
+function otherRequirementLabel(requirement) {
+  if (requirement.type === 'dialogue') {
+    const traders = (requirement.traders || []).map((trader) => trader.name).join(' / ')
+    return `会話条件${traders ? `: ${traders}` : ''}`
+  }
+  if (requirement.type === 'globalVariable') {
+    return `ゲーム内進行条件 ${requirement.compareMethod || '>='} ${requirement.value ?? ''}`.trim()
+  }
+  return `${requirement.type || '追加条件'}（ゲーム内で確認）`
+}
 </script>
 
 <template>
-  <BaseModal :show="show" max-width="600px" @close="emit('close')">
+  <BaseModal :show="show" max-width="700px" @close="emit('close')">
     <template v-if="task">
-      <!-- 完了/優先トグル + 閉じるボタン -->
+      <!-- 進捗/優先トグル + 閉じるボタン -->
       <div class="d-flex justify-content-between align-items-start mb-3">
-        <div class="d-flex align-items-center gap-3 w-100">
-          <label
-            class="custom-check-container"
-            :class="{ 'is-checked': completedTasks.includes(task.id) }"
-          >
-            <input
-              type="checkbox"
-              class="custom-check-input"
-              :checked="completedTasks.includes(task.id)"
-              @change="toggleTask(task.id)"
+        <div class="d-flex align-items-end gap-3 w-100 flex-wrap">
+          <div>
+            <label class="form-label small mb-1" for="task-status-select">ステータス</label>
+            <select
+              id="task-status-select"
+              class="form-select form-select-sm bg-dark text-white border-secondary"
+              :value="taskStatus"
+              @change="setTaskStatus(task.id, $event.target.value)"
             >
-            <span class="custom-check-box"></span>
-            <span class="custom-check-label">
-              {{ completedTasks.includes(task.id) ? '完了済み (Completed)' : '完了にする' }}
-            </span>
-          </label>
+              <option value="unstarted">未受注</option>
+              <option value="active">進行中</option>
+              <option value="complete">完了</option>
+              <option value="failed">失敗</option>
+            </select>
+          </div>
 
           <button
             class="btn btn-sm"
@@ -81,13 +145,84 @@ const emit = defineEmits(['close'])
 
       <!-- 基本情報 -->
       <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
-        <div><strong>Trader:</strong> {{ task.trader.name }}</div>
+        <div><strong>Trader:</strong> {{ task.trader?.name || 'Unknown' }}</div>
         <div><strong>Map:</strong> {{ task.map ? task.map.name : 'None' }}</div>
         <div v-if="task.minPlayerLevel > 0">
           <span class="text-info fw-bold">Req Lv: {{ task.minPlayerLevel }}</span>
         </div>
         <div v-if="task.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
         <div v-if="task.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
+      </div>
+      <div
+        v-if="taskStatus !== 'complete' && availability?.locked"
+        class="alert alert-secondary py-2 px-3 small"
+      >
+        🔒 現在の入力内容では未解放です。下の条件を確認してください。
+      </div>
+
+      <div
+        v-if="task.taskRequirements?.length || task.traderLevelRequirements?.length || task.otherRequirements?.length"
+        class="mb-4"
+      >
+        <h6 class="border-bottom pb-1 mb-2 text-warning">解放条件</h6>
+
+        <ul v-if="task.taskRequirements?.length" class="list-group mb-2">
+          <li
+            v-for="requirement in task.taskRequirements"
+            :key="requirement.task.id"
+            class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
+          >
+            <span>
+              前提: {{ requirement.task.name }}
+              <span class="text-muted small">
+                （必要: {{ (requirement.status?.length ? requirement.status : ['complete']).map((status) => statusLabels[status] || status).join(' / ') }}）
+              </span>
+            </span>
+            <span
+              class="badge align-self-center"
+              :class="prerequisiteMet(requirement) ? 'bg-success' : 'bg-danger'"
+            >
+              {{ statusLabels[prerequisiteStatus(requirement)] || prerequisiteStatus(requirement) }}
+            </span>
+          </li>
+        </ul>
+
+        <ul v-if="task.traderLevelRequirements?.length" class="list-group mb-2">
+          <li
+            v-for="requirement in task.traderLevelRequirements"
+            :key="requirement.id"
+            class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
+          >
+            <span>{{ traderRequirementLabel(requirement) }}</span>
+            <span
+              class="badge align-self-center"
+              :class="traderRequirementResult(requirement).met
+                ? 'bg-success'
+                : (traderRequirementResult(requirement).unknown ? 'bg-secondary' : 'bg-danger')"
+            >
+              <template v-if="traderRequirementResult(requirement).unknown">未設定</template>
+              <template v-else>
+                {{ traderRequirementResult(requirement).met ? '達成' : '未達' }}:
+                現在 {{ traderRequirementResult(requirement).actual }}
+              </template>
+            </span>
+          </li>
+        </ul>
+        <p v-if="task.traderLevelRequirements?.length" class="small text-muted mb-2">
+          トレーダー条件のロック判定は現在
+          <strong>{{ traderRequirementsEnabled ? '有効' : '無効' }}</strong>です。
+        </p>
+
+        <ul v-if="task.otherRequirements?.length" class="list-group">
+          <li
+            v-for="requirement in task.otherRequirements"
+            :key="requirement.id"
+            class="list-group-item bg-dark text-light border-secondary py-2"
+          >
+            {{ otherRequirementLabel(requirement) }}
+            <span class="badge bg-secondary ms-1">自動判定なし</span>
+          </li>
+        </ul>
       </div>
 
       <!-- 必要な鍵 -->

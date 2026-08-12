@@ -17,6 +17,7 @@ import {
   validateMainData,
   validateItemDb,
 } from '../logic/jsonApiAdapter.js';
+import { getTaskMaps } from '../logic/taskLogic.js';
 
 // ---------------------------------------------------------------------------
 // IndexedDB instance (shared)
@@ -94,19 +95,19 @@ function contextKeyFor(mode, lang) {
 // ---------------------------------------------------------------------------
 
 /**
- * De-duplicate tasks by name and normalise finishRewards into a flat list.
+ * De-duplicate tasks by stable ID and normalise finishRewards into a flat list.
  * @param {Array} tasks - Raw task array from API
  * @returns {Array} Processed task array
  */
 function processTasks(tasks) {
   if (!tasks) return [];
 
-  // De-duplicate by name
+  // Same-name tasks can be distinct branches; only duplicate stable IDs collapse.
   const uniqueTasks = [];
-  const seenNames = new Set();
+  const seenIds = new Set();
   tasks.forEach((t) => {
-    if (!seenNames.has(t.name)) {
-      seenNames.add(t.name);
+    if (!seenIds.has(t.id)) {
+      seenIds.add(t.id);
       uniqueTasks.push(t);
     }
   });
@@ -158,8 +159,8 @@ function processTasks(tasks) {
       });
     }
 
-    // Derive map labels (inline version — full logic lives in logic/tasks.js)
-    const maps = _getTaskMaps(t);
+    // Derive map labels through the shared task-logic implementation.
+    const maps = getTaskMaps(t);
     const mapLabel =
       maps.length > 0 ? maps.join(', ') : t.map ? t.map.name : 'Any';
     const finalWikiLink = t.wikiLink || `https://tarkov.dev/task/${t.id}`;
@@ -172,57 +173,6 @@ function processTasks(tasks) {
       mapLabel,
     };
   });
-}
-
-/** Minimal map-keyword extraction used during processing. */
-const _MAP_KEYWORDS = {
-  Customs: ['customs', 'カスタム'],
-  Factory: ['factory', '工場', 'night factory'],
-  Interchange: ['interchange', 'インターチェンジ'],
-  'The Lab': ['the lab'],
-  Lighthouse: ['lighthouse', 'ライトハウス'],
-  Reserve: ['reserve', 'リザーブ', '軍事基地', 'military base'],
-  Shoreline: ['shoreline', 'ショアライン'],
-  'Streets of Tarkov': ['streets of tarkov', 'streets', 'ストリート'],
-  Woods: ['woods', 'ウッズ'],
-  'Ground Zero': ['ground zero', 'グラウンドゼロ'],
-  'The Labyrinth': ['labyrinth', 'ラビリンス'],
-};
-
-function _getTaskMaps(task) {
-  const maps = new Set();
-
-  if (task.map && task.map.name) {
-    let apiMapName = task.map.name;
-    if (apiMapName.includes('Night')) apiMapName = 'Factory';
-    if (apiMapName.includes('21+')) apiMapName = 'Ground Zero';
-    maps.add(apiMapName);
-  }
-
-  if (task.objectives) {
-    task.objectives.forEach((obj) => {
-      const desc = (obj.description || '').toLowerCase();
-      for (const [officialName, keywords] of Object.entries(_MAP_KEYWORDS)) {
-        if (maps.has(officialName)) continue;
-        for (const key of keywords) {
-          if (desc.includes(key.toLowerCase())) {
-            maps.add(officialName);
-            break;
-          }
-        }
-      }
-    });
-  }
-
-  // Known false-positive exclusions
-  if (
-    task.name === 'One Less Loose End' ||
-    task.name === 'A Healthy Alternative'
-  ) {
-    maps.delete('The Lab');
-  }
-
-  return maps.size === 0 ? [] : Array.from(maps).sort();
 }
 
 /**
@@ -621,7 +571,7 @@ async function persistWithoutBreakingRefresh(label, operation) {
  * as a fallback only after a JSON batch fails. A malformed/incomplete batch
  * never replaces already-visible state or a good cache.
  *
- * @param {string} gameMode - 'pve' | 'pvp'
+ * @param {string} gameMode - 'pve' | 'regular' | 'pvp-season' (legacy 'pvp' accepted)
  * @param {string} lang     - 'ja' | 'en'
  * @param {boolean} [manual=false] - Whether this is an explicit user-triggered refresh
  * @param {import('vue').Ref<boolean>} isLoading  - shared loading ref

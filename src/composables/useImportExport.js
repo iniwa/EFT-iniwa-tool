@@ -1,7 +1,11 @@
 // src/composables/useImportExport.js
 // Import / export user data as JSON (singleton)
 
-import { useUserProgress } from './useUserProgress.js';
+import {
+  sanitizeTaskStatuses,
+  sanitizeTraderProgress,
+  useUserProgress,
+} from './useUserProgress.js';
 import { useAppState } from './useAppState.js';
 import { useApiData } from './useApiData.js';
 
@@ -18,6 +22,9 @@ export function useImportExport() {
     keyUserData,
     prioritizedTasks,
     wishlist,
+    taskStatuses,
+    traderProgress,
+    traderRequirementsEnabled,
   } = useUserProgress();
 
   const { playerLevel, gameMode } = useAppState();
@@ -41,6 +48,9 @@ export function useImportExport() {
       playerLevel: playerLevel.value,
       prioritizedTasks: prioritizedTasks.value,
       wishlist: wishlist.value,
+      taskStatuses: taskStatuses.value,
+      traderProgress: traderProgress.value,
+      traderRequirementsEnabled: traderRequirementsEnabled.value,
     };
 
     const blob = new Blob([JSON.stringify(data, null, 2)], {
@@ -131,6 +141,16 @@ export function useImportExport() {
           if (parsed.keyUserData) keyUserData.value = parsed.keyUserData;
           if (parsed.playerLevel != null) playerLevel.value = parsed.playerLevel;
           if (parsed.wishlist) wishlist.value = parsed.wishlist;
+          if (parsed.taskStatuses !== undefined) {
+            taskStatuses.value = sanitizeTaskStatuses(parsed.taskStatuses);
+            completedTasks.value.forEach((id) => delete taskStatuses.value[id]);
+          }
+          if (parsed.traderProgress !== undefined) {
+            traderProgress.value = sanitizeTraderProgress(parsed.traderProgress);
+          }
+          if (typeof parsed.traderRequirementsEnabled === 'boolean') {
+            traderRequirementsEnabled.value = parsed.traderRequirementsEnabled;
+          }
 
           alert('インポート完了');
           resolve();

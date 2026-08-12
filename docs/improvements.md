@@ -24,18 +24,6 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
     成功パスは不変。
   - 制約: 5 分クールダウン（`RATE_LIMIT_MS`）と IndexedDB キャッシュの形は変えない。
 
-- [ ] **【中】マップ判定ロジックの重複を解消し taskLogic に一本化する**
-  - 現状: `src/composables/useApiData.js:140-188` の `_MAP_KEYWORDS` / `_getTaskMaps` は
-    `src/logic/taskLogic.js:7`（`mapKeywords`）/ `:105-156`（`getTaskMaps`）の縮小コピー。
-    useApiData 側には `objectives.maps`（API v2）を見るステップが無いため、
-    フェッチ時に付与される `mapLabel`（`TaskInput.vue:265` で表示）と
-    `groupTasksByMap`（taskLogic 版を使用）の分類結果が食い違い得る。
-    キーワード表も 2 箇所でのメンテが必要になっている。
-  - 対応案: `useApiData.js` から `_MAP_KEYWORDS` / `_getTaskMaps` を削除し、
-    `taskLogic.getTaskMaps` を import して `processTasks` で使う。
-  - 制約: キャッシュ済みデータ（`derivedMaps` / `mapLabel` フィールド名）の互換を維持。
-    循環 import にならないこと（taskLogic は composables に依存しない純関数のまま）。
-
 - [ ] **【低】composables 内の `alert()` をトースト通知等の非ブロッキング UI に置き換える**
   - 現状: データ層の composable に `alert()` が 8 箇所
     （`useApiData.js:308,419,422,481` / `useImportExport.js:135,138,144` /
@@ -55,8 +43,8 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
   - 制約: なし（挙動不変の削除）。
 
 - [x] **【低】package.json の version をアプリバージョンと同期する**
-  - 対応: v3.1.3 で `package.json`、`package-lock.json` のルート版、表示用の
-    `APP_VERSION`（`src/data/constants.js`）を `3.1.3` に同期。
+  - 対応: `package.json`、`package-lock.json` のルート版、表示用の
+    `APP_VERSION`（`src/data/constants.js`）を同期（現在は v3.2.0）。
   - 運用: 今後もリリース時に3か所を同じバージョンへ更新する。
 
 - [ ] **【低】本番でも出力される `console.log` を整理する**
@@ -70,4 +58,8 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
 
 ## 完了アーカイブ
 
-（まだなし）
+- [x] **【中】マップ判定ロジックの重複を解消し taskLogic に一本化する**
+  - 2026-08-12: `useApiData.js` の縮小コピーを削除し、`taskLogic.getTaskMaps` を
+    `mapLabel` / `derivedMaps` とグループ表示の共通実装として使用。
+  - Icebreaker、Ground Zero Tutorial、The Lab (Dark)、Terminal も同じ判定表へ追加し、
+    既存キャッシュのフィールド名は維持。

@@ -3,6 +3,8 @@
 
 /**
  * メインデータ取得クエリを返す
+ * @param {string} gameMode - 'regular' | 'pve' | 'pvp-season'
+ * @param {string} lang - 'ja' | 'en'
  * @returns {{ query: string, variables: { gameMode: string, lang: string } }}
  */
 export function getMainQuery(gameMode = 'regular', lang = 'ja') {
@@ -188,7 +190,7 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
 
 /**
  * アイテムDB全件取得クエリ
- * @param {string} gameMode - 'regular' | 'pve'
+ * @param {string} gameMode - 'regular' | 'pve' | 'pvp-season'
  * @param {string} lang - 'ja' | 'en'
  * @returns {{ query: string, variables: object }}
  */
@@ -281,7 +283,7 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
 /**
  * 単一アイテム価格更新クエリ
  * @param {string} itemId - アイテムID
- * @param {string} gameMode - 'regular' | 'pve'
+ * @param {string} gameMode - 'regular' | 'pve' | 'pvp-season'
  * @param {string} lang - 'ja' | 'en'
  * @returns {{ query: string, variables: object }}
  */
