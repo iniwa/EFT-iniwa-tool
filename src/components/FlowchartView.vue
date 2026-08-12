@@ -12,6 +12,8 @@ import * as TaskLogic from '../logic/taskLogic.js'
 const {
   completedTasks,
   prioritizedTasks,
+  taskStatuses,
+  setTaskStatus,
   flowchartTrader,
   toggleTask,
 } = useUserProgress()
@@ -24,6 +26,7 @@ const emit = defineEmits(['open-task-details'])
 const isInitialSetupMode = ref(false)
 const zoomLevel = ref(1.0)
 const mermaidContainer = ref(null)
+const chartStats = ref({ selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 })
 
 // ノードIDからタスクへのマッピング (クリック処理用)
 let nodeMap = {}
@@ -68,13 +71,29 @@ function zoomReset() {
 
 // --- Mermaidラベル用のエスケープ ---
 function escapeLabel(text) {
-  return text.replace(/"/g, "'").replace(/\(/g, '（').replace(/\)/g, '）')
+  return String(text || '')
+    .replace(/\\/g, '＼')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/"/g, "'")
+    .replace(/[\[\]]/g, (char) => char === '[' ? '［' : '］')
+    .replace(/[{}]/g, (char) => char === '{' ? '｛' : '｝')
+    .replace(/</g, '＜')
+    .replace(/>/g, '＞')
+    .replace(/&/g, '＆')
+    .replace(/\|/g, '｜')
+    .replace(/\(/g, '（')
+    .replace(/\)/g, '）')
 }
 
 // --- フローチャート描画 ---
 async function renderChart() {
   if (!mermaidContainer.value) return
-  if (!taskData.value || taskData.value.length === 0) return
+  const requestId = ++renderCount
+  if (!taskData.value || taskData.value.length === 0) {
+    chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
+    mermaidContainer.value.innerHTML = '<span class="text-secondary">Loading...</span>'
+    return
+  }
 
   // スクロール位置を保存
   const scrollParent = mermaidContainer.value.parentElement
@@ -88,6 +107,7 @@ async function renderChart() {
     : taskData.value.filter((t) => t.trader && t.trader.name === flowchartTrader.value)
 
   if (currentTraderTasks.length === 0) {
+    chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">該当するタスクがありません。</span>'
     return
   }
@@ -105,17 +125,10 @@ async function renderChart() {
   })
 
   // 前提タスクも描画対象に追加 (他トレーダーのタスクも含む)
-  currentTraderTasks.forEach((task) => {
-    if (task.taskRequirements) {
-      task.taskRequirements.forEach((req) => {
-        if (!nodesToRender.has(req.task.id)) {
-          const prereqTask = taskData.value.find((t) => t.id === req.task.id)
-          if (prereqTask) {
-            nodesToRender.set(prereqTask.id, prereqTask)
-          }
-        }
-      })
-    }
+  const byId = new Map(taskData.value.map((task) => [task.id, task]))
+  const closure = TaskLogic.getPrerequisiteClosure(currentTraderTasks.map((task) => task.id), taskData.value)
+  closure.forEach((id) => {
+    if (!nodesToRender.has(id) && byId.has(id)) nodesToRender.set(id, byId.get(id))
   })
 
   // ノードIDを割り当て
@@ -125,6 +138,8 @@ async function renderChart() {
     nodeMap[nid] = task
   })
 
+  let edgeCount = 0
+
   // Mermaid定義文字列を構築
   let graph = 'graph LR\n'
 
@@ -132,6 +147,10 @@ async function renderChart() {
   graph += '  classDef done fill:#198754,stroke:#198754,color:#fff\n'
   graph += '  classDef doneExternal fill:#198754,stroke:#198754,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef todo fill:#212529,stroke:#6c757d,color:#fff\n'
+  graph += '  classDef active fill:#0dcaf0,stroke:#0dcaf0,color:#111\n'
+  graph += '  classDef failed fill:#dc3545,stroke:#dc3545,color:#fff\n'
+  graph += '  classDef activeExternal fill:#0dcaf0,stroke:#0dcaf0,color:#111,stroke-dasharray:5 5\n'
+  graph += '  classDef failedExternal fill:#dc3545,stroke:#dc3545,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef external fill:#6c757d,stroke:#6c757d,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef priority stroke:#0dcaf0,stroke-width:4px\n'
 
@@ -143,9 +162,10 @@ async function renderChart() {
   // ノード定義
   nodesToRender.forEach((task, taskId) => {
     const nid = taskToNodeId.get(taskId)
-    const label = escapeLabel(task.name)
-    const isDone = completedTasks.value.includes(task.id)
     const isExternal = !isCurrentTraderTask(task)
+    const label = escapeLabel(`${task.name}${isExternal && task.trader?.name ? ` (${task.trader.name})` : ''}`)
+    const status = TaskLogic.getTaskStatus(task.id, completedTasks.value, taskStatuses.value)
+    const isDone = status === 'complete'
     const isPriority = prioritizedTasks.value.includes(task.id)
 
     // ノード形状の定義
@@ -157,6 +177,10 @@ async function renderChart() {
       classes = 'doneExternal'
     } else if (isDone) {
       classes = 'done'
+    } else if (status === 'active') {
+      classes = isExternal ? 'activeExternal' : 'active'
+    } else if (status === 'failed') {
+      classes = isExternal ? 'failedExternal' : 'failed'
     } else if (isExternal) {
       classes = 'external'
     } else {
@@ -178,16 +202,28 @@ async function renderChart() {
         const fromId = taskToNodeId.get(req.task.id)
         const toId = taskToNodeId.get(taskId)
         if (fromId && toId) {
-          graph += `  ${fromId} --> ${toId}\n`
+          const statusLabel = TaskLogic.formatTaskRequirementStatuses(req.status)
+          const renderedLabel = statusLabel ? `|${escapeLabel(statusLabel)}|` : ''
+          graph += `  ${fromId} -->${renderedLabel} ${toId}\n`
+          edgeCount++
         }
       })
     }
   })
+  const connected = new Set()
+  nodesToRender.forEach((task) => (task.taskRequirements || []).forEach((req) => { if (taskToNodeId.has(req?.task?.id)) { connected.add(task.id); connected.add(req.task.id) } }))
+  chartStats.value = {
+    selected: currentTraderTasks.length,
+    nodes: nodesToRender.size,
+    edges: edgeCount,
+    external: Array.from(nodesToRender.values()).filter((task) => !isCurrentTraderTask(task)).length,
+    isolated: nodesToRender.size - connected.size,
+  }
 
   // Mermaidでレンダリング
   try {
-    renderCount++
-    const { svg } = await mermaid.render(`flowchart-${renderCount}`, graph)
+    const { svg } = await mermaid.render(`flowchart-${requestId}`, graph)
+    if (requestId !== renderCount) return
     mermaidContainer.value.innerHTML = svg
 
     // エッジ要素をクリック不可にする
@@ -203,6 +239,7 @@ async function renderChart() {
       el.style.cursor = 'pointer'
     })
   } catch (err) {
+    if (requestId !== renderCount) return
     console.error('Mermaid render error:', err)
     const errSpan = document.createElement('span')
     errSpan.className = 'text-danger'
@@ -237,21 +274,20 @@ function handleChartClick(event) {
     // Shift+クリック: 単一タスクのトグル
     toggleTask(task.id)
   } else if (isInitialSetupMode.value) {
-    // 初期設定モード: タスクと全前提タスクを一括完了
+    // 初期設定モード: タスクと全前提タスクを要件ステータスに沿って適用
     const taskName = task.name
-    const prereqs = TaskLogic.getAllPrerequisites(task.id, taskData.value)
-    const totalCount = prereqs.length + 1
+    const plan = TaskLogic.getInitialSetupPlan(task.id, taskData.value)
+    const totalCount = plan.length
+    const conflictCount = plan.filter((entry) => entry.conflict).length
+    const conflictNotice = conflictCount > 0
+      ? `\n※分岐条件が競合する前提タスク ${conflictCount} 件は、単一の状態では全経路を同時に満たせないため推奨値を設定します。`
+      : ''
     const confirmed = confirm(
-      `「${taskName}」と前提タスク ${prereqs.length} 件（計 ${totalCount} 件）を完了にしますか？`
+      `「${taskName}」と前提タスク ${Math.max(0, totalCount - 1)} 件を、要件に基づく推奨ステータス（完了/進行中/失敗）で設定しますか？${conflictNotice}`
     )
     if (confirmed) {
-      // 対象タスクと前提タスクを全て完了に追加
-      const allIds = [task.id, ...prereqs]
-      allIds.forEach((id) => {
-        if (!completedTasks.value.includes(id)) {
-          completedTasks.value.push(id)
-        }
-      })
+      // 対象タスクと全前提タスクへ推奨ステータスを適用
+      plan.forEach(({ id, status }) => setTaskStatus(id, status))
     }
   } else {
     // 通常モード: タスク詳細を開く
@@ -262,6 +298,7 @@ function handleChartClick(event) {
 // --- ウォッチャー: データ変更時に再描画 ---
 watch(flowchartTrader, () => renderChart())
 watch(completedTasks, () => renderChart(), { deep: true })
+watch(taskStatuses, () => renderChart(), { deep: true })
 watch(prioritizedTasks, () => renderChart(), { deep: true })
 watch(taskData, () => renderChart())
 
@@ -343,6 +380,16 @@ onMounted(() => {
     </div>
 
     <!-- チャート本体 -->
+    <div class="px-3 py-2 small text-muted border-bottom border-secondary">
+      前提タスクのみ（トレーダー/その他条件はタスク詳細で確認）・実験的機能　
+      対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
+      <span class="ms-2">
+        <span class="badge bg-success">完了</span>
+        <span class="badge bg-info text-dark">進行中</span>
+        <span class="badge bg-danger">失敗</span>
+        <span class="badge bg-secondary">破線=他トレーダー</span>
+      </span>
+    </div>
     <div
       class="card-body bg-dark overflow-auto p-0"
       style="min-height: 60vh; position: relative;"
@@ -350,7 +397,7 @@ onMounted(() => {
       <div
         ref="mermaidContainer"
         class="p-4 mermaid"
-        :style="{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }"
+        :style="{ zoom: zoomLevel, transformOrigin: 'top left' }"
         style="min-width: 100%; width: max-content;"
         @click="handleChartClick"
       >

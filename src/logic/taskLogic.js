@@ -387,7 +387,8 @@ export function getAllPrerequisites(taskId, allTasks, visited = new Set()) {
 
   if (task.taskRequirements) {
     task.taskRequirements.forEach((req) => {
-      const reqId = req.task.id;
+      const reqId = req?.task?.id;
+      if (!reqId) return;
       if (!visited.has(reqId)) {
         results.push(reqId);
         // 再帰的に親の親を取得
@@ -398,4 +399,82 @@ export function getAllPrerequisites(taskId, allTasks, visited = new Set()) {
   }
 
   return [...new Set(results)];
+}
+
+/** Cycle-safe recursive prerequisite closure, including the supplied roots. */
+export function getPrerequisiteClosure(taskIds, allTasks = []) {
+  const roots = Array.isArray(taskIds) ? taskIds : [taskIds];
+  const byId = new Map((allTasks || []).filter((task) => task?.id).map((task) => [task.id, task]));
+  const seen = new Set();
+  const result = [];
+  const visit = (id, visiting = new Set()) => {
+    if (!id || seen.has(id) || visiting.has(id)) return;
+    const task = byId.get(id);
+    if (!task) return;
+    const next = new Set(visiting).add(id);
+    (task.taskRequirements || []).forEach((req) => visit(req?.task?.id, next));
+    seen.add(id);
+    result.push(id);
+  };
+  roots.forEach((id) => visit(id));
+  return result;
+}
+
+/** Format the OR-statuses on a task prerequisite for a flowchart edge. */
+export function formatTaskRequirementStatuses(statuses) {
+  const values = Array.isArray(statuses) && statuses.length ? statuses : ['complete'];
+  const uniqueValues = [...new Set(values)];
+  if (uniqueValues.length === 1 && uniqueValues[0] === 'complete') return '';
+  const labels = { complete: '完了', active: '進行中', failed: '失敗' };
+  return uniqueValues.map((status) => labels[status] || status).join('/');
+}
+
+/** Return a cycle-safe, best-effort post-order setup plan for prerequisite statuses. */
+export function getInitialSetupPlan(taskId, allTasks = []) {
+  const byId = new Map((allTasks || []).filter((task) => task?.id).map((task) => [task.id, task]));
+  const constraints = new Map();
+  const visiting = new Set();
+  const expanded = new Set();
+  const allowedFor = (req) => {
+    const statuses = Array.isArray(req?.status) && req.status.length ? req.status : ['complete'];
+    return statuses.filter((status) => ['complete', 'active', 'failed'].includes(status));
+  };
+  const visit = (id) => {
+    if (!id || expanded.has(id)) return;
+    const task = byId.get(id);
+    if (!task) return;
+    if (visiting.has(id)) return;
+    visiting.add(id);
+    const requirements = Array.isArray(task.taskRequirements) ? task.taskRequirements : [];
+    requirements.slice().sort((a, b) => String(a?.task?.id || '').localeCompare(String(b?.task?.id || ''))).forEach((req) => {
+      const reqId = req?.task?.id;
+      if (!reqId) return;
+      const allowed = new Set(allowedFor(req));
+      const prior = constraints.get(reqId) || [];
+      prior.push(allowed);
+      constraints.set(reqId, prior);
+      visit(reqId);
+    });
+    visiting.delete(id);
+    expanded.add(id);
+  };
+  visit(taskId);
+  const ids = getPrerequisiteClosure(taskId, allTasks);
+  return ids.map((id) => {
+    const sets = constraints.get(id) || [];
+    if (id === taskId && sets.length === 0) {
+      return { id, status: 'complete', conflict: false };
+    }
+    const intersection = sets.length
+      ? [...sets[0]].filter((status) => sets.every((set) => set.has(status)))
+      : [];
+    const union = new Set(sets.flatMap((set) => [...set]));
+    const candidates = intersection.length ? intersection : [...union];
+    const status = ['complete', 'active', 'failed'].find((value) => candidates.includes(value)) || 'active';
+    const conflict = sets.length > 0 && intersection.length === 0;
+    if (id === taskId) {
+      return { id, status: 'complete', conflict: conflict || !intersection.includes('complete') };
+    }
+    return { id, status, conflict };
+  });
 }
