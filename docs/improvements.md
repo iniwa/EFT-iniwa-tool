@@ -15,15 +15,6 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
 
 ## 1. データ取得・API 層
 
-- [ ] **【中】tarkov.dev への fetch にタイムアウト（AbortController）を追加する**
-  - 現状: `src/composables/useApiData.js:328` / `:395` / `:446` の 3 箇所の `fetch` が
-    タイムアウトなし。API 応答がハングすると `isLoading` / `itemDbLoading` が
-    立ちっぱなしになり、UI 上は更新ボタンが無期限に無効化される。
-  - 対応案: 3 箇所に共通の `fetchWithTimeout` ヘルパー（AbortController + 30 秒程度）を
-    導入し、タイムアウト時は既存の catch 経路でエラー表示する。挙動追加のみで
-    成功パスは不変。
-  - 制約: 5 分クールダウン（`RATE_LIMIT_MS`）と IndexedDB キャッシュの形は変えない。
-
 - [ ] **【低】composables 内の `alert()` をトースト通知等の非ブロッキング UI に置き換える**
   - 現状: データ層の composable に `alert()` が 8 箇所
     （`useApiData.js:308,419,422,481` / `useImportExport.js:135,138,144` /
@@ -36,15 +27,13 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
 
 ## 2. 死にコード・整理
 
-- [ ] **【低】StoryPlaceholder.vue（死にコード）を削除する**
-  - 現状: `src/components/StoryPlaceholder.vue`（9 行）は src 内から参照 0 件
-    （router / 他コンポーネントいずれからも import されない）。
-  - 対応案: ファイル削除し、`CLAUDE.md` / `CLAUDE_ja.md` の構成リストから除去する。
-  - 制約: なし（挙動不変の削除）。
+- [x] **【低】StoryPlaceholder.vue（死にコード）を削除する**
+  - 2026-08-13: リポジトリ全体の参照を確認した上で、未使用の
+    `src/components/StoryPlaceholder.vue` を削除。
 
 - [x] **【低】package.json の version をアプリバージョンと同期する**
   - 対応: `package.json`、`package-lock.json` のルート版、表示用の
-    `APP_VERSION`（`src/data/constants.js`）を同期（現在は v3.2.0）。
+    `APP_VERSION`（`src/data/constants.js`）を同期（現在は v3.2.1）。
   - 運用: 今後もリリース時に3か所を同じバージョンへ更新する。
 
 - [ ] **【低】本番でも出力される `console.log` を整理する**
@@ -57,6 +46,9 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
 ---
 
 ## 完了アーカイブ
+
+- [x] **【中】tarkov.dev への fetch にタイムアウト（AbortController）を追加する**
+  - 2026-08-13: JSON API と GraphQL フォールバックの fetch に共通タイムアウトを適用し、タイムアウト時は既存のエラー経路で案内を表示。5 分クールダウンと IndexedDB キャッシュの形は維持。
 
 - [x] **【中】マップ判定ロジックの重複を解消し taskLogic に一本化する**
   - 2026-08-12: `useApiData.js` の縮小コピーを削除し、`taskLogic.getTaskMaps` を

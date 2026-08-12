@@ -11,6 +11,7 @@ import { RATE_VALUES } from '../data/constants.js';
 import * as TaskLogic from '../logic/taskLogic.js';
 import * as HideoutLogic from '../logic/hideoutLogic.js';
 import * as KeyLogic from '../logic/keyLogic.js';
+import { isSameSource } from '../logic/shoppingLogic.js';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -77,6 +78,7 @@ export function useShoppingList() {
       itemName: name,
       count,
       sourceName,
+      taskId,
       sourceType,
       mapName = null,
       wikiLink: wiki = null,
@@ -105,21 +107,19 @@ export function useShoppingList() {
         // Keys: aggregate sources only (no count summing)
         if (
           sourceName &&
-          !res[cat][uid].sources.some((s) => s.name === sourceName)
+          !res[cat][uid].sources.some((s) => isSameSource(s, { name: sourceName, taskId, type: sourceType }))
         ) {
-          res[cat][uid].sources.push({ name: sourceName, type: sourceType });
+          res[cat][uid].sources.push({ name: sourceName, taskId, type: sourceType });
         }
       } else {
         // Regular items: sum counts and track sources
         res[cat][uid].count += count;
-        const existing = res[cat][uid].sources.find(
-          (s) => s.name === sourceName,
-        );
+        const existing = res[cat][uid].sources.find((s) => isSameSource(s, { name: sourceName, taskId, type: sourceType }));
         if (existing) {
           existing.count += count;
         } else {
           res[cat][uid].sources.push({
-            name: sourceName,
+            name: sourceName, taskId,
             type: sourceType,
             count,
           });

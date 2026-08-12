@@ -42,9 +42,9 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | ビルド | Vite 8 |
 | UI | Bootstrap 5 + カスタム CSS（ダークテーマ） |
 | 図 | Mermaid 11 |
-| Markdown | marked + DOMPurify |
+| バージョン | 3.2.1 |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
-| データソース | [tarkov.dev JSON API](https://tarkov.dev/api/)（レガシー GraphQL API はフォールバック） |
+| データソース | [tarkov.dev JSON API](https://json.tarkov.dev/)（レガシー GraphQL API はフォールバック） |
 | 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |
 | アクセス解析 | [Umami](https://umami.is/) (self-hosted, Cookie 不使用) |
 | ホスティング | [Cloudflare Pages](https://pages.cloudflare.com/) |
@@ -60,11 +60,13 @@ npm install
 npm run dev      # http://localhost:5173
 npm run build    # dist/ にビルド成果物
 npm run preview  # ビルド結果のプレビュー
+npm test         # Node 組み込みテストランナー
 ```
 
 `createWebHistory()` を使っているため、本番環境では SPA fallback の設定が必須です。
 本リポジトリでは Cloudflare Pages 用に `public/_redirects` を同梱しています
 （`/*  /index.html  200`）。
+セキュリティヘッダーは `public/_headers` で定義し、ビルド時に `dist/` へコピーされます。
 
 > 旧バージョン (v3.0.0 未満) は CDN 版 Vue を使った静的 HTML / JS でしたが、
 > 現在は Vite + SFC 構成のため `index.html` をダブルクリックでは動きません。
@@ -90,8 +92,7 @@ npm run preview  # ビルド結果のプレビュー
   `docs/handoffs/archive/` に保管します。
 - 改善候補は `docs/improvements.md` のチェックリストで管理します
   （機能追加のアイデアは対象外）。
-- 自動テスト・リンターは未導入のため、検証は `npm run build` と
-  `npm run dev` での手動確認が基本です。
+- `npm test` で Node 組み込みテストを実行できます。リンター・フォーマッター・型チェック・CI は未導入のため、該当する自動検証はありません。
 
 ---
 

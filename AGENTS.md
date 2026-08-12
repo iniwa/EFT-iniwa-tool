@@ -23,7 +23,7 @@ npm run build       production build to dist/
 npm run preview     preview the production build
 ```
 
-No automated test, lint, format, typecheck, or repository CI command exists. Report that limitation; do not invent a command.
+The repository exposes `npm test` for the Node built-in test runner. No lint, format, typecheck, or repository CI command exists. Report those limitations; do not invent commands.
 
 ## Scope and Autonomy
 

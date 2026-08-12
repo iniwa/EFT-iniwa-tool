@@ -13,17 +13,6 @@ const isVisible = ref(false)
 const LS_KEY_VERSION = 'eft_notice_last_seen_version'
 const LS_KEY_HIDDEN = 'eft_notice_permanently_hidden'
 
-// major.minor が一致するか判定
-function isSameMajorMinor(v1, v2) {
-  if (!v1 || !v2) return false
-  const p1 = v1.split('.')
-  const p2 = v2.split('.')
-  if (p1.length >= 2 && p2.length >= 2) {
-    return p1[0] === p2[0] && p1[1] === p2[1]
-  }
-  return v1 === v2
-}
-
 // 表示判定
 function checkVisibility() {
   const permHidden = localStorage.getItem(LS_KEY_HIDDEN)
@@ -33,7 +22,7 @@ function checkVisibility() {
   }
 
   const lastSeenVersion = localStorage.getItem(LS_KEY_VERSION)
-  if (isSameMajorMinor(lastSeenVersion, APP_VERSION)) {
+  if (lastSeenVersion === APP_VERSION) {
     isVisible.value = false
     return
   }
@@ -56,7 +45,7 @@ function closeUntilNextUpdate() {
 function closePermanently() {
   if (
     confirm(
-      '今後、アップデートのお知らせを含め、この画面を一切表示しなくなります。よろしいですか？\n(設定をリセットするにはブラウザのデータをクリアする必要があります)',
+      '今後、アップデートのお知らせを含め、この画面を一切表示しなくなります。よろしいですか？\n(表示設定・レベル・通知状態をリセットする場合も、5分クールダウンと互換性維持用の移行マーカーは保持されます)',
     )
   ) {
     localStorage.setItem(LS_KEY_HIDDEN, 'true')
@@ -77,16 +66,20 @@ defineExpose({ show })
 </script>
 
 <template>
-  <BaseModal :show="isVisible" max-width="800px" @close="closeOnce">
+  <BaseModal :show="isVisible" max-width="800px" aria-label="アップデートのお知らせ" @close="closeOnce">
     <div class="bg-dark text-white">
       <!-- ヘッダー -->
       <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-3">
         <h5 class="mb-0 text-info">🎉 アップデートのお知らせ (v{{ APP_VERSION }})</h5>
-        <button type="button" class="btn-close btn-close-white" @click="closeOnce"></button>
+        <button type="button" class="btn-close btn-close-white" aria-label="閉じる" @click="closeOnce"></button>
       </div>
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <div class="p-3 rounded border border-info bg-info bg-opacity-10">
+          <h4 class="text-info fw-bold mb-2">v3.2.1</h4>
+          <p class="mb-0">タスク参照、フローチャート、キーボード操作と安全な外部リンクを改善しました。</p>
+        </div>
         <div class="p-4 rounded border border-warning border-2 bg-warning bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-warning text-dark">NEW</span>
@@ -102,6 +95,7 @@ defineExpose({ show })
           </ul>
           <p class="small text-warning mb-0">
             Seasonal Characterはシーズンごとにリセットされます。新シーズン開始時は本ツールのSeasonal PvP進捗もリセットしてください。
+            Patch 1.1 Season 1 では Kappa Path の取得ができず、Collector 完了は Dawn of a New Era 実績として扱われます。通常 PvP / PvE の Kappa 条件とは別のため、ゲーム内表示を確認してください。
             Storyタブは静的な案内で、KORD BREACH / Boreasの完全な攻略手順ではありません。
           </p>
         </div>
@@ -156,7 +150,7 @@ defineExpose({ show })
           </div>
           <p class="text-light mb-3">
             配信（OBS / Streamlabs 等）で現在のタスクを表示できる透過オーバーレイ機能を追加しました。<br>
-            デバッグタブの「<strong>配信者用オーバーレイ</strong>」をONにすると、新タブ「📺 配信オーバーレイ」が表示されます。
+            設定タブの「<strong>配信者用オーバーレイ</strong>」をONにすると、新タブ「📺 配信オーバーレイ」が表示されます。
           </p>
           <ul class="text-light mb-3">
             <li><strong>📌 ピン留め:</strong> タスク一覧／詳細モーダルの 📌 ボタンで、オーバーレイに表示したいタスクを選べます。</li>
@@ -164,10 +158,10 @@ defineExpose({ show })
             <li><strong>進捗の手動調整:</strong> アイテム収集数やオブジェクティブの完了／未完了を、オーバーレイ設定画面から個別に調整できます。完了済みの項目には取り消し線とチェックが入ります。</li>
             <li><strong>🔗 タスク連続モード:</strong> 完了ボタンを押すと、そのタスクを前提にしていた次のタスクを自動でピン留めする連鎖モードを搭載。</li>
             <li><strong>既存システムと連動:</strong> オーバーレイ側の「✓ 完了」ボタンは、既存のタスク完了チェックと同時に反映されます。</li>
-            <li><strong>モード別保存:</strong> ピン留め／進捗はPvP/PvEごとに独立して保存されます。</li>
+            <li><strong>モード別保存:</strong> ピン留め／進捗は通常PvP／PvE／Seasonal PvPごとに独立して保存されます。</li>
           </ul>
           <div class="small text-info-emphasis bg-info bg-opacity-10 border border-info rounded p-2 mb-0">
-            💡 配信をしない方は、デバッグタブでOFFにしておけば新タブは表示されません。
+            💡 配信をしない方は、設定タブでOFFにしておけば新タブは表示されません。
           </div>
         </div>
 

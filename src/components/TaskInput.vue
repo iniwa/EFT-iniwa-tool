@@ -368,8 +368,9 @@ function getSortedTasks(tasks) {
                 class="w-100 d-flex justify-content-between align-items-center"
                 :class="{ 'opacity-50': isLocked(task) }"
               >
-                <span
-                  class="task-name-link"
+                <button type="button"
+                  class="task-name-link text-start"
+                  style="background: none; border: 0; padding: 0; font: inherit"
                   :class="{
                     'text-decoration-line-through text-muted': showCompleted,
                     'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.id),
@@ -383,7 +384,7 @@ function getSortedTasks(tasks) {
                   <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                   <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                   <span v-if="task.mapLabel" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.mapLabel }}</span>
-                </span>
+                </button>
                 <span class="badge bg-secondary">{{ task.trader?.name || 'Unknown' }}</span>
               </div>
             </div>
@@ -427,8 +428,9 @@ function getSortedTasks(tasks) {
                     class="d-flex justify-content-between w-100"
                     :class="{ 'opacity-50': isLocked(task) }"
                   >
-                    <span
-                      class="task-name-link"
+                    <button type="button"
+                      class="task-name-link text-start"
+                      style="background: none; border: 0; padding: 0; font: inherit"
                       :class="{
                         'text-decoration-line-through text-muted': showCompleted,
                         'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.id),
@@ -441,7 +443,7 @@ function getSortedTasks(tasks) {
                       <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger ms-1">失敗</span>
                       <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                       <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
-                    </span>
+                    </button>
                     <small class="text-muted">
                       {{ taskViewMode === 'trader' ? task.mapLabel : (task.trader?.name || 'Unknown') }}
                     </small>

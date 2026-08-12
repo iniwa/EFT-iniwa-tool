@@ -6,8 +6,15 @@ import { useShoppingList } from '../composables/useShoppingList.js'
 import { useApiData } from '../composables/useApiData.js'
 import { MAP_ORDER } from '../data/constants.js'
 import { loadLS, saveLS } from '../composables/useStorage.js'
+import { toHttpsUrl } from '../logic/taskReference.js'
 
 const emit = defineEmits(['open-task-from-name'])
+const safeUrl = toHttpsUrl
+
+function tarkovItemUrl(item) {
+  const slug = item.normalizedName || getKeyNormalizedName(item.id)
+  return slug ? safeUrl(`https://tarkov.dev/item/${encodeURIComponent(slug)}`) : null
+}
 
 const {
   ownedKeys,
@@ -284,16 +291,17 @@ function getKeyNormalizedName(id) {
         class="map-group"
       >
         <!-- マップヘッダー -->
-        <div
-          class="map-header px-3 py-2 d-flex justify-content-between align-items-center"
+        <button
+          type="button"
+          class="map-header w-100 px-3 py-2 d-flex justify-content-between align-items-center text-start"
           @click="toggleMap(mapName)"
-          style="background-color: #2c3e50; cursor: pointer; border-bottom: 1px solid #444"
+          style="background-color: #2c3e50; cursor: pointer; border: 0; border-bottom: 1px solid #444"
         >
           <span class="fw-bold text-white">{{ mapName }} ({{ keys.length }})</span>
           <span class="small text-muted">
             {{ collapsedMaps[mapName] ? '▼ 表示' : '▲ 非表示' }}
           </span>
-        </div>
+        </button>
 
         <!-- 鍵テーブル (折りたたみ可能) -->
         <div v-show="!collapsedMaps[mapName]">
@@ -399,14 +407,14 @@ function getKeyNormalizedName(id) {
                       :key="idx"
                       class="text-truncate"
                     >
-                      <span
+                      <button type="button"
                         v-if="source.type === 'task'"
-                        class="text-info"
+                        class="btn p-0 border-0 bg-transparent text-info text-start"
                         style="cursor: pointer; text-decoration: underline"
-                        @click="emit('open-task-from-name', formatSourceName(source.name))"
+                        @click="emit('open-task-from-name', { id: source.taskId, name: formatSourceName(source.name) })"
                       >
                         {{ formatSourceName(source.name) }}
-                      </span>
+                      </button>
                       <span v-else>{{ source.name }}</span>
                     </div>
                   </div>
@@ -416,9 +424,10 @@ function getKeyNormalizedName(id) {
                 <!-- Wiki リンク -->
                 <td class="align-middle text-center">
                   <a
-                    v-if="item.wikiLink"
-                    :href="item.wikiLink"
+                    v-if="safeUrl(item.wikiLink)"
+                    :href="safeUrl(item.wikiLink)"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="btn btn-sm btn-outline-warning py-0 px-1"
                     title="Wiki"
                     @click.stop
@@ -431,9 +440,10 @@ function getKeyNormalizedName(id) {
                 <!-- tarkov.dev リンク -->
                 <td class="align-middle text-center">
                   <a
-                    v-if="item.normalizedName || getKeyNormalizedName(item.id)"
-                    :href="'https://tarkov.dev/item/' + (item.normalizedName || getKeyNormalizedName(item.id))"
+                    v-if="tarkovItemUrl(item)"
+                    :href="tarkovItemUrl(item)"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="btn btn-sm btn-outline-primary py-0 px-1"
                     title="Tarkov.dev"
                     @click.stop

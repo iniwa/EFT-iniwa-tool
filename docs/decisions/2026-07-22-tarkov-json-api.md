@@ -27,6 +27,7 @@ Use conditional revalidation through `fetch(..., { cache: 'no-cache' })`. Keep t
 - A full JSON update is larger than the tailored GraphQL query, so all required resources are fetched once per update and reused to build both main data and the item-search database.
 - JSON responses do not provide a lightweight replacement for the current single-item trader-price query. The UI uses full-data refresh instead of issuing a misleading GraphQL-only individual refresh.
 - JSON paths are not versioned and no published JSON Schema or SLA was found. Converted batches must be validated before replacing visible data or IndexedDB cache records.
+- Network requests use a bounded timeout. If JSON fails or times out, one bounded GraphQL fallback may be attempted; when both fail, the UI reports an actionable error and retains the last-known-good IndexedDB data rather than replacing it with partial results.
 
 ## Preserved constraints
 

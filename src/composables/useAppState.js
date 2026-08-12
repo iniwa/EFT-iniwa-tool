@@ -62,7 +62,13 @@ if (storedGameMode !== normalizedGameMode) saveLS('eft_gamemode', normalizedGame
 const gameMode = ref(normalizedGameMode);
 
 /** API language: 'ja' | 'en' — persisted */
-const apiLang = ref(loadLS('eft_apilang', 'ja'));
+export function normalizeApiLang(value) {
+  return value === 'en' ? 'en' : 'ja';
+}
+const storedApiLang = loadLS('eft_apilang', 'ja');
+const normalizedApiLang = normalizeApiLang(storedApiLang);
+if (storedApiLang !== normalizedApiLang) saveLS('eft_apilang', normalizedApiLang);
+const apiLang = ref(normalizedApiLang);
 
 // マイグレーション: eft_level → モード別キー（初回のみ）
 ;(function migrateLevelKey() {
@@ -80,7 +86,14 @@ const playerLevel = ref(parseInt(loadLS(`eft_${gameMode.value}_level`, 0), 10));
 // ---------------------------------------------------------------------------
 
 watch(gameMode, (val) => saveLS('eft_gamemode', val));
-watch(apiLang, (val) => saveLS('eft_apilang', val));
+watch(apiLang, (val) => {
+  const normalized = normalizeApiLang(val);
+  if (val !== normalized) {
+    apiLang.value = normalized;
+    return;
+  }
+  saveLS('eft_apilang', normalized);
+});
 watch(playerLevel, (val) => saveLS(`eft_${gameMode.value}_level`, val));
 
 // ゲームモード切り替え時にプレイヤーレベルをスワップ
@@ -102,5 +115,6 @@ export function useAppState() {
     playerLevel,
     APP_VERSION,
     normalizeGameMode,
+    normalizeApiLang,
   };
 }

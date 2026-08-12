@@ -14,6 +14,7 @@ const emit = defineEmits(['show-notice'])
             <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScFPBXovafedEgQY10uTH1vAbyOA9r1l6kurIfkTuwN64eyqA/viewform?usp=dialog"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-sm btn-outline-info me-2"
             >📮 意見箱</a>
         </div>
@@ -31,13 +32,13 @@ const emit = defineEmits(['show-notice'])
         </div>
 
         <div>
-            &copy; 2025 <a href="https://twitter.com/iniwach" target="_blank" style="color: var(--color-info);">@iniwach</a>
-            | Data by <a href="https://tarkov.dev" target="_blank" style="color: var(--color-info);">tarkov.dev</a>
+            &copy; 2026 <a href="https://twitter.com/iniwach" target="_blank" rel="noopener noreferrer" style="color: var(--color-info);">@iniwach</a>
+            | Data by <a href="https://tarkov.dev" target="_blank" rel="noopener noreferrer" style="color: var(--color-info);">tarkov.dev</a>
         </div>
         <div class="mt-1">
-            <a href="#" @click.prevent="emit('show-notice')" style="color: var(--color-text-muted);">
+            <button type="button" class="p-0 border-0 bg-transparent" @click="emit('show-notice')" style="color: var(--color-text-muted);">
                 v{{ appVersion }}
-            </a>
+            </button>
         </div>
     </footer>
 </template>

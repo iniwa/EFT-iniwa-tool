@@ -33,7 +33,7 @@ import { RouterLink } from 'vue-router'
                     </p>
                     <ul>
                         <li><strong>ゲームモード:</strong> PvE、通常PvP、Seasonal PvP から選びます。データと進捗はモードごとに独立しています。</li>
-                        <li><strong>Seasonal PvP:</strong> ゲーム内のSeasonal Character用です。通常PvPとは別に保存されるため、新しいシーズン開始時はSeasonal PvP側の進捗をリセットしてください。</li>
+                        <li><strong>Seasonal PvP:</strong> ゲーム内のSeasonal Character用です。通常PvPとは別に保存されます。Patch 1.1 Season 1 では Kappa Path を取得できず、Collector 完了は Dawn of a New Era 実績として扱われるため、通常モードと同じ条件とは限りません。</li>
                         <li><strong>API言語:</strong> JP を選ぶと tarkov.dev の日本語データを取得します。一部の固有名詞は英語のまま表示されることがあります。</li>
                         <li><strong>プレイヤーレベル:</strong> 0 にするとプレイヤーレベル条件だけを無視します。前提条件を含むロック中タスクも見る場合は「ロック中も表示」を有効にします。</li>
                     </ul>
@@ -82,7 +82,7 @@ import { RouterLink } from 'vue-router'
                         <li>鍵行をクリックすると「所持済み」になり、青っぽい色でハイライトされます。</li>
                         <li>レーティング（SS/S/A/B/C/D/E/F）は当ツールの主観評価です。プレイスタイルに応じてご自身で書き換えできます。</li>
                         <li>「所持のみ表示」「ソート: 所持優先 / レーティング順」など表示モードを切り替え可能。</li>
-                        <li>プリセット読込で <strong>カッパ取得用最低限セット</strong> や <strong>ライトキーパー用</strong> など用途別に一括選択できます。</li>
+                        <li>プリセット読込はありません。所持状態・レーティング・メモを手動で設定し、プレイスタイルに合わせて管理してください。</li>
                     </ul>
                 </section>
 
@@ -117,8 +117,9 @@ import { RouterLink } from 'vue-router'
                     </ul>
                     <p>
                         ヘッダー右上の <kbd>Export</kbd> ボタンで定期的に JSON ファイルをダウンロードしてバックアップしてください。
-                        新しい端末では <kbd>Import</kbd> でその JSON を読み込めば進捗を復元できます。
-                        バックアップ対象は、Export時に選択しているゲームモードの進捗です。
+                        新しい端末では <kbd>Import</kbd> でその JSON を読み込めば復元できます。
+                        Export にはスキーマバージョンと取得元ゲームモードが含まれ、選択中モードのタスク・ハイドアウト・鍵・ストーリー・配信オーバーレイの進捗をまとめて保存します。
+                        Import は内容を検証してから書き込み、別モードのバックアップもそのモードへ適用します。
                     </p>
                 </section>
 
@@ -130,7 +131,7 @@ import { RouterLink } from 'vue-router'
                     <ol>
                         <li>📺 配信オーバーレイタブ（最初は非表示。設定から有効化）で表示する項目を選びます。</li>
                         <li>表示された URL を OBS のブラウザソースに登録します。</li>
-                        <li>本体の進捗を更新すると、オーバーレイにも自動反映されます。</li>
+                        <li>本体の進捗・モード・言語を更新すると、オーバーレイにも同じコンテキストで自動反映されます。</li>
                     </ol>
                 </section>
 

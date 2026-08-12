@@ -97,28 +97,28 @@ const emit = defineEmits(['open-task-from-name'])
                 </td>
                 <td class="fw-bold ps-4 text-green">Propital (購入)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Ambulances Again')">Ambulances Again</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Ambulances Again')">Ambulances Again</button>
                 </td>
                 <td>Therapist</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4">Salewa (購入)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Postman Pat - Part 2')">Postman Pat - Part 2</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Postman Pat - Part 2')">Postman Pat - Part 2</button>
                 </td>
                 <td>Therapist</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4">Alu Splint (アルミ副木)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Seaside Vacation')">Seaside Vacation</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Seaside Vacation')">Seaside Vacation</button>
                 </td>
                 <td>Therapist</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4">Surv12 手術キット</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Ambulance')">Ambulance</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Ambulance')">Ambulance</button>
                 </td>
                 <td>Jaeger</td>
             </tr>
@@ -128,51 +128,51 @@ const emit = defineEmits(['open-task-from-name'])
                 </td>
                 <td class="fw-bold ps-4 border-top border-secondary">注射器ケース</td>
                 <td class="border-top border-secondary">
-                    <span class="task-link" @click="emit('open-task-from-name', 'Chemical - Part 4')">Chemical - Part 4</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Chemical - Part 4')">Chemical - Part 4</button>
                     <br>/
-                    <span class="task-link" @click="emit('open-task-from-name', 'Out of Curiosity')">Out of Curiosity</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Out of Curiosity')">Out of Curiosity</button>
                 </td>
                 <td class="border-top border-secondary">Therapist</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4">T.H.I.C.C. Item Case</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Private Clinic')">Private Clinic</span> (報酬)
+                    <button class="task-link" @click="emit('open-task-from-name', 'Private Clinic')">Private Clinic</button> (報酬)
                 </td>
                 <td>Therapist</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4">Epsilon コンテナ</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'The Punisher - Part 6')">The Punisher - Part 6</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'The Punisher - Part 6')">The Punisher - Part 6</button>
                 </td>
                 <td>Prapor</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4 text-red">M855A1 (Craft)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Your Car Needs a Service')">Your Car Needs a Service</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Your Car Needs a Service')">Your Car Needs a Service</button>
                 </td>
                 <td>Peacekeeper</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4 text-red">M80A1 (M62) (Craft)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Wet Job - Part 6')">Wet Job - Part 6</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Wet Job - Part 6')">Wet Job - Part 6</button>
                 </td>
                 <td>Peacekeeper</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4 text-red">BP (7.62x39mm)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Intimidator')">Intimidator</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Intimidator')">Intimidator</button>
                 </td>
                 <td>Prapor</td>
             </tr>
             <tr>
                 <td class="fw-bold ps-4 text-info">M.U.L.E. (Craft)</td>
                 <td>
-                    <span class="task-link" @click="emit('open-task-from-name', 'Crisis')">Crisis</span>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Crisis')">Crisis</button>
                 </td>
                 <td>Therapist</td>
             </tr>

@@ -8,16 +8,30 @@
 
 import { JSON_API_URL } from '../data/constants.js';
 
+const REQUEST_TIMEOUT_MS = 30000;
+
 // ---------------------------------------------------------------------------
 // 低レベル fetch
 // ---------------------------------------------------------------------------
 
 async function fetchJsonPath(path) {
-  const response = await fetch(`${JSON_API_URL}${path}`, {
-    cache: 'no-cache',
-    headers: { Accept: 'application/json' },
-  });
-  const text = await response.text();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  let response;
+  let text;
+  try {
+    response = await fetch(`${JSON_API_URL}${path}`, {
+      cache: 'no-cache', headers: { Accept: 'application/json' }, signal: controller.signal,
+    });
+    // Keep the timeout active until the response body is fully consumed. A
+    // server can send headers and then stall while streaming the JSON body.
+    text = await response.text();
+  } catch (error) {
+    if (error?.name === 'AbortError') throw new Error(`JSON APIの応答がタイムアウトしました: ${path}`);
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   if (!response.ok) {
     throw new Error(`JSON API HTTP ${response.status}: ${path}`);
@@ -350,6 +364,7 @@ export function convertMainData(bundle) {
   const tasks = Object.values(tasksRaw).map((raw) => ({
     id: raw.id,
     name: tr(raw.name, tasksDict, tasksEnDict),
+    nameAliases: [...new Set([tr(raw.name, tasksDict, tasksEnDict), tr(raw.name, tasksEnDict, null)].filter(Boolean))],
     minPlayerLevel: raw.minPlayerLevel || 0,
     wikiLink: raw.wikiLink,
     trader: raw.trader ? traderRef(raw.trader, tradersById) : null,
@@ -391,6 +406,7 @@ export function convertMainData(bundle) {
   const hideoutStations = Object.values(hideoutRaw).map((raw) => ({
     id: raw.id,
     name: stationsById[raw.id]?.name || raw.normalizedName,
+    nameAliases: [...new Set([tr(raw.name, bundle.hideoutDict, bundle.hideoutEnDict), tr(raw.name, bundle.hideoutEnDict, null)].filter(Boolean))],
     normalizedName: raw.normalizedName,
     levels: (raw.levels || []).map((lvl) => ({
       id: lvl.id,
@@ -615,7 +631,7 @@ export function convertItemDb(bundle) {
     );
     seenItems.forEach((id) => {
       if (!usedInTasksByItem[id]) usedInTasksByItem[id] = [];
-      usedInTasksByItem[id].push({ name: taskName });
+      usedInTasksByItem[id].push({ id: task.id, name: taskName });
     });
   });
 
@@ -968,7 +984,7 @@ export function validateJsonBundle(bundle) {
   return true;
 }
 
-export function validateMainData(mainData) {
+export function validateMainData(mainData, { allowLegacyTraderIds = false } = {}) {
   if (!mainData) throw new Error('メインデータの変換結果が空です。');
   const { tasks, hideoutStations, items, maps, ammo } = mainData;
 
@@ -999,13 +1015,14 @@ export function validateMainData(mainData) {
       ) ||
       (task.traderLevelRequirements || []).some(
         (requirement) =>
-          !requirement.trader?.id || unresolvedName(requirement.trader.name),
+          (!allowLegacyTraderIds && !requirement.trader?.id) ||
+          unresolvedName(requirement.trader?.name),
       ) ||
       (task.otherRequirements || []).some((requirement) =>
         (requirement.trader &&
-          (!requirement.trader.id || unresolvedName(requirement.trader.name))) ||
+          ((!allowLegacyTraderIds && !requirement.trader.id) || unresolvedName(requirement.trader.name))) ||
         (requirement.traders || []).some(
-          (trader) => !trader.id || unresolvedName(trader.name),
+          (trader) => (!allowLegacyTraderIds && !trader.id) || unresolvedName(trader.name),
         ),
       ) ||
       (task.neededKeys || []).some((group) =>

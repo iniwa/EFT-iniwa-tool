@@ -53,10 +53,10 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. 「Kappa（カッパ）」とは？</summary>
                     <p>
-                        Fence のクエスト「Collector」を完了するともらえる
+                        通常の PvE / PvP では Fence のクエスト「Collector」を完了するともらえる
                         <strong>Kappa Secure Container（最大サイズの安全ポーチ）</strong>のことです。
                         多くの上級者プレイヤーが目指すゴールで、本ツールでも Collector 用納品アイテムを別カテゴリで集計しています。
-                        Seasonal PvPではシーズンごとに報酬や取得条件が異なる可能性があるため、ゲーム内の最新表示も確認してください。
+                        Patch 1.1 Season 1 の Seasonal PvP では Kappa Path を取得できず、Collector 完了は Dawn of a New Era 実績として扱われます。通常モードの条件をそのまま当てはめず、ゲーム内の最新表示も確認してください。
                     </p>
                 </details>
 
@@ -65,7 +65,7 @@ import { RouterLink } from 'vue-router'
                     <p>
                         ゲーム後半に登場する <strong>10人目のトレーダー</strong>です。
                         Lightkeeper のタスクを進めるには複数の前提条件と特殊な鍵が必要になります。
-                        鍵管理タブのプリセットに「Lightkeeper 用」セットがあります。
+                        鍵管理タブでは鍵の所持状態・レーティング・メモを手動で管理できます。
                     </p>
                 </details>
 
@@ -84,13 +84,13 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. 進捗データが消えてしまいました。復元できますか？</summary>
                     <p>
-                        申し訳ありませんが、データは利用者のブラウザ内（localStorage）にのみ保存されており、
-                        サーバーにはバックアップが残っていません。<strong>復元はできません。</strong>
+                        データは利用者のブラウザ内（localStorage）にのみ保存されており、
+                        サーバーにはバックアップが残っていません。Export ファイルが無い場合は<strong>復元できません</strong>。
                     </p>
                     <p>
                         今後の対策として、ヘッダー右上の <kbd>Export</kbd> ボタンで
                         定期的に JSON ファイルをダウンロードしてバックアップすることを強く推奨します。
-                        端末を変える際や、ブラウザのデータ削除をする前にも Export しておくと安全です。
+                        端末を変える際や、ブラウザのデータ削除をする前にも Export しておくと安全です。Export/Import はスキーマとゲームモードを検証し、選択モードの進捗（ストーリー・オーバーレイを含む）をまとめて扱います。
                     </p>
                 </details>
 
@@ -119,9 +119,17 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. PvE・PvP・Seasonal PvPの違いに対応していますか？</summary>
                     <p>
-                        対応しています。ヘッダーでモードを切り替えると、それぞれに応じた tarkov.dev データを取得します。
+                        対応しています。ヘッダーでモードを切り替えると、それぞれに応じた tarkov.dev データと進捗コンテキストへ切り替わります。
                         進捗は <strong>3モードで別々に保存</strong> されます。Seasonal PvPはゲーム内でも独立したプロフィールで、
                         シーズン更新時にリセットされるため、本ツール側のSeasonal PvP進捗も新シーズン開始時にリセットしてください。
+                    </p>
+                </details>
+
+                <details class="qa">
+                    <summary>Q. 配信オーバーレイは別ウィンドウでも同期しますか？</summary>
+                    <p>
+                        はい。オーバーレイは <code>?overlay=tasks</code> の URL を OBS のブラウザソースへ登録して使います。
+                        本体でモードや言語を変更すると、オーバーレイも同じモード・言語へ切り替わり、フォーカス中タスクと目標数を同期します。
                     </p>
                 </details>
 

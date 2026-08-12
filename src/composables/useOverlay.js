@@ -11,7 +11,7 @@ import { ref, watch } from 'vue';
 import { loadLS, saveLS } from './useStorage.js';
 import { useAppState } from './useAppState.js';
 
-const { gameMode } = useAppState();
+const { gameMode, apiLang, normalizeGameMode, normalizeApiLang } = useAppState();
 
 function modeKey(base) {
   return `eft_${gameMode.value}_${base}`;
@@ -55,24 +55,45 @@ const CHANNEL_NAME = 'eft_overlay_sync';
 let channel = null;
 let isApplyingRemote = false;
 
+export function isValidOverlayMessage(msg, currentMode) {
+  if (!msg || typeof msg !== 'object') return false;
+  if (msg.type === 'context') {
+    return msg.payload && typeof msg.payload === 'object' &&
+      ['pve', 'regular', 'pvp-season', 'pvp'].includes(msg.payload.mode) &&
+      ['ja', 'en'].includes(msg.payload.lang);
+  }
+  if (msg.type === 'focusedTaskIds') {
+    return msg.mode === currentMode && Array.isArray(msg.payload) &&
+      msg.payload.every((id) => typeof id === 'string' && id.length > 0);
+  }
+  if (msg.type === 'overlayItemCounts') {
+    return msg.mode === currentMode && msg.payload && typeof msg.payload === 'object' &&
+      !Array.isArray(msg.payload) &&
+      Object.values(msg.payload).every((count) => Number.isInteger(count) && count >= 0);
+  }
+  // These settings are intentionally shared across every game mode.
+  if (msg.type === 'overlayEnabled') return typeof msg.payload === 'boolean';
+  return msg.type === 'overlayConfig' && msg.payload && typeof msg.payload === 'object' && !Array.isArray(msg.payload);
+}
+
 function getChannel() {
   if (channel) return channel;
   if (typeof BroadcastChannel === 'undefined') return null;
   channel = new BroadcastChannel(CHANNEL_NAME);
   channel.addEventListener('message', (event) => {
     const msg = event.data;
-    if (!msg || typeof msg !== 'object') return;
+    if (!isValidOverlayMessage(msg, gameMode.value)) return;
     isApplyingRemote = true;
     try {
-      if (msg.type === 'focusedTaskIds') focusedTaskIds.value = msg.payload;
-      else if (msg.type === 'overlayItemCounts') overlayItemCounts.value = msg.payload;
+      if (msg.type === 'context') {
+        const mode = normalizeGameMode(msg.payload?.mode);
+        const lang = normalizeApiLang(msg.payload?.lang);
+        if (gameMode.value !== mode) gameMode.value = mode;
+        if (apiLang.value !== lang) apiLang.value = lang;
+      } else if (msg.type === 'focusedTaskIds' && msg.mode === gameMode.value) focusedTaskIds.value = msg.payload;
+      else if (msg.type === 'overlayItemCounts' && msg.mode === gameMode.value) overlayItemCounts.value = msg.payload;
       else if (msg.type === 'overlayEnabled') overlayEnabled.value = msg.payload;
       else if (msg.type === 'overlayConfig') overlayConfig.value = msg.payload;
-      else if (msg.type === 'gameMode') {
-        // 別タブでモード切替が起きた → このタブのデータを再読込
-        focusedTaskIds.value = loadLS(`eft_${msg.payload}_focused_tasks`, []);
-        overlayItemCounts.value = loadLS(`eft_${msg.payload}_overlay_item_counts`, {});
-      }
     } finally {
       isApplyingRemote = false;
     }
@@ -83,7 +104,7 @@ function getChannel() {
 function broadcast(type, payload) {
   if (isApplyingRemote) return;
   const ch = getChannel();
-  if (ch) ch.postMessage({ type, payload });
+  if (ch) ch.postMessage({ type, payload, mode: gameMode.value });
 }
 
 // ---------------------------------------------------------------------------
@@ -119,8 +140,10 @@ watch(gameMode, (newMode, oldMode) => {
   saveLS(`eft_${oldMode}_overlay_item_counts`, overlayItemCounts.value);
   focusedTaskIds.value = loadLS(`eft_${newMode}_focused_tasks`, []);
   overlayItemCounts.value = loadLS(`eft_${newMode}_overlay_item_counts`, {});
-  broadcast('gameMode', newMode);
+  broadcast('context', { mode: newMode, lang: apiLang.value });
 });
+
+watch(apiLang, (lang) => broadcast('context', { mode: gameMode.value, lang }));
 
 // ---------------------------------------------------------------------------
 // Methods

@@ -21,7 +21,7 @@ export function calculateShoppingList(itemsData, mapsData, allTaskData, addItemF
     if (item.normalizedName) itemByNorm[item.normalizedName] = item;
   }
 
-  // 2. 鍵とタスクの紐付け (keyId -> Set<taskName>)
+  // 2. 鍵とタスクの紐付け (keyId -> task records). Names are not unique.
   const keyTaskMap = {};
   if (allTaskData && Array.isArray(allTaskData)) {
     for (let i = 0; i < allTaskData.length; i++) {
@@ -32,8 +32,8 @@ export function calculateShoppingList(itemsData, mapsData, allTaskData, addItemF
         if (!group.keys) continue;
         for (let k = 0; k < group.keys.length; k++) {
           const key = group.keys[k];
-          if (!keyTaskMap[key.id]) keyTaskMap[key.id] = new Set();
-          keyTaskMap[key.id].add(task.name);
+          if (!keyTaskMap[key.id]) keyTaskMap[key.id] = new Map();
+          keyTaskMap[key.id].set(task.id, { id: task.id, name: task.name });
         }
       }
     }
@@ -82,22 +82,23 @@ export function calculateShoppingList(itemsData, mapsData, allTaskData, addItemF
     const normalizedName = fullKeyData.normalizedName || null;
 
     // タスク名一覧
-    let taskNames = [];
-    if (keyTaskMap[finalId]) taskNames = Array.from(keyTaskMap[finalId]);
+    let taskReferences = [];
+    if (keyTaskMap[finalId]) taskReferences = Array.from(keyTaskMap[finalId].values());
 
     // マップ名: 配列で保持 (複数マップに対応)
     const mapNames = keyLocationMap[finalId] || [];
     const mapName = mapNames.length > 0 ? mapNames[0] : 'Unknown / Other';
 
     // 登録
-    if (taskNames.length > 0) {
-      taskNames.forEach((tName) => {
+    if (taskReferences.length > 0) {
+      taskReferences.forEach((task) => {
         addItemFn({
           category: 'keys',
           itemId: finalId,
           itemName: keyName,
           count: 1,
-          sourceName: `Task: ${tName}`,
+          sourceName: `Task: ${task.name}`,
+          taskId: task.id,
           sourceType: 'task',
           mapName,
           wikiLink: wiki,
@@ -106,7 +107,7 @@ export function calculateShoppingList(itemsData, mapsData, allTaskData, addItemF
         });
       });
     } else {
-      // タ��クなし
+      // タスクなし
       addItemFn({
         category: 'keys',
         itemId: finalId,

@@ -49,19 +49,20 @@ const sections = [
 
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 情報はパッチ1.0.0.5、正式版直後の情報を元に作成しています。
+                ※ 静的メモの一部はパッチ1.0.0.5時点の情報です。Patch 1.1以降の価格・トレーダーLL・報酬変更はゲーム内表示を優先してください。
             </div>
 
             <div class="accordion accordion-flush">
                 <div v-for="section in sections" :key="section.key" class="accordion-item">
                     <h2 class="accordion-header">
-                        <div
+                        <button
+                            type="button"
                             class="memo-accordion-button"
                             :class="{ collapsed: !isOpen[section.key] }"
                             @click="toggleSection(section.key)"
                         >
                             <span class="me-2">{{ section.icon }}</span> {{ section.label }}
-                        </div>
+                        </button>
                     </h2>
                     <div v-show="isOpen[section.key]">
                         <div class="accordion-body p-0 bg-black">
@@ -94,6 +95,7 @@ const sections = [
     padding: 15px 20px;
     cursor: pointer;
     transition: background-color 0.2s;
+    width: 100%; text-align: left;
 }
 .memo-accordion-button:hover { filter: brightness(1.2); }
 .memo-accordion-button::after {

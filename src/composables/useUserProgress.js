@@ -4,12 +4,30 @@
 import { ref, watch } from 'vue';
 import { loadLS, saveLS } from './useStorage.js';
 import { useAppState } from './useAppState.js';
+import { normalizeHideoutAliases, resolveTaskReferences } from '../logic/progressMigration.js';
 
 // ---------------------------------------------------------------------------
 // モード別ストレージ
 // ---------------------------------------------------------------------------
 
 const { gameMode } = useAppState();
+
+// User-facing preferences only. API cooldown and migration markers intentionally
+// remain so reset cannot cause immediate re-fetch loops or rerun migrations.
+export const RESET_SETTING_KEYS = Object.freeze([
+  'eft_pve_level', 'eft_regular_level', 'eft_pvp-season_level', 'eft_level',
+  'eft_pvp_level',
+  'eft_gamemode', 'eft_apilang',
+  'eft_show_completed', 'eft_show_future', 'eft_show_maxed_hideout', 'eft_show_kappa', 'eft_show_lk', 'eft_show_story_tab',
+  'eft_keys_view_mode', 'eft_keys_sort_mode', 'eft_keys_collapsed_state',
+  'eft_flowchart_trader', 'eft_ammo_filters', 'eft_story_selected_chapter', 'memo_accordion_state',
+  'eft_overlay_enabled', 'eft_overlay_config',
+  'eft_notice_last_seen_version', 'eft_notice_permanently_hidden',
+]);
+
+export function clearResetSettings(storage = localStorage) {
+  RESET_SETTING_KEYS.forEach((key) => storage.removeItem(key));
+}
 
 /** 現在のゲームモードに対応するストレージキーを返す */
 function modeKey(base) {
@@ -31,10 +49,10 @@ export function sanitizeTaskStatuses(value) {
 export function sanitizeTraderProgress(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
 
-  const sanitized = {};
+  const sanitized = Object.create(null);
   Object.entries(value).forEach(([id, progress]) => {
-    if (!id || !progress || typeof progress !== 'object' || Array.isArray(progress)) return;
-    const next = {};
+    if (!safeStorageKey(id) || !progress || typeof progress !== 'object' || Array.isArray(progress)) return;
+    const next = Object.create(null);
     const level = Number(progress.level);
     const hasReputation = progress.reputation !== '' && progress.reputation != null;
     const reputation = Number(progress.reputation);
@@ -43,6 +61,11 @@ export function sanitizeTraderProgress(value) {
     if (Object.keys(next).length > 0) sanitized[id] = next;
   });
   return sanitized;
+}
+
+function safeStorageKey(value) {
+  return typeof value === 'string' && value.length > 0 &&
+    value !== '__proto__' && value !== 'prototype' && value !== 'constructor';
 }
 
 // マイグレーション: 旧キー → モード別キー（初回のみ）
@@ -293,6 +316,11 @@ function resetUserData(targets, hideoutData) {
     taskStatuses.value = {};
     traderProgress.value = {};
     traderRequirementsEnabled.value = false;
+    saveLS(modeKey('tasks'), []);
+    saveLS(modeKey('prioritized'), []);
+    saveLS(modeKey('task_statuses'), {});
+    saveLS(modeKey('trader_progress'), {});
+    saveLS(modeKey('trader_requirements_enabled'), false);
   }
 
   if (targets.hideout) {
@@ -303,35 +331,33 @@ function resetUserData(targets, hideoutData) {
       });
     }
     userHideout.value = resetHideout;
+    saveLS(modeKey('hideout'), resetHideout);
   }
 
   if (targets.keys) {
     ownedKeys.value = [];
     keyUserData.value = {};
+    saveLS(modeKey('keys'), []);
+    saveLS(modeKey('key_user_data'), {});
   }
 
   if (targets.items) {
     collectedItems.value = [];
+    saveLS(modeKey('collected'), []);
   }
 
   if (targets.wishlist) {
     wishlist.value = [];
+    saveLS(modeKey('wishlist'), []);
   }
 
   if (targets.story) {
     storyProgress.value = {};
+    saveLS(modeKey('story_progress'), {});
   }
 
   if (targets.settings) {
-    localStorage.removeItem('eft_pve_level');
-    localStorage.removeItem('eft_regular_level');
-    localStorage.removeItem('eft_pvp-season_level');
-    localStorage.removeItem('eft_gamemode');
-    localStorage.removeItem('eft_apilang');
-    localStorage.removeItem('eft_show_completed');
-    localStorage.removeItem('eft_show_future');
-    localStorage.removeItem('eft_show_kappa');
-    localStorage.removeItem('eft_show_lk');
+    clearResetSettings();
 
     // Reset in-memory values to defaults
     // (import from useAppState is avoided to prevent circular dep —
@@ -356,49 +382,11 @@ function migrateFromV2(tasks) {
   if (!tasks || tasks.length === 0) return;
   if (loadLS(MIGRATION_KEY, false)) return; // 変換済み
 
-  // 名前 → ID のマッピングを構築
-  const nameToId = new Map();
-  tasks.forEach((t) => {
-    if (t.name && t.id) nameToId.set(t.name, t.id);
-  });
-
-  // タスク名かIDかを判定: tarkov.dev のIDは24文字の16進数
-  const isTaskId = (val) => typeof val === 'string' && /^[0-9a-f]{24}$/.test(val);
-
-  // completedTasks の変換
-  const oldCompleted = completedTasks.value;
-  if (oldCompleted.length > 0 && !isTaskId(oldCompleted[0])) {
-    const migrated = [];
-    let converted = 0;
-    oldCompleted.forEach((name) => {
-      const id = nameToId.get(name);
-      if (id) {
-        migrated.push(id);
-        converted++;
-      }
-    });
-    completedTasks.value = migrated;
-    console.log(`[Migration] completedTasks: ${converted}/${oldCompleted.length} 件を名前→IDに変換`);
-  }
-
-  // prioritizedTasks の変換
-  const oldPrioritized = prioritizedTasks.value;
-  if (oldPrioritized.length > 0 && !isTaskId(oldPrioritized[0])) {
-    const migrated = [];
-    let converted = 0;
-    oldPrioritized.forEach((name) => {
-      const id = nameToId.get(name);
-      if (id) {
-        migrated.push(id);
-        converted++;
-      }
-    });
-    prioritizedTasks.value = migrated;
-    console.log(`[Migration] prioritizedTasks: ${converted}/${oldPrioritized.length} 件を名前→IDに変換`);
-  }
-
-  // 変換済みフラグを保存
-  saveLS(MIGRATION_KEY, true);
+  const completed = resolveTaskReferences(completedTasks.value, tasks);
+  const prioritized = resolveTaskReferences(prioritizedTasks.value, tasks);
+  if (JSON.stringify(completed.values) !== JSON.stringify(completedTasks.value)) completedTasks.value = completed.values;
+  if (JSON.stringify(prioritized.values) !== JSON.stringify(prioritizedTasks.value)) prioritizedTasks.value = prioritized.values;
+  if (completed.complete && prioritized.complete) saveLS(MIGRATION_KEY, true);
 }
 
 /**
@@ -409,11 +397,8 @@ function migrateFromV2(tasks) {
 function normalizeHideoutKeys(hideoutStations) {
   if (!hideoutStations || hideoutStations.length === 0) return;
 
-  // station.name → station.normalizedName マッピング
-  const nameToNormalized = new Map();
   const validNormalized = new Set();
   hideoutStations.forEach((s) => {
-    if (s.name && s.normalizedName) nameToNormalized.set(s.name, s.normalizedName);
     if (s.normalizedName) validNormalized.add(s.normalizedName);
   });
 
@@ -425,24 +410,9 @@ function normalizeHideoutKeys(hideoutStations) {
   const allNormalized = keys.every((k) => validNormalized.has(k));
   if (allNormalized) return;
 
-  const migrated = {};
-  let converted = 0;
-  for (const [key, level] of Object.entries(oldHideout)) {
-    if (validNormalized.has(key)) {
-      // 既にnormalizedName形式
-      migrated[key] = level;
-    } else {
-      const normalized = nameToNormalized.get(key);
-      if (normalized) {
-        migrated[normalized] = level;
-        converted++;
-      }
-      // マッチしないキーは破棄（別言語の古いデータ）
-    }
-  }
-  if (converted > 0) {
+  const migrated = normalizeHideoutAliases(oldHideout, hideoutStations);
+  if (JSON.stringify(migrated) !== JSON.stringify(oldHideout)) {
     userHideout.value = migrated;
-    console.log(`[normalizeHideoutKeys] ${converted} 件のキーをnormalizedNameに変換`);
   }
 }
 

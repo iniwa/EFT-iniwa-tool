@@ -2,12 +2,13 @@
 // タスク依存関係フローチャート表示
 // Mermaidでタスクの前提関係を視覚化する
 
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import mermaid from 'mermaid'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
 import * as TaskLogic from '../logic/taskLogic.js'
+import { getZoomedStageBounds } from '../logic/flowchartLogic.js'
 
 const {
   completedTasks,
@@ -27,12 +28,19 @@ const isInitialSetupMode = ref(false)
 const zoomLevel = ref(1.0)
 const mermaidContainer = ref(null)
 const chartStats = ref({ selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 })
+const chartNaturalSize = ref({ width: 1, height: 1 })
+const chartStageBounds = computed(() => getZoomedStageBounds(chartNaturalSize.value.width, chartNaturalSize.value.height, zoomLevel.value))
 
 // ノードIDからタスクへのマッピング (クリック処理用)
 let nodeMap = {}
 
 // レンダリングカウンター (ユニークなMermaid ID生成用)
 let renderCount = 0
+let renderTimer = null
+function scheduleRender() {
+  clearTimeout(renderTimer)
+  renderTimer = setTimeout(renderChart, 100)
+}
 
 // --- トレーダーリスト: taskDataから動的に生成 ---
 const traderList = computed(() => {
@@ -91,12 +99,13 @@ async function renderChart() {
   const requestId = ++renderCount
   if (!taskData.value || taskData.value.length === 0) {
     chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
+    chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">Loading...</span>'
     return
   }
 
   // スクロール位置を保存
-  const scrollParent = mermaidContainer.value.parentElement
+  const scrollParent = mermaidContainer.value.closest('.flowchart-scroll')
   const scrollTop = scrollParent ? scrollParent.scrollTop : 0
   const scrollLeft = scrollParent ? scrollParent.scrollLeft : 0
 
@@ -108,6 +117,7 @@ async function renderChart() {
 
   if (currentTraderTasks.length === 0) {
     chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
+    chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">該当するタスクがありません。</span>'
     return
   }
@@ -191,8 +201,6 @@ async function renderChart() {
     }
     graph += `  class ${nid} ${classes}\n`
 
-    // クリックターゲット
-    graph += `  click ${nid} call void(0) "${label}"\n`
   })
 
   // エッジ定義 (前提タスク → タスク)
@@ -228,6 +236,18 @@ async function renderChart() {
 
     // エッジ要素をクリック不可にする
     await nextTick()
+    if (requestId !== renderCount || !mermaidContainer.value) return
+    const renderedSvg = mermaidContainer.value.querySelector('svg')
+    if (renderedSvg) {
+      const viewBox = renderedSvg.viewBox?.baseVal
+      const rect = renderedSvg.getBoundingClientRect()
+      const svgWidth = renderedSvg.width?.baseVal?.value
+      const svgHeight = renderedSvg.height?.baseVal?.value
+      chartNaturalSize.value = {
+        width: viewBox?.width || svgWidth || (rect.width / zoomLevel.value) || 1,
+        height: viewBox?.height || svgHeight || (rect.height / zoomLevel.value) || 1,
+      }
+    }
     const edges = mermaidContainer.value.querySelectorAll('.edgePath, .edgeLabel')
     edges.forEach((el) => {
       el.style.pointerEvents = 'none'
@@ -237,6 +257,18 @@ async function renderChart() {
     const nodes = mermaidContainer.value.querySelectorAll('.node')
     nodes.forEach((el) => {
       el.style.cursor = 'pointer'
+      el.setAttribute('tabindex', '0')
+      el.setAttribute('role', 'button')
+      el.setAttribute('aria-label', `${el.textContent?.trim() || 'タスク'}: 詳細を開く`)
+      el.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return
+        event.preventDefault()
+        const match = (el.id || '').match(/t(\d+)/)
+        const task = match ? nodeMap[`t${match[1]}`] : null
+        if (!task) return
+        if (event.shiftKey) toggleTask(task.id)
+        else emit('open-task-details', task)
+      })
     })
   } catch (err) {
     if (requestId !== renderCount) return
@@ -249,6 +281,7 @@ async function renderChart() {
 
   // スクロール位置を復元
   await nextTick()
+  if (requestId !== renderCount) return
   if (scrollParent) {
     scrollParent.scrollTop = scrollTop
     scrollParent.scrollLeft = scrollLeft
@@ -296,11 +329,19 @@ function handleChartClick(event) {
 }
 
 // --- ウォッチャー: データ変更時に再描画 ---
-watch(flowchartTrader, () => renderChart())
-watch(completedTasks, () => renderChart(), { deep: true })
-watch(taskStatuses, () => renderChart(), { deep: true })
-watch(prioritizedTasks, () => renderChart(), { deep: true })
-watch(taskData, () => renderChart())
+watch(traderList, (list) => {
+  if (list.length && !list.includes(flowchartTrader.value)) flowchartTrader.value = 'All'
+}, { immediate: true })
+watch(flowchartTrader, scheduleRender)
+watch(completedTasks, scheduleRender, { deep: true })
+watch(taskStatuses, scheduleRender, { deep: true })
+watch(prioritizedTasks, scheduleRender, { deep: true })
+watch(taskData, (tasks) => {
+  // A context switch must not leave the previous graph interactive during the
+  // normal render debounce.
+  if (!tasks?.length) renderChart()
+  else scheduleRender()
+})
 
 // --- 初期化 ---
 onMounted(() => {
@@ -316,6 +357,7 @@ onMounted(() => {
   })
   renderChart()
 })
+onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++ })
 </script>
 
 <template>
@@ -391,17 +433,20 @@ onMounted(() => {
       </span>
     </div>
     <div
-      class="card-body bg-dark overflow-auto p-0"
+      class="card-body bg-dark overflow-auto p-0 flowchart-scroll"
       style="min-height: 60vh; position: relative;"
     >
-      <div
-        ref="mermaidContainer"
-        class="p-4 mermaid"
-        :style="{ zoom: zoomLevel, transformOrigin: 'top left' }"
-        style="min-width: 100%; width: max-content;"
-        @click="handleChartClick"
-      >
-        <span class="text-secondary">Loading...</span>
+      <div :style="{ width: `${Math.max(chartStageBounds.width, 1)}px`, height: `${Math.max(chartStageBounds.height, 1)}px`, minWidth: '100%' }">
+        <div
+          ref="mermaidContainer"
+          class="mermaid"
+          :style="{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left', width: `${chartNaturalSize.width}px`, height: `${chartNaturalSize.height}px` }"
+          @click="handleChartClick"
+          aria-live="polite"
+          aria-label="タスク依存関係フローチャート。EnterまたはSpaceで詳細、Shiftを押しながらクリック・Enter・Spaceで完了状態を切り替えます。"
+        >
+          <span class="text-secondary">Loading...</span>
+        </div>
       </div>
     </div>
   </div>

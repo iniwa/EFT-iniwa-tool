@@ -18,6 +18,7 @@ import {
   validateItemDb,
 } from '../logic/jsonApiAdapter.js';
 import { getTaskMaps } from '../logic/taskLogic.js';
+import { normalizeApiLang } from './useAppState.js';
 
 // ---------------------------------------------------------------------------
 // IndexedDB instance (shared)
@@ -86,6 +87,12 @@ let cooldownWriteQueue = Promise.resolve();
 
 function contextKeyFor(mode, lang) {
   return `${mode === 'pvp' ? 'regular' : mode}:${lang}`;
+}
+
+function legacyRecordContextKey(record) {
+  if (!record || !['pve', 'regular', 'pvp-season', 'pvp'].includes(record.gameMode)) return null;
+  if (!['ja', 'en'].includes(record.lang)) return null;
+  return contextKeyFor(record.gameMode, record.lang);
 }
 
 // ---------------------------------------------------------------------------
@@ -239,6 +246,7 @@ function processAmmo(rawAmmo, taskList) {
         if (taskReq && taskReq.stringValue) {
           t.taskUnlockName =
             taskMap.get(taskReq.stringValue) || 'Unknown Task';
+          t.taskUnlock = { id: taskReq.stringValue, name: t.taskUnlockName };
         }
       });
       traders.sort((x, y) => x.minTraderLevel - y.minTraderLevel);
@@ -305,15 +313,24 @@ function getApiResponseDetail(result) {
 }
 
 export async function requestGraphQL(query, variables) {
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({ query, variables }),
-  });
-  const responseText = await response.text();
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  let response;
+  let responseText;
+  try {
+    response = await fetch(API_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ query, variables }), signal: controller.signal,
+    });
+    // The request is not complete until the body has been read. Retaining the
+    // timer here also bounds a response that stalls after sending headers.
+    responseText = await response.text();
+  } catch (error) {
+    if (error?.name === 'AbortError') throw new Error('tarkov.dev APIの応答がタイムアウトしました。接続を確認して再試行してください。');
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
   let result;
   let invalidJson = false;
 
@@ -461,7 +478,9 @@ function getMainContextRecord(cache, contextKey) {
   if (!cache) return null;
   if (cache.contexts) return cache.contexts[contextKey] || null;
   if (isLegacyMainCache(cache)) {
-    if (legacyMainContextKey === null) legacyMainContextKey = contextKey;
+    const recordedContext = legacyRecordContextKey(cache);
+    if (recordedContext && recordedContext !== contextKey) return null;
+    if (legacyMainContextKey === null) legacyMainContextKey = recordedContext || contextKey;
     if (legacyMainContextKey === contextKey) return cache;
   }
   return null;
@@ -516,7 +535,9 @@ function getItemDbContextRecord(cache, contextKey) {
   if (!cache) return null;
   if (cache.contexts) return cache.contexts[contextKey] || null;
   if (isLegacyItemDbCache(cache)) {
-    if (legacyItemDbContextKey === null) legacyItemDbContextKey = contextKey;
+    const recordedContext = legacyRecordContextKey(cache);
+    if (recordedContext && recordedContext !== contextKey) return null;
+    if (legacyItemDbContextKey === null) legacyItemDbContextKey = recordedContext || contextKey;
     if (legacyItemDbContextKey === contextKey) return cache;
   }
   return null;
@@ -579,6 +600,7 @@ async function persistWithoutBreakingRefresh(label, operation) {
  */
 async function fetchData(gameMode, lang, manual = false, isLoading, loadError) {
   const mode = gameMode === 'pvp' ? 'regular' : gameMode;
+  lang = normalizeApiLang(lang);
   const contextKey = contextKeyFor(mode, lang);
   const requestId = ++currentMainRequestId;
   activeContextKey = contextKey;
@@ -708,7 +730,7 @@ async function fetchData(gameMode, lang, manual = false, isLoading, loadError) {
         items: result.data.items || [],
         maps: result.data.maps || [],
         ammo: result.data.ammo || [],
-      });
+      }, { allowLegacyTraderIds: true });
       if (requestId !== currentMainRequestId || activeContextKey !== contextKey) return;
 
       const processedTasks = processTasks(result.data.tasks || []);
@@ -834,6 +856,7 @@ async function fetchItemDatabase(gameMode, lang, forceUpdate = false) {
   if (itemDbLoading.value) return;
 
   const mode = gameMode === 'pvp' ? 'regular' : gameMode;
+  lang = normalizeApiLang(lang);
   const contextKey = contextKeyFor(mode, lang);
   if (
     !forceUpdate &&
@@ -1007,6 +1030,7 @@ async function fetchItemDatabase(gameMode, lang, forceUpdate = false) {
  */
 async function initFromCache(gameMode, lang) {
   const mode = gameMode === 'pvp' ? 'regular' : gameMode;
+  lang = normalizeApiLang(lang);
   const contextKey = contextKeyFor(mode, lang);
   const initRequestId = ++currentInitRequestId;
 
@@ -1017,6 +1041,12 @@ async function initFromCache(gameMode, lang) {
   activeContextKey = contextKey;
   itemDbLoading.value = false;
   dataWarning.value = null;
+
+  // Never expose records from the previous mode/language while the matching
+  // cache is being read. This is especially important for the OBS overlay,
+  // whose focused task IDs switch at the same time as the API context.
+  clearItemDbRecord(contextKey);
+  clearMainRecord(contextKey);
 
   let dbCache = null;
   let cache = null;
@@ -1040,9 +1070,6 @@ async function initFromCache(gameMode, lang) {
   ) {
     return false;
   }
-
-  clearItemDbRecord(contextKey);
-  clearMainRecord(contextKey);
 
   const dbRecord = getItemDbContextRecord(dbCache, contextKey);
   if (dbRecord && dbRecord.items) {

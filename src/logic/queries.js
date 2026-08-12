@@ -15,7 +15,7 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
     name
     minPlayerLevel
     wikiLink
-    trader { name imageLink }
+    trader { id name imageLink }
     map { name }
 
     neededKeys {
@@ -61,7 +61,7 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
 
     finishRewards {
       items { count item { id name } }
-      offerUnlock { level trader { name } item { name } }
+      offerUnlock { level trader { id name } item { name } }
       craftUnlock {
         station { name }
         level
@@ -245,7 +245,7 @@ query GetItemDb($gameMode: GameMode, $lang: LanguageCode) {
         item { id name iconLink }
       }
     }
-    usedInTasks { name }
+    usedInTasks { id name }
     bartersUsing {
       trader { name }
       level

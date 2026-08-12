@@ -1,0 +1,6 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' https://dc2urtglyf5ra4zkttctcwshfndmexavytmxbt5x.iniwach.com 'sha256-joMHmit4A6ULYcwaNeYaivc5WXfsf9+CYaCXCYRlkPw=' 'sha256-uRry3tnC6kpMFyNuiQ6mWTU050lf25QmXHheQ9jrGxs='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' https: data:; connect-src 'self' https://json.tarkov.dev https://api.tarkov.dev https://dc2urtglyf5ra4zkttctcwshfndmexavytmxbt5x.iniwach.com; worker-src 'self' blob:; frame-src 'self'; form-action 'self';

@@ -15,6 +15,8 @@ import AppFooter from './components/AppFooter.vue'
 import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
 import TaskModal from './components/TaskModal.vue'
+import { resolveTaskReference } from './logic/taskReference.js'
+import BaseModal from './components/ui/BaseModal.vue'
 
 // ---------------------------------------------------------------------------
 // State
@@ -44,6 +46,8 @@ const { overlayEnabled } = useOverlay()
 // タスク詳細モーダル
 const selectedTask = ref(null)
 const showTaskModal = ref(false)
+const taskReferenceChoices = ref([])
+const taskReferenceMessage = ref('')
 
 // ファイルインポート用 hidden input
 const fileInput = ref(null)
@@ -93,12 +97,23 @@ function closeTaskModal() {
 }
 
 /** タスク名からタスクオブジェクトを探してモーダルを開く */
-function openTaskFromName(taskName) {
-    if (!taskData.value) return
-    const task = taskData.value.find(t => t.name === taskName)
-    if (task) {
-        openTaskDetails(task)
+function openTaskFromName(reference) {
+    if (isLoading.value) {
+        taskReferenceMessage.value = 'タスクデータを読み込み中のため、参照を開けません。'
+        return
     }
+    if (!taskData.value?.length) {
+        taskReferenceMessage.value = loadError.value
+            ? 'タスクデータを取得できていないため、参照を開けません。'
+            : 'タスクデータがまだありません。データ更新後に再試行してください。'
+        return
+    }
+    const result = resolveTaskReference(reference, taskData.value)
+    taskReferenceChoices.value = []
+    taskReferenceMessage.value = ''
+    if (result.status === 'resolved') openTaskDetails(result.task)
+    else if (result.status === 'ambiguous') taskReferenceChoices.value = result.matches
+    else taskReferenceMessage.value = '参照されたタスクは現在のデータに見つかりません。'
 }
 
 function triggerImport() {
@@ -108,8 +123,7 @@ function triggerImport() {
 async function handleFileImport(event) {
     const file = event.target.files?.[0]
     if (!file) return
-    await importData(file)
-    event.target.value = ''
+    try { await importData(file) } catch (error) { console.error('Import failed:', error) } finally { event.target.value = '' }
 }
 
 // gameMode / apiLang 変更時にデータを再取得
@@ -150,6 +164,12 @@ watch(hideoutData, (stations) => {
     if (stations && stations.length > 0) {
         normalizeHideoutKeys(stations)
     }
+})
+
+// A cache miss on first mount can leave v2 names unresolved. Retry whenever
+// the current API context supplies tasks (including a language switch).
+watch(taskData, (tasks) => {
+    if (tasks && tasks.length > 0) migrateFromV2(tasks)
 })
 </script>
 
@@ -215,6 +235,20 @@ watch(hideoutData, (stations) => {
             :show="showTaskModal"
             @close="closeTaskModal"
         />
+        <BaseModal :show="taskReferenceChoices.length > 0" aria-label="同名タスクを選択" @close="taskReferenceChoices = []">
+            <template v-if="taskReferenceChoices.length">
+                <h2 class="h5">同名のタスクを選択してください</h2>
+                <p class="small text-muted">この参照だけでは一意に特定できません。</p>
+                <div class="vstack gap-2">
+                    <button v-for="task in taskReferenceChoices" :key="task.id" class="btn btn-outline-info text-start" @click="openTaskDetails(task); taskReferenceChoices = []">{{ task.name }} — {{ task.trader?.name || 'Unknown' }} ({{ task.id.slice(-8) }})</button>
+                </div>
+                <button class="btn btn-secondary btn-sm mt-3" @click="taskReferenceChoices = []">閉じる</button>
+            </template>
+        </BaseModal>
+        <div v-if="taskReferenceMessage" class="alert alert-warning mt-3" role="status">
+            {{ taskReferenceMessage }}
+            <button class="btn btn-sm btn-outline-warning ms-2" @click="taskReferenceMessage = ''">閉じる</button>
+        </div>
 
         <!-- 更新通知 -->
         <AppNotice ref="noticeRef" />

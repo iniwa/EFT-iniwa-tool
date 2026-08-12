@@ -51,18 +51,19 @@ const routes = [
         component: () => import('../components/MemoView.vue'),
         meta: { label: '📋 メモ', tab: true, title: 'メモ' },
     },
+    { path: '/settings', name: 'settings', component: () => import('../components/SettingsView.vue'), meta: { label: '⚙️ 設定', tab: true, title: '設定' } },
     {
         path: '/overlay',
         name: 'overlay',
         component: () => import('../components/OverlaySettings.vue'),
         meta: { label: '📺 配信オーバーレイ', tab: true, requiresFlag: 'overlayEnabled', title: '配信オーバーレイ' },
     },
-    {
+    ...(import.meta.env.DEV ? [{
         path: '/debug',
         name: 'debug',
         component: () => import('../components/DebugView.vue'),
         meta: { label: 'デバッグ', tab: true, cssClass: 'text-secondary', title: 'デバッグ' },
-    },
+    }] : []),
 
     // --- 静的ページ（タブには表示しない） ---
     {

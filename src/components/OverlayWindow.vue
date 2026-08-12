@@ -3,6 +3,8 @@
     class="overlay-root"
     :style="{ fontSize: overlayConfig.fontSize + 'px', color: overlayConfig.textColor }"
   >
+    <div v-if="!focusedTasks.length && isLoading" class="overlay-diagnostic">Loading tasks…</div>
+    <div v-else-if="!focusedTasks.length && loadError" class="overlay-diagnostic">{{ loadError }}</div>
     <div
       v-for="task in focusedTasks"
       :key="task.id"
@@ -63,7 +65,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useApiData } from '../composables/useApiData.js';
 import { useOverlay } from '../composables/useOverlay.js';
 import { useAppState } from '../composables/useAppState.js';
@@ -77,6 +79,11 @@ onMounted(async () => {
   if (shouldFetch) {
     await fetchData(gameMode.value, apiLang.value, false, isLoading, loadError);
   }
+});
+
+watch([gameMode, apiLang], async ([mode, lang]) => {
+  const shouldFetch = await initFromCache(mode, lang);
+  if (shouldFetch) await fetchData(mode, lang, false, isLoading, loadError);
 });
 
 const focusedTasks = computed(() => {
@@ -124,6 +131,10 @@ body,
 }
 .overlay-task {
   margin-bottom: 16px;
+}
+.overlay-diagnostic {
+  opacity: 0.8;
+  font-size: 0.8em;
 }
 .overlay-task-header {
   display: flex;

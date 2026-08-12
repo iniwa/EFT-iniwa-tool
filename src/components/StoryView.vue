@@ -3,8 +3,11 @@ import { ref, computed, watch } from 'vue'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { MAIN_CHAPTERS } from '../data/storyChaptersMain.js'
 import { SIDE_CHAPTERS } from '../data/storyChaptersSide.js'
+import { toHttpsUrl } from '../logic/taskReference.js'
+import { getBulkCompletableStepIds } from '../logic/storyLogic.js'
 
 const STORY_CHAPTERS = [...MAIN_CHAPTERS, ...SIDE_CHAPTERS]
+const safeUrl = toHttpsUrl
 
 const { storyProgress, updateStoryProgress } = useUserProgress()
 
@@ -27,9 +30,10 @@ watch(() => storyProgress.value?.falling_skies?.fs_case_choice, (val) => {
 }, { immediate: true })
 
 // --- Computed ---
-const activeChapter = computed(() =>
-  STORY_CHAPTERS.find(c => c.id === selectedChapterId.value)
-)
+const activeChapter = computed(() => STORY_CHAPTERS.find(c => c.id === selectedChapterId.value))
+watch(activeChapter, (chapter) => {
+  if (!chapter && STORY_CHAPTERS.length) selectedChapterId.value = STORY_CHAPTERS[0].id
+}, { immediate: true })
 
 // --- Methods ---
 
@@ -107,18 +111,11 @@ function toggleOptional(phaseId) {
   expandedOptionals.value[phaseId] = !expandedOptionals.value[phaseId]
 }
 
-/** チャプター全体を完了状態にする（確認ダイアログ付き） */
+/** Complete only deterministic checks; choices always remain an explicit user decision. */
 function completeChapter() {
   if (!activeChapter.value) return
-  if (!confirm(`「${activeChapter.value.title}」の全必須タスクを完了状態にしますか？`)) return
-  activeChapter.value.phases.forEach(phase => {
-    const { required } = getPhaseSteps(phase)
-    required.forEach(s => {
-      if (s.type === 'check' || s.type === 'wait') {
-        onUpdateStep(s.id, true)
-      }
-    })
-  })
+  if (!confirm(`「${activeChapter.value.title}」のチェック項目を完了にしますか？選択肢は変更されません。`)) return
+  getBulkCompletableStepIds(activeChapter.value, (step) => isStepVisible(step, selectedChapterId.value)).forEach((id) => onUpdateStep(id, true))
 }
 
 /** チャプター全体をリセットする（確認ダイアログ付き） */
@@ -209,7 +206,7 @@ const sideChapters = computed(() => STORY_CHAPTERS.filter(c => c.category === 's
             <div class="card-body py-3">
               <h6 class="card-title text-danger fw-bold mb-2">注意事項 (Spoiler Warning)</h6>
               <ul class="small mb-0 ps-3 text-light" style="line-height: 1.6;">
-                <li>このタブは「DEBUG」タブにて非表示に設定可能です。</li>
+                <li>このタブは「設定」タブにて非表示に設定可能です。</li>
                 <li>静的な<a href="https://escapefromtarkov.fandom.com/wiki/Story_chapters" target="_blank" rel="noopener" class="text-info">英語wiki</a>情報を基にした案内です。KORD BREACH / Boreasの完全な攻略手順ではなく、今後のアップデートで内容が変わる可能性があります。</li>
                 <li>チャプター間の選択肢は自動連動します（例: Falling Skiesの選択 → The Ticketのルート分岐）。</li>
               </ul>
@@ -231,17 +228,17 @@ const sideChapters = computed(() => STORY_CHAPTERS.filter(c => c.category === 's
                   v-if="!isChapterCompleted"
                   class="btn btn-sm btn-outline-success"
                   @click="completeChapter"
-                >&#10003; 全完了</button>
+                >&#10003; チェック項目を一括完了</button>
                 <button
                   v-else
                   class="btn btn-sm btn-outline-secondary"
                   @click="resetChapter"
                 >リセット</button>
                 <a
-                  v-if="activeChapter.wikiLink"
-                  :href="activeChapter.wikiLink"
+                  v-if="safeUrl(activeChapter.wikiLink)"
+                  :href="safeUrl(activeChapter.wikiLink)"
                   target="_blank"
-                  rel="noopener"
+                  rel="noopener noreferrer"
                   class="btn btn-sm btn-outline-info"
                 >Wiki</a>
               </div>

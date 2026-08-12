@@ -38,3 +38,6 @@ dist/
 
 # Claude Code
 .claude/
+
+# Codex local settings
+.codex/

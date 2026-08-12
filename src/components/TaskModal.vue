@@ -8,6 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
+import { toHttpsUrl } from '../logic/taskReference.js'
 
 const {
   completedTasks,
@@ -30,6 +31,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+const safeUrl = toHttpsUrl
 
 const taskStatus = computed(() => {
   if (!props.task) return 'unstarted'
@@ -91,7 +93,7 @@ function otherRequirementLabel(requirement) {
 </script>
 
 <template>
-  <BaseModal :show="show" max-width="700px" @close="emit('close')">
+  <BaseModal :show="show" max-width="700px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
       <!-- 進捗/優先トグル + 閉じるボタン -->
       <div class="d-flex justify-content-between align-items-start mb-3">
@@ -132,6 +134,7 @@ function otherRequirementLabel(requirement) {
           type="button"
           class="btn-close btn-close-white flex-shrink-0 ms-3"
           @click="emit('close')"
+          aria-label="閉じる"
         ></button>
       </div>
 
@@ -189,8 +192,8 @@ function otherRequirementLabel(requirement) {
 
         <ul v-if="task.traderLevelRequirements?.length" class="list-group mb-2">
           <li
-            v-for="requirement in task.traderLevelRequirements"
-            :key="requirement.id"
+            v-for="(requirement, requirementIndex) in task.traderLevelRequirements"
+            :key="requirement.id || `${requirement.trader?.id || requirement.trader?.name}:${requirement.requirementType}:${requirementIndex}`"
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>{{ traderRequirementLabel(requirement) }}</span>
@@ -215,8 +218,8 @@ function otherRequirementLabel(requirement) {
 
         <ul v-if="task.otherRequirements?.length" class="list-group">
           <li
-            v-for="requirement in task.otherRequirements"
-            :key="requirement.id"
+            v-for="(requirement, requirementIndex) in task.otherRequirements"
+            :key="requirement.id || `${requirement.type || requirement.requirementType}:${requirementIndex}`"
             class="list-group-item bg-dark text-light border-secondary py-2"
           >
             {{ otherRequirementLabel(requirement) }}
@@ -255,9 +258,10 @@ function otherRequirementLabel(requirement) {
               </span>
               <span v-if="keyItem.shortName" class="text-muted small">({{ keyItem.shortName }})</span>
               <a
-                v-if="keyItem.wikiLink"
-                :href="keyItem.wikiLink"
+                v-if="safeUrl(keyItem.wikiLink)"
+                :href="safeUrl(keyItem.wikiLink)"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-sm btn-outline-secondary py-0 px-1"
                 style="font-size: 0.7em;"
               >Wiki</a>
@@ -269,9 +273,10 @@ function otherRequirementLabel(requirement) {
       <!-- Wikiリンク -->
       <div class="d-grid gap-2 mb-4">
         <a
-          v-if="task.wikiLink"
-          :href="task.wikiLink"
+          v-if="safeUrl(task.wikiLink)"
+          :href="safeUrl(task.wikiLink)"
           target="_blank"
+          rel="noopener noreferrer"
           class="btn btn-outline-info btn-sm"
         >📖 Wikiで詳細を見る</a>
       </div>

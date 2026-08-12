@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
         <div class="card">
             <div class="card-body">
                 <h2 class="mb-3" style="color: var(--color-accent);">プライバシーポリシー</h2>
-                <p class="text-muted" style="font-size: 0.9em;">最終更新: 2026年8月12日</p>
+                <p class="text-muted" style="font-size: 0.9em;">最終更新: 2026年8月13日</p>
 
                 <section class="mb-4">
                     <h4>1. はじめに</h4>
@@ -29,11 +29,15 @@ import { RouterLink } from 'vue-router'
                         また、当サイトの「Export」機能で JSON ファイルとしてダウンロードしてバックアップしたり、
                         「Import」機能で復元したりすることができます。
                     </p>
+                    <p>
+                        アプリ内の設定リセットでは、表示設定・プレイヤーレベル・通知状態などを初期化します。
+                        API の 5 分間クールダウンと、旧形式との互換性を保つ移行マーカーは安全のため保持されます。
+                    </p>
 
                     <details class="ls-details">
                         <summary>📂 実際に保存されるキーの一覧（クリックで展開）</summary>
                         <p class="small text-muted mt-2 mb-2">
-                            すべて <code>eft_</code> または <code>memo_</code> プレフィックスで始まる key として保存されます。
+                            localStorage の項目は <code>eft_</code> または <code>memo_</code> プレフィックスで始まる key として保存されます。
                             下記の <code>&#123;mode&#125;</code> はゲームモード（<code>pve</code>、<code>regular</code>、<code>pvp-season</code>）に置き換わります。
                         </p>
 
@@ -52,6 +56,7 @@ import { RouterLink } from 'vue-router'
                             <li><code>eft_&#123;mode&#125;_story_progress</code> — ストーリータブの進捗</li>
                             <li><code>eft_&#123;mode&#125;_level</code> — プレイヤーレベル</li>
                             <li><code>eft_&#123;mode&#125;_focused_tasks</code> / <code>eft_&#123;mode&#125;_overlay_item_counts</code> — 配信オーバーレイに表示するタスクと目標数</li>
+                            <li><code>eft_keys_collapsed_state</code> — 鍵管理で折りたたんだマップの状態</li>
                         </ul>
 
                         <h6 class="mt-3">UI 設定（モード横断）</h6>
@@ -77,9 +82,19 @@ import { RouterLink } from 'vue-router'
                             <li><code>eft_notice_permanently_hidden</code> — 通知モーダル「今後一切表示しない」フラグ</li>
                         </ul>
 
+                        <h6 class="mt-3">IndexedDB（APIデータ）</h6>
+                        <ul class="small">
+                            <li><code>eft_api_cache_v31_idb</code> — モード・言語ごとのタスク、ハイドアウト、鍵、弾薬データの最終正常キャッシュ</li>
+                            <li><code>eft_item_db_cache</code> — アイテム検索用データの最終正常キャッシュ</li>
+                            <li><code>eft_fetch_cooldowns_v313</code> — tarkov.dev 更新要求の5分間クールダウン時刻</li>
+                        </ul>
+
                         <p class="small text-muted mt-2 mb-0">
-                            これらは <strong>すべて利用者のブラウザ内に保存され</strong>、当サイトのサーバーや
+                            localStorage と IndexedDB の内容は <strong>すべて利用者のブラウザ内に保存され</strong>、当サイトのサーバーや
                             その他の外部サービスへは送信されません。
+                        </p>
+                        <p class="small text-muted mt-2 mb-0">
+                            Export は選択したゲームモードの localStorage データ（タスク、ハイドアウト、鍵、ストーリー、オーバーレイ等）を JSON にまとめます。tarkov.dev のゲームデータキャッシュ（IndexedDB）はバックアップ対象外です。
                         </p>
                     </details>
                 </section>

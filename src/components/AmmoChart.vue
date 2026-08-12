@@ -5,6 +5,7 @@ import { useApiData } from '../composables/useApiData.js'
 import { CALIBER_GROUPS, CALIBER_MAP } from '../data/caliberData.js'
 import { loadLS, saveLS } from '../composables/useStorage.js'
 import BaseModal from './ui/BaseModal.vue'
+import { toHttpsUrl } from '../logic/taskReference.js'
 
 const emit = defineEmits(['open-task-from-name'])
 
@@ -18,6 +19,7 @@ const selectedCalibers = ref(loadLS('eft_ammo_filters', []))
 const sortKey = ref('penetrationPower')
 const sortDesc = ref(true)
 const selectedAmmo = ref(null)
+const safeUrl = toHttpsUrl
 
 // フィルター選択の永続化
 watch(selectedCalibers, (val) => saveLS('eft_ammo_filters', val), { deep: true })
@@ -261,51 +263,22 @@ function closeDetail() {
           >
             <thead class="sticky-top bg-dark" style="z-index: 10">
               <tr>
-                <th
-                  @click="sortBy('name')"
-                  style="cursor: pointer"
-                  :class="getSortClass('name')"
-                >
-                  名前
+                <th :aria-sort="sortKey === 'name' ? (sortDesc ? 'descending' : 'ascending') : 'none'"><button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('name')" @click="sortBy('name')">名前</button>
                 </th>
-                <th
-                  @click="sortBy('caliber')"
-                  style="cursor: pointer"
-                  :class="getSortClass('caliber')"
-                >
-                  口径
+                <th :aria-sort="sortKey === 'caliber' ? (sortDesc ? 'descending' : 'ascending') : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('caliber')" @click="sortBy('caliber')">口径</button>
                 </th>
-                <th
-                  @click="sortBy('damage')"
-                  style="cursor: pointer"
-                  class="text-end"
-                  :class="getSortClass('damage')"
-                >
-                  ダメージ
+                <th class="text-end" :aria-sort="sortKey === 'damage' ? (sortDesc ? 'descending' : 'ascending') : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('damage')" @click="sortBy('damage')">ダメージ</button>
                 </th>
-                <th
-                  @click="sortBy('penetrationPower')"
-                  style="cursor: pointer"
-                  class="text-end"
-                  :class="getSortClass('penetrationPower')"
-                >
-                  貫通力
+                <th class="text-end" :aria-sort="sortKey === 'penetrationPower' ? (sortDesc ? 'descending' : 'ascending') : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('penetrationPower')" @click="sortBy('penetrationPower')">貫通力</button>
                 </th>
-                <th
-                  @click="sortBy('armorDamage')"
-                  style="cursor: pointer"
-                  class="text-end"
-                  :class="getSortClass('armorDamage')"
-                >
-                  アーマーDmg
+                <th class="text-end" :aria-sort="sortKey === 'armorDamage' ? (sortDesc ? 'descending' : 'ascending') : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('armorDamage')" @click="sortBy('armorDamage')">アーマーDmg</button>
                 </th>
-                <th
-                  @click="sortBy('projectileSpeed')"
-                  style="cursor: pointer"
-                  class="text-end"
-                  :class="getSortClass('projectileSpeed')"
-                >
-                  初速
+                <th class="text-end" :aria-sort="sortKey === 'projectileSpeed' ? (sortDesc ? 'descending' : 'ascending') : 'none'">
+                  <button type="button" class="btn btn-link p-0 text-decoration-none" :class="getSortClass('projectileSpeed')" @click="sortBy('projectileSpeed')">初速</button>
                 </th>
                 <th class="text-center text-white">販売</th>
                 <th class="text-center text-white">製造</th>
@@ -314,9 +287,9 @@ function closeDetail() {
             <tbody>
               <tr v-for="ammo in filteredAmmo" :key="ammo.id">
                 <td>
-                  <div
+                  <button type="button"
                     @click="openDetail(ammo)"
-                    class="text-info fw-bold d-flex align-items-center gap-2"
+                    class="btn p-0 border-0 bg-transparent text-info text-start fw-bold d-flex align-items-center gap-2"
                     style="cursor: pointer"
                   >
                     <img
@@ -325,7 +298,7 @@ function closeDetail() {
                       style="width: 24px; height: 24px; object-fit: contain"
                     />
                     {{ ammo.shortName || ammo.name }}
-                  </div>
+                  </button>
                 </td>
                 <td class="text-muted small">
                   {{ getCaliberInfo(ammo.caliber).name }}
@@ -366,6 +339,7 @@ function closeDetail() {
     <BaseModal
       :show="selectedAmmo !== null"
       max-width="700px"
+      :aria-label="selectedAmmo ? `${selectedAmmo.name} の詳細` : '弾薬詳細'"
       @close="closeDetail"
     >
       <template v-if="selectedAmmo">
@@ -385,6 +359,7 @@ function closeDetail() {
             <button
               type="button"
               class="btn-close btn-close-white"
+              aria-label="閉じる"
               @click="closeDetail"
             ></button>
           </div>
@@ -523,13 +498,13 @@ function closeDetail() {
                       class="small text-warning"
                     >
                       要:
-                      <span
-                        class="text-decoration-underline"
+                      <button type="button"
+                        class="btn p-0 border-0 bg-transparent text-warning text-decoration-underline"
                         style="cursor: pointer"
-                        @click="emit('open-task-from-name', deal.taskUnlockName)"
+                        @click="emit('open-task-from-name', deal.taskUnlock || deal.taskUnlockName)"
                       >
                         {{ deal.taskUnlockName }}
-                      </span>
+                      </button>
                     </div>
                   </div>
                   <span class="fw-bold text-warning">
@@ -566,13 +541,13 @@ function closeDetail() {
                       class="small text-warning"
                     >
                       要:
-                      <span
-                        class="text-decoration-underline"
+                      <button type="button"
+                        class="btn p-0 border-0 bg-transparent text-warning text-decoration-underline"
                         style="cursor: pointer"
-                        @click="emit('open-task-from-name', craft.taskUnlock.name)"
+                        @click="emit('open-task-from-name', craft.taskUnlock)"
                       >
                         {{ craft.taskUnlock.name }}
-                      </span>
+                      </button>
                     </div>
                   </div>
                   <div class="text-end">
@@ -615,9 +590,10 @@ function closeDetail() {
 
             <!-- Wiki リンク -->
             <div class="d-grid gap-2 mt-3">
-              <a
-                :href="selectedAmmo.wikiLink"
+              <a v-if="safeUrl(selectedAmmo.wikiLink)"
+                :href="safeUrl(selectedAmmo.wikiLink)"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-outline-info btn-sm"
               >
                 Wikiで詳細を見る

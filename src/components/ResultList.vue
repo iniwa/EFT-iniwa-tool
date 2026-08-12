@@ -42,9 +42,9 @@ function toggleItemDetails(uid) {
                 :checked="collectedItems.includes(item.uid)"
                 @click.stop="toggleCollected(item.uid)"
               >
-              <div
-                class="d-flex justify-content-between align-items-center w-100"
-                style="cursor: pointer;"
+              <button
+                type="button"
+                class="btn p-0 border-0 bg-transparent text-start text-light d-flex justify-content-between align-items-center w-100"
                 @click="toggleItemDetails(item.uid)"
               >
                 <span :class="{ 'item-collected': collectedItems.includes(item.uid) }">
@@ -56,7 +56,7 @@ function toggleItemDetails(uid) {
                 >
                   {{ item.count }}
                 </span>
-              </div>
+              </button>
             </div>
 
             <!-- ソース詳細 (展開時) -->
@@ -64,12 +64,12 @@ function toggleItemDetails(uid) {
               v-if="expandedItems[item.uid]"
               class="mt-2 small text-muted border-top border-secondary pt-1"
             >
-              <div v-for="source in item.sources" :key="source.name + source.type">
+              <div v-for="source in item.sources" :key="`${source.type}:${source.taskId || source.name}`">
                 <span v-if="source.type === 'task' || source.type === 'collector'">
-                  ・<span
+                  ・<button type="button"
                     class="source-task-link"
-                    @click="emit('open-task-from-name', source.name)"
-                  >{{ source.name }}</span> (x{{ source.count }})
+                    @click="emit('open-task-from-name', { id: source.taskId, name: source.name })"
+                  >{{ source.name }}</button> (x{{ source.count }})
                 </span>
                 <span v-else>
                   ・{{ source.name }} (x{{ source.count }})

@@ -5,6 +5,8 @@ import { useApiData } from '../composables/useApiData.js'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import * as ItemLogic from '../logic/itemLogic.js'
+import { resolveTaskReference, toHttpsUrl } from '../logic/taskReference.js'
+import BaseModal from './ui/BaseModal.vue'
 
 const emit = defineEmits(['open-task-from-name'])
 
@@ -36,6 +38,7 @@ const itemsPerPage = 50
 const expandedItems = reactive({})
 const selectedBarter = ref(null)
 const selectedCraft = ref(null)
+const safeUrl = toHttpsUrl
 
 // 検索条件が変わったらページを1に戻す
 watch(searchQuery, () => { currentPage.value = 1 })
@@ -68,10 +71,10 @@ function toggleDetails(id) {
 }
 
 /** タスク完了判定 (completedTasksはIDベース、usedInTasksはname参照) */
-function isTaskDone(taskName) {
+function isTaskDone(reference) {
   if (!taskData.value) return false
-  const task = taskData.value.find(t => t.name === taskName)
-  return task ? completedTasks.value.includes(task.id) : false
+  const result = resolveTaskReference(reference, taskData.value)
+  return result.status === 'resolved' && completedTasks.value.includes(result.task.id)
 }
 
 /** トレーダーへの最高売却価格 */
@@ -278,7 +281,7 @@ function nextPage() {
           <tbody>
             <template v-for="item in paginatedItems" :key="item.id">
               <!-- メイン行 -->
-              <tr @click="toggleDetails(item.id)" style="cursor: pointer">
+              <tr>
                 <td>
                   <img
                     :src="item.iconLink"
@@ -287,7 +290,7 @@ function nextPage() {
                   />
                 </td>
                 <td>
-                  <div class="fw-bold">
+                  <button type="button" class="btn p-0 text-start text-white fw-bold" @click="toggleDetails(item.id)" :aria-expanded="Boolean(expandedItems[item.id])" :aria-label="`${item.name} の詳細を${expandedItems[item.id] ? '閉じる' : '開く'}`">
                     <span
                       v-if="wishlist.includes(item.id)"
                       class="text-warning me-1"
@@ -295,7 +298,7 @@ function nextPage() {
                       ★
                     </span>
                     {{ item.name }}
-                  </div>
+                  </button>
                   <div class="small text-muted">{{ item.shortName }}</div>
                 </td>
                 <td class="text-end font-monospace">
@@ -348,17 +351,17 @@ function nextPage() {
                                 {{ src.vendor }} {{ src.level }}
                               </span>
                             </div>
-                            <div
+                            <button
+                              type="button"
                               v-if="src.type === 'barter'"
-                              class="d-flex flex-wrap gap-1 align-items-center"
-                              style="cursor: pointer"
-                              @click.stop="openBarterPopup(src.raw)"
+                              class="btn p-0 d-flex flex-wrap gap-1 align-items-center text-start"
+                              @click="openBarterPopup(src.raw)"
                             >
                               <span class="small text-muted me-1">交換:</span>
                               <span class="text-info text-decoration-underline">
                                 レシピ表示
                               </span>
-                            </div>
+                            </button>
                             <div v-else class="fw-bold text-success small ps-1">
                               {{ formatPrice(src.price, src.currency) }}
                             </div>
@@ -394,13 +397,12 @@ function nextPage() {
                             >
                               x{{ getCraftCount(c, item.id) }}
                             </span>
-                            <span
-                              class="text-info text-decoration-underline small ms-1"
-                              style="cursor: pointer"
-                              @click.stop="openCraftPopup(c)"
+                            <button type="button"
+                              class="btn p-0 text-info text-decoration-underline small ms-1"
+                              @click="openCraftPopup(c)"
                             >
                               レシピ
-                            </span>
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -434,22 +436,17 @@ function nextPage() {
                         <ul class="list-unstyled mb-0 ps-1">
                           <li
                             v-for="t in item.usedInTasks"
-                            :key="t.name"
+                            :key="t.id || t.name"
                             class="small mb-1"
                           >
-                            <span
-                              class="text-decoration-underline"
-                              style="cursor: pointer"
-                              :class="
-                                isTaskDone(t.name)
-                                  ? 'text-success'
-                                  : 'text-warning'
-                              "
-                              @click.stop="emit('open-task-from-name', t.name)"
+                            <button type="button"
+                              class="btn p-0 text-decoration-underline"
+                              :class="isTaskDone(t) ? 'text-success' : 'text-warning'"
+                              @click="emit('open-task-from-name', t)"
                             >
-                              {{ isTaskDone(t.name) ? 'done' : 'todo' }}
+                              {{ isTaskDone(t) ? 'done' : 'todo' }}
                               {{ t.name }}
-                            </span>
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -514,15 +511,14 @@ function nextPage() {
                             >
                               {{ b.trader.name }} LL{{ b.level }}
                             </span>
-                            <span
+                            <button type="button"
                               v-for="reward in b.rewardItems"
-                              :key="reward.item.name"
-                              class="text-info text-decoration-underline"
-                              style="cursor: pointer"
-                              @click.stop="openBarterPopup(b)"
+                              :key="reward.item.id || reward.item.name"
+                              class="btn p-0 text-info text-decoration-underline"
+                              @click="openBarterPopup(b)"
                             >
                               {{ reward.item.name }}
-                            </span>
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -550,10 +546,9 @@ function nextPage() {
                             >
                               {{ c.station.name }}
                             </span>
-                            <span
-                              class="text-info text-decoration-underline"
-                              style="cursor: pointer"
-                              @click.stop="openCraftPopup(c)"
+                            <button type="button"
+                              class="btn p-0 text-info text-decoration-underline"
+                              @click="openCraftPopup(c)"
                             >
                               <span
                                 v-for="(reward, rIdx) in c.rewardItems"
@@ -564,7 +559,7 @@ function nextPage() {
                                   >,
                                 </span>
                               </span>
-                            </span>
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -587,9 +582,10 @@ function nextPage() {
                       class="col-md-6 col-lg-auto d-flex flex-column gap-2 justify-content-start border-start-lg border-secondary ps-lg-3"
                     >
                       <a
-                        v-if="item.wikiLink"
-                        :href="item.wikiLink"
+                        v-if="safeUrl(item.wikiLink)"
+                        :href="safeUrl(item.wikiLink)"
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="btn btn-sm btn-outline-info py-1 px-2"
                         style="font-size: 0.8rem"
                       >
@@ -642,11 +638,11 @@ function nextPage() {
     </div>
 
     <!-- バーターポップアップ -->
-    <div
-      v-if="selectedBarter"
-      class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start pt-5"
-      style="background: rgba(0, 0, 0, 0.7); z-index: 1050"
-      @click.self="closeBarterPopup"
+    <BaseModal
+      :show="selectedBarter !== null"
+      max-width="400px"
+      :aria-label="selectedBarter ? `${selectedBarter.trader.name} の交換詳細` : '交換詳細'"
+      @close="closeBarterPopup"
     >
       <div
         class="card bg-dark border-secondary shadow"
@@ -659,6 +655,7 @@ function nextPage() {
           <button
             type="button"
             class="btn-close btn-close-white"
+            aria-label="交換詳細を閉じる"
             @click="closeBarterPopup"
           ></button>
         </div>
@@ -714,14 +711,14 @@ function nextPage() {
           </button>
         </div>
       </div>
-    </div>
+    </BaseModal>
 
     <!-- クラフトポップアップ -->
-    <div
-      v-if="selectedCraft"
-      class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-start pt-5"
-      style="background: rgba(0, 0, 0, 0.7); z-index: 1050"
-      @click.self="closeCraftPopup"
+    <BaseModal
+      :show="selectedCraft !== null"
+      max-width="400px"
+      :aria-label="selectedCraft ? `${selectedCraft.station.name} のクラフト詳細` : 'クラフト詳細'"
+      @close="closeCraftPopup"
     >
       <div
         class="card bg-dark border-secondary shadow"
@@ -734,6 +731,7 @@ function nextPage() {
           <button
             type="button"
             class="btn-close btn-close-white"
+            aria-label="クラフト詳細を閉じる"
             @click="closeCraftPopup"
           ></button>
         </div>
@@ -797,7 +795,7 @@ function nextPage() {
           </button>
         </div>
       </div>
-    </div>
+    </BaseModal>
   </div>
 </template>
 
