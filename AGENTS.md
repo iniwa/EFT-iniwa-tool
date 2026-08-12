@@ -47,12 +47,13 @@ Do not commit, push, merge, publish, deploy, restart, change hosted configuratio
 - Keep one cohesive outcome and its corrections in the current task. Identify a fresh Codex task or chat boundary for a genuinely independent phase with its own acceptance and verification.
 - Use native Codex subagents only when outcome, protected behavior, gates, and verification are settled and savings exceed handoff cost. Do not invoke Claude Code unless the user changes this policy.
 - Before starting a writer, record exact acceptance mechanics, protected regressions and gates, focused and affected full checks, the stable-diff/reference sweep, and the required per-item evidence.
-- For settled multi-step work, prefer one observable `bounded_implementer`. Use `adaptive_implementer` only for bounded work needing more cross-file reasoning, and `bounded_explorer` only for independent behaviorally read-only questions the writer cannot cheaply answer.
+- For settled, predictable multi-step work, prefer one observable `bounded_implementer`. Choose `adaptive_implementer` directly when acceptance materially depends on an unresolved browser/platform lifecycle or cross-layer runtime contract; do not require a predictable bounded-writer failure first. Use `bounded_explorer` only for independent behaviorally read-only questions the writer cannot cheaply answer.
 - Add one `bounded_reviewer` only for concrete material risk such as persistence, migration, dependency/build changes, exposure, broad behavior, ambiguous acceptance, or failed verification. Localized documentation and deterministic low-risk changes normally need only self-review.
 - Only the primary session delegates. Delegated agents must not spawn agents. Keep one writer for overlapping files or behavior. A behaviorally read-only role remains read-only even if its tools technically permit writes.
 - If a role cannot be selected or observed, keep work primary or use an observable equivalent and report the fallback.
 - Ordinary delegation uses a compact inline goal, done criteria, context, constraints, and verification. Create a persisted `docs/handoffs/YYYY-MM-DD-<short-task>.md` only for substantial cross-session, interruption-sensitive, operationally risky, or separately executed work that needs durable resume conditions.
 - Before success, the writer self-reviews the stable diff, sweeps stale references and protected regressions, runs focused checks and the affected full check once, and reports each acceptance item as `passed`, `blocked`, or `unmet` with evidence.
+- At the second correction round for one cohesive outcome, or after two blocked or partial implementation returns caused by unresolved acceptance, authority, or environment, pause corrective delegation and reset the contract. Restate acceptance, protected boundaries, authority, environment, and evidence, then select one bounded writer only if the remainder is still bounded, an adaptive writer when warranted, approval or user input when authority is missing, or a fresh independent task boundary. Keep substantive corrections with that selected writer; the primary edits the delegated surface only for a demonstrably small transfer-negative correction or when delegation is unavailable.
 
 ## Definition of Done
 
@@ -64,5 +65,6 @@ Do not commit, push, merge, publish, deploy, restart, change hosted configuratio
 ## On-Demand Documentation
 
 - Read `docs/decisions/2026-07-22-tarkov-json-api.md` for API-source, validation, fallback, cache, and refresh constraints.
+- Read `docs/decisions/2026-08-12-native-writer-routing-refinement.md` for direct adaptive routing and the correction-reset writer rule.
 - Read an active or blocked document under `docs/handoffs/` only when the current task resumes that work.
 - Read the applicable `.docs/` design note only for work on story data or the documented legacy feature area.
