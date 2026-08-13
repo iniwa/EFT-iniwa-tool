@@ -15,7 +15,7 @@ const { normalizeApiLang } = await import('../src/composables/useAppState.js');
 const { useAppState } = await import('../src/composables/useAppState.js');
 const { isValidOverlayMessage } = await import('../src/composables/useOverlay.js');
 const { resolveTaskReferences, normalizeHideoutAliases } = await import('../src/logic/progressMigration.js');
-const { validateMainData, convertObjective } = await import('../src/logic/jsonApiAdapter.js');
+const { validateMainData, convertMainData, convertObjective } = await import('../src/logic/jsonApiAdapter.js');
 const {
   meaningfulBuildAttributes, formatBuildAttribute, formatObjectiveValue, formatGlobalVariable,
   formatDistanceCondition, formatTimeCondition, formatExitCondition, healthEffectEntries,
@@ -62,6 +62,31 @@ test('JSON objective conversion hydrates structured refs and suppresses no-op de
   assert.equal(objective.containsCategory[0].name, '武器カテゴリ');
   assert.deepEqual(objective.playerHealthEffect.bodyParts, ['頭']);
   assert.deepEqual(objective.playerHealthEffect.effects, ['痛み']);
+});
+
+test('task conversion retains optional flowchart gate metadata', () => {
+  const converted = convertMainData({
+    tasksRaw: {
+      task: {
+        id: 'task', name: 'Task', minPlayerLevel: 15,
+        availableDelaySecondsMin: 3600, availableDelaySecondsMax: 7200,
+        requiredPrestige: 'prestige-id', factionName: 'USEC',
+      },
+    },
+    tasksDict: {}, tasksEnDict: {}, hideoutRaw: {}, hideoutDict: {}, hideoutEnDict: {},
+    itemsRaw: {}, questItemsRaw: {}, itemCategoriesRaw: {}, itemsDict: {}, itemsEnDict: {},
+    mapsRaw: {}, mapsDict: {}, mapsEnDict: {}, tradersRaw: {}, tradersDict: {}, tradersEnDict: {},
+    craftsRaw: {}, bartersRaw: {},
+  });
+  assert.deepEqual(
+    converted.tasks[0] && {
+      availableDelaySecondsMin: converted.tasks[0].availableDelaySecondsMin,
+      availableDelaySecondsMax: converted.tasks[0].availableDelaySecondsMax,
+      requiredPrestige: converted.tasks[0].requiredPrestige,
+      factionName: converted.tasks[0].factionName,
+    },
+    { availableDelaySecondsMin: 3600, availableDelaySecondsMax: 7200, requiredPrestige: 'prestige-id', factionName: 'USEC' },
+  );
 });
 
 test('live-shaped objective constraints format safely', () => {

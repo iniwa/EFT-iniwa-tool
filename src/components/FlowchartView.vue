@@ -8,7 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
 import * as TaskLogic from '../logic/taskLogic.js'
-import { getZoomedStageBounds } from '../logic/flowchartLogic.js'
+import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../logic/flowchartLogic.js'
 
 const {
   completedTasks,
@@ -25,9 +25,10 @@ const emit = defineEmits(['open-task-details'])
 
 // --- ローカル状態 ---
 const isInitialSetupMode = ref(false)
+const showGateNodes = ref(true)
 const zoomLevel = ref(1.0)
 const mermaidContainer = ref(null)
-const chartStats = ref({ selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 })
+const chartStats = ref({ selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 })
 const chartNaturalSize = ref({ width: 1, height: 1 })
 const chartStageBounds = computed(() => getZoomedStageBounds(chartNaturalSize.value.width, chartNaturalSize.value.height, zoomLevel.value))
 
@@ -98,7 +99,7 @@ async function renderChart() {
   if (!mermaidContainer.value) return
   const requestId = ++renderCount
   if (!taskData.value || taskData.value.length === 0) {
-    chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
+    chartStats.value = { selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 }
     chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">Loading...</span>'
     return
@@ -116,7 +117,7 @@ async function renderChart() {
     : taskData.value.filter((t) => t.trader && t.trader.name === flowchartTrader.value)
 
   if (currentTraderTasks.length === 0) {
-    chartStats.value = { selected: 0, nodes: 0, edges: 0, external: 0, isolated: 0 }
+    chartStats.value = { selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 }
     chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">該当するタスクがありません。</span>'
     return
@@ -163,6 +164,8 @@ async function renderChart() {
   graph += '  classDef failedExternal fill:#dc3545,stroke:#dc3545,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef external fill:#6c757d,stroke:#6c757d,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef priority stroke:#0dcaf0,stroke-width:4px\n'
+  graph += '  classDef gate fill:#493b00,stroke:#ffc107,color:#fff,stroke-dasharray:3 3\n'
+  graph += '  classDef gateUnknown fill:#303030,stroke:#ffc107,color:#fff,stroke-dasharray:3 3\n'
 
   const isCurrentTraderTask = (task) => {
     if (isAll) return true
@@ -203,6 +206,15 @@ async function renderChart() {
 
   })
 
+  const gateGraph = showGateNodes.value ? buildFlowchartGateGraph([...nodesToRender.values()]) : { nodes: [], edges: [] }
+  const gateNodeIds = new Map()
+  gateGraph.nodes.forEach((gate, index) => {
+    const gid = `g${index}`
+    gateNodeIds.set(gate.key, gid)
+    graph += `  ${gid}{{"${escapeLabel(gate.label)}"}}\n`
+    graph += `  class ${gid} ${gate.automatic ? 'gate' : 'gateUnknown'}\n`
+  })
+
   // エッジ定義 (前提タスク → タスク)
   nodesToRender.forEach((task, taskId) => {
     if (task.taskRequirements) {
@@ -218,12 +230,22 @@ async function renderChart() {
       })
     }
   })
+  gateGraph.edges.forEach((edge) => {
+    const fromId = gateNodeIds.get(edge.gateKey)
+    const toId = taskToNodeId.get(edge.taskId)
+    if (fromId && toId) {
+      graph += formatMermaidDottedEdge(fromId, toId, edge.label ? escapeLabel(edge.label) : '')
+      edgeCount++
+    }
+  })
   const connected = new Set()
   nodesToRender.forEach((task) => (task.taskRequirements || []).forEach((req) => { if (taskToNodeId.has(req?.task?.id)) { connected.add(task.id); connected.add(req.task.id) } }))
   chartStats.value = {
     selected: currentTraderTasks.length,
-    nodes: nodesToRender.size,
+    nodes: nodesToRender.size + gateGraph.nodes.length,
     edges: edgeCount,
+    gateNodes: gateGraph.nodes.length,
+    gateEdges: gateGraph.edges.length,
     external: Array.from(nodesToRender.values()).filter((task) => !isCurrentTraderTask(task)).length,
     isolated: nodesToRender.size - connected.size,
   }
@@ -256,6 +278,14 @@ async function renderChart() {
     // ノード要素にポインターカーソルを設定
     const nodes = mermaidContainer.value.querySelectorAll('.node')
     nodes.forEach((el) => {
+      if (/(?:^|-)g\d+(?:-|$)/.test(el.id || '')) {
+        el.style.cursor = 'default'
+        const state = el.classList.contains('gateUnknown') ? '自動判定なし' : '解放条件'
+        el.setAttribute('aria-label', `${el.textContent?.trim() || '解放条件'}: ${state}`)
+        el.removeAttribute('tabindex')
+        el.removeAttribute('role')
+        return
+      }
       el.style.cursor = 'pointer'
       el.setAttribute('tabindex', '0')
       el.setAttribute('role', 'button')
@@ -333,6 +363,7 @@ watch(traderList, (list) => {
   if (list.length && !list.includes(flowchartTrader.value)) flowchartTrader.value = 'All'
 }, { immediate: true })
 watch(flowchartTrader, scheduleRender)
+watch(showGateNodes, scheduleRender)
 watch(completedTasks, scheduleRender, { deep: true })
 watch(taskStatuses, scheduleRender, { deep: true })
 watch(prioritizedTasks, scheduleRender, { deep: true })
@@ -392,6 +423,10 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
             初期設定モード
           </label>
         </div>
+        <div class="form-check form-switch mb-0">
+          <input class="form-check-input" type="checkbox" id="gateNodesSwitch" v-model="showGateNodes">
+          <label class="form-check-label small text-muted" for="gateNodesSwitch">解放条件を表示</label>
+        </div>
       </div>
 
       <div class="d-flex align-items-center gap-2">
@@ -423,13 +458,15 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
 
     <!-- チャート本体 -->
     <div class="px-3 py-2 small text-muted border-bottom border-secondary">
-      前提タスクのみ（トレーダー/その他条件はタスク詳細で確認）・実験的機能　
-      対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
+      実線=タスク前提 / 点線=解放条件（推測でタスク同士を接続しません）・実験的機能　
+      対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 条件ノード {{ chartStats.gateNodes }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
       <span class="ms-2">
         <span class="badge bg-success">完了</span>
         <span class="badge bg-info text-dark">進行中</span>
         <span class="badge bg-danger">失敗</span>
         <span class="badge bg-secondary">破線=他トレーダー</span>
+        <span class="badge bg-warning text-dark">点線=解放条件</span>
+        <span class="badge bg-dark border border-warning text-warning">灰色条件=自動判定なし</span>
       </span>
     </div>
     <div

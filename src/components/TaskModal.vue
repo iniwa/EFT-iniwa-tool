@@ -97,7 +97,8 @@ function otherRequirementLabel(requirement) {
     return `会話条件${traders ? `: ${traders}` : ''}`
   }
   if (requirement.type === 'globalVariable') {
-    return `ゲーム内進行条件 ${requirement.compareMethod || '>='} ${requirement.value ?? ''}`.trim()
+    const variableId = requirement.variableId || '不明'
+    return `ゲーム内変数 (ID: ${variableId}) ${requirement.compareMethod || '>='} ${requirement.value ?? ''}`.trim()
   }
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }

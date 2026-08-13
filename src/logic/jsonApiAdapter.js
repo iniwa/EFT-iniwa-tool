@@ -454,6 +454,10 @@ export function convertMainData(bundle) {
     name: tr(raw.name, tasksDict, tasksEnDict),
     nameAliases: [...new Set([tr(raw.name, tasksDict, tasksEnDict), tr(raw.name, tasksEnDict, null)].filter(Boolean))],
     minPlayerLevel: raw.minPlayerLevel || 0,
+    availableDelaySecondsMin: raw.availableDelaySecondsMin ?? null,
+    availableDelaySecondsMax: raw.availableDelaySecondsMax ?? null,
+    requiredPrestige: raw.requiredPrestige ?? null,
+    factionName: raw.factionName || null,
     wikiLink: raw.wikiLink,
     trader: raw.trader ? traderRef(raw.trader, tradersById) : null,
     map: raw.map

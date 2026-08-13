@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { resolveTaskReference, toHttpsUrl } from '../src/logic/taskReference.js'
 import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan } from '../src/logic/taskLogic.js'
 import { getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
-import { getZoomedStageBounds } from '../src/logic/flowchartLogic.js'
+import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../src/logic/flowchartLogic.js'
 import { calculateShoppingList } from '../src/logic/keyLogic.js'
 import { isSameSource } from '../src/logic/shoppingLogic.js'
 
@@ -54,6 +54,40 @@ test('initial flowchart setup distinguishes normal roots from cyclic status conf
 test('flowchart stage bounds use measured SVG dimensions and zoom', () => {
   assert.deepEqual(getZoomedStageBounds(240.2, 99.1, 1.5), { width: 361, height: 149 })
   assert.deepEqual(getZoomedStageBounds(0, 0, 0), { width: 1, height: 1 })
+})
+
+test('flowchart dotted gate edges use Mermaid label syntax', () => {
+  assert.equal(formatMermaidDottedEdge('g0', 't0', '＞= 1'), '  g0 -. ＞= 1 .-> t0\n')
+  assert.equal(formatMermaidDottedEdge('g0', 't0'), '  g0 -.-> t0\n')
+  assert.equal(formatMermaidDottedEdge('', 't0', '条件'), '')
+})
+
+test('flowchart gate graph includes explicit gates without inferring task links', () => {
+  const tasks = [
+    { id: 'a', minPlayerLevel: 10, factionName: 'USEC', requiredPrestige: 'p1', availableDelaySecondsMin: 3600, availableDelaySecondsMax: 7200,
+      traderLevelRequirements: [{ trader: { id: 'prapor', name: 'Prapor' }, requirementType: 'level', value: 2, compareMethod: '>=' }],
+      otherRequirements: [
+        { type: 'globalVariable', variableId: 'var-1', compareMethod: '>=', value: 1 },
+        { type: 'dialogue', traders: [{ id: 'therapist', name: 'Therapist' }] },
+        { type: 'dialogue', traders: [{ id: 'duplicate-name-a', name: '同名' }] },
+        { type: 'dialogue', traders: [{ id: 'duplicate-name-b', name: '同名' }] },
+        { type: 'futureType' },
+      ] },
+    { id: 'b', minPlayerLevel: 10, otherRequirements: [{ type: 'globalVariable', variableId: 'var-1', compareMethod: '>=', value: 3 }] },
+  ]
+  const graph = buildFlowchartGateGraph(tasks)
+  assert.equal(graph.nodes.some((node) => node.label.includes('ゲーム内変数 (ID: var-1)')), true)
+  assert.equal(graph.nodes.filter((node) => node.key === 'global:var-1').length, 1)
+  assert.equal(graph.nodes.some((node) => node.label.includes('出現待機: 1時間〜2時間')), true)
+  assert.equal(graph.nodes.some((node) => node.label.includes('陣営: USEC')), true)
+  assert.equal(graph.nodes.some((node) => node.label.includes('Prestige条件: p1')), true)
+  assert.equal(graph.nodes.find((node) => node.key === 'level:10')?.automatic, true)
+  assert.equal(graph.nodes.find((node) => node.key.startsWith('trader:'))?.automatic, true)
+  assert.equal(graph.nodes.find((node) => node.key === 'faction:USEC')?.automatic, false)
+  assert.equal(graph.nodes.find((node) => node.key === 'global:var-1')?.automatic, false)
+  assert.equal(graph.nodes.filter((node) => node.kind === 'dialogue').length, 3)
+  assert.equal(graph.edges.every((edge) => edge.gateKey && edge.taskId), true)
+  assert.deepEqual(graph.edges.filter((edge) => edge.gateKey === 'global:var-1').map((edge) => edge.taskId), ['a', 'b'])
 })
 
 test('key task sources retain stable IDs and do not merge duplicate names', () => {
