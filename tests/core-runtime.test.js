@@ -15,9 +15,69 @@ const { normalizeApiLang } = await import('../src/composables/useAppState.js');
 const { useAppState } = await import('../src/composables/useAppState.js');
 const { isValidOverlayMessage } = await import('../src/composables/useOverlay.js');
 const { resolveTaskReferences, normalizeHideoutAliases } = await import('../src/logic/progressMigration.js');
-const { validateMainData } = await import('../src/logic/jsonApiAdapter.js');
+const { validateMainData, convertObjective } = await import('../src/logic/jsonApiAdapter.js');
+const {
+  meaningfulBuildAttributes, formatBuildAttribute, formatObjectiveValue, formatGlobalVariable,
+  formatDistanceCondition, formatTimeCondition, formatExitCondition, healthEffectEntries,
+  objectivePositionLines,
+} = await import('../src/logic/taskObjectiveLogic.js');
 
 const id = '0123456789abcdef01234567';
+
+test('JSON objective conversion hydrates structured refs and suppresses no-op defaults', () => {
+  const objective = convertObjective({
+    id: 'o', type: 'buildWeapon', description: 'desc', optional: true,
+    questItem: 'item', item: { id: 'weapon' }, markerItem: 'marker',
+    buildAttributes: { ergonomics: { value: 0, compareMethod: '>=' }, durability: { value: 80, compareMethod: '>=' } },
+    task: { id: 'task' }, status: ['complete', 'active'], trader: { id: 'trader' }, maps: [{ id: 'map' }],
+    zones: [null, { id: 'zone', map: 'map', position: { x: 1, y: 2, z: 3 } }],
+    possibleLocations: [null, { map: { id: 'map' }, positions: [{ x: 4, y: 5, z: 6 }, { x: 7, y: 8, z: 9 }] }],
+    distance: { value: 50, compareMethod: '>=' }, timeFromHour: 8, timeUntilHour: 12,
+    usingWeapon: ['weapon'], usingWeaponMods: [['mod']], wearing: [{ id: 'armor' }], requiredKeys: ['key'],
+    containsCategory: ['category'], skill: 'Attention', globalVariable: { id: 'gv', value: 2, compareMethod: '>=' },
+    playerHealthEffect: { bodyParts: ['Head'], effects: ['Pain'], time: { value: 0, compareMethod: '>=' } },
+  }, {
+    item: { id: 'item', name: 'Item', shortName: 'I' }, weapon: { id: 'weapon', name: 'Weapon' },
+    marker: { id: 'marker', name: 'Marker' }, mod: { id: 'mod', name: 'Mod' }, armor: { id: 'armor', name: 'Armor' },
+    key: { id: 'key', name: 'Key' },
+  }, { map: { id: 'map', name: 'Map' } }, { Head: '頭', Pain: '痛み' }, {}, {
+    traderRef: (v) => ({ id: v.id || v, name: 'Trader' }),
+    taskRef: (v) => ({ id: v.id || v, name: 'Task' }),
+    itemsDict: { Attention: '注意力' }, categoriesById: { category: { id: 'category', name: '武器カテゴリ' } },
+  });
+  assert.equal(objective.optional, true);
+  assert.equal(objective.description, 'desc');
+  assert.equal(objective.questItem.name, 'Item');
+  assert.equal(objective.buildWeapon.name, 'Weapon');
+  assert.deepEqual(objective.status, ['complete', 'active']);
+  assert.equal(objective.task.name, 'Task');
+  assert.equal(objective.trader.name, 'Trader');
+  assert.equal(objective.skill.name, '注意力');
+  assert.equal(objective.maps[0].name, 'Map');
+  assert.equal(objective.zones.length, 1);
+  assert.equal(objective.possibleLocations.length, 1);
+  assert.equal(objective.possibleLocations[0].positions[1].z, 9);
+  assert.equal(objective.usingWeaponMods[0][0].name, 'Mod');
+  assert.equal(objective.requiredKeys[0].name, 'Key');
+  assert.equal(objective.containsCategory[0].name, '武器カテゴリ');
+  assert.deepEqual(objective.playerHealthEffect.bodyParts, ['頭']);
+  assert.deepEqual(objective.playerHealthEffect.effects, ['痛み']);
+});
+
+test('live-shaped objective constraints format safely', () => {
+  const attrs = meaningfulBuildAttributes({ ergonomics: { value: 0, compareMethod: '>=' }, durability: { value: 80, compareMethod: '>=' }, recoil: { value: 0, compareMethod: '<=' } });
+  assert.deepEqual(attrs.map((entry) => entry.name), ['durability', 'recoil']);
+  assert.equal(formatBuildAttribute(meaningfulBuildAttributes({ weight: { value: 5, compareMethod: '<=' } })[0]), '重量 <= 5kg');
+  assert.equal(formatDistanceCondition({ value: 40, compareMethod: '>=' }), '距離: >= 40m');
+  assert.equal(formatDistanceCondition(50), '距離: >= 50m');
+  assert.equal(formatTimeCondition(0, 0), '');
+  assert.equal(formatTimeCondition(22, 7), '時間帯: 22:00〜7:00');
+  assert.equal(formatExitCondition('Gate 3', ['Survived']), '脱出地点: Gate 3 (必要状態: Survived)');
+  assert.equal(formatGlobalVariable({ id: 'gv', value: 2, compareMethod: '>=' }), 'ゲーム内変数 gv >= 2');
+  assert.equal(healthEffectEntries({ playerHealthEffect: { effects: ['痛み'] }, healthEffects: ['脱水'] }).length, 2);
+  assert.match(formatObjectiveValue({ bodyParts: ['頭'], effects: ['痛み'] }), /部位: 頭/);
+  assert.equal(objectivePositionLines({ zones: [null], possibleLocations: [null, { positions: [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }] }] })[0].endsWith('ほか1地点'), true);
+});
 const valid = () => ({
   schemaVersion: '3.2.1', gameMode: 'pve', userHideout: { Workbench: 2 },
   completedTasks: [id], collectedItems: [], ownedKeys: [], keyUserData: {}, playerLevel: 20,

@@ -9,6 +9,17 @@ import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
 import { toHttpsUrl } from '../logic/taskReference.js'
+import {
+  meaningfulBuildAttributes,
+  formatBuildAttribute,
+  formatDistanceCondition,
+  formatTimeCondition,
+  formatExitCondition,
+  formatGlobalVariable,
+  formatObjectiveValue,
+  healthEffectEntries,
+  objectivePositionLines,
+} from '../logic/taskObjectiveLogic.js'
 
 const {
   completedTasks,
@@ -90,6 +101,29 @@ function otherRequirementLabel(requirement) {
   }
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }
+
+function objectiveConstraintLines(obj) {
+  const lines = []
+  const distance = formatDistanceCondition(obj.distance)
+  const time = formatTimeCondition(obj.timeFromHour, obj.timeUntilHour)
+  const exit = formatExitCondition(obj.exitName, obj.exitStatus)
+  if (distance) lines.push(distance)
+  if (time) lines.push(time)
+  if (exit) lines.push(exit)
+  if (obj.globalVariable) lines.push(formatGlobalVariable(obj.globalVariable))
+  if (obj.task) {
+    const statuses = (Array.isArray(obj.status) ? obj.status : obj.status ? [obj.status] : []).map((status) => statusLabels[status] || status)
+    lines.push(`対象タスク: ${obj.task.name || obj.task.id}${statuses.length ? `（必要: ${statuses.join(' / ')}）` : ''}`)
+  }
+  const comparedValue = obj.value ?? obj.level
+  const comparison = comparedValue == null ? '' : ` ${obj.compareMethod || '>='} ${comparedValue}`
+  if (obj.trader) lines.push(`対象トレーダー: ${obj.trader.name || obj.trader.id}${comparison}`)
+  if (obj.skill) lines.push(`スキル: ${obj.skill.name || obj.skill.id}${comparison}`)
+  if (obj.shotType) lines.push(`射撃条件: ${obj.shotType}`)
+  if (obj.bodyParts?.length) lines.push(`部位: ${obj.bodyParts.join(' / ')}`)
+  return lines
+}
+
 </script>
 
 <template>
@@ -287,7 +321,7 @@ function otherRequirementLabel(requirement) {
         <ul class="list-group">
           <li
             v-for="(obj, idx) in task.objectives"
-            :key="idx"
+            :key="obj.id || idx"
             class="list-group-item bg-dark text-light border-secondary py-2"
           >
             <!-- TaskObjectiveItem: items配列 or 単体item -->
@@ -309,7 +343,8 @@ function otherRequirementLabel(requirement) {
               </div>
             </div>
             <div v-else-if="obj.item">
-              <span class="text-warning fw-bold">{{ obj.item.name }}</span> x {{ obj.count }}
+              <span class="text-warning fw-bold">{{ obj.item.name }}</span><span v-if="obj.count != null"> x {{ obj.count }}</span>
+              <div v-if="obj.type === 'buildWeapon' && obj.description" class="small text-white mt-1">{{ obj.description }}</div>
               <div class="mt-1">
                 <span v-if="obj.foundInRaid" class="badge bg-warning text-dark me-1">FIR</span>
                 <span v-if="obj.type === 'findItem' && !obj.foundInRaid" class="badge bg-secondary me-1">Find</span>
@@ -332,6 +367,40 @@ function otherRequirementLabel(requirement) {
             <div v-else>
               <span v-if="obj.description">{{ obj.description }}</span>
               <span v-else class="text-muted small">(アクション目標)</span>
+            </div>
+            <div class="mt-2 small">
+              <span v-if="obj.optional" class="badge bg-secondary me-1">任意</span>
+              <span v-if="obj.questItem" class="badge bg-info text-dark me-1">クエストアイテム: {{ obj.questItem.name || obj.questItem.id }}</span>
+              <span v-if="obj.buildWeapon" class="badge bg-warning text-dark me-1">改造対象: {{ obj.buildWeapon.name || obj.buildWeapon.id }}</span>
+              <span v-if="obj.markerItem" class="badge bg-primary me-1">マーカー: {{ obj.markerItem.name || obj.markerItem.id }}</span>
+              <ul v-if="obj.maps?.length || obj.zones?.length || obj.possibleLocations?.length" class="list-unstyled mb-1 mt-1">
+                <li v-for="map in obj.maps" :key="`map-${obj.id}-${map.id}`">地図: {{ map.name }}</li>
+                <li v-for="(zone, zi) in obj.zones" :key="`zone-${obj.id}-${zi}`">ゾーン: {{ zone.name || zone.id }}<span v-if="zone.map"> ({{ zone.map.name }})</span></li>
+                <li v-for="(location, li) in obj.possibleLocations" :key="`loc-${obj.id}-${li}`">地点候補: {{ location.name || location.id || li + 1 }}<span v-if="location.map"> ({{ location.map.name }})</span><span v-if="location.positions?.length"> ({{ location.positions.length }}地点)</span></li>
+              </ul>
+              <details v-if="objectivePositionLines(obj).length" class="mb-1">
+                <summary>座標情報</summary>
+                <div v-for="line in objectivePositionLines(obj)" :key="line">{{ line }}</div>
+              </details>
+              <ul v-if="objectiveConstraintLines(obj).length" class="list-unstyled mb-1">
+                <li v-for="line in objectiveConstraintLines(obj)" :key="line">{{ line }}</li>
+              </ul>
+              <details v-if="obj.usingWeapon?.length || obj.usingWeaponMods?.length || obj.wearing?.length || obj.notWearing?.length || obj.containsOne?.length || obj.containsAll?.length || obj.useAny?.length || obj.requiredKeys?.length || obj.containsCategory?.length || meaningfulBuildAttributes(obj.buildAttributes).length">
+                <summary>装備・詳細条件</summary>
+                <div v-if="obj.usingWeapon?.length">使用武器: {{ obj.usingWeapon.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.usingWeaponMods?.length">武器MOD: <span v-for="(group, gi) in obj.usingWeaponMods" :key="gi">{{ gi ? ' / ' : '' }}[{{ group.map((item) => item.name || item.id).join(', ') }}]</span></div>
+                <div v-if="obj.wearing?.length">装備: {{ obj.wearing.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.notWearing?.length">非装備: {{ obj.notWearing.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.containsOne?.length">いずれかを含有: {{ obj.containsOne.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.containsAll?.length">含有: {{ obj.containsAll.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.useAny?.length">いずれかを使用: {{ obj.useAny.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.requiredKeys?.length">必要な鍵: {{ obj.requiredKeys.map((item) => item.name || item.id).join(' / ') }}</div>
+                <div v-if="obj.containsCategory?.length">カテゴリ: {{ obj.containsCategory.map((category) => category.name || category.id).join(' / ') }}</div>
+                <div v-if="meaningfulBuildAttributes(obj.buildAttributes).length">性能: {{ meaningfulBuildAttributes(obj.buildAttributes).map(formatBuildAttribute).join(' / ') }}</div>
+              </details>
+              <div v-if="healthEffectEntries(obj).length" class="text-danger mt-1">
+                <div v-for="entry in healthEffectEntries(obj)" :key="entry.key">{{ entry.label }}: {{ formatObjectiveValue(entry.value) }}</div>
+              </div>
             </div>
           </li>
         </ul>

@@ -122,6 +122,7 @@ export async function fetchJsonBundle(mode, lang) {
     hideoutDict: hideoutDicts.langDict,
     hideoutEnDict: hideoutDicts.enDict,
     itemsRaw: itemsData.items || {},
+    itemCategoriesRaw: itemsData.itemCategories || {},
     itemsDict: itemsDicts.langDict,
     itemsEnDict: itemsDicts.enDict,
     mapsRaw: (mapsData && mapsData.maps) || {},
@@ -269,25 +270,59 @@ function craftRewardEntries(craft) {
 // そのまま消費できる、既存 GraphQL クエリ相当の形状にする。
 // ---------------------------------------------------------------------------
 
-function convertObjective(obj, itemsById, mapsById, tasksDict, tasksEnDict) {
+function refId(value) {
+  if (typeof value === 'string') return value;
+  return value && typeof value === 'object' ? (value.id || value._id || null) : null;
+}
+
+function mapRef(value, mapsById) {
+  const id = refId(value);
+  if (!id) return null;
+  const found = mapsById[id];
+  return { id, name: found?.name || (typeof value === 'object' ? value.name : null) || id };
+}
+
+function localizedRef(value, dict, enDict) {
+  if (typeof value === 'string') return { id: value, name: tr(value, dict, enDict) };
+  if (!value || typeof value !== 'object') return null;
+  const id = refId(value);
+  return id ? { ...value, id, name: tr(value.name || id, dict, enDict) } : null;
+}
+
+export function convertObjective(obj = {}, itemsById = {}, mapsById = {}, tasksDict = {}, tasksEnDict = {}, context = {}) {
+  const itemRefAny = (value, fallbackName = 'Unknown Item') => {
+    const id = refId(value);
+    if (!id) return null;
+    const result = itemDetailRef(id, itemsById, fallbackName);
+    if (result.name === fallbackName && value && typeof value === 'object' && value.name) result.name = value.name;
+    return result;
+  };
+  const itemList = (value) => (Array.isArray(value) ? value : value ? [value] : []).map((v) => itemRefAny(v)).filter(Boolean);
+  const localizeToken = (value) => typeof value === 'string' ? tr(value, tasksDict, tasksEnDict) : value;
+  const localizeHealthValue = (value) => {
+    if (Array.isArray(value)) return value.map((entry) => localizeHealthValue(entry));
+    if (!value || typeof value !== 'object') return localizeToken(value);
+    return {
+      ...value,
+      ...(Array.isArray(value.bodyParts) ? { bodyParts: value.bodyParts.map(localizeToken) } : {}),
+      ...(Array.isArray(value.effects) ? { effects: value.effects.map(localizeToken) } : {}),
+    };
+  };
   const base = {
     id: obj.id,
     description: tr(obj.description, tasksDict, tasksEnDict),
     type: obj.type,
-    maps: (obj.maps || [])
-      .map((mapId) => mapsById[mapId])
-      .filter(Boolean)
-      .map((map) => ({ id: map.id, name: map.name })),
+    maps: (obj.maps || []).map((v) => mapRef(v, mapsById)).filter(Boolean),
   };
 
   // `item` is currently used by buildWeapon objectives. The legacy GraphQL
   // query intentionally did not expose it as an `items` objective because the
   // configured weapon requirements must remain visible in the description.
-  const itemIds = obj.items || null;
+  const itemIds = Array.isArray(obj.items) ? obj.items : (obj.items ? [obj.items] : null);
   if (itemIds) {
     base.count = obj.count;
     base.foundInRaid = !!obj.foundInRaid;
-    base.items = itemIds.map((id) => itemRef(id, itemsById));
+    base.items = itemIds.map((id) => itemRefAny(id)).filter(Boolean);
   }
 
   if (obj.type === 'shoot') {
@@ -301,8 +336,45 @@ function convertObjective(obj, itemsById, mapsById, tasksDict, tasksEnDict) {
   }
 
   if (obj.type === 'mark' && obj.markerItem) {
-    base.markerItem = itemRef(obj.markerItem, itemsById);
+    base.markerItem = itemRefAny(obj.markerItem);
   }
+
+  // Preserve structured objective constraints supplied by the JSON API.
+  ['optional', 'foundInRaid', 'containsAll', 'containsCategory', 'distance', 'timeFromHour',
+    'timeUntilHour', 'exitName', 'exitStatus', 'buildAttributes', 'globalVariable',
+    'usingWeaponMods', 'wearing', 'notWearing', 'status'].forEach((key) => {
+    if (obj[key] !== undefined && obj[key] !== null) base[key] = obj[key];
+  });
+  if (obj.shotType !== undefined && obj.shotType !== null) base.shotType = localizeToken(obj.shotType);
+  if (obj.exitStatus !== undefined && obj.exitStatus !== null) {
+    base.exitStatus = (Array.isArray(obj.exitStatus) ? obj.exitStatus : [obj.exitStatus]).map(localizeToken);
+  }
+  ['healthEffects', 'playerHealthEffect', 'enemyHealthEffect', 'playerHealthEffects', 'enemyHealthEffects'].forEach((key) => {
+    if (obj[key] !== undefined && obj[key] !== null) base[key] = localizeHealthValue(obj[key]);
+  });
+  ['questItem', 'buildWeapon', 'usingWeapon', 'markerItem', 'containsOne', 'containsAll', 'useAny', 'wearing', 'notWearing', 'requiredKeys']
+    .forEach((key) => {
+      if (obj[key] !== undefined && obj[key] !== null) {
+        if (key === 'buildWeapon') base[key] = itemRefAny(obj[key]?.item || obj[key]);
+        else if (['usingWeapon', 'markerItem'].includes(key)) base[key] = key === 'usingWeapon' ? itemList(obj[key]) : itemRefAny(obj[key]);
+        else if (['containsOne', 'containsAll', 'useAny', 'wearing', 'notWearing', 'requiredKeys'].includes(key)) base[key] = itemList(obj[key]);
+        else base[key] = itemRefAny(obj[key]);
+      }
+    });
+  if (obj.item !== undefined && obj.item !== null && !base.item) base.item = itemRefAny(obj.item);
+  if (obj.type === 'buildWeapon' && base.item && !base.buildWeapon) base.buildWeapon = base.item;
+  if (obj.usingWeaponMods !== undefined) base.usingWeaponMods = (Array.isArray(obj.usingWeaponMods) ? obj.usingWeaponMods : [obj.usingWeaponMods]).map((group) => itemList(group)).filter((group) => group.length);
+  if (obj.task !== undefined && obj.task !== null) base.task = context.taskRef ? context.taskRef(obj.task) : localizedRef(obj.task, tasksDict, tasksEnDict);
+  if (obj.trader !== undefined && obj.trader !== null && refId(obj.trader)) base.trader = context.traderRef ? context.traderRef(obj.trader) : localizedRef(obj.trader, {}, {});
+  ['level', 'value', 'compareMethod', 'skill', 'globalVariable'].forEach((key) => {
+    if (obj[key] !== undefined && obj[key] !== null) base[key] = key === 'skill' ? localizedRef(obj[key], context.itemsDict || {}, context.itemsEnDict || {}) : obj[key];
+  });
+  if (obj.containsCategory !== undefined) base.containsCategory = (Array.isArray(obj.containsCategory) ? obj.containsCategory : [obj.containsCategory]).map((entry) => {
+    const id = refId(entry); const found = context.categoriesById?.[id];
+    return { id, name: found?.name || (typeof entry === 'object' ? entry.name : null) || id };
+  }).filter((entry) => entry.id);
+  base.zones = (obj.zones || []).filter(Boolean).map((z) => ({ ...z, map: mapRef(z.map || z.mapId, mapsById) || undefined })).filter((z) => z.map || z.name || z.id || z.position);
+  base.possibleLocations = (obj.possibleLocations || []).filter(Boolean).map((loc) => ({ ...loc, map: mapRef(loc.map || loc.mapId, mapsById) || undefined })).filter((loc) => loc.map || loc.position || loc.positions || loc.name || loc.id);
 
   if (obj.count !== undefined && base.count === undefined) {
     base.count = obj.count;
@@ -359,6 +431,22 @@ export function convertMainData(bundle) {
       tr(task.name, tasksDict, tasksEnDict),
     ]),
   );
+  const categoriesById = Object.fromEntries(
+    Object.values(bundle.itemCategoriesRaw || {}).map((category) => [
+      category.id,
+      { id: category.id, name: tr(category.name, bundle.itemsDict, bundle.itemsEnDict) },
+    ]),
+  );
+  const objectiveContext = {
+    traderRef: (id) => traderRef(refId(id), tradersById),
+    taskRef: (value) => {
+      const id = refId(value);
+      return id ? { id, name: taskNamesById[id] || value?.name || id } : null;
+    },
+    itemsDict: bundle.itemsDict,
+    itemsEnDict: bundle.itemsEnDict,
+    categoriesById,
+  };
 
   // --- tasks ---
   const tasks = Object.values(tasksRaw).map((raw) => ({
@@ -397,7 +485,7 @@ export function convertMainData(bundle) {
     kappaRequired: !!raw.kappaRequired,
     lightkeeperRequired: !!raw.lightkeeperRequired,
     objectives: (raw.objectives || []).map((o) =>
-      convertObjective(o, itemsById, mapsById, tasksDict, tasksEnDict),
+      convertObjective(o, itemsById, mapsById, tasksDict, tasksEnDict, objectiveContext),
     ),
     finishRewards: convertFinishRewards(raw.finishRewards, itemsById, tradersById, stationsById),
   }));
@@ -845,10 +933,12 @@ export function validateJsonBundle(bundle) {
   const maps = bundle.mapsRaw;
   const traders = bundle.tradersRaw;
   const stations = bundle.hideoutRaw;
+  const itemCategories = bundle.itemCategoriesRaw || {};
 
   const requireRef = (collection, id, label) => {
-    if (id && !collection[id]) {
-      throw new Error(`${label}に未解決の参照 (${id}) があります。`);
+    const resolvedId = refId(id);
+    if (resolvedId && !collection[resolvedId]) {
+      throw new Error(`${label}に未解決の参照 (${resolvedId}) があります。`);
     }
   };
   const visitItemRefs = (value, label) => {
@@ -888,9 +978,16 @@ export function validateJsonBundle(bundle) {
       (objective.maps || []).forEach((mapId) =>
         requireRef(maps, mapId, `タスク ${task.id} の目標`),
       );
+      (objective.zones || []).forEach((zone) =>
+        requireRef(maps, zone?.map || zone?.mapId, `タスク ${task.id} のゾーン目標`),
+      );
+      (objective.possibleLocations || []).forEach((location) =>
+        requireRef(maps, location?.map || location?.mapId, `タスク ${task.id} の地点目標`),
+      );
       [
         objective.items,
         objective.item,
+        objective.buildWeapon,
         objective.markerItem,
         objective.containsOne,
         objective.containsAll,
@@ -904,6 +1001,10 @@ export function validateJsonBundle(bundle) {
       requireRef(items, objective.questItem, `タスク ${task.id} のクエストアイテム目標`);
       requireRef(tasks, objective.task, `タスク ${task.id} のタスク状態目標`);
       requireRef(traders, objective.trader, `タスク ${task.id} のトレーダー目標`);
+      if (nonEmptyRecord(itemCategories)) {
+        (Array.isArray(objective.containsCategory) ? objective.containsCategory : objective.containsCategory ? [objective.containsCategory] : [])
+          .forEach((category) => requireRef(itemCategories, category, `タスク ${task.id} のカテゴリ目標`));
+      }
       (objective.traders || []).forEach((traderId) =>
         requireRef(traders, traderId, `タスク ${task.id} のトレーダー目標`),
       );
