@@ -61,7 +61,7 @@ export const USD_RATE = 162;
 export const EUR_RATE = 175;
 
 /** アプリバージョン */
-export const APP_VERSION = '3.2.1';
+export const APP_VERSION = '3.2.0';
 
 /** API エンドポイント (GraphQL: レガシー/メンテナンスモード。JSON API失敗時の最終フォールバックにのみ使用) */
 export const API_URL = 'https://api.tarkov.dev/graphql';

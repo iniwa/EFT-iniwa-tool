@@ -76,10 +76,6 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <div class="p-3 rounded border border-info bg-info bg-opacity-10">
-          <h4 class="text-info fw-bold mb-2">v3.2.1</h4>
-          <p class="mb-0">タスク参照、フローチャート、キーボード操作と安全な外部リンクを改善しました。</p>
-        </div>
         <div class="p-4 rounded border border-warning border-2 bg-warning bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-warning text-dark">NEW</span>
@@ -91,6 +87,8 @@ defineExpose({ show })
           <ul class="text-light mb-2">
             <li><strong>Seasonal PvP:</strong> 通常PvP・PvEとは別のAPIキャッシュと進捗で管理します。</li>
             <li><strong>新しい解放条件:</strong> タスクの進行中／失敗ステータスと、任意のトレーダーLL・評判判定を追加しました。</li>
+            <li><strong>タスク詳細:</strong> 任意目標、エリア・脱出地点、時間・距離・装備条件など、APIにある目標情報を表示します。</li>
+            <li><strong>フローチャート:</strong> 前提タスクは実線、レベル・トレーダー・会話・待機などの解放条件は点線の条件ノードで表示します。名称未提供のゲーム内変数はIDと必要値をそのまま示し、推測でタスク間の関係を作りません。</li>
             <li><strong>データ追従:</strong> 同名の別タスクをID単位で保持し、Icebreaker、Terminal、5.8x42mm弾などを追加しました。</li>
           </ul>
           <p class="small text-warning mb-0">

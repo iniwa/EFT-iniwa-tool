@@ -33,7 +33,7 @@ Codex タスク内で実装・検証する。要件と検証条件が確定し�
 
 - [x] **【低】package.json の version をアプリバージョンと同期する**
   - 対応: `package.json`、`package-lock.json` のルート版、表示用の
-    `APP_VERSION`（`src/data/constants.js`）を同期（現在は v3.2.1）。
+    `APP_VERSION`（`src/data/constants.js`）を同期（現在は v3.2.0）。
   - 運用: 今後もリリース時に3か所を同じバージョンへ更新する。
 
 - [ ] **【低】本番でも出力される `console.log` を整理する**
