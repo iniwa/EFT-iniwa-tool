@@ -43,6 +43,8 @@ Do not commit, push, merge, publish, deploy, restart, change hosted configuratio
 
 ## Delegation
 
+- Before implementation, classify the initial route from acceptance evidence as `small-primary` for small or transfer-negative work, `bounded` for settled multi-step work with one verifiable writer, `adaptive` when unresolved native/platform/runtime or cross-subsystem behavior is material, or `non-implementation` for analysis, design, review, or operations. This does not force delegation; reclassify only after a material scope change or contract reset.
+- Reintegrate through the stable diff and verification evidence; do not repeat delegated discovery merely to re-establish context.
 - The user selects the primary model. The primary owns interpretation, material design, approvals, integration, and communication.
 - Keep one cohesive outcome and its corrections in the current task. Identify a fresh Codex task or chat boundary for a genuinely independent phase with its own acceptance and verification.
 - Use native Codex subagents only when outcome, protected behavior, gates, and verification are settled and savings exceed handoff cost. Do not invoke Claude Code unless the user changes this policy.
