@@ -22,6 +22,7 @@ import { RouterLink } from 'vue-router'
                         <li><a href="#step6">弾薬チャート／アイテム検索</a></li>
                         <li><a href="#step7">データのバックアップ</a></li>
                         <li><a href="#step8">配信オーバーレイ</a></li>
+                        <li><a href="#step9">Personal Modifierビルダー</a></li>
                     </ol>
                 </nav>
 
@@ -133,6 +134,17 @@ import { RouterLink } from 'vue-router'
                         <li>表示された URL を OBS のブラウザソースに登録します。</li>
                         <li>本体の進捗・モード・言語を更新すると、オーバーレイにも同じコンテキストで自動反映されます。</li>
                     </ol>
+                </section>
+
+                <section id="step9" class="mb-4">
+                    <h4>9. Personal Modifierビルダー <small class="text-muted">🧬 Modifierタブ</small></h4>
+                    <p>
+                        ゲームモードやAPI取得に依存せず、KORD BREACH Season 1のPersonal Modifier構成を事前計画できます。
+                        Positiveはポイントを消費し、Negativeはポイントを獲得します。プリセットは進捗とは別に保存され、共有リンクで構成だけを渡せます。
+                    </p>
+                    <p class="text-warning small">
+                        Modifier一覧・効果は公式の完全一覧ではなくコミュニティ観測値（確認日を画面に表示）です。ゲーム内表示を常に優先してください。
+                    </p>
                 </section>
 
                 <p class="text-center mt-5">

@@ -126,6 +126,14 @@ import { RouterLink } from 'vue-router'
                 </details>
 
                 <details class="qa">
+                    <summary>Q. Personal Modifierのビルドを保存・共有できますか？</summary>
+                    <p>
+                        🧬 ModifierタブでKORD BREACH Season 1の構成、ポイント、実績の目安を確認できます。プリセットと下書きは既存のタスク進捗とは別に保存され、共有リンクはModifier IDだけを含みます。
+                        一覧と効果はコミュニティ観測値のため、公式の完全一覧ではありません。ゲーム内表示を優先してください。
+                    </p>
+                </details>
+
+                <details class="qa">
                     <summary>Q. 配信オーバーレイは別ウィンドウでも同期しますか？</summary>
                     <p>
                         はい。オーバーレイは <code>?overlay=tasks</code> の URL を OBS のブラウザソースへ登録して使います。

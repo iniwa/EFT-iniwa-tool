@@ -51,6 +51,12 @@ const routes = [
         component: () => import('../components/MemoView.vue'),
         meta: { label: '📋 メモ', tab: true, title: 'メモ' },
     },
+    {
+        path: '/season-builds',
+        name: 'season-builds',
+        component: () => import('../components/SeasonModifierBuilder.vue'),
+        meta: { label: '🧬 Modifier', tab: true, title: 'Personal Modifier' },
+    },
     { path: '/settings', name: 'settings', component: () => import('../components/SettingsView.vue'), meta: { label: '⚙️ 設定', tab: true, title: '設定' } },
     {
         path: '/overlay',

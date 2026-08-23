@@ -28,6 +28,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 - **配信オーバーレイ** — `?overlay=tasks` で OBS のブラウザソース向け透過オーバーレイ
 - **データ Import / Export** — JSON でバックアップ・復元
 - **PvE / PvP / Seasonal PvP 別管理** — モードごとに別セーブ。Seasonal PvPは独立し、新シーズン開始時に進捗をリセット
+- **Personal Modifierビルダー** — 🧬 ModifierタブでKORD BREACH Season 1の構成、ポイント、実績目安、プリセット、共有リンクを管理
 - **タスクステータス / トレーダー条件** — 進行中・失敗とLL/評判条件を任意で管理
 - **静的ページ** — About / 使い方 / FAQ / プライバシーポリシー / 利用規約
 
@@ -50,6 +51,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | ホスティング | [Cloudflare Pages](https://pages.cloudflare.com/) |
 
 データはすべて利用者のブラウザ内（`localStorage` / IndexedDB）に保存されます。サーバ側にユーザーデータは保存しません。
+Personal Modifierのプリセットは進捗とは別の `eft_season_modifier_builds_v1` に保存されます。Modifier一覧は公式の完全一覧ではなくコミュニティ観測値のため、ゲーム内表示を優先してください。
 
 ---
 
