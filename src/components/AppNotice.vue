@@ -76,6 +76,24 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <!-- 新機能: v3.3.0 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-info text-dark">NEW</span>
+            <h4 class="text-info fw-bold mb-0">🧬 v3.3.0 - Personal Modifier ビルダー</h4>
+          </div>
+          <p class="text-light mb-2">
+            KORD BREACH Season 1 の Personal Modifier を、ポイント収支を確認しながら組み立てられるようになりました。
+          </p>
+          <ul class="text-light mb-2">
+            <li><strong>ビルド作成:</strong> Positive / Negative Modifier の選択、ポイント収支、相互作用の注意を一画面で確認できます。</li>
+            <li><strong>実績の目安:</strong> Modifier 条件に関係する実績を表示します。ゲーム内の他条件を満たすかはゲーム内表示で確認してください。</li>
+            <li><strong>プリセット・共有:</strong> ビルドはブラウザ内へ保存でき、共有リンクは下書きを変えずにプレビューしてから反映できます。</li>
+          </ul>
+          <p class="small text-info mb-0">
+            Modifier一覧と値は公式ルールとコミュニティ観測値をもとにしています。ゲーム内表示が異なる場合は、ゲーム内の内容を優先してください。
+          </p>
+        </div>
         <div class="p-4 rounded border border-warning border-2 bg-warning bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-warning text-dark">NEW</span>
