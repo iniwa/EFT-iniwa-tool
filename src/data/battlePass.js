@@ -10,6 +10,8 @@ export const BATTLE_PASS_META = {
   dailyLimitSource: 'https://t.me/escapefromtarkovEN/6773',
   classifiedSource: 'https://t.me/escapefromtarkovEN/6795',
   documentMapSource: 'https://lootmap.gg/escape-from-tarkov/guides/kord-breach-documents-map-guide/',
+  documentWikiSource: 'https://wikiwiki.jp/eft/%E3%83%90%E3%83%88%E3%83%AB%E3%83%91%E3%82%B9%20Kord%20Breach',
+  documentLocationMapSource: 'https://tarkovdocsmap.com/',
   dailyLimits: { season: 30, pvp: 20, pve: 15 },
 }
 

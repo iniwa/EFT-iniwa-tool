@@ -46,7 +46,44 @@ const categoryLabel = (value) => BATTLE_PASS_REWARD_CATEGORIES.find((category) =
     <section class="card mb-4" aria-labelledby="documents-heading">
       <div class="card-header d-flex flex-wrap justify-content-between gap-2 align-items-center"><h3 id="documents-heading" class="h5 mb-0">文書図鑑 <small class="text-muted">{{ filteredDocuments.length }} / {{ BATTLE_PASS_DOCUMENTS.length }}</small></h3><button class="btn btn-sm btn-outline-secondary" type="button" @click="resetDocuments">リセット</button></div>
       <div class="card-body border-bottom"><div class="row g-2"><div class="col-md-7"><label class="form-label small" for="battle-document-search">文書を検索（日本語・英語）</label><input id="battle-document-search" v-model="documentSearch" class="form-control" type="search" placeholder="例: 医療 / medical"></div><div class="col-md-5"><label class="form-label small" for="battle-document-map">入手マップで絞り込み</label><select id="battle-document-map" v-model="documentMap" class="form-select"><option value="">すべてのマップ</option><option v-for="map in maps" :key="map" :value="map">{{ map }}</option></select></div></div></div>
-      <p class="small text-muted px-3 mb-0">日本語名は説明用の仮訳で、公式翻訳名ではありません。マップ対応は<a :href="BATTLE_PASS_META.documentMapSource" target="_blank" rel="noreferrer">文書マップガイド</a>を参照しています。</p><div v-if="filteredDocuments.length" class="card-body document-grid"><article v-for="document in filteredDocuments" :key="document.id" class="document-card"><div class="d-flex justify-content-between gap-2"><h4 class="h6 mb-1">{{ document.jaName }}</h4><code class="small">{{ document.name }}</code></div><p class="small text-muted mb-2">{{ document.special || '通常文書。レイド・専用タスク等で入手。' }}</p><div v-if="document.maps.length" class="d-flex flex-wrap gap-1"><span v-for="map in document.maps" :key="map" class="badge text-bg-dark">{{ map }}</span></div><div class="small text-muted mt-2">ID: {{ document.itemId }}</div></article></div><p v-else class="card-body text-muted mb-0" role="status">条件に一致する文書はありません。</p>
+      <p class="small text-muted px-3 mt-2 mb-0">日本語名は説明用の仮訳で、公式翻訳名ではありません。マップ対応は<a :href="BATTLE_PASS_META.documentMapSource" target="_blank" rel="noreferrer">文書マップガイド</a>を参照しています。</p>
+      <p class="small text-muted px-3 mt-1 mb-0">入手場所は各カードのWiki・英語マップから確認できます。リンク先で文書名と対象マップを選んでください。掲載地点での出現を保証するものではありません。</p>
+      <div v-if="filteredDocuments.length" class="card-body document-grid">
+        <article v-for="document in filteredDocuments" :key="document.id" class="document-card">
+          <div class="d-flex justify-content-between gap-2">
+            <h4 class="h6 mb-1">{{ document.jaName }}</h4>
+            <code class="small">{{ document.name }}</code>
+          </div>
+          <p class="small text-muted mb-2">{{ document.special || '通常文書。レイド・専用タスク等で入手。' }}</p>
+          <div v-if="document.maps.length" class="d-flex flex-wrap gap-1">
+            <span v-for="map in document.maps" :key="map" class="badge text-bg-dark">{{ map }}</span>
+          </div>
+          <div class="small text-muted mt-2">ID: {{ document.itemId }}</div>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a
+              :href="BATTLE_PASS_META.documentWikiSource"
+              class="btn btn-sm btn-outline-info"
+              target="_blank" rel="noopener noreferrer"
+              :aria-label="`${document.jaName}を日本語Wikiで確認（新しいタブ）`"
+            >Wiki（日本語） ↗</a>
+            <a
+              v-if="document.maps.length"
+              :href="BATTLE_PASS_META.documentLocationMapSource"
+              class="btn btn-sm btn-outline-info"
+              target="_blank" rel="noopener noreferrer"
+              :aria-label="`${document.jaName}の入手場所を英語マップで確認（新しいタブ）`"
+            >入手場所マップ（英語） ↗</a>
+            <a
+              v-else
+              :href="BATTLE_PASS_META.classifiedSource"
+              class="btn btn-sm btn-outline-info"
+              target="_blank" rel="noopener noreferrer"
+              :aria-label="`${document.jaName}の公式説明を英語で確認（新しいタブ）`"
+            >公式説明（英語） ↗</a>
+          </div>
+        </article>
+      </div>
+      <p v-else class="card-body text-muted mb-0" role="status">条件に一致する文書はありません。</p>
     </section>
 
     <section class="card" aria-labelledby="rewards-heading">

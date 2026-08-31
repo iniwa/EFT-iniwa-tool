@@ -29,6 +29,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 - **データ Import / Export** — JSON でバックアップ・復元
 - **PvE / PvP / Seasonal PvP 別管理** — モードごとに別セーブ。Seasonal PvPは独立し、新シーズン開始時に進捗をリセット
 - **Personal Modifierビルダー** — 🧬 ModifierタブでKORD BREACH Season 1の構成、ポイント、実績目安、プリセット、共有リンクを管理
+- **バトルパス** — 文書9種類と全12ページ・53件の報酬を検索。文書の入手場所は日本語Wiki・英語マップへのリンクから確認
 - **タスクステータス / トレーダー条件** — 進行中・失敗とLL/評判条件を任意で管理
 - **静的ページ** — About / 使い方 / FAQ / プライバシーポリシー / 利用規約
 
@@ -43,7 +44,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | ビルド | Vite 8 |
 | UI | Bootstrap 5 + カスタム CSS（ダークテーマ） |
 | 図 | Mermaid 11 |
-| バージョン | 3.3.0 |
+| バージョン | 3.3.1 |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
 | データソース | [tarkov.dev JSON API](https://json.tarkov.dev/)（レガシー GraphQL API はフォールバック） |
 | 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |
