@@ -58,7 +58,6 @@ const categoryLabel = (value) => BATTLE_PASS_REWARD_CATEGORIES.find((category) =
           <div v-if="document.maps.length" class="d-flex flex-wrap gap-1">
             <span v-for="map in document.maps" :key="map" class="badge text-bg-dark">{{ map }}</span>
           </div>
-          <div class="small text-muted mt-2">ID: {{ document.itemId }}</div>
           <div class="d-flex flex-wrap gap-2 mt-3">
             <a
               :href="BATTLE_PASS_META.documentWikiSource"
