@@ -27,6 +27,25 @@ The repository exposes `npm test` for the Node built-in test runner. No lint, fo
 
 ## Scope and Autonomy
 
+Personal-use iteration is the default unless the user or verified project
+requirements establish stronger obligations. Make the smallest normal-path
+change, run a brief useful check, perform routine reversible
+deployment/application and any necessary restart through the known existing
+user-controlled target and procedure, smoke normal use, fix observed
+errors, and finish when normal operation works. Do not require speculative
+edge-case coverage, hardening, abstractions, new tests, an offline harness, or
+a full suite for ordinary changes. Required persistence, security, data, and
+approval checks remain in force; a required pre-application review receives a
+stable source/diff candidate before runtime application. The initial
+implementation or fix request supplies standing permission for this bounded
+routine cycle, so no fresh confirmation is needed. This does not infer Git
+commit/push/merge, publication/release/registry or hosted-config changes,
+credentials/permissions/exposure, destructive data or migrations, new targets
+or cost, or project-specific protected operations. If a target or check is
+unavailable, report readiness separately; record only required deferred checks
+in the existing issue or ledger with verification, approval, and resume
+conditions.
+
 - Precedence is runtime and safety policy, explicit user policy, this durable policy, then the current task. Repository facts override shared defaults.
 - The outcome defines scope; named files are starting points unless explicitly bounded. Make the smallest correct reversible change and reuse existing code, browser APIs, and platform capabilities first.
 - Preserve unrelated changes. Treat unexpected diffs as unknown and stop only when overlap cannot be resolved safely.
@@ -45,7 +64,7 @@ Do not commit, push, merge, publish, deploy, restart, change hosted configuratio
 
 - Before implementation, classify the initial route from acceptance evidence as `small-primary` for small or transfer-negative work, `bounded` for settled multi-step work with one verifiable writer, `adaptive` when unresolved native/platform/runtime or cross-subsystem behavior is material, or `non-implementation` for analysis, design, review, or operations. This does not force delegation; reclassify only after a material scope change or contract reset.
 - Reintegrate through the stable diff and verification evidence; do not repeat delegated discovery merely to re-establish context.
-- The user selects the primary model. The primary owns interpretation, material design, approvals, integration, and communication.
+- Use GPT-5.6 Sol as the preferred main worker; the user's actual runtime model and reasoning choice remains authoritative. Sol owns intent, design, approval boundaries, integration, and user communication and can directly finish small or transfer-negative work. Use configured Luna roles (`bounded_explorer`/`bounded_implementer`) for bounded work and Terra roles (`adaptive_implementer`/`bounded_reviewer`) for adaptive implementation or risk-justified review; do not force delegation or pin the main reasoning level in project instructions.
 - Keep one cohesive outcome and its corrections in the current task. Identify a fresh Codex task or chat boundary for a genuinely independent phase with its own acceptance and verification.
 - Use native Codex subagents only when outcome, protected behavior, gates, and verification are settled and savings exceed handoff cost. Do not invoke Claude Code unless the user changes this policy.
 - Before starting a writer, record exact acceptance mechanics, protected regressions and gates, focused and affected full checks, the stable-diff/reference sweep, and the required per-item evidence.
@@ -55,7 +74,7 @@ Do not commit, push, merge, publish, deploy, restart, change hosted configuratio
 - Only the primary session delegates. Delegated agents must not spawn agents. Keep one writer for overlapping files or behavior. A behaviorally read-only role remains read-only even if its tools technically permit writes.
 - If a role cannot be selected or observed, keep work primary or use an observable equivalent and report the fallback.
 - Ordinary delegation uses a compact inline goal, done criteria, context, constraints, and verification. Create a persisted `docs/handoffs/YYYY-MM-DD-<short-task>.md` only for substantial cross-session, interruption-sensitive, operationally risky, or separately executed work that needs durable resume conditions.
-- Before success, the writer self-reviews the stable diff, sweeps stale references and protected regressions, runs focused checks and the affected full check once, and reports each acceptance item as `passed`, `blocked`, or `unmet` with evidence.
+- Before success, the writer self-reviews the stable diff, sweeps stale references and protected regressions, runs useful focused checks, and runs an affected full check only when explicitly required by the task or a concrete risk. Report each acceptance item as `passed`, `blocked`, or `unmet` with evidence.
 - At the second correction round for one cohesive outcome, or after two blocked or partial implementation returns caused by unresolved acceptance, authority, or environment, pause corrective delegation and reset the contract. Restate acceptance, protected boundaries, authority, environment, and evidence, then select one bounded writer only if the remainder is still bounded, an adaptive writer when warranted, approval or user input when authority is missing, or a fresh independent task boundary. Keep substantive corrections with that selected writer; the primary edits the delegated surface only for a demonstrably small transfer-negative correction or when delegation is unavailable.
 
 ## Definition of Done
