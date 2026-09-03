@@ -41,3 +41,4 @@ dist/
 
 # Codex local settings
 .codex/
+.codex-remote-attachments/
