@@ -44,7 +44,7 @@ function toggleItemDetails(uid) {
       </select>
     </div>
     <section v-if="listMode === 'priority'" class="mb-3" aria-label="Priority task scope">
-      <p class="small text-muted mb-2">&#20778;&#20808;&#30446;&#27161;&#12392;&#23436;&#20102;&#12364;&#24517;&#38920;&#12398;&#26410;&#23436;&#20102;&#21069;&#25552;&#12434;&#38598;&#35336;&#12290;&#12495;&#12452;&#12489;&#12450;&#12454;&#12488;&#12399;&#21547;&#12415;&#12414;&#12379;&#12435;&#12290;&#21454;&#38598;&#12481;&#12455;&#12483;&#12463;&#12399;&#36890;&#24120;&#19968;&#35239;&#12392;&#20849;&#36890;&#12391;&#12377;&#12290;</p>
+      <p class="small text-muted mb-2">&#20778;&#20808;&#30446;&#27161;&#12392;&#23436;&#20102;&#12364;&#24517;&#38920;&#12398;&#26410;&#23436;&#20102;&#21069;&#25552;&#12434;&#38598;&#35336;&#12290;&#12495;&#12452;&#12489;&#12450;&#12454;&#12488;&#26448;&#26009;&#12399;&#36890;&#24120;&#19968;&#35239;&#12392;&#21516;&#12376;&#26465;&#20214;&#12391;&#21547;&#12415;&#12414;&#12377;&#12290;&#21454;&#38598;&#12481;&#12455;&#12483;&#12463;&#12399;&#36890;&#24120;&#19968;&#35239;&#12392;&#20849;&#36890;&#12391;&#12377;&#12290;</p>
       <p v-if="!priorityTaskPlan.goals.length" role="status">&#26410;&#23436;&#20102;&#12398;&#20778;&#20808;&#12479;&#12473;&#12463;&#12364;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;&#36914;&#25431;&#19968;&#35239;&#12398;&#26143;&#12391;&#20778;&#20808;&#30446;&#27161;&#12434;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;</p>
       <div class="d-flex flex-wrap gap-2 mb-2">
         <button v-for="task in priorityTaskPlan.goals" :key="task.id" type="button" class="btn btn-sm btn-outline-info" @click="emit('open-task-from-name', { id: task.id, name: task.name })">{{ task.name }}</button>
@@ -117,7 +117,7 @@ function toggleItemDetails(uid) {
                   ・{{ source.name }} (x{{ source.count }})
                 </span>
               </div>
-              <template v-if="listMode === 'priority'">
+              <template v-if="listMode === 'priority' && ['taskFir', 'collector', 'taskNormal'].includes(key)">
                 <div v-for="source in item.sources" :key="'conditions:' + source.taskId" class="ms-2">
                   <div v-for="(objective, index) in source.objectives" :key="index">{{ source.name }}: {{ objective.description }} <span v-if="objective.optional">(&#20219;&#24847;)</span></div>
                 </div>

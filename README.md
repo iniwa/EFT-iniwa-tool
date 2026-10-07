@@ -44,7 +44,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | ビルド | Vite 8 |
 | UI | Bootstrap 5 + カスタム CSS（ダークテーマ） |
 | 図 | Mermaid 11 |
-| バージョン | 3.4.0 |
+| バージョン | 3.4.1 |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
 | データソース | [tarkov.dev JSON API](https://json.tarkov.dev/)（レガシー GraphQL API はフォールバック） |
 | 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |

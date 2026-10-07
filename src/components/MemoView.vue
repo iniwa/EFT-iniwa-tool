@@ -31,25 +31,25 @@ function toggleSection(key) {
 }
 
 const sections = [
-    { key: 'health', icon: '🚑', label: '回復・手術キット性能', component: MemoHealth },
-    { key: 'weapon', icon: '🔫', label: '口径別の武器詳細', component: MemoWeapon },
-    { key: 'armor', icon: '🛡️', label: 'アーマー材質の特徴', component: MemoArmor },
+    { key: 'health', icon: '🚑', label: '回復・手術キットの確認', component: MemoHealth },
+    { key: 'weapon', icon: '🔫', label: '武器・弾薬の確認', component: MemoWeapon },
+    { key: 'armor', icon: '🛡️', label: 'アーマー・プレートの確認', component: MemoArmor },
     { key: 'stims', icon: '💉', label: '注射器 (Stims)', component: MemoStims },
-    { key: 'grenade', icon: '💣', label: 'グレネード性能 (Fuse Time)', component: MemoGrenade },
-    { key: 'traders', icon: '🤝', label: 'トレーダー解放条件 (Loyalty Levels)', component: MemoTraders },
-    { key: 'items', icon: '🏆', label: '解放・収集・タスク攻略', component: MemoItems, emitsTask: true },
+    { key: 'grenade', icon: '💣', label: 'グレネードの確認', component: MemoGrenade },
+    { key: 'traders', icon: '🤝', label: 'トレーダー条件とタスク判定', component: MemoTraders },
+    { key: 'items', icon: '🏆', label: 'アイテム収集・タスク計画', component: MemoItems, emitsTask: true },
 ]
 </script>
 
 <template>
     <div class="card border-0 bg-black mb-4 memo-wrapper">
         <div class="card-header bg-black text-info border-bottom border-secondary py-3">
-            <div class="fw-bold fs-5">📝 メモ書き (データ一覧)</div>
+            <div class="fw-bold fs-5">📝 使い方メモ</div>
         </div>
 
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 静的メモの一部はパッチ1.0.0.5時点の情報です。Patch 1.1以降の価格・トレーダーLL・報酬変更はゲーム内表示を優先してください。
+                組み込みの使い方メモです（2026-10-07更新）。データは選択中のモード・言語と取得時点に依存します。未確認のゲーム数値は固定表として掲載せず、各タブの取得データとゲーム内画面で確認する手順を案内します。tarkov.devはコミュニティデータで、公式情報ではありません。
             </div>
 
             <div class="accordion accordion-flush">

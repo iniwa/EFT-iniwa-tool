@@ -239,7 +239,10 @@ export function useShoppingList() {
 
   const priorityTaskPlan = computed(() => planPriorityTasks(taskData.value || [], prioritizedTasks.value, completedTasks.value, taskStatuses.value));
   const priorityShoppingList = computed(() => aggregatePriorityTaskItems(priorityTaskPlan.value.tasks, completedTasks.value));
-  const priorityDisplayLists = computed(() => Object.fromEntries(['taskFir', 'collector', 'taskNormal'].map(category => [category, { ...displayLists.value[category], items: priorityShoppingList.value[category] }])));
+  const priorityDisplayLists = computed(() => ({
+    ...displayLists.value,
+    ...Object.fromEntries(['taskFir', 'collector', 'taskNormal'].map(category => [category, { ...displayLists.value[category], items: priorityShoppingList.value[category] }])),
+  }));
 
   return {
     priorityTaskPlan,
