@@ -76,19 +76,19 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <!-- 新機能: v3.3.1 -->
+        <!-- 新機能: v3.4.0 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
             <span class="badge bg-info text-dark">NEW</span>
-            <h4 class="text-info fw-bold mb-0">🎟️ v3.3.1 - バトルパス</h4>
+            <h4 class="text-info fw-bold mb-0">✨ v3.4.0 - タスク計画とPersonal Modifier</h4>
           </div>
-          <p class="text-light mb-2">本編 KORD BREACH の文書・報酬を確認できる、バトルパスタブを追加しました。</p>
           <ul class="text-light mb-2">
-            <li><strong>文書図鑑:</strong> 9種類の文書を日本語・英語の名前や入手マップで絞り込めます。</li>
-            <li><strong>入手場所へのリンク:</strong> 各文書から日本語Wikiと英語の地図ガイドを開けます。機密文書は公式説明を案内します。</li>
-            <li><strong>報酬一覧:</strong> 全12ページ・53件の報酬を、名前・ページ・分類で検索できます。</li>
+            <li><strong>必要アイテム:</strong> 優先タスクの前提タスクをたどり、重複をまとめて買い物リストに含めます。「すべて」と「優先タスク」の表示設定を保存します。</li>
+            <li><strong>タスクフローチャート:</strong> PMCレベルとトレーダー忠誠レベルの条件表示を整理し、詳細表示と資格判定は維持します。タスク間の移動、表示範囲へのフィット、ズーム、戻る操作を改善しました。</li>
+            <li><strong>Personal Modifier:</strong> Underdogを取得済みの場合にNegative Modifierへ追加しました。デバフなしで＋4ポイントとして計算します。Negative個数の実績ヒントにも含まれますが、ゲーム内実績の取得条件は未確認です。</li>
+            <li><strong>Battle Pass / カタログ:</strong> 参照用カタログ、タスク用アイコンと詳細画面からの復帰操作を追加しました。</li>
           </ul>
-          <p class="small text-info mb-0">参考カタログのため、必要文書数や解放条件はゲーム内表示を優先してください。進捗の保存・自動同期は行いません。</p>
+          <p class="small text-info mb-0">Boreas / Icebreakerのデータ検証と一部の内部条件変数の意味付けは未完了です。未確認の項目は確定情報として扱わないでください。Underdogの公式取得条件も未確認です。</p>
         </div>
         <!-- 新機能: v3.3.0 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">

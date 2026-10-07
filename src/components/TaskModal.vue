@@ -8,6 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
+import { describeGlobalVariable } from '../logic/globalConditionLabels.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
 import {
   meaningfulBuildAttributes,
@@ -39,9 +40,11 @@ const { playerLevel } = useAppState()
 const props = defineProps({
   task: { type: Object, default: null },
   show: { type: Boolean, default: false },
+  returnLabel: { type: String, default: '' },
+  canShowFlowchart: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'show-flowchart'])
 const safeUrl = toHttpsUrl
 
 const taskStatus = computed(() => {
@@ -96,10 +99,8 @@ function otherRequirementLabel(requirement) {
     const traders = (requirement.traders || []).map((trader) => trader.name).join(' / ')
     return `会話条件${traders ? `: ${traders}` : ''}`
   }
-  if (requirement.type === 'globalVariable') {
-    const variableId = requirement.variableId || '不明'
-    return `ゲーム内変数 (ID: ${variableId}) ${requirement.compareMethod || '>='} ${requirement.value ?? ''}`.trim()
-  }
+  if (requirement.type === 'globalVariable') return describeGlobalVariable(requirement).label
+
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }
 
@@ -130,6 +131,7 @@ function objectiveConstraintLines(obj) {
 <template>
   <BaseModal :show="show" max-width="700px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
+      <button v-if="returnLabel" class="btn btn-outline-info mb-3" type="button" @click="emit('close')">{{ returnLabel }}</button>
       <!-- 進捗/優先トグル + 閉じるボタン -->
       <div class="d-flex justify-content-between align-items-start mb-3">
         <div class="d-flex align-items-end gap-3 w-100 flex-wrap">
@@ -181,7 +183,8 @@ function objectiveConstraintLines(obj) {
         {{ task.name }}
       </h4>
 
-      <!-- 基本情報 -->
+      <button v-if="canShowFlowchart && task.id" type="button" class="btn btn-outline-info mb-3" @click="emit('show-flowchart', task)">&#12501;&#12525;&#12540;&#12481;&#12515;&#12540;&#12488;&#12391;&#34920;&#31034;</button>
+      <!-- Basic task information -->
       <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
         <div><strong>Trader:</strong> {{ task.trader?.name || 'Unknown' }}</div>
         <div><strong>Map:</strong> {{ task.map ? task.map.name : 'None' }}</div>
@@ -231,7 +234,7 @@ function objectiveConstraintLines(obj) {
             :key="requirement.id || `${requirement.trader?.id || requirement.trader?.name}:${requirement.requirementType}:${requirementIndex}`"
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
-            <span>{{ traderRequirementLabel(requirement) }}</span>
+            <span>{{ traderRequirementLabel(requirement) }}<br v-if="requirement.sourceUrl"><a v-if="requirement.sourceUrl" :href="safeUrl(requirement.sourceUrl)" target="_blank" rel="noopener noreferrer" class="small">{{ requirement.sourceLabel }}</a></span>
             <span
               class="badge align-self-center"
               :class="traderRequirementResult(requirement).met
@@ -258,6 +261,11 @@ function objectiveConstraintLines(obj) {
             class="list-group-item bg-dark text-light border-secondary py-2"
           >
             {{ otherRequirementLabel(requirement) }}
+            <details v-if="requirement.type === 'globalVariable'" class="small text-muted mt-1">
+              <summary>&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
+              {{ describeGlobalVariable(requirement).technical }}
+              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1・完了数は自動判定しません</a>
+            </details>
             <span class="badge bg-secondary ms-1">自動判定なし</span>
           </li>
         </ul>
@@ -398,6 +406,10 @@ function objectiveConstraintLines(obj) {
                 <div v-if="obj.requiredKeys?.length">必要な鍵: {{ obj.requiredKeys.map((item) => item.name || item.id).join(' / ') }}</div>
                 <div v-if="obj.containsCategory?.length">カテゴリ: {{ obj.containsCategory.map((category) => category.name || category.id).join(' / ') }}</div>
                 <div v-if="meaningfulBuildAttributes(obj.buildAttributes).length">性能: {{ meaningfulBuildAttributes(obj.buildAttributes).map(formatBuildAttribute).join(' / ') }}</div>
+              </details>
+              <details v-if="obj.globalVariable" class="small text-muted mt-1">
+                <summary>&#20869;&#37096;&#26465;&#20214;&#12398;&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
+                {{ describeGlobalVariable(obj.globalVariable).technical }}
               </details>
               <div v-if="healthEffectEntries(obj).length" class="text-danger mt-1">
                 <div v-for="entry in healthEffectEntries(obj)" :key="entry.key">{{ entry.label }}: {{ formatObjectiveValue(entry.value) }}</div>

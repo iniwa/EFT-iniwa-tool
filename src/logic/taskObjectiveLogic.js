@@ -1,3 +1,4 @@
+import { describeGlobalVariable } from './globalConditionLabels.js'
 const ATTRIBUTE_META = {
   durability: { label: '耐久' },
   ergonomics: { label: 'エルゴノミクス' },
@@ -46,8 +47,7 @@ export function formatObjectiveValue(value) {
 }
 
 export function formatGlobalVariable(value) {
-  if (!value || typeof value !== 'object') return formatObjectiveValue(value)
-  return `ゲーム内変数 ${value.id || ''} ${value.compareMethod || '>='} ${value.value ?? ''}`.trim()
+  return describeGlobalVariable(value).label
 }
 
 export function formatDistanceCondition(distance) {

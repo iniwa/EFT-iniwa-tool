@@ -49,6 +49,7 @@ const negative = [
   ['broken-secure-container', 'Broken Secure Container', 6, 'コンテナに入れられるのは現金・鍵・ドッグタグ・特殊装備等のみ。'],
   ['incompetent', 'Incompetent', 10, 'Bolt-action Riflesを除くスキル成長速度-25%、上限レベル30（Craftingを除く）。'],
   ['no-flea-market', 'No Flea Market', 10, 'フリーマーケットでプレイヤーとの取引不可。'],
+  ['underdog', 'Underdog', 4, 'デバフはなく、取得済みの場合に利用可能ポイント＋4。後発参加者向けのModifierです。取得条件は未確認です。'],
 ]
 
 const globals = [

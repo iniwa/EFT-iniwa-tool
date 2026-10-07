@@ -24,9 +24,7 @@
                 <td class="text-blue fw-bold ps-3">SIG Spear</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">800</td>
-                <td class="text-muted-dark">
-                    <span class="text-blue">最強AR</span>。高レート・高貫通・高ダメージの全てが揃う。反動制御も優秀だが入手難易度が極めて高い。
-                </td>
+                <td class="text-muted-dark">Hybrid運用の有力候補 (目安)。Peacekeeper LL4＋Lightkeeper「Trouble in the Big City」。高価で摩耗・発熱にも注意。</td>
             </tr>
 
             <tr class="memo-caliber-row">
@@ -51,7 +49,7 @@
             <tr>
                 <td class="text-blue fw-bold ps-3">M60E6 / E4</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span></td>
-                <td class="weapon-col-rpm">600</td>
+                <td class="weapon-col-rpm">550</td>
                 <td class="text-muted-dark">
                     <span class="text-blue">LMG</span>。100連発による制圧力が売り。低レートで制御しやすく、オープンボルトでジャムらない。
                 </td>
@@ -135,7 +133,7 @@
             <tr>
                 <td class="fw-bold ps-3">RPD / RPDN</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span></td>
-                <td class="weapon-col-rpm">650</td>
+                <td class="weapon-col-rpm">700</td>
                 <td class="text-muted-dark">
                     100連ドラム固定のLMG。オープンボルト(ジャム無)。RPDNはサイト装着可。弾幕でゴリ押す用。
                 </td>
@@ -147,7 +145,7 @@
                 </td>
                 <td class="fw-bold ps-3">M4A1 / HK416</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
-                <td class="weapon-col-rpm">800+</td>
+                <td class="weapon-col-rpm">M4: 800<br>HK: 850</td>
                 <td class="text-muted-dark">
                     高レートによるDPSが魅力だが、反動制御には高級パーツによるフルカスタムが必須。
                 </td>
@@ -155,7 +153,7 @@
             <tr>
                 <td class="text-blue fw-bold ps-3">AUG A3</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
-                <td class="weapon-col-rpm">~700</td>
+                <td class="weapon-col-rpm">715</td>
                 <td class="text-muted-dark">
                     本体性能が高く、最低限のカスタムで実戦投入可能。<span class="text-blue">コスパ最強</span>枠。
                 </td>
@@ -191,7 +189,7 @@
                 </td>
                 <td class="text-blue fw-bold ps-3">NL-545</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/2/1</td>
-                <td class="weapon-col-rpm">800</td>
+                <td class="weapon-col-rpm">DI: 800<br>GP: 850</td>
                 <td class="text-muted-dark">
                     <span class="text-blue">5.45mm最強格</span>。M4並みの高レートで、この口径の火力不足を補える。
                 </td>
@@ -220,9 +218,7 @@
                 <td class="text-blue fw-bold ps-3">AS VAL / VSS</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">900</td>
-                <td class="text-muted-dark">
-                    消音器内蔵。超高レート×高貫通弾で近距離最強。弾速が遅く遠距離は苦手。耐久消耗が激しい。
-                </td>
+                <td class="text-muted-dark">900 RPMと9x39mmで近距離向き (目安)。亜音速弾の落下に注意。耐久消耗・発熱にも注意。</td>
             </tr>
             <tr>
                 <td class="text-blue fw-bold ps-3">SR-3M</td>
@@ -235,7 +231,7 @@
             <tr>
                 <td class="fw-bold ps-3">9A-91</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
-                <td class="weapon-col-rpm">~700</td>
+                <td class="weapon-col-rpm">700</td>
                 <td class="text-muted-dark">
                     廉価版9x39mm銃。カスタム幅は狭いが、安価に強力な弾薬を運用できる。
                 </td>
@@ -260,9 +256,7 @@
                 <td class="fw-bold ps-3">ASh-12</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">650</td>
-                <td class="text-muted-dark">
-                    近距離特化のロマン砲。PS12B弾ならクラス4アーマーを胸一撃で葬る破壊力。
-                </td>
+                <td class="text-muted-dark">PS12Bで近距離向き (目安)。強い反動・重い弾薬・最大20連。低弾速と落下で中距離は扱いに注意。</td>
             </tr>
 
             <tr class="memo-caliber-row">
@@ -312,9 +306,7 @@
                 <td class="text-blue fw-bold ps-3">P90</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">900</td>
-                <td class="text-muted-dark">
-                    標準で50連マガジン搭載。リロードの手間が少なく連戦に強い。給弾動作が遅い点に注意。
-                </td>
+                <td class="text-muted-dark">50連マガジンと900 RPM。近距離の継続射撃向き (目安)。</td>
             </tr>
 
             <tr class="memo-caliber-row">
@@ -343,7 +335,7 @@
             <tr>
                 <td class="text-start ps-3 fw-bold text-blue">UZI PRO</td>
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
-                <td class="weapon-col-rpm">1150</td>
+                <td class="weapon-col-rpm">1075</td>
                 <td class="text-muted-dark">
                     Vectorを超える超高レートSMG。非常にコンパクトで低反動。クローズドボルトのためジャム有り。
                 </td>
@@ -370,6 +362,7 @@
             </tr>
         </tbody>
     </table>
+    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/%E6%AD%A6%E5%99%A8%E4%B8%80%E8%A6%A7" target="_blank" rel="noopener noreferrer">武器一覧</a> / <a href="https://wikiwiki.jp/eft/%E5%BC%BE%E8%96%AC" target="_blank" rel="noopener noreferrer">弾薬</a>。RPMは型式別。その他の運用評価・おすすめは目安です。</p>
 </template>
 
 <style scoped>

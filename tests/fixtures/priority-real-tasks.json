@@ -1,0 +1,1692 @@
+{
+  "provenance": {
+    "retrievedAt": "2026-10-07T06:52:30.705Z",
+    "mode": "regular",
+    "lang": "en",
+    "source": "https://json.tarkov.dev/regular/tasks",
+    "adapter": "src/logic/jsonApiAdapter.js convertMainData",
+    "sourceSnapshotSha256": "f41e899cf6db9150911d10167be02f103c6d8068c19fb02fdc70cbbd8c305bd3",
+    "scope": "Selected test-only records; not runtime data or saved user progress"
+  },
+  "tasks": [
+    {
+      "id": "596a204686f774576d4c95de",
+      "name": "Sanitary Standards - Part 2",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "Therapist",
+        "normalizedName": "therapist",
+        "imageLink": "https://assets.tarkov.dev/54cb57776803fa99248b456e.webp"
+      },
+      "minPlayerLevel": 8,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "59689ee586f7740d1570bbd5",
+            "name": "Sanitary Standards"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "5ec1398886f7561e047757a5",
+          "description": "Find Gas analyzers in raid",
+          "type": "findItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "590a3efd86f77437d351a25b",
+              "name": "Gas analyzer",
+              "shortName": "GasAn",
+              "normalizedName": "gas-analyzer",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_analyzer",
+              "iconLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "596a20ac86f7741ddf17dbf4",
+          "description": "Hand over the items",
+          "type": "giveItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "590a3efd86f77437d351a25b",
+              "name": "Gas analyzer",
+              "shortName": "GasAn",
+              "normalizedName": "gas-analyzer",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_analyzer",
+              "iconLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        }
+      ]
+    },
+    {
+      "id": "597a0e5786f77426d66c0636",
+      "name": "Chemical - Part 3",
+      "trader": {
+        "id": "58330581ace78e27b8b10cee",
+        "name": "Skier",
+        "normalizedName": "skier",
+        "imageLink": "https://assets.tarkov.dev/58330581ace78e27b8b10cee.webp"
+      },
+      "minPlayerLevel": 9,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "597a0b2986f77426d66c0633",
+            "name": "Chemical - Part 2"
+          },
+          "status": [
+            "complete",
+            "active"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [
+        {
+          "id": "6a706162b88b18e3bf23198a",
+          "requirementType": "level",
+          "compareMethod": ">=",
+          "value": 2,
+          "trader": {
+            "id": "5c0647fdd443bc2504c2d371",
+            "name": "Jaeger",
+            "normalizedName": "jaeger",
+            "imageLink": "https://assets.tarkov.dev/5c0647fdd443bc2504c2d371.webp"
+          },
+          "level": 2
+        }
+      ],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "597a15b386f774799e5cd152",
+          "description": "Locate and obtain the chemical syringe on Factory",
+          "type": "findQuestItem",
+          "maps": [
+            {
+              "id": "55f2d3fd4bdc2d5f408b4567",
+              "name": "Factory"
+            },
+            {
+              "id": "59fc81d786f774390775787e",
+              "name": "Night Factory"
+            }
+          ],
+          "optional": false,
+          "questItem": {
+            "id": "593a87af86f774122f54a951",
+            "name": "Syringe with a chemical",
+            "shortName": "Reagent",
+            "normalizedName": "syringe-with-a-chemical",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/593a87af86f774122f54a951-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/593a87af86f774122f54a951-512.webp"
+          },
+          "zones": [],
+          "possibleLocations": [
+            {
+              "map": {
+                "id": "55f2d3fd4bdc2d5f408b4567",
+                "name": "Factory"
+              },
+              "positions": [
+                {
+                  "x": 23.249971,
+                  "y": 8.535252,
+                  "z": 39.403866
+                },
+                {
+                  "x": 25.56231,
+                  "y": 8.0731945,
+                  "z": 38.48874
+                },
+                {
+                  "x": 26.326584,
+                  "y": 8.978607,
+                  "z": 36.763622
+                }
+              ]
+            },
+            {
+              "map": {
+                "id": "59fc81d786f774390775787e",
+                "name": "Night Factory"
+              },
+              "positions": [
+                {
+                  "x": 26.326584,
+                  "y": 8.978607,
+                  "z": 36.763622
+                },
+                {
+                  "x": 23.249971,
+                  "y": 8.535252,
+                  "z": 39.403866
+                },
+                {
+                  "x": 25.56231,
+                  "y": 8.0731945,
+                  "z": 38.48874
+                }
+              ]
+            }
+          ],
+          "count": 1
+        },
+        {
+          "id": "597a15c386f77405ba6887d2",
+          "description": "Hand over the syringe",
+          "type": "giveQuestItem",
+          "maps": [],
+          "optional": false,
+          "questItem": {
+            "id": "593a87af86f774122f54a951",
+            "name": "Syringe with a chemical",
+            "shortName": "Reagent",
+            "normalizedName": "syringe-with-a-chemical",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/593a87af86f774122f54a951-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/593a87af86f774122f54a951-512.webp"
+          },
+          "zones": [],
+          "possibleLocations": [],
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "597a0f5686f774273b74f676",
+      "name": "Chemical - Part 4",
+      "trader": {
+        "id": "58330581ace78e27b8b10cee",
+        "name": "Skier",
+        "normalizedName": "skier",
+        "imageLink": "https://assets.tarkov.dev/58330581ace78e27b8b10cee.webp"
+      },
+      "minPlayerLevel": 9,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "597a0e5786f77426d66c0636",
+            "name": "Chemical - Part 3"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "5a3fbc9586f77459d52a16c4",
+          "description": "Locate the transport with the chemicals on Customs",
+          "type": "visit",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": false,
+          "zones": [
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            },
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            }
+          ],
+          "possibleLocations": []
+        },
+        {
+          "id": "59b242ea86f7741e6e0e7a86",
+          "description": "Mark the vehicle with an MS2000 Marker",
+          "type": "mark",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "markerItem": {
+            "id": "5991b51486f77447b112d44f",
+            "name": "MS2000 Marker",
+            "shortName": "MS2000",
+            "normalizedName": "ms2000-marker",
+            "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MS2000_Marker",
+            "iconLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-512.webp"
+          },
+          "optional": false,
+          "zones": [
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            },
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            }
+          ],
+          "possibleLocations": [],
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "597a160786f77477531d39d2",
+      "name": "Out of Curiosity",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "Therapist",
+        "normalizedName": "therapist",
+        "imageLink": "https://assets.tarkov.dev/54cb57776803fa99248b456e.webp"
+      },
+      "minPlayerLevel": 9,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "597a0f5686f774273b74f676",
+            "name": "Chemical - Part 4"
+          },
+          "status": [
+            "active"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "5a3fc1f286f7744ccc15d643",
+          "description": "Locate the transport with the chemicals on Customs",
+          "type": "visit",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": false,
+          "zones": [
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            },
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            }
+          ],
+          "possibleLocations": []
+        },
+        {
+          "id": "5998366886f77455853b2d9f",
+          "description": "Mark the vehicle with an MS2000 Marker",
+          "type": "mark",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "markerItem": {
+            "id": "5991b51486f77447b112d44f",
+            "name": "MS2000 Marker",
+            "shortName": "MS2000",
+            "normalizedName": "ms2000-marker",
+            "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MS2000_Marker",
+            "iconLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-512.webp"
+          },
+          "optional": false,
+          "zones": [
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            },
+            {
+              "id": "gazel",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 480.77,
+                "y": 3.29,
+                "z": -76.69
+              },
+              "outline": [
+                {
+                  "x": 480.62,
+                  "y": 2.61,
+                  "z": -78.93
+                },
+                {
+                  "x": 478.83,
+                  "y": 2.61,
+                  "z": -75.57
+                },
+                {
+                  "x": 480.92,
+                  "y": 2.61,
+                  "z": -74.45
+                },
+                {
+                  "x": 482.72,
+                  "y": 2.61,
+                  "z": -77.81
+                }
+              ],
+              "top": 3.97,
+              "bottom": 2.61
+            }
+          ],
+          "possibleLocations": [],
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5b47876e86f7744d1c353205",
+      "name": "The Blood of War - Part 2",
+      "trader": {
+        "id": "5ac3b934156ae10c4430e83c",
+        "name": "Ragman",
+        "normalizedName": "ragman",
+        "imageLink": "https://assets.tarkov.dev/5ac3b934156ae10c4430e83c.webp"
+      },
+      "minPlayerLevel": 23,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5ae448f286f77448d73c0131",
+            "name": "Fuel Crisis"
+          },
+          "status": [
+            "complete"
+          ]
+        },
+        {
+          "task": {
+            "id": "5ae4495086f77443c122bc40",
+            "name": "Sew it Good - Part 1"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "5b47884886f7744d1c35327d",
+          "description": "Find Fuel conditioners in raid",
+          "type": "findItem",
+          "maps": [],
+          "count": 4,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5b43575a86f77424f443fe62",
+              "name": "Fuel conditioner",
+              "shortName": "FCond",
+              "normalizedName": "fuel-conditioner",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Fuel_conditioner",
+              "iconLink": "https://assets.tarkov.dev/5b43575a86f77424f443fe62-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5b43575a86f77424f443fe62-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5b47886986f7744d1a393e65",
+          "description": "Hand over the items",
+          "type": "giveItem",
+          "maps": [],
+          "count": 4,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5b43575a86f77424f443fe62",
+              "name": "Fuel conditioner",
+              "shortName": "FCond",
+              "normalizedName": "fuel-conditioner",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Fuel_conditioner",
+              "iconLink": "https://assets.tarkov.dev/5b43575a86f77424f443fe62-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5b43575a86f77424f443fe62-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        }
+      ]
+    },
+    {
+      "id": "59689ee586f7740d1570bbd5",
+      "name": "Sanitary Standards",
+      "trader": {
+        "id": "54cb57776803fa99248b456e",
+        "name": "Therapist",
+        "normalizedName": "therapist",
+        "imageLink": "https://assets.tarkov.dev/54cb57776803fa99248b456e.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [],
+      "traderLevelRequirements": [],
+      "otherRequirements": [
+        {
+          "id": "6a567fe394373d4ef646db38",
+          "type": "globalVariable",
+          "variableId": "6a4e4aed3ded7a18126603f6",
+          "compareMethod": ">=",
+          "value": 2
+        }
+      ],
+      "objectives": [
+        {
+          "id": "59689f7586f7740d14064726",
+          "description": "Hand over the found in raid item: Gas analyzer",
+          "type": "giveItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "590a3efd86f77437d351a25b",
+              "name": "Gas analyzer",
+              "shortName": "GasAn",
+              "normalizedName": "gas-analyzer",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_analyzer",
+              "iconLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "6a576ccec23300f0309ab511",
+          "description": "Stash a Gas analyzer in the med lab on Daytime Factory",
+          "type": "plantItem",
+          "maps": [
+            {
+              "id": "55f2d3fd4bdc2d5f408b4567",
+              "name": "Factory"
+            }
+          ],
+          "count": 1,
+          "foundInRaid": false,
+          "items": [
+            {
+              "id": "590a3efd86f77437d351a25b",
+              "name": "Gas analyzer",
+              "shortName": "GasAn",
+              "normalizedName": "gas-analyzer",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Gas_analyzer",
+              "iconLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/590a3efd86f77437d351a25b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [
+            {
+              "id": "factory_gas_leave_item",
+              "map": {
+                "id": "55f2d3fd4bdc2d5f408b4567",
+                "name": "Factory"
+              },
+              "position": {
+                "x": 27.72,
+                "y": 4.55,
+                "z": -31.87
+              },
+              "outline": [
+                {
+                  "x": 30.3,
+                  "y": 3.55,
+                  "z": -35.06
+                },
+                {
+                  "x": 24.73,
+                  "y": 3.55,
+                  "z": -34.67
+                },
+                {
+                  "x": 25.15,
+                  "y": 3.55,
+                  "z": -28.68
+                },
+                {
+                  "x": 30.72,
+                  "y": 3.55,
+                  "z": -29.08
+                }
+              ],
+              "top": 5.55,
+              "bottom": 3.55
+            }
+          ],
+          "possibleLocations": []
+        },
+        {
+          "id": "6a56800fc1311a6bb4cecf9b",
+          "description": "Locate the room with gas analyzers on Factory",
+          "type": "visit",
+          "maps": [
+            {
+              "id": "55f2d3fd4bdc2d5f408b4567",
+              "name": "Factory"
+            }
+          ],
+          "optional": true,
+          "zones": [
+            {
+              "id": "factory_gas_visit_place",
+              "map": {
+                "id": "55f2d3fd4bdc2d5f408b4567",
+                "name": "Factory"
+              },
+              "position": {
+                "x": 40.29,
+                "y": 1.09,
+                "z": -11.64
+              },
+              "outline": [
+                {
+                  "x": 43.16,
+                  "y": 0.09,
+                  "z": -15.48
+                },
+                {
+                  "x": 37.58,
+                  "y": 0.09,
+                  "z": -15.6
+                },
+                {
+                  "x": 37.42,
+                  "y": 0.09,
+                  "z": -7.8
+                },
+                {
+                  "x": 42.99,
+                  "y": 0.09,
+                  "z": -7.68
+                }
+              ],
+              "top": 2.09,
+              "bottom": 0.09
+            }
+          ],
+          "possibleLocations": []
+        }
+      ]
+    },
+    {
+      "id": "5979f9ba86f7740f6c3fe9f2",
+      "name": "Chemical - Part 1",
+      "trader": {
+        "id": "58330581ace78e27b8b10cee",
+        "name": "Skier",
+        "normalizedName": "skier",
+        "imageLink": "https://assets.tarkov.dev/58330581ace78e27b8b10cee.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [],
+      "traderLevelRequirements": [],
+      "otherRequirements": [
+        {
+          "id": "6a705e229056ca220534c604",
+          "type": "globalVariable",
+          "variableId": "6a59f3ba06c8949abad30871",
+          "compareMethod": ">=",
+          "value": 3
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5979fc2686f77426d702a0f2",
+          "description": "Locate and obtain any information about the deputy chief’s past life on Customs",
+          "type": "findQuestItem",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": false,
+          "questItem": {
+            "id": "5939e5a786f77461f11c0098",
+            "name": "Secure Folder 0013",
+            "shortName": "0013",
+            "normalizedName": "secure-folder-0013",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/5939e5a786f77461f11c0098-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5939e5a786f77461f11c0098-512.webp"
+          },
+          "requiredKeys": [],
+          "zones": [],
+          "possibleLocations": [
+            {
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "positions": [
+                {
+                  "x": 485.8996,
+                  "y": 5.639,
+                  "z": -140.5882
+                },
+                {
+                  "x": 498.5496,
+                  "y": 5.6390033,
+                  "z": -141.5012
+                },
+                {
+                  "x": 487.27258,
+                  "y": 5.6429906,
+                  "z": -138.6152
+                }
+              ]
+            }
+          ],
+          "count": 1
+        },
+        {
+          "id": "5a3fbbfd86f77459d52a16a8",
+          "description": "Locate the sleeping place of the former deputy chief of security on Customs",
+          "type": "visit",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": true,
+          "zones": [
+            {
+              "id": "bomj_place",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 487.89,
+                "y": 6.11,
+                "z": -139.85
+              },
+              "outline": [
+                {
+                  "x": 486.89,
+                  "y": 5.59,
+                  "z": -139.07
+                },
+                {
+                  "x": 488.97,
+                  "y": 5.59,
+                  "z": -139.19
+                },
+                {
+                  "x": 488.89,
+                  "y": 5.59,
+                  "z": -140.62
+                },
+                {
+                  "x": 486.81,
+                  "y": 5.59,
+                  "z": -140.5
+                }
+              ],
+              "top": 6.62,
+              "bottom": 5.59
+            },
+            {
+              "id": "bomj_place",
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "position": {
+                "x": 487.89,
+                "y": 6.11,
+                "z": -139.85
+              },
+              "outline": [
+                {
+                  "x": 486.89,
+                  "y": 5.59,
+                  "z": -139.07
+                },
+                {
+                  "x": 488.97,
+                  "y": 5.59,
+                  "z": -139.19
+                },
+                {
+                  "x": 488.89,
+                  "y": 5.59,
+                  "z": -140.62
+                },
+                {
+                  "x": 486.81,
+                  "y": 5.59,
+                  "z": -140.5
+                }
+              ],
+              "top": 6.62,
+              "bottom": 5.59
+            }
+          ],
+          "possibleLocations": []
+        },
+        {
+          "id": "5979fc5386f77426d702a0f3",
+          "description": "Locate and obtain any item that could help with the investigation",
+          "type": "findItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": false,
+          "items": [
+            {
+              "id": "5780cfa52459777dfb276eb1",
+              "name": "Dorm room 220 key",
+              "shortName": "Dorm 220",
+              "normalizedName": "dorm-room-220-key",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_220_key",
+              "iconLink": "https://assets.tarkov.dev/5780cfa52459777dfb276eb1-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5780cfa52459777dfb276eb1-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5979fc7e86f77426d702a0f4",
+          "description": "Hand over the information",
+          "type": "giveQuestItem",
+          "maps": [],
+          "optional": false,
+          "questItem": {
+            "id": "5939e5a786f77461f11c0098",
+            "name": "Secure Folder 0013",
+            "shortName": "0013",
+            "normalizedName": "secure-folder-0013",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/5939e5a786f77461f11c0098-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5939e5a786f77461f11c0098-512.webp"
+          },
+          "zones": [],
+          "possibleLocations": [],
+          "count": 1
+        },
+        {
+          "id": "5979fc9286f77426d702a0f5",
+          "description": "Hand over the item",
+          "type": "giveItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": false,
+          "items": [
+            {
+              "id": "5780cfa52459777dfb276eb1",
+              "name": "Dorm room 220 key",
+              "shortName": "Dorm 220",
+              "normalizedName": "dorm-room-220-key",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Dorm_room_220_key",
+              "iconLink": "https://assets.tarkov.dev/5780cfa52459777dfb276eb1-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5780cfa52459777dfb276eb1-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        }
+      ]
+    },
+    {
+      "id": "597a0b2986f77426d66c0633",
+      "name": "Chemical - Part 2",
+      "trader": {
+        "id": "58330581ace78e27b8b10cee",
+        "name": "Skier",
+        "normalizedName": "skier",
+        "imageLink": "https://assets.tarkov.dev/58330581ace78e27b8b10cee.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5979f9ba86f7740f6c3fe9f2",
+            "name": "Chemical - Part 1"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "597a0be986f774273b74f673",
+          "description": "Locate and obtain any evidence that could help with the investigation on Customs",
+          "type": "findQuestItem",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": false,
+          "questItem": {
+            "id": "590c62a386f77412b0130255",
+            "name": "Sliderkey Secure Flash drive",
+            "shortName": "Sliderkey",
+            "normalizedName": "sliderkey-secure-flash-drive",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/590c62a386f77412b0130255-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/590c62a386f77412b0130255-512.webp"
+          },
+          "requiredKeys": [],
+          "zones": [],
+          "possibleLocations": [
+            {
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "positions": [
+                {
+                  "x": 194.2243,
+                  "y": 3.7256,
+                  "z": 171.0656
+                }
+              ]
+            }
+          ],
+          "count": 1
+        },
+        {
+          "id": "597a0bb486f77426d66c0634",
+          "description": "Locate and obtain any information that could help with the investigation on Customs",
+          "type": "findQuestItem",
+          "maps": [
+            {
+              "id": "56f40101d2720b2a4d8b45d6",
+              "name": "Customs"
+            }
+          ],
+          "optional": false,
+          "questItem": {
+            "id": "5939e9b286f77462a709572c",
+            "name": "Sealed letter with a TG logo",
+            "shortName": "Letter",
+            "normalizedName": "sealed-letter-with-a-tg-logo",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/5939e9b286f77462a709572c-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5939e9b286f77462a709572c-512.webp"
+          },
+          "requiredKeys": [],
+          "zones": [],
+          "possibleLocations": [
+            {
+              "map": {
+                "id": "56f40101d2720b2a4d8b45d6",
+                "name": "Customs"
+              },
+              "positions": [
+                {
+                  "x": 194.7797,
+                  "y": 4.4267,
+                  "z": 173.1325
+                }
+              ]
+            }
+          ],
+          "count": 1
+        },
+        {
+          "id": "597a0bf886f7742717106d13",
+          "description": "Hand over the evidence",
+          "type": "giveQuestItem",
+          "maps": [],
+          "optional": false,
+          "questItem": {
+            "id": "590c62a386f77412b0130255",
+            "name": "Sliderkey Secure Flash drive",
+            "shortName": "Sliderkey",
+            "normalizedName": "sliderkey-secure-flash-drive",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/590c62a386f77412b0130255-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/590c62a386f77412b0130255-512.webp"
+          },
+          "zones": [],
+          "possibleLocations": [],
+          "count": 1
+        },
+        {
+          "id": "597a0bdb86f7742717106d12",
+          "description": "Hand over the info",
+          "type": "giveQuestItem",
+          "maps": [],
+          "optional": false,
+          "questItem": {
+            "id": "5939e9b286f77462a709572c",
+            "name": "Sealed letter with a TG logo",
+            "shortName": "Letter",
+            "normalizedName": "sealed-letter-with-a-tg-logo",
+            "wikiLink": null,
+            "iconLink": "https://assets.tarkov.dev/5939e9b286f77462a709572c-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5939e9b286f77462a709572c-512.webp"
+          },
+          "zones": [],
+          "possibleLocations": [],
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5ae448f286f77448d73c0131",
+      "name": "Fuel Crisis",
+      "trader": {
+        "id": "5ac3b934156ae10c4430e83c",
+        "name": "Ragman",
+        "normalizedName": "ragman",
+        "imageLink": "https://assets.tarkov.dev/5ac3b934156ae10c4430e83c.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [],
+      "traderLevelRequirements": [],
+      "otherRequirements": [
+        {
+          "id": "6a4b390edce9a13bbb6c6be6",
+          "type": "dialogue",
+          "traders": [
+            {
+              "id": "5ac3b934156ae10c4430e83c",
+              "name": "Ragman",
+              "normalizedName": "ragman",
+              "imageLink": "https://assets.tarkov.dev/5ac3b934156ae10c4430e83c.webp"
+            }
+          ]
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5ae452c086f774336a397578",
+          "description": "Locate and mark any fuel tank near the power station with an MS2000 Marker on Interchange",
+          "type": "mark",
+          "maps": [
+            {
+              "id": "5714dbc024597771384a510d",
+              "name": "Interchange"
+            }
+          ],
+          "markerItem": {
+            "id": "5991b51486f77447b112d44f",
+            "name": "MS2000 Marker",
+            "shortName": "MS2000",
+            "normalizedName": "ms2000-marker",
+            "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MS2000_Marker",
+            "iconLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-512.webp"
+          },
+          "optional": false,
+          "zones": [
+            {
+              "id": "place_WARBLOOD_04_1",
+              "map": {
+                "id": "5714dbc024597771384a510d",
+                "name": "Interchange"
+              },
+              "position": {
+                "x": -208.36,
+                "y": 22.84,
+                "z": -74.42
+              },
+              "outline": [
+                {
+                  "x": -211.97,
+                  "y": 21.34,
+                  "z": -79.03
+                },
+                {
+                  "x": -214.09,
+                  "y": 21.34,
+                  "z": -75.63
+                },
+                {
+                  "x": -204.75,
+                  "y": 21.34,
+                  "z": -69.81
+                },
+                {
+                  "x": -202.63,
+                  "y": 21.34,
+                  "z": -73.21
+                }
+              ],
+              "top": 24.34,
+              "bottom": 21.34
+            },
+            {
+              "id": "place_WARBLOOD_04_3",
+              "map": {
+                "id": "5714dbc024597771384a510d",
+                "name": "Interchange"
+              },
+              "position": {
+                "x": -172.62,
+                "y": 22.81,
+                "z": -359.48
+              },
+              "outline": [
+                {
+                  "x": -176.72,
+                  "y": 21.31,
+                  "z": -364.3
+                },
+                {
+                  "x": -178.79,
+                  "y": 21.31,
+                  "z": -360.88
+                },
+                {
+                  "x": -168.52,
+                  "y": 21.31,
+                  "z": -354.66
+                },
+                {
+                  "x": -166.45,
+                  "y": 21.31,
+                  "z": -358.08
+                }
+              ],
+              "top": 24.31,
+              "bottom": 21.31
+            }
+          ],
+          "possibleLocations": [],
+          "count": 1
+        },
+        {
+          "id": "5ae452de86f77450595c4333",
+          "description": "Locate and mark any fuel tank in the northern territory with an MS2000 Marker on Interchange",
+          "type": "mark",
+          "maps": [
+            {
+              "id": "5714dbc024597771384a510d",
+              "name": "Interchange"
+            }
+          ],
+          "markerItem": {
+            "id": "5991b51486f77447b112d44f",
+            "name": "MS2000 Marker",
+            "shortName": "MS2000",
+            "normalizedName": "ms2000-marker",
+            "wikiLink": "https://escapefromtarkov.fandom.com/wiki/MS2000_Marker",
+            "iconLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-icon.webp",
+            "image512pxLink": "https://assets.tarkov.dev/5991b51486f77447b112d44f-512.webp"
+          },
+          "optional": false,
+          "zones": [
+            {
+              "id": "place_WARBLOOD_04_2",
+              "map": {
+                "id": "5714dbc024597771384a510d",
+                "name": "Interchange"
+              },
+              "position": {
+                "x": 429.07,
+                "y": 28.67,
+                "z": 125.04
+              },
+              "outline": [
+                {
+                  "x": 432.73,
+                  "y": 27.17,
+                  "z": 119.88
+                },
+                {
+                  "x": 428.9,
+                  "y": 27.17,
+                  "z": 118.72
+                },
+                {
+                  "x": 425.41,
+                  "y": 27.17,
+                  "z": 130.2
+                },
+                {
+                  "x": 429.24,
+                  "y": 27.17,
+                  "z": 131.36
+                }
+              ],
+              "top": 30.17,
+              "bottom": 27.17
+            },
+            {
+              "id": "place_WARBLOOD_04_4",
+              "map": {
+                "id": "5714dbc024597771384a510d",
+                "name": "Interchange"
+              },
+              "position": {
+                "x": 40.74,
+                "y": 23.23,
+                "z": 308.33
+              },
+              "outline": [
+                {
+                  "x": 36.64,
+                  "y": 21.73,
+                  "z": 303.51
+                },
+                {
+                  "x": 34.57,
+                  "y": 21.73,
+                  "z": 306.93
+                },
+                {
+                  "x": 44.84,
+                  "y": 21.73,
+                  "z": 313.15
+                },
+                {
+                  "x": 46.91,
+                  "y": 21.73,
+                  "z": 309.72
+                }
+              ],
+              "top": 24.73,
+              "bottom": 21.73
+            }
+          ],
+          "possibleLocations": [],
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5ae4495086f77443c122bc40",
+      "name": "Sew it Good - Part 1",
+      "trader": {
+        "id": "5ac3b934156ae10c4430e83c",
+        "name": "Ragman",
+        "normalizedName": "ragman",
+        "imageLink": "https://assets.tarkov.dev/5ac3b934156ae10c4430e83c.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [],
+      "traderLevelRequirements": [],
+      "otherRequirements": [
+        {
+          "id": "6a5a07ed5316701e2859a09d",
+          "type": "globalVariable",
+          "variableId": "6a4b4e6a30dac4b01af220aa",
+          "compareMethod": ">=",
+          "value": 1
+        }
+      ],
+      "objectives": [
+        {
+          "id": "5ae4559386f7742dc043c95e",
+          "description": "Find the item in raid: Ski hat with holes for eyes",
+          "type": "findItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5ab8f20c86f7745cdb629fb2",
+              "name": "Ski hat with holes for eyes",
+              "shortName": "Shmaska",
+              "normalizedName": "ski-hat-with-holes-for-eyes",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ski_hat_with_holes_for_eyes",
+              "iconLink": "https://assets.tarkov.dev/5ab8f20c86f7745cdb629fb2-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5ab8f20c86f7745cdb629fb2-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5ae455be86f7742dc043c969",
+          "description": "Hand over the item",
+          "type": "giveItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5ab8f20c86f7745cdb629fb2",
+              "name": "Ski hat with holes for eyes",
+              "shortName": "Shmaska",
+              "normalizedName": "ski-hat-with-holes-for-eyes",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Ski_hat_with_holes_for_eyes",
+              "iconLink": "https://assets.tarkov.dev/5ab8f20c86f7745cdb629fb2-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5ab8f20c86f7745cdb629fb2-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5ae455fb86f7744dd8242380",
+          "description": "Find the item in raid: Pilgrim tourist backpack",
+          "type": "findItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "59e763f286f7742ee57895da",
+              "name": "Pilgrim tourist backpack",
+              "shortName": "Pilgrim",
+              "normalizedName": "pilgrim-tourist-backpack",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pilgrim_tourist_backpack",
+              "iconLink": "https://assets.tarkov.dev/59e763f286f7742ee57895da-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/59e763f286f7742ee57895da-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5ae4562086f774498b05e0dc",
+          "description": "Hand over the item",
+          "type": "giveItem",
+          "maps": [],
+          "count": 1,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "59e763f286f7742ee57895da",
+              "name": "Pilgrim tourist backpack",
+              "shortName": "Pilgrim",
+              "normalizedName": "pilgrim-tourist-backpack",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/Pilgrim_tourist_backpack",
+              "iconLink": "https://assets.tarkov.dev/59e763f286f7742ee57895da-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/59e763f286f7742ee57895da-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        }
+      ]
+    },
+    {
+      "id": "5ae4497b86f7744cf402ed00",
+      "name": "Sew it Good - Part 2",
+      "trader": {
+        "id": "5ac3b934156ae10c4430e83c",
+        "name": "Ragman",
+        "normalizedName": "ragman",
+        "imageLink": "https://assets.tarkov.dev/5ac3b934156ae10c4430e83c.webp"
+      },
+      "minPlayerLevel": 0,
+      "taskRequirements": [
+        {
+          "task": {
+            "id": "5ae4495086f77443c122bc40",
+            "name": "Sew it Good - Part 1"
+          },
+          "status": [
+            "complete"
+          ]
+        }
+      ],
+      "traderLevelRequirements": [],
+      "otherRequirements": [],
+      "objectives": [
+        {
+          "id": "5ae45d7786f774178f237745",
+          "description": "Find the item in raid: WARTECH TV-109 + TV-106 chest rig",
+          "type": "findItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "59e7643b86f7742cbf2c109a",
+              "name": "WARTECH TV-109 + TV-106 chest rig (A-TACS FG)",
+              "shortName": "TV-106 + TV-109",
+              "normalizedName": "wartech-tv-109-tv-106-chest-rig-a-tacs-fg",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/WARTECH_TV-109_%2B_TV-106_chest_rig_(A-TACS_FG)",
+              "iconLink": "https://assets.tarkov.dev/59e7643b86f7742cbf2c109a-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/59e7643b86f7742cbf2c109a-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5ae45d9386f774178f23774a",
+          "description": "Hand over the items",
+          "type": "giveItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "59e7643b86f7742cbf2c109a",
+              "name": "WARTECH TV-109 + TV-106 chest rig (A-TACS FG)",
+              "shortName": "TV-106 + TV-109",
+              "normalizedName": "wartech-tv-109-tv-106-chest-rig-a-tacs-fg",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/WARTECH_TV-109_%2B_TV-106_chest_rig_(A-TACS_FG)",
+              "iconLink": "https://assets.tarkov.dev/59e7643b86f7742cbf2c109a-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/59e7643b86f7742cbf2c109a-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5af079e486f77434693ad7f8",
+          "description": "Find the item in raid: BlackRock chest rig",
+          "type": "findItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5648a69d4bdc2ded0b8b457b",
+              "name": "BlackRock chest rig (Gray)",
+              "shortName": "BlackRock",
+              "normalizedName": "blackrock-chest-rig-gray",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BlackRock_chest_rig_(Gray)",
+              "iconLink": "https://assets.tarkov.dev/5648a69d4bdc2ded0b8b457b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5648a69d4bdc2ded0b8b457b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        },
+        {
+          "id": "5af07a0286f7747dba10d8ac",
+          "description": "Hand over the items",
+          "type": "giveItem",
+          "maps": [],
+          "count": 2,
+          "foundInRaid": true,
+          "items": [
+            {
+              "id": "5648a69d4bdc2ded0b8b457b",
+              "name": "BlackRock chest rig (Gray)",
+              "shortName": "BlackRock",
+              "normalizedName": "blackrock-chest-rig-gray",
+              "wikiLink": "https://escapefromtarkov.fandom.com/wiki/BlackRock_chest_rig_(Gray)",
+              "iconLink": "https://assets.tarkov.dev/5648a69d4bdc2ded0b8b457b-icon.webp",
+              "image512pxLink": "https://assets.tarkov.dev/5648a69d4bdc2ded0b8b457b-512.webp"
+            }
+          ],
+          "optional": false,
+          "zones": [],
+          "possibleLocations": []
+        }
+      ]
+    }
+  ]
+}

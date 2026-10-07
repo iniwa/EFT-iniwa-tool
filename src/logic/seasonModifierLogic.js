@@ -94,7 +94,7 @@ export function validateSeasonModifierManifest(manifest) {
   if (!Array.isArray(manifest.observedSources) || manifest.observedSources.length === 0) errors.push('missing metadata: observedSources')
   if (manifest.globals?.length !== 6) errors.push('globals must contain 6 modifiers')
   if (manifest.positive?.length !== 19) errors.push('positive must contain 19 modifiers')
-  if (manifest.negative?.length !== 14) errors.push('negative must contain 14 modifiers')
+  if (manifest.negative?.length !== 15) errors.push('negative must contain 15 modifiers')
   const items = [...(manifest.globals || []), ...(manifest.positive || []), ...(manifest.negative || [])]
   const ids = items.map((item) => item?.id)
   if (ids.some((id) => typeof id !== 'string' || !id)) errors.push('modifier IDs must be non-empty strings')
