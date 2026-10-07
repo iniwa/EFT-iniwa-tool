@@ -9,3 +9,5 @@ Memo correction: the 3.4.0 concise quick-reference sections are restored verbati
 Version is restored to 3.4.0 in package, lockfile, APP_VERSION, README, AppNotice, and docs/improvements. Edit-only iterations do not bump the version. Personal memo data and accordion storage remain untouched.
 
 Validation: all 8 memo source files match the verified 3.4.0 baseline; version consistency and git diff --check passed; full suite 88/88 and production build passed. Existing >500 kB chunk warning remains. No external game claims were researched or changed in this restore turn.
+
+Follow-up: prepared memo research now updates the original lookup cells at version 3.4.0, preserving their breadth and practical estimates. See docs/research/2026-10-07-memo-research-applied.md for sources, older/unverified claims, actual task-link IDs and validation. The restore above is a historical checkpoint; the exact original snapshot is preserved.

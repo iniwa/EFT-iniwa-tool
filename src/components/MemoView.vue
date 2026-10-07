@@ -49,7 +49,7 @@ const sections = [
 
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 静的メモの一部はパッチ1.0.0.5時点の情報です。Patch 1.1以降の価格・トレーダーLL・報酬変更はゲーム内表示を優先してください。
+                ※ 2026-10-07の調査を反映した実用早見表です。運用評価は「目安」、未確定の旧情報は「要確認」。価格・解放条件はゲーム内表示を優先してください。
             </div>
 
             <div class="accordion accordion-flush">

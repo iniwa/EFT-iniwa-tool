@@ -1,6 +1,6 @@
 <template>
     <div class="p-2 small text-secondary border-bottom border-secondary ms-2 me-2 mt-2">
-        <strong>Level:</strong> プレイヤーレベル / <strong>Rep:</strong> 親密度 / <strong>Sales:</strong> 取引額 (売買合計)
+        <strong>Level:</strong> プレイヤーレベル / <strong>Rep:</strong> 親密度。Patch 1.1で取引額条件は廃止 (通常PvP・シーズン・PvE)。
     </div>
     <table class="memo-table">
         <thead>
@@ -14,52 +14,54 @@
         <tbody>
             <tr>
                 <td class="text-start ps-4 fw-bold">Prapor</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 15 / <span class="text-muted">Rep</span> 0.20<br><span class="text-blue">1.1 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 26 / <span class="text-muted">Rep</span> 0.35<br><span class="text-blue">2.7 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 36 / <span class="text-muted">Rep</span> 0.50<br><span class="text-blue">3.4 M &#8381;</span></td>
+                <td class="text-center">Lv 6 / Rep 0.70</td>
+                <td class="text-center">Lv 21 / Rep 2.70</td>
+                <td class="text-center">Lv 36 / Rep 7.90</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Therapist</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 14 / <span class="text-muted">Rep</span> 0.15<br><span class="text-blue">600 k &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 24 / <span class="text-muted">Rep</span> 0.30<br><span class="text-blue">1.0 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 37 / <span class="text-muted">Rep</span> 0.60<br><span class="text-blue">1.6 M &#8381;</span></td>
+                <td class="text-center">Lv 5 / Rep 0.60</td>
+                <td class="text-center">Lv 18 / Rep 2.10</td>
+                <td class="text-center">Lv 37 / Rep 5.80</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Skier</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 15 / <span class="text-muted">Rep</span> 0.20<br><span class="text-blue">1.2 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 28 / <span class="text-muted">Rep</span> 0.40<br><span class="text-blue">2.4 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 38 / <span class="text-muted">Rep</span> 0.75<br><span class="text-blue">3.9 M &#8381;</span></td>
+                <td class="text-center">Lv 7 / Rep 0.60</td>
+                <td class="text-center">Lv 22 / Rep 2.10</td>
+                <td class="text-center">Lv 38 / Rep 5.80</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Peacekeeper</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 14 / <span class="text-muted">Rep</span> 0.00<br><span class="text-green">$ 11 k</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 23 / <span class="text-muted">Rep</span> 0.30<br><span class="text-green">$ 25 k</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 37 / <span class="text-muted">Rep</span> 0.60<br><span class="text-green">$ 32 k</span></td>
+                <td class="text-center">Lv 8 / Rep 0.50</td>
+                <td class="text-center">Lv 19 / Rep 2.20</td>
+                <td class="text-center">Lv 37 / Rep 6.00</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Mechanic</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 20 / <span class="text-muted">Rep</span> 0.15<br><span class="text-blue">1.1 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 30 / <span class="text-muted">Rep</span> 0.30<br><span class="text-blue">2.4 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 40 / <span class="text-muted">Rep</span> 0.60<br><span class="text-blue">3.7 M &#8381;</span></td>
+                <td class="text-center">Lv 12 / Rep 0.60</td>
+                <td class="text-center">Lv 26 / Rep 2.30</td>
+                <td class="text-center">Lv 40 / Rep 7.60</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Ragman</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 17 / <span class="text-muted">Rep</span> 0.00<br><span class="text-blue">1.1 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 32 / <span class="text-muted">Rep</span> 0.30<br><span class="text-blue">2.4 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 42 / <span class="text-muted">Rep</span> 0.60<br><span class="text-blue">3.7 M &#8381;</span></td>
+                <td class="text-center">Lv 12 / Rep 0.50</td>
+                <td class="text-center">Lv 27 / Rep 2.00</td>
+                <td class="text-center">Lv 42 / Rep 6.50</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold">Jaeger</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 15 / <span class="text-muted">Rep</span> 0.20<br><span class="text-blue">840 k &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 22 / <span class="text-muted">Rep</span> 0.35<br><span class="text-blue">1.6 M &#8381;</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 33 / <span class="text-muted">Rep</span> 0.50<br><span class="text-blue">2.5 M &#8381;</span></td>
+                <td class="text-center">Lv 9 / Rep 0.60</td>
+                <td class="text-center">Lv 17 / Rep 2.10</td>
+                <td class="text-center">Lv 33 / Rep 7.30</td>
             </tr>
             <tr>
                 <td class="text-start ps-4 fw-bold text-info">Ref</td>
-                <td class="text-center"><span class="text-muted">Lv</span> 15 / <span class="text-muted">Rep</span> 0.25<br><span class="text-secondary">-</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 25 / <span class="text-muted">Rep</span> 0.50<br><span class="text-secondary">-</span></td>
-                <td class="text-center"><span class="text-muted">Lv</span> 35 / <span class="text-muted">Rep</span> 1.20<br><span class="text-secondary">-</span></td>
+                <td class="text-center">Lv 15 / Rep 0.25</td>
+                <td class="text-center">Lv 25 / Rep 0.50</td>
+                <td class="text-center">Lv 35 / Rep 1.20</td>
             </tr>
+            <tr><td class="text-start ps-4 fw-bold">Fence</td><td class="text-center">—</td><td class="text-center">—</td><td class="text-center">Lv 1 / スカブカルマ 6.00</td></tr>
         </tbody>
     </table>
+    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/%E3%83%88%E3%83%AC%E3%83%BC%E3%83%80%E3%83%BC" target="_blank" rel="noopener noreferrer">トレーダー</a>。ゲーム内表示を優先。<a href="https://steamcommunity.com/games/3932890/announcements/detail/686386819418294181" target="_blank" rel="noopener noreferrer">BSG公式 Patch 1.1</a>。</p>
 </template>
