@@ -3,13 +3,15 @@ import { sanitizeTaskStatuses, sanitizeTraderProgress, useUserProgress } from '.
 import { useAppState } from './useAppState.js';
 import { useApiData } from './useApiData.js';
 import { useOverlay } from './useOverlay.js';
+import { useBoreasReference } from './useBoreasReference.js';
+import { validateBoreasRecords } from '../logic/boreasReferenceLogic.js';
 import { nextTick } from 'vue';
 import { normalizeHideoutAliases, resolveTaskReferences } from '../logic/progressMigration.js';
 
-export const BACKUP_SCHEMA_VERSION = '3.2.1';
+export const BACKUP_SCHEMA_VERSION = '3.2.2';
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 const MODES = new Set(['pve', 'regular', 'pvp-season', 'pvp']);
-const SUPPORTED_BACKUP_SCHEMAS = new Set(['3.2.0', BACKUP_SCHEMA_VERSION]);
+const SUPPORTED_BACKUP_SCHEMAS = new Set(['3.2.0', '3.2.1', BACKUP_SCHEMA_VERSION]);
 const forbiddenKey = (key) => key === '__proto__' || key === 'prototype' || key === 'constructor';
 const validId = (value) => typeof value === 'string' && value.length > 0 && value.length <= 256 && !forbiddenKey(value);
 const plainObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
@@ -123,6 +125,7 @@ export function validateBackup(payload, { tasks = [], stations = [], currentMode
     focusedTaskIds: has('focusedTaskIds') ? cloneArray(payload.focusedTaskIds, 'オーバーレイ固定タスク') : [],
     overlayItemCounts: has('overlayItemCounts') ? sanitizeCounts(payload.overlayItemCounts) : {}, warnings: [...completed.warnings, ...prioritized.warnings],
   };
+  if (has('boreasReferenceRecords')) result.boreasReferenceRecords = validateBoreasRecords(payload.boreasReferenceRecords);
   if (!Number.isInteger(result.playerLevel) || result.playerLevel < 0 || result.playerLevel > 100) throw new Error('プレイヤーレベルが不正です。');
   if (typeof result.traderRequirementsEnabled !== 'boolean') throw new Error('トレーダー設定が不正です。');
   return result;
@@ -130,11 +133,12 @@ export function validateBackup(payload, { tasks = [], stations = [], currentMode
 
 export function useImportExport() {
   const progress = useUserProgress();
+  const boreas = useBoreasReference();
   const { playerLevel, gameMode } = useAppState();
   const { taskData, hideoutData } = useApiData();
   const overlay = useOverlay();
   function exportData() {
-    const data = { schemaVersion: BACKUP_SCHEMA_VERSION, gameMode: gameMode.value, userHideout: progress.userHideout.value, completedTasks: progress.completedTasks.value, collectedItems: progress.collectedItems.value, ownedKeys: progress.ownedKeys.value, keyUserData: progress.keyUserData.value, playerLevel: playerLevel.value, prioritizedTasks: progress.prioritizedTasks.value, wishlist: progress.wishlist.value, taskStatuses: progress.taskStatuses.value, traderProgress: progress.traderProgress.value, traderRequirementsEnabled: progress.traderRequirementsEnabled.value, storyProgress: progress.storyProgress.value, focusedTaskIds: overlay.focusedTaskIds.value, overlayItemCounts: overlay.overlayItemCounts.value };
+    const data = { boreasReferenceRecords: [...boreas.recordedObjectiveIds.value], schemaVersion: BACKUP_SCHEMA_VERSION, gameMode: gameMode.value, userHideout: progress.userHideout.value, completedTasks: progress.completedTasks.value, collectedItems: progress.collectedItems.value, ownedKeys: progress.ownedKeys.value, keyUserData: progress.keyUserData.value, playerLevel: playerLevel.value, prioritizedTasks: progress.prioritizedTasks.value, wishlist: progress.wishlist.value, taskStatuses: progress.taskStatuses.value, traderProgress: progress.traderProgress.value, traderRequirementsEnabled: progress.traderRequirementsEnabled.value, storyProgress: progress.storyProgress.value, focusedTaskIds: overlay.focusedTaskIds.value, overlayItemCounts: overlay.overlayItemCounts.value };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
     const a = document.createElement('a'); a.href = url; a.download = 'iniwas_intel_center_backup.json'; a.click(); URL.revokeObjectURL(url);
   }
@@ -146,6 +150,7 @@ export function useImportExport() {
       // transaction writes imported values into the destination refs.
       await nextTick();
     }
+    if (Object.prototype.hasOwnProperty.call(data, 'boreasReferenceRecords')) boreas.replaceRecords(data.boreasReferenceRecords);
     progress.userHideout.value = data.userHideout; progress.completedTasks.value = data.completedTasks;
     progress.collectedItems.value = data.collectedItems; progress.ownedKeys.value = data.ownedKeys; progress.keyUserData.value = data.keyUserData;
     playerLevel.value = data.playerLevel; progress.prioritizedTasks.value = data.prioritizedTasks; progress.wishlist.value = data.wishlist;

@@ -4,6 +4,9 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { MAIN_CHAPTERS } from '../data/storyChaptersMain.js'
 import { SIDE_CHAPTERS } from '../data/storyChaptersSide.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
+import BoreasReference from './BoreasReference.vue'
+import { BOREAS_REFERENCE } from '../data/boreasReference.js'
+import { resolveStorySelection } from '../logic/boreasReferenceLogic.js'
 import { getBulkCompletableStepIds } from '../logic/storyLogic.js'
 
 const STORY_CHAPTERS = [...MAIN_CHAPTERS, ...SIDE_CHAPTERS]
@@ -32,7 +35,7 @@ watch(() => storyProgress.value?.falling_skies?.fs_case_choice, (val) => {
 // --- Computed ---
 const activeChapter = computed(() => STORY_CHAPTERS.find(c => c.id === selectedChapterId.value))
 watch(activeChapter, (chapter) => {
-  if (!chapter && STORY_CHAPTERS.length) selectedChapterId.value = STORY_CHAPTERS[0].id
+  if (!chapter) selectedChapterId.value = resolveStorySelection(selectedChapterId.value, STORY_CHAPTERS)
 }, { immediate: true })
 
 // --- Methods ---
@@ -92,7 +95,7 @@ function chapterProgress(chapterId) {
 
 /** チャプター完了判定 */
 const isChapterCompleted = computed(() => {
-  if (!activeChapter.value) return false
+  if (!activeChapter.value?.phases?.length || !chapterProgress(activeChapter.value.id).total) return false
   return activeChapter.value.phases.every(p => {
     const { required } = getPhaseSteps(p)
     const actionable = required.filter(s => s.type !== 'note')
@@ -195,6 +198,8 @@ const sideChapters = computed(() => STORY_CHAPTERS.filter(c => c.category === 's
                 </span>
               </div>
             </button>
+            <div class="list-group-item bg-dark text-secondary border-secondary small">参考資料・手動記録</div>
+            <button class="list-group-item list-group-item-action border-secondary text-white" :class="selectedChapterId === BOREAS_REFERENCE.selectionId ? 'active bg-primary' : 'bg-dark'" @click="selectedChapterId = BOREAS_REFERENCE.selectionId">Boreas（部分データ）</button>
           </div>
         </div>
 
@@ -214,6 +219,7 @@ const sideChapters = computed(() => STORY_CHAPTERS.filter(c => c.category === 's
           </div>
 
           <!-- チャプター詳細 -->
+          <BoreasReference v-if="selectedChapterId === BOREAS_REFERENCE.selectionId" />
           <div v-if="activeChapter">
             <!-- ヘッダー -->
             <div class="d-flex justify-content-between align-items-start border-bottom border-secondary pb-2 mb-2">
