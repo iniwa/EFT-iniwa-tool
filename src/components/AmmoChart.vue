@@ -1,15 +1,24 @@
 <script setup>
 // 弾薬チャートタブ — 口径フィルター + ソート可能テーブル + 詳細モーダル
 import { ref, computed, watch } from 'vue'
+import { useAppState } from '../composables/useAppState.js'
+import { useAmmoTaskDetails } from '../composables/useAmmoTaskDetails.js'
+import TaskModal from './TaskModal.vue'
 import { useApiData } from '../composables/useApiData.js'
 import { CALIBER_GROUPS, CALIBER_MAP } from '../data/caliberData.js'
 import { loadLS, saveLS } from '../composables/useStorage.js'
 import BaseModal from './ui/BaseModal.vue'
 import { toHttpsUrl } from '../logic/taskReference.js'
 
-const emit = defineEmits(['open-task-from-name'])
+const ammoReturnLabel = '\u5f3e\u85ac\u8a73\u7d30\u306b\u623b\u308b'
 
-const { ammoData } = useApiData()
+const { ammoData, taskData } = useApiData()
+const { isLoading, loadError } = useAppState()
+const {
+  task: ammoTask, choices: ammoTaskChoices, message: ammoTaskMessage,
+  suspended: ammoSuspended, open: openAmmoTask, choose: chooseAmmoTask,
+  close: closeAmmoTask, resumeFocus,
+} = useAmmoTaskDetails({ taskData, isLoading, loadError })
 
 // ---------------------------------------------------------------------------
 // ローカル状態
@@ -171,10 +180,12 @@ function hasCraft(ammo) {
 }
 
 function openDetail(ammo) {
+  closeAmmoTask()
   selectedAmmo.value = ammo
 }
 
 function closeDetail() {
+  closeAmmoTask()
   selectedAmmo.value = null
 }
 </script>
@@ -338,11 +349,14 @@ function closeDetail() {
     <!-- 詳細モーダル -->
     <BaseModal
       :show="selectedAmmo !== null"
+      :suspended="ammoSuspended"
+      :resume-focus="resumeFocus"
       max-width="700px"
       :aria-label="selectedAmmo ? `${selectedAmmo.name} の詳細` : '弾薬詳細'"
       @close="closeDetail"
     >
       <template v-if="selectedAmmo">
+        <p v-if="ammoTaskMessage" class="alert alert-warning" role="status">{{ ammoTaskMessage }}</p>
         <div class="bg-dark text-white border border-secondary rounded shadow-lg">
           <!-- モーダルヘッダー -->
           <div
@@ -501,7 +515,7 @@ function closeDetail() {
                       <button type="button"
                         class="btn p-0 border-0 bg-transparent text-warning text-decoration-underline"
                         style="cursor: pointer"
-                        @click="emit('open-task-from-name', deal.taskUnlock || deal.taskUnlockName)"
+                        @click="openAmmoTask(deal.taskUnlock || deal.taskUnlockName, $event.currentTarget)"
                       >
                         {{ deal.taskUnlockName }}
                       </button>
@@ -544,7 +558,7 @@ function closeDetail() {
                       <button type="button"
                         class="btn p-0 border-0 bg-transparent text-warning text-decoration-underline"
                         style="cursor: pointer"
-                        @click="emit('open-task-from-name', craft.taskUnlock)"
+                        @click="openAmmoTask(craft.taskUnlock, $event.currentTarget)"
                       >
                         {{ craft.taskUnlock.name }}
                       </button>
@@ -602,6 +616,14 @@ function closeDetail() {
           </div>
         </div>
       </template>
+    </BaseModal>
+    <TaskModal :task="ammoTask" :show="ammoTask !== null" :return-label="ammoReturnLabel" @close="closeAmmoTask" />
+    <BaseModal :show="ammoTaskChoices.length > 0" aria-label="Task selection" @close="closeAmmoTask">
+      <h2 class="h5">&#21516;&#21517;&#12398;&#12479;&#12473;&#12463;&#12434;&#36984;&#25246;</h2>
+      <div class="d-flex flex-column gap-2">
+        <button v-for="task in ammoTaskChoices" :key="task.id" class="btn btn-outline-info text-start" type="button" @click="chooseAmmoTask(task)">{{ task.name }} <small>{{ task.id }}</small></button>
+      </div>
+      <button class="btn btn-secondary mt-3" type="button" @click="closeAmmoTask">{{ ammoReturnLabel }}</button>
     </BaseModal>
   </div>
 </template>

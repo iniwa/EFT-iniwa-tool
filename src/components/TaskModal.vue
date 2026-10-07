@@ -39,6 +39,7 @@ const { playerLevel } = useAppState()
 const props = defineProps({
   task: { type: Object, default: null },
   show: { type: Boolean, default: false },
+  returnLabel: { type: String, default: '' },
 })
 
 const emit = defineEmits(['close'])
@@ -130,6 +131,7 @@ function objectiveConstraintLines(obj) {
 <template>
   <BaseModal :show="show" max-width="700px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
+      <button v-if="returnLabel" class="btn btn-outline-info mb-3" type="button" @click="emit('close')">{{ returnLabel }}</button>
       <!-- 進捗/優先トグル + 閉じるボタン -->
       <div class="d-flex justify-content-between align-items-start mb-3">
         <div class="d-flex align-items-end gap-3 w-100 flex-wrap">
