@@ -315,11 +315,11 @@ function closeDetail() {
                 <td class="text-end">{{ ammo.armorDamage }}%</td>
                 <td class="text-end">{{ ammo.projectileSpeed }} m/s</td>
                 <td class="text-center">
-                  <span v-if="hasTrader(ammo)" title="トレーダー販売あり">cart</span>
+                  <span v-if="hasTrader(ammo)" role="img" aria-label="トレーダー販売あり" title="トレーダー販売あり">&#x1F6D2;</span>
                   <span v-else class="text-muted text-opacity-25">-</span>
                 </td>
                 <td class="text-center">
-                  <span v-if="hasCraft(ammo)" title="ワークベンチ作成可能">wrench</span>
+                  <span v-if="hasCraft(ammo)" role="img" aria-label="ワークベンチ作成可能" title="ワークベンチ作成可能">&#x1F527;</span>
                   <span v-else class="text-muted text-opacity-25">-</span>
                 </td>
               </tr>

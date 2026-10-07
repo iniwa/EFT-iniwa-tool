@@ -1,12 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { BATTLE_PASS_DOCUMENTS, BATTLE_PASS_META, BATTLE_PASS_REWARD_CATEGORIES, BATTLE_PASS_REWARDS } from '../data/battlePass.js'
+import { BATTLE_PASS_DOCUMENTS, BATTLE_PASS_META } from '../data/battlePass.js'
 
 const documentSearch = ref('')
 const documentMap = ref('')
-const rewardSearch = ref('')
-const rewardPage = ref('')
-const rewardCategory = ref('')
 
 const maps = computed(() => [...new Set(BATTLE_PASS_DOCUMENTS.flatMap((document) => document.maps))].sort())
 const normalize = (value) => String(value ?? '').normalize('NFKC').trim().toLocaleLowerCase()
@@ -17,17 +14,7 @@ const filteredDocuments = computed(() => {
     (!documentMap.value || document.maps.includes(documentMap.value)),
   )
 })
-const filteredRewards = computed(() => {
-  const query = normalize(rewardSearch.value)
-  return BATTLE_PASS_REWARDS.filter((reward) =>
-    (!query || normalize([reward.name, reward.description].filter(Boolean).join(' ')).includes(query)) &&
-    (!rewardPage.value || reward.page === Number(rewardPage.value)) &&
-    (!rewardCategory.value || reward.category === rewardCategory.value),
-  )
-})
 const resetDocuments = () => { documentSearch.value = ''; documentMap.value = '' }
-const resetRewards = () => { rewardSearch.value = ''; rewardPage.value = ''; rewardCategory.value = '' }
-const categoryLabel = (value) => BATTLE_PASS_REWARD_CATEGORIES.find((category) => category.value === value)?.label || value
 </script>
 
 <template>
@@ -85,19 +72,13 @@ const categoryLabel = (value) => BATTLE_PASS_REWARD_CATEGORIES.find((category) =
       <p v-else class="card-body text-muted mb-0" role="status">条件に一致する文書はありません。</p>
     </section>
 
-    <section class="card" aria-labelledby="rewards-heading">
-      <div class="card-header d-flex flex-wrap justify-content-between gap-2 align-items-center"><h3 id="rewards-heading" class="h5 mb-0">報酬カタログ <small class="text-muted">{{ filteredRewards.length }} / {{ BATTLE_PASS_REWARDS.length }}（12ページ）</small></h3><button class="btn btn-sm btn-outline-secondary" type="button" @click="resetRewards">リセット</button></div>
-      <div class="card-body border-bottom"><div class="row g-2"><div class="col-lg-6"><label class="form-label small" for="battle-reward-search">報酬を検索</label><input id="battle-reward-search" v-model="rewardSearch" class="form-control" type="search" placeholder="名前・説明"></div><div class="col-sm-6 col-lg-3"><label class="form-label small" for="battle-reward-page">ページ</label><select id="battle-reward-page" v-model="rewardPage" class="form-select"><option value="">全ページ</option><option v-for="page in 12" :key="page" :value="page">Page {{ page }}</option></select></div><div class="col-sm-6 col-lg-3"><label class="form-label small" for="battle-reward-category">分類</label><select id="battle-reward-category" v-model="rewardCategory" class="form-select"><option value="">すべて</option><option v-for="category in BATTLE_PASS_REWARD_CATEGORIES" :key="category.value" :value="category.value">{{ category.label }}</option></select></div></div></div>
-      <p class="small text-muted px-3 mb-0">報酬名・分類は候補一覧です。必要文書数とページ条件はゲーム内表示を優先してください。分類未確認の枠は断定していません。</p><div v-if="filteredRewards.length" class="card-body reward-grid"><article v-for="item in filteredRewards" :key="item.id" class="reward-card"><div class="d-flex justify-content-between align-items-start gap-2"><span class="badge text-bg-secondary">Page {{ item.page }}</span><span class="badge text-bg-info">{{ categoryLabel(item.category) }}</span></div><h4 class="h6 mt-2 mb-1">{{ item.name }}</h4><p class="small text-muted mb-0">{{ item.description }}</p></article></div><p v-else class="card-body text-muted mb-0" role="status">条件に一致する報酬はありません。</p>
-    </section>
-    <p class="small text-muted mt-3">報酬出典: <a :href="BATTLE_PASS_META.source" target="_blank" rel="noreferrer">BLASTの一覧</a>（確認日 {{ BATTLE_PASS_META.verifiedAt }}）。Classifiedの持越し・Black Division Gear Crate交換不可は<a :href="BATTLE_PASS_META.classifiedSource" target="_blank" rel="noreferrer">8/24公式告知</a>を参照。</p>
   </main>
 </template>
 
 <style scoped>
 .battle-pass-page { max-width: 1500px; }
-.document-grid, .reward-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .75rem; }
-.document-card, .reward-card { border: 1px solid var(--border-light); border-radius: .4rem; background: var(--bg-card-header); padding: .8rem; min-width: 0; }
+.document-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .75rem; }
+.document-card { border: 1px solid var(--border-light); border-radius: .4rem; background: var(--bg-card-header); padding: .8rem; min-width: 0; }
 .document-card code { color: var(--color-text-secondary); overflow-wrap: anywhere; text-align: right; }
-.document-card h4, .reward-card h4 { color: var(--color-text); }
+.document-card h4 { color: var(--color-text); }
 </style>
