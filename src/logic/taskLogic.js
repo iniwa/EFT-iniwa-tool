@@ -341,6 +341,7 @@ export function calculateShoppingList(tasks, completedTaskIds, addItemFn) {
             // 単一アイテム: 従来通り
             addItemFn({
               category,
+              objective: obj,
               itemId: objItems[0].id,
               itemName: objItems[0].name,
               count: obj.count || 1,
@@ -356,6 +357,7 @@ export function calculateShoppingList(tasks, completedTaskIds, addItemFn) {
             const groupId = 'multi_' + objItems.map((i) => i.id).sort().join('_');
             addItemFn({
               category,
+              objective: obj,
               itemId: groupId,
               itemName: obj.description,
               count: obj.count || 1,

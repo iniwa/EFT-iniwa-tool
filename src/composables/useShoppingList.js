@@ -12,6 +12,7 @@ import * as TaskLogic from '../logic/taskLogic.js';
 import * as HideoutLogic from '../logic/hideoutLogic.js';
 import * as KeyLogic from '../logic/keyLogic.js';
 import { isSameSource } from '../logic/shoppingLogic.js';
+import { planPriorityTasks, aggregatePriorityTaskItems } from '../logic/priorityTasks.js';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -46,6 +47,8 @@ export function useShoppingList() {
 
   const {
     completedTasks,
+    prioritizedTasks,
+    taskStatuses,
     userHideout,
     collectedItems,
     ownedKeys,
@@ -234,7 +237,14 @@ export function useShoppingList() {
   // Public API
   // -----------------------------------------------------------------------
 
+  const priorityTaskPlan = computed(() => planPriorityTasks(taskData.value || [], prioritizedTasks.value, completedTasks.value, taskStatuses.value));
+  const priorityShoppingList = computed(() => aggregatePriorityTaskItems(priorityTaskPlan.value.tasks, completedTasks.value));
+  const priorityDisplayLists = computed(() => Object.fromEntries(['taskFir', 'collector', 'taskNormal'].map(category => [category, { ...displayLists.value[category], items: priorityShoppingList.value[category] }])));
+
   return {
+    priorityTaskPlan,
+    priorityShoppingList,
+    priorityDisplayLists,
     shoppingList,
     totalItemsNeeded,
     totalKeysNeeded,
