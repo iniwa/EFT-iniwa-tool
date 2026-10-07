@@ -7,7 +7,7 @@ export const MAX_MODIFIER_ID_LENGTH = 96
 export const MODIFIER_ID_PATTERN = /^[a-z0-9][a-z0-9_ '\-]*$/i
 
 function allModifiers(season) {
-  return [...(season?.positive || []), ...(season?.negative || []), ...(season?.bonus || [])]
+  return [...(season?.positive || []), ...(season?.negative || [])]
 }
 
 export function normalizeModifierIds(ids, season) {
@@ -51,8 +51,7 @@ export function evaluateSeasonModifierBuild(selectedIds = [], season) {
   const manifest = season || getSeasonModifierManifest()
   const normalized = normalizeModifierIds(selectedIds, manifest)
   const selected = normalized.ids.map((id) => allModifiers(manifest).find((item) => item.id === id)).filter(Boolean)
-  const bonusEarned = selected.filter((item) => item.kind === 'bonus').reduce((sum, item) => sum + item.points, 0)
-  const earned = selected.filter((item) => item.kind === 'negative').reduce((sum, item) => sum + item.points, 0) + bonusEarned
+  const earned = selected.filter((item) => item.kind === 'negative').reduce((sum, item) => sum + item.points, 0)
   const spent = selected.filter((item) => item.kind === 'positive').reduce((sum, item) => sum + Math.abs(item.points), 0)
   const balance = earned - spent
   const isPointValid = balance >= 0
@@ -63,8 +62,6 @@ export function evaluateSeasonModifierBuild(selectedIds = [], season) {
     selectedCount: selected.length,
     positiveCount: selected.filter((item) => item.kind === 'positive').length,
     negativeCount: selected.filter((item) => item.kind === 'negative').length,
-    bonusCount: selected.filter((item) => item.kind === 'bonus').length,
-    bonusEarned,
     earned,
     spent,
     balance,
@@ -97,17 +94,14 @@ export function validateSeasonModifierManifest(manifest) {
   if (!Array.isArray(manifest.observedSources) || manifest.observedSources.length === 0) errors.push('missing metadata: observedSources')
   if (manifest.globals?.length !== 6) errors.push('globals must contain 6 modifiers')
   if (manifest.positive?.length !== 19) errors.push('positive must contain 19 modifiers')
-  if (manifest.negative?.length !== 14) errors.push('negative must contain 14 modifiers')
-  if (manifest.bonus !== undefined && !Array.isArray(manifest.bonus)) errors.push('bonus must be an array')
-  const bonuses = Array.isArray(manifest.bonus) ? manifest.bonus : []
-  const items = [...(manifest.globals || []), ...(manifest.positive || []), ...(manifest.negative || []), ...bonuses]
+  if (manifest.negative?.length !== 15) errors.push('negative must contain 15 modifiers')
+  const items = [...(manifest.globals || []), ...(manifest.positive || []), ...(manifest.negative || [])]
   const ids = items.map((item) => item?.id)
   if (ids.some((id) => typeof id !== 'string' || !id)) errors.push('modifier IDs must be non-empty strings')
   if (new Set(ids).size !== ids.length) errors.push('modifier IDs must be unique')
   for (const item of manifest.globals || []) if (item.kind !== 'global') errors.push(`global kind invalid: ${item.id}`)
   for (const item of manifest.positive || []) { if (item.kind !== 'positive') errors.push(`positive kind invalid: ${item.id}`); if (!(item.points < 0)) errors.push(`positive sign invalid: ${item.id}`) }
   for (const item of manifest.negative || []) { if (item.kind !== 'negative') errors.push(`negative kind invalid: ${item.id}`); if (!(item.points > 0)) errors.push(`negative sign invalid: ${item.id}`) }
-  for (const item of bonuses) { if (item.kind !== 'bonus') errors.push(`bonus kind invalid: ${item.id}`); if (!Number.isSafeInteger(item.points) || item.points <= 0) errors.push(`bonus sign/value invalid: ${item.id}`) }
   return errors
 }
 

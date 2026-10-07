@@ -49,6 +49,7 @@ const negative = [
   ['broken-secure-container', 'Broken Secure Container', 6, 'コンテナに入れられるのは現金・鍵・ドッグタグ・特殊装備等のみ。'],
   ['incompetent', 'Incompetent', 10, 'Bolt-action Riflesを除くスキル成長速度-25%、上限レベル30（Craftingを除く）。'],
   ['no-flea-market', 'No Flea Market', 10, 'フリーマーケットでプレイヤーとの取引不可。'],
+  ['underdog', 'Underdog', 4, 'デバフはなく、取得済みの場合に利用可能ポイント＋4。後発参加者向けのModifierです。取得条件は未確認です。'],
 ]
 
 const globals = [
@@ -75,12 +76,6 @@ export const KORD_BREACH_SEASON = Object.freeze({
   globals: Object.freeze(globals.map(([id, name, description]) => Object.freeze({ id, name, description, kind: 'global' }))),
   positive: Object.freeze(positive.map((entry) => Object.freeze(modifier(entry, 'positive')))),
   negative: Object.freeze(negative.map((entry) => Object.freeze(modifier(entry, 'negative')))),
-  bonus: Object.freeze([Object.freeze({
-    id: 'underdog', name: 'Underdog', kind: 'bonus', points: 4,
-    description: '取得済みの場合、デバフなしで利用可能ポイントを＋4。後発参加者向けのボーナスです。',
-    status: 'owner-confirmed', confirmedAt: '2026-10-07',
-    sourceNote: 'ユーザーのゲーム内確認に基づきます。公式の取得条件・対象日は未確認です。',
-  })]),
 })
 
 export const SEASON_MODIFIER_SEASONS = Object.freeze({ [KORD_BREACH_SEASON_ID]: KORD_BREACH_SEASON })

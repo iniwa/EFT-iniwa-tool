@@ -28,10 +28,14 @@ test('actual builder explicitly toggles Underdog, restores totals and preserves 
   const root = node('root')
   let app = renderer.createApp(Builder).use(router)
   const all = el => el.children.flatMap(child => [child, ...all(child)])
-  const checkbox = () => all(root).find(el => el.props['aria-label'] === 'Underdog取得済み')
+  const checkbox = () => all(root).find(el => el.props['aria-label'] === 'Underdogを選択')
   const totals = () => all(root).filter(el => el.tag === 'strong' && String(el.props.class).includes('d-block')).map(el => Number(el.text))
   app.mount(root); await nextTick()
   assert.equal(checkbox().props.checked, false)
+  const sectionText = el => [el.text || '', ...el.children.map(sectionText)].join(' ')
+  let section = checkbox().parent
+  while (section && section.tag !== 'section') section = section.parent
+  assert.ok(sectionText(section).includes('Negative Modifier'), 'Underdog appears in the Negative Modifier section')
   assert.deepEqual(totals(), [0, 0, 0, 0])
   checkbox().props.onChange(); await nextTick()
   assert.equal(checkbox().props.checked, true)
