@@ -1,0 +1,9 @@
+# Underdog bonus — 2026-10-07
+
+Scope: add the owner-confirmed late-starter bonus independently of Positive/Negative Modifiers. Explicitly selecting `underdog` grants four available points once; deselection restores the previous balance. Default drafts remain empty. No acquisition date, eligibility cutoff, conflicts or achievement effects are inferred.
+
+Evidence: user message `Sentinel_40e02132e9e08191a514624683addd87` confirms 「デバフ無く＋4ポイントできる後発向けのモディファイア」. Parent supplied https://tarkovperks.com/ and https://www.tarkovhead.com/en/season/kord-breach-season-1-1 as community corroboration. Read-only web extraction retrieved the pages but did not expose their dynamic Underdog entries; independent confirmation is partial. Official eligibility remains unverified. The individual manifest entry records `owner-confirmed` and 2026-10-07; existing inventory provenance remains unchanged.
+
+Implementation: optional `bonus` manifest list preserves legacy manifests. Earned points include bonus values, while positive/negative counts and existing achievement hints retain their original meanings. UI requires an explicit 「Underdog 取得済み」 checkbox and states 「取得済みの場合」. Existing schema-1 draft/preset/exported-state/share IDs carry the selection without new storage keys or migration.
+
+Validation: success — focused 17/17 and full 88/88 tests, production build, and git diff --check. Includes actual Vue checkbox toggle/remount, duplicate IDs, removal, negative-count/achievement isolation, schema-1 state/preset/share round trips and invalid-input tests. Existing >500 kB chunk warning remains. Browser visual QA not run because the trusted browser runtime failed earlier; automated checks do not substitute for visual QA. Version remains 3.3.1. Publication authorized only through a tested fast-forward to Gitea Edit and its existing GitHub/Pages mirror.

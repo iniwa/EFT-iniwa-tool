@@ -137,3 +137,71 @@ test('each achievement hint transitions from unmet to met using its modifier con
     assert.equal(after.met, true, id)
   }
 })
+
+test('Underdog grants four points once only when explicitly selected and removal restores balance', () => {
+  const baseline = evaluateSeasonModifierBuild(['street-tax'], KORD_BREACH_SEASON)
+  const enabled = evaluateSeasonModifierBuild(['street-tax', 'underdog', ' underdog '], KORD_BREACH_SEASON)
+  assert.equal(evaluateSeasonModifierBuild([]).bonusEarned, 0)
+  assert.equal(enabled.bonusCount, 1)
+  assert.equal(enabled.bonusEarned, 4)
+  assert.equal(enabled.earned, baseline.earned + 4)
+  assert.equal(enabled.spent, baseline.spent)
+  assert.equal(enabled.balance, baseline.balance + 4)
+  assert.deepEqual(evaluateSeasonModifierBuild(enabled.selectedIds.filter(id => id !== 'underdog')), baseline)
+  assert.equal(evaluateSeasonModifierBuild(['street-tax', 'underdog']).isPointValid, true)
+  assert.equal(KORD_BREACH_SEASON.bonus[0].status, 'owner-confirmed')
+})
+
+test('Underdog is neither a negative nor positive modifier and leaves achievement hints and interactions unchanged', () => {
+  const ids = KORD_BREACH_SEASON.negative.slice(0, 9).map(item => item.id)
+  const result = evaluateSeasonModifierBuild([...ids, 'underdog'])
+  assert.equal(result.negativeCount, 9)
+  assert.equal(result.positiveCount, 0)
+  assert.deepEqual(evaluateAchievementHints([...ids, 'underdog']), evaluateAchievementHints(ids))
+  assert.deepEqual(getInteractionWarnings([...ids, 'underdog']), getInteractionWarnings(ids))
+  assert.equal(evaluateAchievementHints([...ids, 'underdog']).find(hint => hint.id === 'i-had-a-plan').met, false)
+})
+
+test('bonus manifest is optional for legacy inventories and validates kind, value and uniqueness', () => {
+  const { bonus, ...legacy } = KORD_BREACH_SEASON
+  assert.deepEqual(validateSeasonModifierManifest(legacy), [])
+  assert.equal(evaluateSeasonModifierBuild(['underdog'], legacy).isValid, false)
+  for (const points of [-4, 0, 4.5, Infinity, '4']) {
+    assert.ok(validateSeasonModifierManifest({ ...legacy, bonus: [{ ...bonus[0], points }] }).some(error => error.includes('bonus sign/value')))
+  }
+  assert.ok(validateSeasonModifierManifest({ ...legacy, bonus: [{ ...bonus[0], kind: 'negative' }] }).some(error => error.includes('bonus kind')))
+  assert.ok(validateSeasonModifierManifest({ ...legacy, bonus: [bonus[0], bonus[0]] }).some(error => error.includes('unique')))
+  assert.ok(validateSeasonModifierManifest({ ...legacy, bonus: true }).some(error => error.includes('array')))
+})
+
+test('Underdog round-trips existing storage, presets, exported state and share schema without automatic grants', () => {
+  const values = new Map()
+  const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) }
+  const id = KORD_BREACH_SEASON.seasonId
+  const store = createSeasonModifierBuildStore(storage)
+  assert.deepEqual(store.getSeason(id).draft, [])
+  store.setDraft(id, ['underdog', 'underdog', 'street-tax'])
+  store.savePreset(id, '取得済み', store.getSeason(id).draft)
+  const reloaded = createSeasonModifierBuildStore(storage)
+  assert.deepEqual(reloaded.getSeason(id).draft, ['underdog', 'street-tax'])
+  assert.deepEqual(reloaded.getSeason(id).presets[0].modifierIds, ['underdog', 'street-tax'])
+  const imported = createSeasonModifierBuildStore({ getItem: () => null, setItem() {} })
+  assert.equal(imported.replace(JSON.parse(JSON.stringify(reloaded.getState()))), true)
+  assert.equal(evaluateSeasonModifierBuild(imported.getSeason(id).draft).bonusEarned, 4)
+  const encoded = encodeSeasonModifierShare(id, reloaded.getSeason(id).draft)
+  assert.equal(JSON.parse(Buffer.from(encoded, 'base64url').toString()).v, 1)
+  assert.deepEqual(decodeSeasonModifierShare(encoded).modifierIds, ['underdog', 'street-tax'])
+  assert.deepEqual(decodeSeasonModifierShare(encodeSeasonModifierShare(id, ['street-tax'])).modifierIds, ['street-tax'])
+  assert.deepEqual([...values.keys()], [SEASON_MODIFIER_STORAGE_KEY])
+})
+
+test('invalid saved and shared bonus input cannot grant points through flags or forged values', () => {
+  const id = KORD_BREACH_SEASON.seasonId
+  const saved = sanitizeSeasonModifierState({ schemaVersion: 1, seasons: { [id]: { draft: [true, { id: 'underdog', points: 400 }, '<underdog>'], bonus: true, underdog: true, presets: [] } } })
+  assert.equal(evaluateSeasonModifierBuild(saved.seasons[id].draft).bonusEarned, 0)
+  for (const m of [true, [true], [{ id: 'underdog', points: 400 }], ['<underdog>']]) {
+    const encoded = Buffer.from(JSON.stringify({ v: 1, s: id, m })).toString('base64url')
+    assert.equal(decodeSeasonModifierShare(encoded).ok, false)
+  }
+  assert.equal(evaluateSeasonModifierBuild({ underdog: true }).bonusEarned, 0)
+})
