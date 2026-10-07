@@ -40,9 +40,10 @@ const props = defineProps({
   task: { type: Object, default: null },
   show: { type: Boolean, default: false },
   returnLabel: { type: String, default: '' },
+  canShowFlowchart: { type: Boolean, default: false },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'show-flowchart'])
 const safeUrl = toHttpsUrl
 
 const taskStatus = computed(() => {
@@ -183,7 +184,8 @@ function objectiveConstraintLines(obj) {
         {{ task.name }}
       </h4>
 
-      <!-- 基本情報 -->
+      <button v-if="canShowFlowchart && task.id" type="button" class="btn btn-outline-info mb-3" @click="emit('show-flowchart', task)">&#12501;&#12525;&#12540;&#12481;&#12515;&#12540;&#12488;&#12391;&#34920;&#31034;</button>
+      <!-- Basic task information -->
       <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
         <div><strong>Trader:</strong> {{ task.trader?.name || 'Unknown' }}</div>
         <div><strong>Map:</strong> {{ task.map ? task.map.name : 'None' }}</div>

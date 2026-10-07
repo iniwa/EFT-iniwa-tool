@@ -108,7 +108,7 @@ test('actual flowchart focuses the exact routed task, preserves trader state and
       querySelectorAll(selector) { return selector === '.node' ? this.nodes || [] : [] },
     })
     Object.defineProperty(el, 'textContent', { set() { this.nodes = [] } })
-    Object.defineProperty(el, 'innerHTML', { set(graph) { this.nodes = [...graph.matchAll(/  (t\d+)\["/g)].map(m => Object.assign(element('g'), { id: 'flowchart-' + m[1] + '-0' })) } })
+    Object.defineProperty(el, 'innerHTML', { set(graph) { this.nodes = [...graph.matchAll(/  (t\d+)\["/g)].map(m => Object.assign(element('g'), { id: 'flowchart-' + m[1] + '-0', getBoundingClientRect: () => ({ left: 300 + Number(m[1].slice(1)) * 400, top: 200, width: 80, height: 30 }) })) } })
     return el
   }
   const all = el => el.children.flatMap(child => [child, ...all(child)])
@@ -131,12 +131,13 @@ test('actual flowchart focuses the exact routed task, preserves trader state and
   const progress = useUserProgress(); progress.flowchartTrader.value = 'Therapist'
   const root = element('root'), opened = []
   const app = renderer.createApp(Component, { onOpenTaskDetails: task => opened.push(task.id) }); app.mount(root)
-  await nextTick(); await nextTick(); await nextTick()
+  for (let i=0;i<8;i++) await nextTick()
   assert.ok(graphs[0].includes('Branch A') && graphs[0].includes('Branch B'))
   assert.equal((graphs[0].match(/Duplicate/g) || []).length, 1)
   assert.match(graphs[0], /class t1 [^\n]*,target/)
   assert.equal(document.activeElement.dataset.taskId, 'target')
   assert.equal(progress.flowchartTrader.value, 'Therapist')
+  assert.equal(all(root).find(el => el.props.class === 'mermaid').props.style.transform, "scale(0.5875)")
   const canvas = all(root).find(el => String(el.props.class).includes('flowchart-scroll'))
   assert.ok(canvas.props.onWheel && canvas.props.onPointerdown && canvas.props.onClickCapture)
   const mermaid = all(root).find(el => el.props.class === 'mermaid')
@@ -151,10 +152,13 @@ test('actual flowchart focuses the exact routed task, preserves trader state and
   assert.equal(graphs.length, 2, 'unknown ID must not silently display unrelated trader graph')
   app.unmount(); assert.equal(windowListeners.size, 0)
 })
-test('actual task list links use stable IDs in both list/grouped modes and input state is kept alive', async () => {
+test('actual task list uses details as the primary chart entry and preserves input state', async () => {
   const input = await readFile(new URL('../src/components/TaskInput.vue', import.meta.url), 'utf8')
   const app = await readFile(new URL('../src/App.vue', import.meta.url), 'utf8')
-  assert.equal((input.match(/query: \{ task: task.id \}/g) || []).length, 2)
+  assert.equal((input.match(/query: \{ task: task.id \}/g) || []).length, 0)
+  const modal = await readFile(new URL('../src/components/TaskModal.vue', import.meta.url), 'utf8')
+  assert.match(modal, /emit\('show-flowchart', task\)/)
+  assert.match(app, /@show-flowchart="showFlowchart"/)
   assert.equal((input.match(/emit\('open-task-details', task\)/g) || []).length, 2)
   assert.match(app, /<KeepAlive include="TaskInput">/)
   assert.ok(compileScript(parse(input).descriptor, { id: 'input-test', inlineTemplate: true }).content)

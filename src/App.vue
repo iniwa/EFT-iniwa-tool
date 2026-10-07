@@ -16,6 +16,7 @@ import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
 import TaskModal from './components/TaskModal.vue'
 import { resolveTaskReference } from './logic/taskReference.js'
+import { useTaskFlowchartNavigation } from './composables/useTaskFlowchartNavigation.js'
 import BaseModal from './components/ui/BaseModal.vue'
 
 // ---------------------------------------------------------------------------
@@ -86,10 +87,16 @@ function handleFetchData() {
     fetchData(gameMode.value, apiLang.value, true, isLoading, loadError)
 }
 
+let taskDetailOpener = null
 function openTaskDetails(task) {
+    taskDetailOpener = document.activeElement
     selectedTask.value = task
     showTaskModal.value = true
 }
+
+const { showFlowchart } = useTaskFlowchartNavigation({ route, router, taskData,
+    openDetails: openTaskDetails, closeDetails: closeTaskModal, getOpener: () => taskDetailOpener,
+})
 
 function closeTaskModal() {
     showTaskModal.value = false
@@ -235,6 +242,8 @@ watch(taskData, (tasks) => {
         <TaskModal
             :task="selectedTask"
             :show="showTaskModal"
+            :can-show-flowchart="true"
+            @show-flowchart="showFlowchart"
             @close="closeTaskModal"
         />
         <BaseModal :show="taskReferenceChoices.length > 0" aria-label="同名タスクを選択" @close="taskReferenceChoices = []">

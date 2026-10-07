@@ -33,6 +33,16 @@ export function useFlowchartViewport({ viewport, zoom, size }) {
     el.scrollLeft = pendingScroll.left
     el.scrollTop = pendingScroll.top
     pendingScroll = null
+    return true
+  }
+  async function fitContext(bounds) {
+    const el = viewport.value
+    if (!el || !bounds || ![bounds.x, bounds.y, bounds.width, bounds.height].every(Number.isFinite) || bounds.width <= 0 || bounds.height <= 0) return false
+    const factor = Math.min(Math.max(1, el.clientWidth - 48) / bounds.width, Math.max(1, el.clientHeight - 48) / bounds.height)
+    if (!await zoomTo(factor, null, true)) return false
+    el.scrollLeft = Math.max(0, (bounds.x + bounds.width / 2) * zoom.value - el.clientWidth / 2)
+    el.scrollTop = Math.max(0, (bounds.y + bounds.height / 2) * zoom.value - el.clientHeight / 2)
+    return true
   }
   function onWheel(event) {
     const el = viewport.value
@@ -76,7 +86,7 @@ export function useFlowchartViewport({ viewport, zoom, size }) {
     }
   }
   function dispose() { cancelPan(); zoomRequest++; pendingScroll = null }
-  return { dispose, panning, onWheel, onPointerDown, onPointerMove, onPointerEnd, cancelPan, onClickCapture,
+  return { fitContext, dispose, panning, onWheel, onPointerDown, onPointerMove, onPointerEnd, cancelPan, onClickCapture,
     zoomIn: () => zoomTo(zoom.value + 0.1), zoomOut: () => zoomTo(zoom.value - 0.1),
     zoomReset: () => zoomTo(1, null, true),
     fitView: () => viewport.value && zoomTo(Math.min(viewport.value.clientWidth / Math.max(1, size.value.width), viewport.value.clientHeight / Math.max(1, size.value.height)), null, true),

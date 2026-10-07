@@ -165,3 +165,21 @@ test('actual ammo purchase and craft buttons show TaskModal and return to the sa
   host.key('Escape'); await flush(); assert.equal(document.activeElement, rowLink)
   app.unmount()
 })
+
+test('actual task detail chart button emits its stable task, preserves normal close and stays absent by default', async () => {
+  const host = harness()
+  const baseUrl = `data:text/javascript;base64,${Buffer.from(script).toString('base64')}`
+  const modal = await loadComponent('../src/components/TaskModal.vue', { './ui/BaseModal.vue': baseUrl })
+  const { useApiData } = await import('../src/composables/useApiData.js')
+  const task = useApiData().taskData.value[0]
+  const shown = ref(true), enabled = ref(true), calls = []
+  const app = host.renderer.createApp({ render: () => h(modal.component, { task, show: shown.value, canShowFlowchart: enabled.value, onShowFlowchart: task => calls.push(task.id), onClose: () => { shown.value = false } }) })
+  app.mount(host.root); await flush()
+  const textOf = el => (el.text || '') + el.children.map(textOf).join('')
+  const chartButton = () => host.all(host.body).find(el => el.tag === 'button' && textOf(el) === '\u30d5\u30ed\u30fc\u30c1\u30e3\u30fc\u30c8\u3067\u8868\u793a')
+  assert.ok(chartButton()); assert.equal(chartButton().props.type, 'button')
+  chartButton().props.onClick(); assert.deepEqual(calls, [task.id]); assert.equal(shown.value, true)
+  enabled.value = false; await flush(); assert.equal(chartButton(), undefined)
+  host.key('Escape'); await flush(); assert.equal(shown.value, false); assert.equal(document.activeElement, host.row)
+  app.unmount()
+})

@@ -334,9 +334,20 @@ async function renderChart() {
     if (pendingTargetFocus && pendingTargetFocus === targetTaskId.value) {
       const node = [...mermaidContainer.value.querySelectorAll('.node')].find(el => el.dataset.taskId === pendingTargetFocus)
       if (node) {
-        const rect = node.getBoundingClientRect(), parentRect = scrollParent.getBoundingClientRect()
-        scrollParent.scrollLeft += rect.left + rect.width / 2 - parentRect.left - scrollParent.clientWidth / 2
-        scrollParent.scrollTop += rect.top + rect.height / 2 - parentRect.top - scrollParent.clientHeight / 2
+        const target = taskData.value.find(task => task.id === pendingTargetFocus)
+        const contextIds = new Set([pendingTargetFocus, ...(target?.taskRequirements || []).map(req => req?.task?.id)])
+        taskData.value.forEach(task => { if (task.taskRequirements?.some(req => req?.task?.id === pendingTargetFocus)) contextIds.add(task.id) })
+        const rects = [...mermaidContainer.value.querySelectorAll('.node')].filter(el => contextIds.has(el.dataset.taskId)).map(el => el.getBoundingClientRect())
+        const parentRect = scrollParent.getBoundingClientRect()
+        const left = Math.min(...rects.map(rect => rect.left)), top = Math.min(...rects.map(rect => rect.top))
+        const right = Math.max(...rects.map(rect => rect.left + rect.width)), bottom = Math.max(...rects.map(rect => rect.top + rect.height))
+        await viewportControls.fitContext({
+          x: (left - parentRect.left + scrollParent.scrollLeft) / zoomLevel.value,
+          y: (top - parentRect.top + scrollParent.scrollTop) / zoomLevel.value,
+          width: right > left ? (right - left) / zoomLevel.value : 1,
+          height: bottom > top ? (bottom - top) / zoomLevel.value : 1,
+        })
+        if (requestId !== renderCount || !mermaidContainer.value) return
         node.focus({ preventScroll: true })
         pendingTargetFocus = null
       }
