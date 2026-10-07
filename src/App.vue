@@ -222,11 +222,13 @@ watch(taskData, (tasks) => {
 
         <!-- ルートビュー（既存コンポーネントの emit をここで吸収） -->
         <router-view v-slot="{ Component }">
+          <KeepAlive include="TaskInput">
             <component
                 :is="Component"
                 @open-task-details="openTaskDetails"
                 @open-task-from-name="openTaskFromName"
             />
+          </KeepAlive>
         </router-view>
 
         <!-- タスク詳細モーダル -->

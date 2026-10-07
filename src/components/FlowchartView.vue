@@ -4,6 +4,9 @@
 
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import mermaid from 'mermaid'
+import { useRoute, useRouter } from 'vue-router'
+import { getTaskFlowchartScope, readFlowchartTaskId } from '../logic/flowchartNavigation.js'
+import { useFlowchartViewport } from '../composables/useFlowchartViewport.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
@@ -20,6 +23,19 @@ const {
 } = useUserProgress()
 
 const { taskData } = useApiData()
+const route = useRoute()
+const router = useRouter()
+const targetTaskId = computed(() => readFlowchartTaskId(route.query.task))
+const targetTask = computed(() => taskData.value?.find(task => task.id === targetTaskId.value) || null)
+let pendingTargetFocus = targetTaskId.value
+function clearTarget() { const { task, ...query } = route.query; router.replace({ query }) }
+watch(targetTaskId, id => {
+  pendingTargetFocus = id
+  cancelPan()
+  nodeMap = {}
+  if (mermaidContainer.value) mermaidContainer.value.textContent = 'Loading...'
+  scheduleRender()
+})
 
 const emit = defineEmits(['open-task-details'])
 
@@ -28,6 +44,7 @@ const isInitialSetupMode = ref(false)
 const showGateNodes = ref(true)
 const zoomLevel = ref(1.0)
 const mermaidContainer = ref(null)
+const chartViewport = ref(null)
 const chartStats = ref({ selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 })
 const chartNaturalSize = ref({ width: 1, height: 1 })
 const chartStageBounds = computed(() => getZoomedStageBounds(chartNaturalSize.value.width, chartNaturalSize.value.height, zoomLevel.value))
@@ -39,6 +56,7 @@ let nodeMap = {}
 let renderCount = 0
 let renderTimer = null
 function scheduleRender() {
+  renderCount++ // Invalidate any in-flight SVG before the debounce starts.
   clearTimeout(renderTimer)
   renderTimer = setTimeout(renderChart, 100)
 }
@@ -64,19 +82,8 @@ const traderList = computed(() => {
 })
 
 // --- ズーム操作 ---
-function zoomIn() {
-  zoomLevel.value = Math.round((zoomLevel.value + 0.1) * 10) / 10
-}
-
-function zoomOut() {
-  if (zoomLevel.value > 0.1) {
-    zoomLevel.value = Math.round((zoomLevel.value - 0.1) * 10) / 10
-  }
-}
-
-function zoomReset() {
-  zoomLevel.value = 1.0
-}
+const viewportControls = useFlowchartViewport({ viewport: chartViewport, zoom: zoomLevel, size: chartNaturalSize })
+const { zoomIn, zoomOut, zoomReset, fitView, onWheel, onPointerDown, onPointerMove, onPointerEnd, cancelPan, dispose, onClickCapture, panning } = viewportControls
 
 // --- Mermaidラベル用のエスケープ ---
 function escapeLabel(text) {
@@ -112,7 +119,9 @@ async function renderChart() {
 
   // 選択中トレーダーのタスクを取得
   const isAll = flowchartTrader.value === 'All'
-  const currentTraderTasks = isAll
+  const currentTraderTasks = targetTaskId.value !== null
+    ? getTaskFlowchartScope(targetTaskId.value, taskData.value)
+    : isAll
     ? taskData.value
     : taskData.value.filter((t) => t.trader && t.trader.name === flowchartTrader.value)
 
@@ -124,7 +133,7 @@ async function renderChart() {
   }
 
   // ノードマッピング構築: 各タスクに短いID (t0, t1...) を割り当て
-  nodeMap = {}
+  const renderNodeMap = {}
   const taskToNodeId = new Map()
   let nodeIndex = 0
 
@@ -146,7 +155,7 @@ async function renderChart() {
   nodesToRender.forEach((task, taskId) => {
     const nid = `t${nodeIndex++}`
     taskToNodeId.set(taskId, nid)
-    nodeMap[nid] = task
+    renderNodeMap[nid] = task
   })
 
   let edgeCount = 0
@@ -163,6 +172,7 @@ async function renderChart() {
   graph += '  classDef activeExternal fill:#0dcaf0,stroke:#0dcaf0,color:#111,stroke-dasharray:5 5\n'
   graph += '  classDef failedExternal fill:#dc3545,stroke:#dc3545,color:#fff,stroke-dasharray:5 5\n'
   graph += '  classDef external fill:#6c757d,stroke:#6c757d,color:#fff,stroke-dasharray:5 5\n'
+  graph += '  classDef target stroke:#ffca2c,stroke-width:5px\n'
   graph += '  classDef priority stroke:#0dcaf0,stroke-width:4px\n'
   graph += '  classDef gate fill:#493b00,stroke:#ffc107,color:#fff,stroke-dasharray:3 3\n'
   graph += '  classDef gateUnknown fill:#303030,stroke:#ffc107,color:#fff,stroke-dasharray:3 3\n'
@@ -202,6 +212,7 @@ async function renderChart() {
     if (isPriority && !isDone) {
       classes += ',priority'
     }
+    if (taskId === targetTaskId.value) classes += ',target'
     graph += `  class ${nid} ${classes}\n`
 
   })
@@ -254,6 +265,8 @@ async function renderChart() {
   try {
     const { svg } = await mermaid.render(`flowchart-${requestId}`, graph)
     if (requestId !== renderCount) return
+    cancelPan()
+    nodeMap = renderNodeMap
     mermaidContainer.value.innerHTML = svg
 
     // エッジ要素をクリック不可にする
@@ -286,6 +299,9 @@ async function renderChart() {
         el.removeAttribute('role')
         return
       }
+      const stableNodeId = (el.id || '').match(/(?:^|-)t(\d+)(?:-|$)/)
+      const mappedTask = stableNodeId ? renderNodeMap[`t${stableNodeId[1]}`] : null
+      if (mappedTask) el.dataset.taskId = mappedTask.id
       el.style.cursor = 'pointer'
       el.setAttribute('tabindex', '0')
       el.setAttribute('role', 'button')
@@ -315,6 +331,16 @@ async function renderChart() {
   if (scrollParent) {
     scrollParent.scrollTop = scrollTop
     scrollParent.scrollLeft = scrollLeft
+    if (pendingTargetFocus && pendingTargetFocus === targetTaskId.value) {
+      const node = [...mermaidContainer.value.querySelectorAll('.node')].find(el => el.dataset.taskId === pendingTargetFocus)
+      if (node) {
+        const rect = node.getBoundingClientRect(), parentRect = scrollParent.getBoundingClientRect()
+        scrollParent.scrollLeft += rect.left + rect.width / 2 - parentRect.left - scrollParent.clientWidth / 2
+        scrollParent.scrollTop += rect.top + rect.height / 2 - parentRect.top - scrollParent.clientHeight / 2
+        node.focus({ preventScroll: true })
+        pendingTargetFocus = null
+      }
+    }
   }
 }
 
@@ -388,7 +414,8 @@ onMounted(() => {
   })
   renderChart()
 })
-onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++ })
+onMounted(() => window.addEventListener('blur', cancelPan))
+onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); clearTimeout(renderTimer); renderTimer = null; renderCount++ })
 </script>
 
 <template>
@@ -401,6 +428,7 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
           class="form-select form-select-sm bg-dark text-white border-secondary"
           style="width: auto;"
           v-model="flowchartTrader"
+          @change="clearTarget"
         >
           <option
             v-for="trader in traderList"
@@ -435,7 +463,8 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
           クリック: 詳細 / Shift+クリック: 完了切替
         </small>
 
-        <!-- ズームボタン -->
+        <!-- View controls -->
+        <button class="btn btn-sm btn-outline-info" type="button" @click="fitView">&#20840;&#20307;&#12434;&#34920;&#31034;</button>
         <div class="btn-group btn-group-sm">
           <button
             class="btn btn-outline-secondary"
@@ -469,9 +498,26 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
         <span class="badge bg-dark border border-warning text-warning">灰色条件=自動判定なし</span>
       </span>
     </div>
+    <div v-if="targetTaskId !== null" class="px-3 py-2 small border-bottom border-secondary" role="status">
+      <span v-if="targetTask">{{ targetTask.name }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
+      <span v-else>&#23550;&#35937;&#12479;&#12473;&#12463;&#12364;&#35211;&#12388;&#12363;&#12426;&#12414;&#12379;&#12435;&#12290;</span>
+      <button class="btn btn-sm btn-outline-secondary ms-2" type="button" @click="clearTarget">&#36890;&#24120;&#34920;&#31034;&#12395;&#25147;&#12427;</button>
+    </div>
+    <div class="px-3 py-1 small text-muted">&#12507;&#12452;&#12540;&#12523;: &#12474;&#12540;&#12512; / &#32972;&#26223;&#12434;&#24038;&#12489;&#12521;&#12483;&#12464;: &#31227;&#21205;</div>
     <div
+      ref="chartViewport"
+      tabindex="0"
+      aria-label="Flowchart canvas"
+      @wheel="onWheel"
+      @pointerdown="onPointerDown"
+      @pointermove="onPointerMove"
+      @pointerup="onPointerEnd"
+      @pointercancel="cancelPan"
+      @lostpointercapture="cancelPan"
+      @click.capture="onClickCapture"
+      :class="{ 'is-panning': panning }"
       class="card-body bg-dark overflow-auto p-0 flowchart-scroll"
-      style="min-height: 60vh; position: relative;"
+      style="height: 65vh; min-height: 300px; position: relative;"
     >
       <div :style="{ width: `${Math.max(chartStageBounds.width, 1)}px`, height: `${Math.max(chartStageBounds.height, 1)}px`, minWidth: '100%' }">
         <div
@@ -488,3 +534,9 @@ onUnmounted(() => { clearTimeout(renderTimer); renderTimer = null; renderCount++
     </div>
   </div>
 </template>
+
+<style scoped>
+.flowchart-scroll { cursor: grab; }
+.flowchart-scroll.is-panning { cursor: grabbing; user-select: none; }
+.mermaid :deep(.node:focus) { outline: 2px solid #ffca2c; outline-offset: 3px; }
+</style>

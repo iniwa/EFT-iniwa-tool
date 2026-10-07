@@ -3,6 +3,7 @@
 // ハイドアウトのレベル設定 + タスクリストの表示・管理
 
 import { ref, computed } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
@@ -385,6 +386,7 @@ function getSortedTasks(tasks) {
                   <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                   <span v-if="task.mapLabel" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.mapLabel }}</span>
                 </button>
+                <RouterLink v-if="task.id" :to="{ name: 'flowchart', query: { task: task.id } }" class="btn btn-sm btn-outline-info ms-2 flex-shrink-0" :aria-label="task.name + '\u306e\u30d5\u30ed\u30fc\u30c1\u30e3\u30fc\u30c8'">&#22259;</RouterLink>
                 <span class="badge bg-secondary">{{ task.trader?.name || 'Unknown' }}</span>
               </div>
             </div>
@@ -444,6 +446,7 @@ function getSortedTasks(tasks) {
                       <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
                       <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
                     </button>
+                    <RouterLink v-if="task.id" :to="{ name: 'flowchart', query: { task: task.id } }" class="btn btn-sm btn-outline-info ms-2 flex-shrink-0" :aria-label="task.name + '\u306e\u30d5\u30ed\u30fc\u30c1\u30e3\u30fc\u30c8'">&#22259;</RouterLink>
                     <small class="text-muted">
                       {{ taskViewMode === 'trader' ? task.mapLabel : (task.trader?.name || 'Unknown') }}
                     </small>
