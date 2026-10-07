@@ -1,3 +1,4 @@
+import { describeGlobalVariable } from './globalConditionLabels.js'
 /** Return scrollable stage bounds from the measured SVG, without arbitrary margins. */
 export function getZoomedStageBounds(width, height, zoom = 1) {
   const factor = Number.isFinite(zoom) && zoom > 0 ? zoom : 1
@@ -37,20 +38,18 @@ export function buildFlowchartGateGraph(tasks) {
     if (!gateMap.has(key)) gateMap.set(key, { key, label, kind, automatic })
     return key
   }
-  const link = (key, taskId, label = '') => {
+  const link = (key, taskId, label = '', technical = null) => {
     if (!key || !taskId) return
-    edges.push({ gateKey: key, taskId, label })
+    edges.push({ gateKey: key, taskId, label, ...(technical ? { technical } : {}) })
   }
   for (const task of Array.isArray(tasks) ? tasks : []) {
     if (!task?.id) continue
-    const level = finite(task.minPlayerLevel)
-    if (level > 0) {
-      const key = add(`level:${level}`, `PMCレベル >= ${level}`, 'level', true)
-      link(key, task.id)
-    }
+    // PMC level and trader loyalty level are detail/eligibility conditions,
+    // not chart nodes. Keep trader reputation gates visible.
     for (const req of Array.isArray(task.traderLevelRequirements) ? task.traderLevelRequirements : []) {
       const trader = req?.trader?.name || req?.trader?.id || 'Unknown'
-      const type = ['reputation', 'standing'].includes(req?.requirementType) ? '評判' : 'LL'
+      if (!['reputation', 'standing'].includes(req?.requirementType)) continue
+      const type = '評判'
       const value = req?.value ?? req?.level
       if (value == null) continue
       const key = add(`trader:${req?.trader?.id || trader}:${type}:${compare(req.compareMethod)}:${value}`, `${trader} ${type} ${compare(req.compareMethod)} ${value}`, 'trader', true)
@@ -61,8 +60,11 @@ export function buildFlowchartGateGraph(tasks) {
       if (req.type === 'globalVariable' && req.variableId) {
         const op = compare(req.compareMethod)
         const value = req.value ?? ''
-        const key = add(`global:${req.variableId}`, `ゲーム内変数 (ID: ${req.variableId})`, 'globalVariable', false)
-        link(key, task.id, `${op} ${value}`.trim())
+        const description = describeGlobalVariable(req)
+        const key = add(`global:${req.variableId}`, description.label, 'globalVariable', false)
+        gateMap.get(key).variableId = req.variableId
+        gateMap.get(key).verified = false
+        link(key, task.id, `${op} ${value}`.trim(), description.technical)
       } else if (req.type === 'dialogue') {
         const traders = (Array.isArray(req.traders) ? req.traders : [])
           .map((trader) => typeof trader === 'string'
@@ -100,6 +102,8 @@ export function buildFlowchartGateGraph(tasks) {
     }
   }
   const nodes = [...gateMap.values()].sort((a, b) => a.key.localeCompare(b.key))
+  let unknownIndex = 0
+  nodes.forEach(node => { if (node.kind === 'globalVariable') node.label += ` #${++unknownIndex}` })
   edges.sort((a, b) => `${a.taskId}:${a.gateKey}`.localeCompare(`${b.taskId}:${b.gateKey}`))
   return { nodes, edges }
 }

@@ -8,6 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
+import { describeGlobalVariable } from '../logic/globalConditionLabels.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
 import {
   meaningfulBuildAttributes,
@@ -98,10 +99,8 @@ function otherRequirementLabel(requirement) {
     const traders = (requirement.traders || []).map((trader) => trader.name).join(' / ')
     return `会話条件${traders ? `: ${traders}` : ''}`
   }
-  if (requirement.type === 'globalVariable') {
-    const variableId = requirement.variableId || '不明'
-    return `ゲーム内変数 (ID: ${variableId}) ${requirement.compareMethod || '>='} ${requirement.value ?? ''}`.trim()
-  }
+  if (requirement.type === 'globalVariable') return describeGlobalVariable(requirement).label
+
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }
 
@@ -262,6 +261,10 @@ function objectiveConstraintLines(obj) {
             class="list-group-item bg-dark text-light border-secondary py-2"
           >
             {{ otherRequirementLabel(requirement) }}
+            <details v-if="requirement.type === 'globalVariable'" class="small text-muted mt-1">
+              <summary>&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
+              {{ describeGlobalVariable(requirement).technical }}
+            </details>
             <span class="badge bg-secondary ms-1">自動判定なし</span>
           </li>
         </ul>
@@ -402,6 +405,10 @@ function objectiveConstraintLines(obj) {
                 <div v-if="obj.requiredKeys?.length">必要な鍵: {{ obj.requiredKeys.map((item) => item.name || item.id).join(' / ') }}</div>
                 <div v-if="obj.containsCategory?.length">カテゴリ: {{ obj.containsCategory.map((category) => category.name || category.id).join(' / ') }}</div>
                 <div v-if="meaningfulBuildAttributes(obj.buildAttributes).length">性能: {{ meaningfulBuildAttributes(obj.buildAttributes).map(formatBuildAttribute).join(' / ') }}</div>
+              </details>
+              <details v-if="obj.globalVariable" class="small text-muted mt-1">
+                <summary>&#20869;&#37096;&#26465;&#20214;&#12398;&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
+                {{ describeGlobalVariable(obj.globalVariable).technical }}
               </details>
               <div v-if="healthEffectEntries(obj).length" class="text-danger mt-1">
                 <div v-for="entry in healthEffectEntries(obj)" :key="entry.key">{{ entry.label }}: {{ formatObjectiveValue(entry.value) }}</div>

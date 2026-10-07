@@ -75,7 +75,7 @@ test('quantity/FIR/Collector/alternative-item rules and distinct same-name sourc
   assert.equal(lists.taskNormal[0].sources[0].objectives[0].foundInRaid, false)
 })
 
-test('actual ResultList defaults to unchanged full lists, switches without storage edits, and preserves stable task attribution', async () => {
+test('actual ResultList defaults to full lists, persists only display mode across remount, and preserves task attribution', async () => {
   const storage = new Map()
   globalThis.localStorage = { getItem: k => storage.get(k) ?? null, setItem: (k,v) => storage.set(k,v), removeItem: k => storage.delete(k) }
   globalThis.BroadcastChannel = undefined
@@ -99,7 +99,8 @@ test('actual ResultList defaults to unchanged full lists, switches without stora
   api.hideoutData.value=[{name:'Workbench',normalizedName:'workbench',levels:[{level:1,itemRequirements:[{count:10,item,attributes:[]}]}]}]
   api.itemsData.value={items:[],maps:[]}; progress.userHideout.value={};progress.completedTasks.value=[];progress.taskStatuses.value={};progress.prioritizedTasks.value=['goal'];progress.collectedItems.value=['taskFir_item']
   await nextTick()
-  const original=JSON.stringify(useShoppingList().shoppingList.value),snapshot=JSON.stringify([...storage])
+  const progressStorage = () => [...storage].filter(([key]) => key !== 'eft_shopping_list_mode')
+  const original=JSON.stringify(useShoppingList().shoppingList.value),snapshot=JSON.stringify(progressStorage())
   const root=el('root'),opened=[];const app=renderer.createApp(Component,{onOpenTaskFromName:ref=>opened.push(ref)});app.mount(root);await nextTick()
   const select=all(root).find(e=>e.tag==='select')
   assert.equal(select._value, undefined) // Native selector uses the Vue model, not persistent settings.
@@ -112,7 +113,13 @@ test('actual ResultList defaults to unchanged full lists, switches without stora
   const goalButton=all(root).find(e=>e.tag==='button'&&e.text==='goal');goalButton.props.onClick();assert.equal(opened[0].id,'goal')
   select.props['onUpdate:modelValue']('all');await nextTick();assert.equal(checkbox().length,2)
   assert.equal(JSON.stringify(useShoppingList().shoppingList.value),original)
-  assert.equal(JSON.stringify([...storage]),snapshot,'switching modes does not change priorities/progress/collection storage')
-  progress.prioritizedTasks.value=[];await nextTick();select.props['onUpdate:modelValue']('priority');await nextTick();assert.equal(checkbox().length,0)
+  assert.equal(JSON.stringify(progressStorage()),snapshot,'only view preference changes; priorities/progress/collection storage is unchanged')
+  select.props['onUpdate:modelValue']('priority');await nextTick()
+  assert.equal(storage.get('eft_shopping_list_mode'), JSON.stringify('priority'))
   app.unmount()
+  const returned=renderer.createApp(Component,{onOpenTaskFromName:ref=>opened.push(ref)})
+  returned.mount(root);await nextTick()
+  assert.equal(checkbox().length,1,'tab away/back remount retains priority view')
+  progress.prioritizedTasks.value=[];await nextTick();assert.equal(checkbox().length,0)
+  returned.unmount()
 })

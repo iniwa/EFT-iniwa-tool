@@ -150,6 +150,23 @@ test('actual flowchart focuses the exact routed task, preserves trader state and
   assert.equal(mermaid.nodes.length, 0, 'in-flight SVG must not replace an invalid target after navigation')
   globalThis.__flowRoute.query = { task: 'missing' }; await nextTick(); await new Promise(resolve => setTimeout(resolve, 120)); await nextTick()
   assert.equal(graphs.length, 2, 'unknown ID must not silently display unrelated trader graph')
+  const real = JSON.parse(await readFile(new URL('./fixtures/priority-real-tasks.json', import.meta.url), 'utf8')).tasks
+  const realSnapshot = JSON.stringify(real)
+  deferRender = false
+  useApiData().taskData.value = real
+  globalThis.__flowRoute.query = { task: '597a160786f77477531d39d2' }
+  await nextTick(); await new Promise(resolve => setTimeout(resolve, 120)); await nextTick(); await nextTick()
+  const realGraph = graphs.at(-1)
+  assert.equal(realGraph.includes('PMCレベル'), false)
+  assert.equal(realGraph.includes(' LL '), false)
+  const nodeByName = new Map([...realGraph.matchAll(/  (t\d+)\["([^"\n]+)"\]/g)].map(m => [real.find(task => m[2] === task.name || m[2].startsWith(task.name + ' '))?.name || m[2], m[1]]))
+  for (const names of [['Chemical - Part 1', 'Chemical - Part 2'], ['Chemical - Part 2', 'Chemical - Part 3'], ['Chemical - Part 3', 'Chemical - Part 4'], ['Chemical - Part 4', 'Out of Curiosity']]) {
+    assert.ok(nodeByName.has(names[0]) && nodeByName.has(names[1]))
+    const line = realGraph.split('\n').find(line => line.startsWith('  ' + nodeByName.get(names[0]) + ' -->') && line.endsWith(' ' + nodeByName.get(names[1])))
+    assert.ok(line, names.join(' -> '))
+  }
+  assert.equal(nodeByName.size, 5)
+  assert.equal(JSON.stringify(real), realSnapshot)
   app.unmount(); assert.equal(windowListeners.size, 0)
 })
 test('actual task list uses details as the primary chart entry and preserves input state', async () => {

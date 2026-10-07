@@ -2,15 +2,14 @@
 // ショッピングリスト表示コンポーネント
 // カテゴリ別にアイテムをカード形式で表示し、収集済みトグルとソース詳細を提供
 
-import { reactive, ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useShoppingList } from '../composables/useShoppingList.js'
 import { useApiData } from '../composables/useApiData.js'
 
-const { collectedItems, toggleCollected } = useUserProgress()
+const { collectedItems, toggleCollected, shoppingListMode: listMode } = useUserProgress()
 const { displayLists, priorityTaskPlan, priorityDisplayLists } = useShoppingList()
 const { taskData } = useApiData()
-const listMode = ref('all')
 const visibleLists = computed(() => listMode.value === 'priority' ? priorityDisplayLists.value : displayLists.value)
 const taskNames = computed(() => new Map((taskData.value || []).map(task => [task.id, task.name])))
 const taskLabel = id => taskNames.value.get(id) || id || '\u4e0d\u660e'

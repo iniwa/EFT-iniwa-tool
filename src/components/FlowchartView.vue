@@ -33,6 +33,7 @@ watch(targetTaskId, id => {
   pendingTargetFocus = id
   cancelPan()
   nodeMap = {}
+  chartGateDetails.value = []
   if (mermaidContainer.value) mermaidContainer.value.textContent = 'Loading...'
   scheduleRender()
 })
@@ -45,6 +46,7 @@ const showGateNodes = ref(true)
 const zoomLevel = ref(1.0)
 const mermaidContainer = ref(null)
 const chartViewport = ref(null)
+const chartGateDetails = ref([])
 const chartStats = ref({ selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 })
 const chartNaturalSize = ref({ width: 1, height: 1 })
 const chartStageBounds = computed(() => getZoomedStageBounds(chartNaturalSize.value.width, chartNaturalSize.value.height, zoomLevel.value))
@@ -106,6 +108,7 @@ async function renderChart() {
   if (!mermaidContainer.value) return
   const requestId = ++renderCount
   if (!taskData.value || taskData.value.length === 0) {
+    chartGateDetails.value = []
     chartStats.value = { selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 }
     chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">Loading...</span>'
@@ -126,6 +129,7 @@ async function renderChart() {
     : taskData.value.filter((t) => t.trader && t.trader.name === flowchartTrader.value)
 
   if (currentTraderTasks.length === 0) {
+    chartGateDetails.value = []
     chartStats.value = { selected: 0, nodes: 0, edges: 0, gateNodes: 0, gateEdges: 0, external: 0, isolated: 0 }
     chartNaturalSize.value = { width: 1, height: 1 }
     mermaidContainer.value.innerHTML = '<span class="text-secondary">該当するタスクがありません。</span>'
@@ -267,6 +271,9 @@ async function renderChart() {
     if (requestId !== renderCount) return
     cancelPan()
     nodeMap = renderNodeMap
+    chartGateDetails.value = gateGraph.nodes.filter(node => node.kind === 'globalVariable').map(node => ({
+      ...node, requirements: gateGraph.edges.filter(edge => edge.gateKey === node.key).map(edge => ({ ...edge, taskName: byId.get(edge.taskId)?.name || edge.taskId })),
+    }))
     mermaidContainer.value.innerHTML = svg
 
     // エッジ要素をクリック不可にする
@@ -509,6 +516,14 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
         <span class="badge bg-dark border border-warning text-warning">灰色条件=自動判定なし</span>
       </span>
     </div>
+    <details v-if="chartGateDetails.length" class="px-3 py-2 small border-bottom border-secondary">
+      <summary>&#26410;&#26908;&#35388;&#12398;&#12466;&#12540;&#12512;&#20869;&#26465;&#20214;&#65306;&#25216;&#34899;&#24773;&#22577;</summary>
+      <p class="text-muted mt-2">&#24847;&#21619;&#12392;&#12496;&#12540;&#12472;&#12519;&#12531;&#12539;PvE&#24046;&#12399;&#26410;&#30906;&#35469;&#12391;&#12377;&#12290;&#23436;&#20102;&#12420;&#20998;&#23696;&#26465;&#20214;&#12392;&#12375;&#12390;&#33258;&#21205;&#21028;&#23450;&#12375;&#12414;&#12379;&#12435;&#12290;</p>
+      <div v-for="gate in chartGateDetails" :key="gate.key" class="mb-2">
+        <strong>{{ gate.label }}</strong>
+        <div v-for="(requirement, index) in gate.requirements" :key="gate.key + ':' + requirement.taskId + ':' + index">{{ requirement.taskName }}: {{ requirement.technical }}</div>
+      </div>
+    </details>
     <div v-if="targetTaskId !== null" class="px-3 py-2 small border-bottom border-secondary" role="status">
       <span v-if="targetTask">{{ targetTask.name }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
       <span v-else>&#23550;&#35937;&#12479;&#12473;&#12463;&#12364;&#35211;&#12388;&#12363;&#12426;&#12414;&#12379;&#12435;&#12290;</span>

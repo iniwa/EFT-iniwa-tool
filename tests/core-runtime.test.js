@@ -98,7 +98,7 @@ test('live-shaped objective constraints format safely', () => {
   assert.equal(formatTimeCondition(0, 0), '');
   assert.equal(formatTimeCondition(22, 7), '時間帯: 22:00〜7:00');
   assert.equal(formatExitCondition('Gate 3', ['Survived']), '脱出地点: Gate 3 (必要状態: Survived)');
-  assert.equal(formatGlobalVariable({ id: 'gv', value: 2, compareMethod: '>=' }), 'ゲーム内変数 gv >= 2');
+  assert.equal(formatGlobalVariable({ id: 'gv', value: 2, compareMethod: '>=' }).includes('gv'), false);
   assert.equal(healthEffectEntries({ playerHealthEffect: { effects: ['痛み'] }, healthEffects: ['脱水'] }).length, 2);
   assert.match(formatObjectiveValue({ bodyParts: ['頭'], effects: ['痛み'] }), /部位: 頭/);
   assert.equal(objectivePositionLines({ zones: [null], possibleLocations: [null, { positions: [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }] }] })[0].endsWith('ほか1地点'), true);

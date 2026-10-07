@@ -183,3 +183,21 @@ test('actual task detail chart button emits its stable task, preserves normal cl
   host.key('Escape'); await flush(); assert.equal(shown.value, false); assert.equal(document.activeElement, host.row)
   app.unmount()
 })
+
+test('actual detail shows unknown condition meaning with IDs/comparisons confined to optional technical details', async () => {
+  const host = harness()
+  const baseUrl = `data:text/javascript;base64,${Buffer.from(script).toString('base64')}`
+  const modal = await loadComponent('../src/components/TaskModal.vue', { './ui/BaseModal.vue': baseUrl })
+  const { useApiData } = await import('../src/composables/useApiData.js')
+  const task = { ...useApiData().taskData.value[0], otherRequirements: [{ type: 'globalVariable', variableId: 'opaque-unlock-id', compareMethod: '>=', value: 3 }], objectives: [{ type: 'useItem', description: 'Known objective text', globalVariable: { id: 'opaque-objective-id', compareMethod: '==', value: 0 } }] }
+  const app = host.renderer.createApp(modal.component, { task, show: true })
+  app.mount(host.root); await flush()
+  const textOf = el => (el.text || '') + el.children.map(textOf).join('')
+  const details = host.all(host.body).filter(el => el.tag === 'details')
+  assert.ok(details.some(el => textOf(el).includes('opaque-unlock-id') && textOf(el).includes('>=') && !el.props.open))
+  assert.ok(details.some(el => textOf(el).includes('opaque-objective-id') && textOf(el).includes('==') && !el.props.open))
+  const visibleText = el => el.tag === 'details' ? '' : (el.text || '') + el.children.map(visibleText).join('')
+  assert.ok(visibleText(host.body).includes('\u610f\u5473\u672a\u691c\u8a3c'))
+  assert.ok(!visibleText(host.body).includes('opaque-unlock-id') && !visibleText(host.body).includes('opaque-objective-id'))
+  app.unmount()
+})

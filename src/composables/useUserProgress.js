@@ -20,7 +20,7 @@ export const RESET_SETTING_KEYS = Object.freeze([
   'eft_gamemode', 'eft_apilang',
   'eft_show_completed', 'eft_show_future', 'eft_show_maxed_hideout', 'eft_show_kappa', 'eft_show_lk', 'eft_show_story_tab',
   'eft_keys_view_mode', 'eft_keys_sort_mode', 'eft_keys_collapsed_state',
-  'eft_flowchart_trader', 'eft_ammo_filters', 'eft_story_selected_chapter', 'memo_accordion_state',
+  'eft_shopping_list_mode', 'eft_flowchart_trader', 'eft_ammo_filters', 'eft_story_selected_chapter', 'memo_accordion_state',
   'eft_overlay_enabled', 'eft_overlay_config',
   'eft_notice_last_seen_version', 'eft_notice_permanently_hidden',
 ]);
@@ -131,6 +131,12 @@ const keysViewMode = ref(loadLS('eft_keys_view_mode', 'all'));
 const keysSortMode = ref(loadLS('eft_keys_sort_mode', 'map'));
 const flowchartTrader = ref(loadLS('eft_flowchart_trader', 'Prapor'));
 
+// Browser-profile display preference, shared by game modes like other UI filters.
+export function normalizeShoppingListMode(value) {
+  return value === 'priority' ? 'priority' : 'all';
+}
+const shoppingListMode = ref(normalizeShoppingListMode(loadLS('eft_shopping_list_mode', 'all')));
+
 // ---------------------------------------------------------------------------
 // Individual watchers for persistence (one per ref)
 // ---------------------------------------------------------------------------
@@ -186,6 +192,11 @@ watch(showStoryTab, (val) => saveLS('eft_show_story_tab', val));
 watch(keysViewMode, (val) => saveLS('eft_keys_view_mode', val));
 watch(keysSortMode, (val) => saveLS('eft_keys_sort_mode', val));
 watch(flowchartTrader, (val) => saveLS('eft_flowchart_trader', val));
+watch(shoppingListMode, (val) => {
+  const normalized = normalizeShoppingListMode(val);
+  if (val !== normalized) { shoppingListMode.value = normalized; return; }
+  saveLS('eft_shopping_list_mode', normalized);
+});
 
 // ---------------------------------------------------------------------------
 // Methods
@@ -445,6 +456,7 @@ export function useUserProgress() {
     keysViewMode,
     keysSortMode,
     flowchartTrader,
+    shoppingListMode,
 
     // Methods
     toggleTask,
