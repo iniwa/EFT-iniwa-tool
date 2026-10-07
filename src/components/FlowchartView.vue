@@ -521,6 +521,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
       <p class="text-muted mt-2">&#24847;&#21619;&#12392;&#12496;&#12540;&#12472;&#12519;&#12531;&#12539;PvE&#24046;&#12399;&#26410;&#30906;&#35469;&#12391;&#12377;&#12290;&#23436;&#20102;&#12420;&#20998;&#23696;&#26465;&#20214;&#12392;&#12375;&#12390;&#33258;&#21205;&#21028;&#23450;&#12375;&#12414;&#12379;&#12435;&#12290;</p>
       <div v-for="gate in chartGateDetails" :key="gate.key" class="mb-2">
         <strong>{{ gate.label }}</strong>
+        <a v-if="gate.sourceUrl" :href="gate.sourceUrl" target="_blank" rel="noopener noreferrer" class="ms-2">出典: TarkovTracker / 1.1・参考</a>
         <div v-for="(requirement, index) in gate.requirements" :key="gate.key + ':' + requirement.taskId + ':' + index">{{ requirement.taskName }}: {{ requirement.technical }}</div>
       </div>
     </details>

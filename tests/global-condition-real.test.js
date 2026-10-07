@@ -16,7 +16,8 @@ test('all current real unlock variables retain uncertain semantics and exact gra
       const c = usage.condition
       assert.equal(c.variableId, group.variableId)
       const info = describeGlobalVariable(c)
-      assert.equal(info.label, UNVERIFIED_GLOBAL_CONDITION_LABEL)
+      assert.match(info.label, /Tier [1-4] のタスク進行条件/)
+      assert.ok(info.sourceUrl.includes('4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6'))
       assert.equal(info.verified, false)
       assert.equal(info.variableId, c.variableId)
       assert.equal(info.compareMethod, c.compareMethod)

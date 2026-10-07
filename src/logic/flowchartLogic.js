@@ -64,6 +64,13 @@ export function buildFlowchartGateGraph(tasks) {
         const key = add(`global:${req.variableId}`, description.label, 'globalVariable', false)
         gateMap.get(key).variableId = req.variableId
         gateMap.get(key).verified = false
+        if (description.sourceUrl && gateMap.get(key).label === description.label) gateMap.get(key).sourceUrl = description.sourceUrl
+        else if (!description.sourceUrl) {
+          // A shared variable with any unsupported predicate keeps an unknown
+          // node label; do not let a supported sibling explain it by accident.
+          gateMap.get(key).label = description.label
+          delete gateMap.get(key).sourceUrl
+        }
         link(key, task.id, `${op} ${value}`.trim(), description.technical)
       } else if (req.type === 'dialogue') {
         const traders = (Array.isArray(req.traders) ? req.traders : [])

@@ -234,7 +234,7 @@ function objectiveConstraintLines(obj) {
             :key="requirement.id || `${requirement.trader?.id || requirement.trader?.name}:${requirement.requirementType}:${requirementIndex}`"
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
-            <span>{{ traderRequirementLabel(requirement) }}</span>
+            <span>{{ traderRequirementLabel(requirement) }}<br v-if="requirement.sourceUrl"><a v-if="requirement.sourceUrl" :href="safeUrl(requirement.sourceUrl)" target="_blank" rel="noopener noreferrer" class="small">{{ requirement.sourceLabel }}</a></span>
             <span
               class="badge align-self-center"
               :class="traderRequirementResult(requirement).met
@@ -264,6 +264,7 @@ function objectiveConstraintLines(obj) {
             <details v-if="requirement.type === 'globalVariable'" class="small text-muted mt-1">
               <summary>&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
               {{ describeGlobalVariable(requirement).technical }}
+              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1・完了数は自動判定しません</a>
             </details>
             <span class="badge bg-secondary ms-1">自動判定なし</span>
           </li>

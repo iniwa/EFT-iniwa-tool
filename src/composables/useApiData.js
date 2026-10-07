@@ -18,6 +18,7 @@ import {
   validateItemDb,
 } from '../logic/jsonApiAdapter.js';
 import { getTaskMaps } from '../logic/taskLogic.js';
+import { applyTaskEvidence } from '../logic/taskEvidence.js';
 import { normalizeApiLang } from './useAppState.js';
 
 // ---------------------------------------------------------------------------
@@ -119,7 +120,8 @@ function processTasks(tasks) {
     }
   });
 
-  return uniqueTasks.map((t) => {
+  return uniqueTasks.map((rawTask) => {
+    const t = applyTaskEvidence(rawTask);
     // Normalise finishRewards into a flat array
     const rewards = [];
     const r = t.finishRewards || {};
@@ -505,7 +507,7 @@ function saveMainRecord(contextKey, record) {
 
 function applyMainRecord(record, contextKey) {
   hideoutData.value = record.hideoutStations || [];
-  taskData.value = record.tasks || [];
+  taskData.value = (record.tasks || []).map(applyTaskEvidence);
   itemsData.value = record.items || { items: [], maps: [] };
   ammoData.value = record.ammo || [];
   lastUpdated.value = record.timestamp || null;
