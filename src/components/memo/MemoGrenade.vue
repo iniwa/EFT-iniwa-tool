@@ -1,10 +1,56 @@
 <template>
-  <section class="p-3 text-light">
-    <h3 class="h6 text-info mb-3">グレネードの確認</h3>
-    <p>VOG-25、VOG-17、RGD-5、F-1、M67などは「アイテム検索」で取得データにある入手経路・用途を確認できます。</p>
-    <p>旧メモの起爆秒数や爆発範囲の大小は現行値を確認できなかったため掲載を終了しました。起爆方式、起爆時間、破片・爆発の挙動はゲーム内説明を確認してください。このアプリでは投擲や爆発の計算を行いません。</p>
-    <div class="d-flex flex-wrap gap-2">
-      <RouterLink :to="{ name: 'search' }" class="btn btn-sm btn-outline-info">アイテム検索を開く</RouterLink>
-    </div>
-  </section>
+    <table class="memo-table">
+        <thead>
+            <tr>
+                <th class="text-start ps-4">名前</th>
+                <th style="width: 25%;">起爆時間 (Fuse)</th>
+                <th style="width: 25%;">爆発範囲</th>
+                <th style="width: 30%;">特徴</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-start ps-4 fw-bold text-red">VOG-25</td>
+                <td class="text-center fw-bold text-red">2.0s</td>
+                <td class="text-center">小</td>
+                <td class="text-muted-dark">見えた瞬間死ぬ。自爆注意。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold text-red">VOG-17</td>
+                <td class="text-center fw-bold text-red">3.0s</td>
+                <td class="text-center">小</td>
+                <td class="text-muted-dark">VOG-25より少し遅いが十分早い。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold text-info">V40 Mini</td>
+                <td class="text-center">3.0s</td>
+                <td class="text-center">極小</td>
+                <td class="text-muted-dark">非常に軽く遠投可能。威力は低い。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold">RGD-5</td>
+                <td class="text-center">3.5s</td>
+                <td class="text-center">中</td>
+                <td class="text-muted-dark">標準的。安くて使いやすい。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold">F-1</td>
+                <td class="text-center">3.5s</td>
+                <td class="text-center text-blue">大</td>
+                <td class="text-muted-dark">破片がかなり遠くまで飛ぶ。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold text-blue">M67</td>
+                <td class="text-center text-blue">5.0s</td>
+                <td class="text-center text-blue">大</td>
+                <td class="text-muted-dark">時間が長い＝遠投や追い出しに最適。</td>
+            </tr>
+            <tr>
+                <td class="text-start ps-4 fw-bold text-info">RGN / RGO</td>
+                <td class="text-center fw-bold text-info">接触 (Impact)</td>
+                <td class="text-center">小 / 中</td>
+                <td class="text-muted-dark">当たると即爆発。最強の殺傷兵器。</td>
+            </tr>
+        </tbody>
+    </table>
 </template>

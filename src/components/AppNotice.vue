@@ -76,17 +76,6 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
-        <!-- 修正: v3.4.1 -->
-        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
-          <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
-            <span class="badge bg-info text-dark">NEW</span>
-            <h4 class="text-info fw-bold mb-0">v3.4.1 - 必要アイテムとメモ</h4>
-          </div>
-          <ul class="text-light mb-0">
-            <li><strong>優先タスクの必要アイテム:</strong> ハイドアウト材料も含めるよう修正しました。タスク側だけを優先目標と必要な前提で絞り込みます。</li>
-            <li><strong>メモ:</strong> 古い固定数値・交換レシピ・装備評価を、現在のアプリの使い方と取得データで確認する手順へ更新しました。確認できないゲーム仕様は断定していません。</li>
-          </ul>
-        </div>
         <!-- 新機能: v3.4.0 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
