@@ -1,6 +1,11 @@
-const width = 760
+const width = 1040
 const padding = 40
 const right = width - padding
+const columnGap = 32
+const modifierColumnWidth = (right - padding - columnGap) / 2
+const modifierTop = 320
+const modifierHeaderHeight = 48
+const emptyRowHeight = 32
 const maxBitmapSize = 4096
 const font = '"Meiryo", "Yu Gothic", system-ui, sans-serif'
 
@@ -36,27 +41,27 @@ export function renderSeasonModifierPng(season, evaluation) {
   if (!context) throw new Error('Canvas rendering is unavailable')
 
   const groups = [
-    { title: 'ポイント獲得（マイナス効果）', kind: 'negative', color: colors.gain },
-    { title: 'ポイント消費（プラス効果）', kind: 'positive', color: colors.cost },
+    { title: 'Positive', label: 'ポイント消費', kind: 'positive', color: colors.cost },
+    { title: 'Negative', label: 'ポイント獲得', kind: 'negative', color: colors.gain },
   ].map((group) => {
     const rows = evaluation.selected.filter((item) => item.kind === group.kind).map((item) => {
       context.font = `700 23px ${font}`
-      const names = wrap(context, item.name, right - padding - 130)
+      const names = wrap(context, item.name, modifierColumnWidth - 130)
       context.font = `400 18px ${font}`
-      const effects = wrap(context, item.description, right - padding - 20)
+      const effects = wrap(context, item.description, modifierColumnWidth - 20)
       return { names, effects, points: item.points, height: 24 + names.length * 31 + effects.length * 26 }
     })
-    return { ...group, rows }
-  }).filter((group) => group.rows.length)
+    const rowsHeight = rows.reduce((total, row) => total + row.height, 0)
+    return { ...group, rows, height: modifierHeaderHeight + (rowsHeight || emptyRowHeight) }
+  })
 
   const notices = []
   if (!evaluation.isPointValid) notices.push('ポイント不足')
   if (evaluation.unknownIds.length) notices.push(`効果を確認できない項目 ${evaluation.unknownIds.length}件`)
   if (season.status === 'pre-release') notices.push(PROVISIONAL_IMAGE_NOTE)
 
-  const height = 300 + padding + notices.length * 48 + groups.reduce(
-    (total, group) => total + 48 + group.rows.reduce((sum, row) => sum + row.height, 0), 0,
-  )
+  const modifiersBottom = modifierTop + Math.max(...groups.map((group) => group.height))
+  const height = modifiersBottom + padding + notices.length * 48
   const scale = Math.min(2, maxBitmapSize / height)
   canvas.width = Math.round(width * scale)
   canvas.height = Math.min(maxBitmapSize, Math.ceil(height * scale))
@@ -97,26 +102,32 @@ export function renderSeasonModifierPng(season, evaluation) {
     text(formatModifierPoints(points), x + 22, 233, 32, color, { bold: true })
   })
 
-  let y = 300
-  for (const group of groups) {
-    text(group.title, padding, y + 12, 19, group.color, { bold: true })
-    y += 48
+  box(colors.line, width / 2, modifierTop, 1, modifiersBottom - modifierTop - 12)
+  groups.forEach((group, index) => {
+    const left = padding + index * (modifierColumnWidth + columnGap)
+    const columnRight = left + modifierColumnWidth
+    text(group.title, left, modifierTop, 25, group.color, { bold: true })
+    text(group.label, columnRight, modifierTop + 5, 17, colors.muted, { align: 'right' })
+    let y = modifierTop + modifierHeaderHeight
+    if (!group.rows.length) text('選択なし', left + 10, y, 18, colors.muted)
+
     for (const row of group.rows) {
       const rowTop = y
-      text(formatModifierPoints(row.points), right - 10, rowTop, 24, group.color, { bold: true, align: 'right' })
+      text(formatModifierPoints(row.points), columnRight - 10, rowTop, 24, group.color, { bold: true, align: 'right' })
       for (const line of row.names) {
-        text(line, padding + 10, y, 23, colors.text, { bold: true })
+        text(line, left + 10, y, 23, colors.text, { bold: true })
         y += 31
       }
       for (const line of row.effects) {
-        text(line, padding + 10, y, 18, colors.muted)
+        text(line, left + 10, y, 18, colors.muted)
         y += 26
       }
-      box(colors.line, padding, y + 4, right - padding, 1)
+      box(colors.line, left, y + 4, modifierColumnWidth, 1)
       y = rowTop + row.height
     }
-  }
+  })
 
+  let y = modifiersBottom
   for (const notice of notices) {
     box(colors.note, padding, y + 4, right - padding, 40)
     text(notice, padding + 12, y + 13, 17, colors.gold)
