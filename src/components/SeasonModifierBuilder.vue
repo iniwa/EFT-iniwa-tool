@@ -1,9 +1,11 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { KORD_BREACH_SEASON, SEASON_MODIFIER_SEASONS, getSeasonModifierManifest } from '../data/seasonModifiers.js'
 import { decodeSeasonModifierShare, encodeSeasonModifierShare, evaluateAchievementHints, evaluateSeasonModifierBuild } from '../logic/seasonModifierLogic.js'
 import { useSeasonModifierBuilds } from '../composables/useSeasonModifierBuilds.js'
+
+const SeasonModifierImageDialog = defineAsyncComponent(() => import('./SeasonModifierImageDialog.vue'))
 
 const route = useRoute()
 const router = useRouter()
@@ -13,6 +15,7 @@ const search = ref('')
 const presetName = ref('')
 const shareLink = ref('')
 const sharePreview = ref(null)
+const imagePreview = ref(false)
 const statusMessage = ref('')
 const pendingDelete = ref(null)
 const season = computed(() => getSeasonModifierManifest(sharePreview.value?.seasonId ?? route.query.season) ?? KORD_BREACH_SEASON)
@@ -118,6 +121,8 @@ watch(() => route.query.build, (value) => {
   statusMessage.value = value === undefined || decoded.ok ? '' : '共有リンクを読み込めませんでした。'
 }, { immediate: true })
 
+watch(evaluation, () => { imagePreview.value = false })
+
 watch(season, () => {
   search.value = ''
   presetName.value = ''
@@ -155,8 +160,24 @@ watch(season, () => {
       <section class="card mb-3"><div class="card-header"><h3 class="h5 mb-0">選択中</h3></div><div class="card-body"><p v-if="!evaluation.selected.length" class="text-muted">まだ選択されていません。</p><ul v-else class="selected-list"><li v-for="item in evaluation.selected" :key="item.id">{{ item.name }} <button class="btn btn-sm btn-link" :aria-label="`${item.name}を解除`" @click="toggle(item.id)">解除</button></li></ul><div v-if="evaluation.unknownIds.length" class="alert alert-warning small">未知のIDを保持しています: {{ evaluation.unknownIds.join(', ') }}</div><div v-if="evaluation.interactionWarnings.length" class="mt-3"><h4 class="h6">Interaction warning</h4><ul class="small text-warning"><li v-for="warning in evaluation.interactionWarnings" :key="warning.id">{{ warning.message }}</li></ul></div><button class="btn btn-outline-secondary btn-sm" @click="resetActive">選択をリセット</button></div></section>
       <section v-if="hints.length" class="card mb-3"><div class="card-header"><h3 class="h5 mb-0">実績の目安</h3></div><div class="card-body small"><p class="text-muted">他のゲーム内条件もあるため、達成を確定するものではありません。</p><ul class="achievement-list"><li v-for="hint in hints" :key="hint.id" :class="{ met: hint.met }"><span aria-hidden="true">{{ hint.met ? '✓' : '○' }}</span> {{ hint.name }}<small class="d-block">{{ hint.description }}</small></li></ul></div></section>
       <section class="card mb-3"><div class="card-header"><h3 class="h5 mb-0">プリセット</h3></div><div class="card-body"><div class="input-group mb-2"><input v-model="presetName" class="form-control" maxlength="80" placeholder="プリセット名" aria-label="プリセット名"><button class="btn btn-outline-info" @click="save">保存</button></div><ul class="list-group list-group-flush"><li v-for="preset in presets" :key="preset.id" class="list-group-item d-flex justify-content-between align-items-center"><span>{{ preset.name }}</span><span><button class="btn btn-sm btn-link" @click="load(preset)">読込</button><button v-if="pendingDelete === preset.id" class="btn btn-sm btn-danger" @click="remove(preset.id)">確定</button><button v-else class="btn btn-sm btn-link text-danger" @click="pendingDelete = preset.id">削除</button></span></li></ul></div></section>
-      <section class="card"><div class="card-header"><h3 class="h5 mb-0">共有</h3></div><div class="card-body"><button class="btn btn-outline-info btn-sm me-2" @click="createShare">リンク作成</button><button class="btn btn-outline-secondary btn-sm" :disabled="!shareLink" @click="copyShare">コピー</button><input v-if="shareLink" class="form-control mt-2" :value="shareLink" readonly aria-label="共有リンク"></div></section>
+      <section class="card">
+        <div class="card-header"><h3 class="h5 mb-0">共有</h3></div>
+        <div class="card-body">
+          <button class="btn btn-outline-info btn-sm me-2" @click="createShare">リンク作成</button>
+          <button class="btn btn-outline-secondary btn-sm" :disabled="!shareLink" @click="copyShare">コピー</button>
+          <input v-if="shareLink" class="form-control mt-2" :value="shareLink" readonly aria-label="共有リンク">
+          <div class="mt-2">
+            <button type="button" class="btn btn-outline-info btn-sm" :disabled="!evaluation.selectedCount" @click="imagePreview = true">画像プレビュー</button>
+          </div>
+        </div>
+      </section>
     </aside></div>
+    <SeasonModifierImageDialog
+      v-if="imagePreview"
+      :season="season"
+      :evaluation="evaluation"
+      @close="imagePreview = false"
+    />
   </main>
 </template>
 
