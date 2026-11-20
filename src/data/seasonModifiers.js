@@ -1,3 +1,5 @@
+import { UNTAR_CONTROL_SEASON, UNTAR_CONTROL_SEASON_ID } from './untarControlModifiers.js'
+
 /**
  * KORD BREACH Season 1 Personal Modifier manifest.
  *
@@ -78,7 +80,10 @@ export const KORD_BREACH_SEASON = Object.freeze({
   negative: Object.freeze(negative.map((entry) => Object.freeze(modifier(entry, 'negative')))),
 })
 
-export const SEASON_MODIFIER_SEASONS = Object.freeze({ [KORD_BREACH_SEASON_ID]: KORD_BREACH_SEASON })
+export const SEASON_MODIFIER_SEASONS = Object.freeze({
+  [KORD_BREACH_SEASON_ID]: KORD_BREACH_SEASON,
+  [UNTAR_CONTROL_SEASON_ID]: UNTAR_CONTROL_SEASON,
+})
 
 export const ACHIEVEMENT_HINTS = Object.freeze([
   { id: 'dont-need-any-help', name: "Don't Need Any Help", description: 'Positive Modifierを0個にする目安。', modifierIds: [], rule: 'positiveCount', value: 0 },
@@ -91,5 +96,7 @@ export const ACHIEVEMENT_HINTS = Object.freeze([
 ])
 
 export function getSeasonModifierManifest(seasonId = KORD_BREACH_SEASON_ID) {
-  return SEASON_MODIFIER_SEASONS[seasonId] || null
+  return typeof seasonId === 'string' && Object.hasOwn(SEASON_MODIFIER_SEASONS, seasonId)
+    ? SEASON_MODIFIER_SEASONS[seasonId]
+    : null
 }

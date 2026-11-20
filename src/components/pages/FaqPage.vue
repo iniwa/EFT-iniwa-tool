@@ -128,8 +128,8 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. Personal Modifierのビルドを保存・共有できますか？</summary>
                     <p>
-                        🧬 ModifierタブでKORD BREACH Season 1の構成、ポイント、実績の目安を確認できます。プリセットと下書きは既存のタスク進捗とは別に保存され、共有リンクはModifier IDだけを含みます。
-                        一覧と効果はコミュニティ観測値のため、公式の完全一覧ではありません。ゲーム内表示を優先してください。
+                        🧬 Modifierタブでシーズンを切り替え、構成とポイントを確認できます。KORD BREACH — Season 1では実績の目安も確認できます。プリセットと下書きはシーズン別に保存され、共有リンクにはシーズンIDと選択したModifier IDが含まれます。
+                        シーズン2の効果・ポイントは公式の事前発表値で、開始前に変更される可能性があります。
                     </p>
                 </details>
 

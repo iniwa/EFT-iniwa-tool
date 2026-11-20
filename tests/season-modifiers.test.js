@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { KORD_BREACH_SEASON } from '../src/data/seasonModifiers.js'
+import { UNTAR_CONTROL_SEASON } from '../src/data/untarControlModifiers.js'
 import { decodeSeasonModifierShare, encodeSeasonModifierShare, evaluateAchievementHints, evaluateSeasonModifierBuild, getInteractionWarnings, validateSeasonModifierManifest } from '../src/logic/seasonModifierLogic.js'
 import { createSeasonModifierBuildStore, sanitizeSeasonModifierState, SEASON_MODIFIER_STORAGE_KEY } from '../src/composables/useSeasonModifierBuilds.js'
 
@@ -21,6 +22,32 @@ test('manifest validator catches missing metadata and invalid counts/signs', () 
   assert.ok(errors.some((error) => error.includes('verifiedAt')))
   assert.ok(errors.some((error) => error.includes('unique')))
   assert.ok(errors.some((error) => error.includes('sign')))
+})
+
+test('UNTAR Control validates and calculates with its own pre-release inventory', () => {
+  assert.deepEqual(validateSeasonModifierManifest(UNTAR_CONTROL_SEASON), [])
+  const { globals, positive, negative } = UNTAR_CONTROL_SEASON
+  assert.deepEqual([globals.length, positive.length, negative.length], [6, 31, 25])
+  const ids = ['juice-time', 'kappa-protocol', 'no-flea-market', 'deadline']
+  const { earned, spent, balance, isValid } = evaluateSeasonModifierBuild(ids, UNTAR_CONTROL_SEASON)
+  assert.deepEqual({ earned, spent, balance, isValid }, { earned: 12, spent: 9, balance: 3, isValid: true })
+  assert.equal(evaluateSeasonModifierBuild(['lockpicker'], UNTAR_CONTROL_SEASON).isValid, false)
+  assert.deepEqual(evaluateAchievementHints(ids, UNTAR_CONTROL_SEASON), [])
+})
+
+test('Season 2 shares identify their season while legacy shares retain Season 1', () => {
+  const seasonId = UNTAR_CONTROL_SEASON.seasonId
+  const allIds = [...UNTAR_CONTROL_SEASON.positive, ...UNTAR_CONTROL_SEASON.negative].map((item) => item.id)
+  const encoded = encodeSeasonModifierShare(seasonId, allIds)
+  assert.deepEqual(decodeSeasonModifierShare(encoded), { ok: true, seasonId, modifierIds: allIds, unknownIds: [] })
+  assert.equal(decodeSeasonModifierShare(encoded, KORD_BREACH_SEASON.seasonId).reason, 'unknown-season')
+
+  const legacy = Buffer.from('{"v":1,"s":"kord-breach-2026","m":["juice-time"]}').toString('base64url')
+  const decoded = decodeSeasonModifierShare(legacy)
+  assert.deepEqual(decoded, { ok: true, seasonId: KORD_BREACH_SEASON.seasonId, modifierIds: ['juice-time'], unknownIds: [] })
+  assert.equal(evaluateSeasonModifierBuild(decoded.modifierIds, KORD_BREACH_SEASON).spent, 2)
+  const malformedSeason = Buffer.from(JSON.stringify({ v: 1, s: [seasonId], m: [] })).toString('base64url')
+  assert.equal(decodeSeasonModifierShare(malformedSeason).reason, 'unknown-season')
 })
 
 test('build evaluation handles empty, valid, overspent, duplicates and unknown IDs', () => {

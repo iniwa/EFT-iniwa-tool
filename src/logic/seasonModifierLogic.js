@@ -1,4 +1,5 @@
 import { getSeasonModifierManifest, ACHIEVEMENT_HINTS, KORD_BREACH_SEASON_ID } from '../data/seasonModifiers.js'
+import { UNTAR_CONTROL_SEASON_ID } from '../data/untarControlModifiers.js'
 
 export const SEASON_MODIFIER_SCHEMA_VERSION = 1
 export const MAX_SHARED_MODIFIERS = 64
@@ -71,7 +72,8 @@ export function evaluateSeasonModifierBuild(selectedIds = [], season) {
   }
 }
 
-export function evaluateAchievementHints(selectedIds = [], season) {
+export function evaluateAchievementHints(selectedIds = [], season = getSeasonModifierManifest()) {
+  if (season && season.seasonId !== KORD_BREACH_SEASON_ID) return []
   const result = evaluateSeasonModifierBuild(selectedIds, season)
   const set = new Set(result.selectedIds)
   return ACHIEVEMENT_HINTS.map((hint) => {
@@ -88,13 +90,20 @@ export function evaluateAchievementHints(selectedIds = [], season) {
 export function validateSeasonModifierManifest(manifest) {
   const errors = []
   if (!manifest || typeof manifest !== 'object') return ['manifest is required']
-  for (const field of ['seasonId', 'displayName', 'patch', 'verifiedAt', 'status', 'confidence', 'officialRulesSource']) {
+  const fields = ['seasonId', 'displayName', 'verifiedAt', 'status', 'confidence', 'officialRulesSource']
+  if (manifest.status !== 'pre-release') fields.push('patch')
+  for (const field of fields) {
     if (typeof manifest[field] !== 'string' || !manifest[field].trim()) errors.push(`missing metadata: ${field}`)
   }
   if (!Array.isArray(manifest.observedSources) || manifest.observedSources.length === 0) errors.push('missing metadata: observedSources')
+  if (manifest.seasonId === UNTAR_CONTROL_SEASON_ID) {
+    if (manifest.positive?.length !== 31) errors.push('positive must contain 31 modifiers')
+    if (manifest.negative?.length !== 25) errors.push('negative must contain 25 modifiers')
+  } else {
+    if (manifest.positive?.length !== 19) errors.push('positive must contain 19 modifiers')
+    if (manifest.negative?.length !== 15) errors.push('negative must contain 15 modifiers')
+  }
   if (manifest.globals?.length !== 6) errors.push('globals must contain 6 modifiers')
-  if (manifest.positive?.length !== 19) errors.push('positive must contain 19 modifiers')
-  if (manifest.negative?.length !== 15) errors.push('negative must contain 15 modifiers')
   const items = [...(manifest.globals || []), ...(manifest.positive || []), ...(manifest.negative || [])]
   const ids = items.map((item) => item?.id)
   if (ids.some((id) => typeof id !== 'string' || !id)) errors.push('modifier IDs must be non-empty strings')
@@ -127,14 +136,15 @@ export function encodeSeasonModifierShare(seasonId, modifierIds, season) {
   return encoded.length <= MAX_SHARED_LENGTH ? encoded : null
 }
 
-export function decodeSeasonModifierShare(encoded, expectedSeasonId = KORD_BREACH_SEASON_ID) {
+export function decodeSeasonModifierShare(encoded, expectedSeasonId) {
   if (typeof encoded !== 'string' || !encoded || encoded.length > MAX_SHARED_LENGTH || !/^[A-Za-z0-9_-]+$/.test(encoded)) return { ok: false, reason: 'invalid-format' }
   try {
     const payload = JSON.parse(decodeBase64Url(encoded))
     if (!payload || payload.v !== SEASON_MODIFIER_SCHEMA_VERSION) return { ok: false, reason: 'unknown-schema' }
-    if (payload.s !== expectedSeasonId || !getSeasonModifierManifest(payload.s)) return { ok: false, reason: 'unknown-season' }
+    const manifest = getSeasonModifierManifest(payload.s)
+    if (!manifest || (expectedSeasonId !== undefined && payload.s !== expectedSeasonId)) return { ok: false, reason: 'unknown-season' }
     if (!Array.isArray(payload.m) || payload.m.length > MAX_SHARED_MODIFIERS || payload.m.some((id) => typeof id !== 'string' || id.trim().length > MAX_MODIFIER_ID_LENGTH || !MODIFIER_ID_PATTERN.test(id.trim()))) return { ok: false, reason: 'invalid-modifiers' }
-    const normalized = normalizeModifierIds(payload.m, getSeasonModifierManifest(payload.s))
+    const normalized = normalizeModifierIds(payload.m, manifest)
     return { ok: true, seasonId: payload.s, modifierIds: normalized.ids, unknownIds: normalized.unknownIds }
   } catch { return { ok: false, reason: 'invalid-payload' } }
 }
