@@ -139,11 +139,11 @@ import { RouterLink } from 'vue-router'
                 <section id="step9" class="mb-4">
                     <h4>9. Personal Modifierビルダー <small class="text-muted">🧬 Modifierタブ</small></h4>
                     <p>
-                        ゲームモードやAPI取得に依存せず、KORD BREACH Season 1のPersonal Modifier構成を事前計画できます。
+                        ゲームモードやAPI取得に依存せず、「シーズン」でKORD BREACH — Season 1とUNTAR Control — Season 2を切り替えて、Personal Modifier構成を計画できます。
                         Positiveはポイントを消費し、Negativeはポイントを獲得します。プリセットは進捗とは別に保存され、共有リンクで構成だけを渡せます。
                     </p>
                     <p class="text-warning small">
-                        Modifier一覧・効果は公式の完全一覧ではなくコミュニティ観測値（確認日を画面に表示）です。ゲーム内表示を常に優先してください。
+                        シーズン1はコミュニティ観測値、シーズン2は公式の事前発表に基づく暫定値です。ゲーム内表示を優先してください。
                     </p>
                 </section>
 
