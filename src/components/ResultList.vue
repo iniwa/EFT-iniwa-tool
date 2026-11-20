@@ -2,7 +2,7 @@
 // ショッピングリスト表示コンポーネント
 // カテゴリ別にアイテムをカード形式で表示し、収集済みトグルとソース詳細を提供
 
-import { reactive, computed } from 'vue'
+import { reactive, computed, ref } from 'vue'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useShoppingList } from '../composables/useShoppingList.js'
 import { useApiData } from '../composables/useApiData.js'
@@ -26,6 +26,18 @@ const issueLabels = {
 
 const emit = defineEmits(['open-task-from-name'])
 
+// Intel Console: FIR / 買い物の2面 (PC: 並列, スマホ: 切替)
+const resPane = ref('fir')
+const PANES = [
+  { id: 'fir', title: 'FIR（レイドで入手）', keys: ['hideoutFir', 'taskFir', 'collector'] },
+  { id: 'buy', title: '買い物（購入で可）', keys: ['hideoutBuy', 'taskNormal'] },
+]
+const panes = computed(() => PANES.map(pane => ({
+  ...pane,
+  lists: pane.keys.filter(key => visibleLists.value[key]).map(key => ({ key, list: visibleLists.value[key] })),
+})))
+const paneCount = pane => pane.lists.reduce((sum, { list }) => sum + list.items.length, 0)
+
 // 展開中のアイテム管理 (uid -> boolean)
 const expandedItems = reactive({})
 
@@ -35,7 +47,7 @@ function toggleItemDetails(uid) {
 </script>
 
 <template>
-  <div>
+  <div class="result-page">
     <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
       <label for="item-list-mode">&#12450;&#12452;&#12486;&#12512;&#19968;&#35239;</label>
       <select id="item-list-mode" v-model="listMode" class="form-select form-select-sm bg-dark text-white border-secondary" style="width: auto;">
@@ -62,75 +74,53 @@ function toggleItemDetails(uid) {
         </ul>
       </div>
     </section>
-  <div class="row">
-    <div
-      v-for="(list, key) in visibleLists"
-      :key="key"
-      class="col-xl-3 col-md-6 mb-3"
-    >
-      <div class="card h-100" :class="list.borderClass">
-        <div class="card-header" :class="list.headerClass">{{ list.title }}</div>
-        <ul class="list-group list-group-flush overflow-auto" style="max-height: 70vh;">
-          <li
-            v-for="item in list.items"
-            :key="item.uid"
-            class="list-group-item list-group-item-action"
-          >
-            <!-- アイテム行: チェックボックス + 名前 + 数量バッジ -->
-            <div class="d-flex align-items-center gap-2">
-              <input
-                type="checkbox"
-                class="form-check-input m-0"
-                :checked="collectedItems.includes(item.uid)"
-                @click.stop="toggleCollected(item.uid)"
-              >
-              <button
-                type="button"
-                class="btn p-0 border-0 bg-transparent text-start text-light d-flex justify-content-between align-items-center w-100"
-                @click="toggleItemDetails(item.uid)"
-              >
-                <span :class="{ 'item-collected': collectedItems.includes(item.uid) }">
-                  {{ item.name }}
-                </span>
-                <span
-                  class="badge"
-                  :class="[list.badgeClass, { 'item-collected-badge': collectedItems.includes(item.uid) }]"
-                >
-                  {{ item.count }}
-                </span>
-              </button>
-            </div>
-
-            <!-- ソース詳細 (展開時) -->
-            <div
-              v-if="expandedItems[item.uid]"
-              class="mt-2 small text-muted border-top border-secondary pt-1"
-            >
-              <div v-for="source in item.sources" :key="`${source.type}:${source.taskId || source.name}`">
-                <span v-if="source.type === 'task' || source.type === 'collector'">
-                  ・<button type="button"
-                    class="source-task-link"
-                    @click="emit('open-task-from-name', { id: source.taskId, name: source.name })"
-                  >{{ source.name }}</button> (x{{ source.count }})
-                </span>
-                <span v-else>
-                  ・{{ source.name }} (x{{ source.count }})
-                </span>
-              </div>
-              <template v-if="listMode === 'priority' && ['taskFir', 'collector', 'taskNormal'].includes(key)">
-                <div v-for="source in item.sources" :key="'conditions:' + source.taskId" class="ms-2">
-                  <div v-for="(objective, index) in source.objectives" :key="index">{{ source.name }}: {{ objective.description }} <span v-if="objective.optional">(&#20219;&#24847;)</span></div>
-                </div>
-              </template>
-              <div v-if="item.altItems" class="mt-1 border-top border-secondary pt-1">
-                <div class="text-info mb-1">対象アイテム (いずれか合計):</div>
-                <div v-for="alt in item.altItems" :key="alt.id" class="ms-2">・{{ alt.name }}</div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+    <div class="res-switch seg" role="group" aria-label="表示する面">
+      <button v-for="pane in panes" :key="pane.id" type="button" class="btn btn-sm" :class="resPane === pane.id ? 'btn-warning' : 'btn-outline-secondary'" :aria-pressed="resPane === pane.id" @click="resPane = pane.id">{{ pane.title }} ({{ paneCount(pane) }})</button>
     </div>
-  </div>
+    <div class="res-panes">
+      <section v-for="pane in panes" :key="pane.id" class="res-pane" :class="[pane.id, { 'hidden-mobile': resPane !== pane.id }]" :aria-label="pane.title">
+        <h2>{{ pane.title }} <small class="text-muted fw-normal">{{ paneCount(pane) }}件</small></h2>
+        <div v-for="{ key, list } in pane.lists" :key="key" class="list-card">
+          <h3 :class="list.headerClass">{{ list.title }}</h3>
+          <ul class="list-unstyled mb-0">
+            <li v-for="item in list.items" :key="item.uid" class="res-item">
+              <div class="row-main">
+                <input
+                  type="checkbox"
+                  class="form-check-input check"
+                  :aria-label="item.name + ' を入手済みにする'"
+                  :checked="collectedItems.includes(item.uid)"
+                  @click.stop="toggleCollected(item.uid)"
+                >
+                <button type="button" class="row-btn" :aria-expanded="!!expandedItems[item.uid]" @click="toggleItemDetails(item.uid)">
+                  <span :class="{ 'item-collected': collectedItems.includes(item.uid) }">{{ item.name }}</span>
+                  <span class="badge" :class="[list.badgeClass, { 'item-collected-badge': collectedItems.includes(item.uid) }]">{{ item.count }}</span>
+                </button>
+              </div>
+              <div v-if="expandedItems[item.uid]" class="origin">
+                <div class="text-secondary">由来</div>
+                <div v-for="source in item.sources" :key="source.type + ':' + (source.taskId || source.name)">
+                  <span v-if="source.type === 'task' || source.type === 'collector'">
+                    ・<button type="button" class="source-task-link" @click="emit('open-task-from-name', { id: source.taskId, name: source.name })">{{ source.name }}</button> (x{{ source.count }})
+                  </span>
+                  <span v-else>・{{ source.name }} (x{{ source.count }})</span>
+                </div>
+                <template v-if="listMode === 'priority' && ['taskFir', 'collector', 'taskNormal'].includes(key)">
+                  <div v-for="source in item.sources" :key="'conditions:' + source.taskId" class="ms-2">
+                    <div v-for="(objective, index) in source.objectives" :key="index">{{ source.name }}: {{ objective.description }} <span v-if="objective.optional">(&#20219;&#24847;)</span></div>
+                  </div>
+                </template>
+                <div v-if="item.altItems" class="border-top pt-1" style="border-color: var(--line) !important;">
+                  <div class="text-info mb-1">対象アイテム (いずれか合計):</div>
+                  <div v-for="alt in item.altItems" :key="alt.id" class="ms-2">・{{ alt.name }}</div>
+                </div>
+              </div>
+            </li>
+            <li v-if="list.items.length === 0" class="res-empty">この区分の必要品はありません。</li>
+          </ul>
+        </div>
+        <p v-if="pane.lists.length === 0" class="res-empty">表示できる必要品がありません。</p>
+      </section>
+    </div>
   </div>
 </template>

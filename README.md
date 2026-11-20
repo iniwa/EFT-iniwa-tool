@@ -44,7 +44,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 | ビルド | Vite 8 |
 | UI | Bootstrap 5 + カスタム CSS（ダークテーマ） |
 | 図 | Mermaid 11 |
-| バージョン | 3.4.1 |
+| バージョン | 3.5.0 |
 | 状態管理 | composable シングルトン (`ref` / `computed`) |
 | データソース | [tarkov.dev JSON API](https://json.tarkov.dev/)（レガシー GraphQL API はフォールバック） |
 | 永続化 | localStorage（ユーザーデータ） / IndexedDB（API キャッシュ） |
@@ -79,7 +79,7 @@ npm test         # Node 組み込みテストランナー
 ## サンプルデータ
 
 `example/sample.json` に開発者の進捗状況のスナップショットを置いてあります。
-ヘッダの `Import` ボタンから読み込むと、自分でゼロから入力する手間を省けます。
+ヘッダーの「データ操作」（スマホでは「⋯」）の `Import` から読み込むと、自分でゼロから入力する手間を省けます。
 
 ---
 

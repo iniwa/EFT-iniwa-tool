@@ -129,7 +129,7 @@ function objectiveConstraintLines(obj) {
 </script>
 
 <template>
-  <BaseModal :show="show" max-width="700px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
+  <BaseModal :show="show" variant="panel" max-width="560px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
       <button v-if="returnLabel" class="btn btn-outline-info mb-3" type="button" @click="emit('close')">{{ returnLabel }}</button>
       <!-- 進捗/優先トグル + 閉じるボタン -->

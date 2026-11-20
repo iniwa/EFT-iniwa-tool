@@ -76,6 +76,15 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <!-- 新機能: v3.5.0 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <h4 class="text-info fw-bold mb-3">v3.5.0 - UIを刷新</h4>
+          <ul class="text-light mb-0">
+            <li>PCは左のナビゲーション、スマホは画面下のナビゲーションと「その他」から各機能を開けます。</li>
+            <li>進捗入力でタスクとハイドアウトを切り替えられます。必要なアイテムはFIRと買い物に分かれ、入手元からタスク詳細を開けます。</li>
+            <li>進捗の Import / Export はヘッダーの「データ操作」（スマホでは「⋯」）にあります。</li>
+          </ul>
+        </div>
         <!-- 新機能: v3.4.1 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <h4 class="text-info fw-bold mb-3">🧬 v3.4.1 - UNTAR Control のモディファイアを追加</h4>
