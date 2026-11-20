@@ -85,7 +85,7 @@ export const UNTAR_CONTROL_SEASON = Object.freeze({
   confidence: 'official-preview',
   officialRulesSource: 'https://t.me/escapefromtarkovEN/7003',
   observedSources: Object.freeze(['https://www.scavlog.com/threads/2026-11-19-untar-control-season2-modifiers']),
-  sourceNote: '2026年11月19日の公式発表に基づく暫定データです。効果やポイントはシーズン開始前に変更される場合があります。ポイント収支はシーズン1と同じルールで試算します。',
+  sourceNote: '2026年11月19日の公式発表に基づく未確定情報です。効果やポイントはシーズン開始前に変更される可能性があります。ポイント収支はシーズン1と同じルールで試算します。',
   globals: Object.freeze(globals.map(([id, name, description]) => Object.freeze({ id, name, description, kind: 'global' }))),
   positive: personalModifiers(positive, 'positive'),
   negative: personalModifiers(negative, 'negative'),

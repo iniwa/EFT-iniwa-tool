@@ -76,6 +76,17 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <!-- 新機能: v3.4.1 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <h4 class="text-info fw-bold mb-3">🧬 v3.4.1 - UNTAR Control のモディファイアを追加</h4>
+          <p class="text-light mb-2">
+            🧬 Modifier タブの「シーズン」から「UNTAR Control — Season 2」を選べます。全体6種、プラス31種、マイナス25種を収録しました。
+            ポイントを試算し、シーズンごとに下書きとプリセットを保存できます。共有リンクは下書きへ反映する前にプレビューできます。
+          </p>
+          <p class="small text-warning mb-0">
+            シーズン2は公式の事前発表に基づく未確定情報です。効果やポイントはシーズン開始前に変更される可能性があります。ポイント収支はシーズン1と同じルールで試算します。
+          </p>
+        </div>
         <!-- 新機能: v3.4.0 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
