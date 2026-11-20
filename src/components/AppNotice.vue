@@ -76,6 +76,20 @@ defineExpose({ show })
 
       <!-- コンテンツ -->
       <div class="vstack gap-4">
+        <!-- 新機能: v3.4.2 -->
+        <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+          <h4 class="text-info fw-bold mb-3">🧬 v3.4.2 - モディファイアのPNG保存</h4>
+          <p class="text-light mb-2">
+            Modifier タブの「共有」から「画像プレビュー」を開き、選んだ構成をPNGで保存できます。
+            左に Positive（ポイント消費）、右に Negative（ポイント獲得）を並べ、各項目の効果とポイント、全体の収支を1枚にまとめます。
+          </p>
+          <p class="small text-warning mb-2">
+            シーズン2の効果やポイントは未確定で、シーズン開始前に変更される可能性があります。この注記はPNGにも表示されます。
+          </p>
+          <p class="text-light mb-0">
+            今後に向けて、画面の構成や操作の流れを見直す、大幅なUI刷新を構想中です。
+          </p>
+        </div>
         <!-- 新機能: v3.4.1 -->
         <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
           <h4 class="text-info fw-bold mb-3">🧬 v3.4.1 - UNTAR Control のモディファイアを追加</h4>
