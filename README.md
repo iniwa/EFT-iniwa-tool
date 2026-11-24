@@ -29,7 +29,7 @@ Escape from Tarkov 用のブラウザベース進捗管理ツール。
 - **データ Import / Export** — JSON でバックアップ・復元
 - **PvE / PvP / Seasonal PvP 別管理** — モードごとに別セーブ。Seasonal PvPは独立し、新シーズン開始時に進捗をリセット
 - **Personal Modifierビルダー** — 🧬 Modifierタブで KORD BREACH Season 1 と UNTAR Control Season 2 を切り替え、ポイント試算・プリセット・共有リンクを利用できます。シーズン1では実績の目安も表示します。
-- **タスクステータス / トレーダー条件** — 進行中・失敗とLL/評判条件を任意で管理
+- **タスクステータス / トレーダー条件** — 進行中・失敗を記録し、必要LLやクリア数の条件を確認
 - **静的ページ** — About / 使い方 / FAQ / プライバシーポリシー / 利用規約
 
 ---

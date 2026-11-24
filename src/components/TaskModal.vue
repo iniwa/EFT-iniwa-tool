@@ -9,7 +9,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
-import { describeGlobalVariable } from '../logic/globalConditionLabels.js'
+import { describeGlobalVariable, getProgressionPoolCounts } from '../logic/globalConditionLabels.js'
 import { getTaskDisplayName, toHttpsUrl } from '../logic/taskReference.js'
 import {
   meaningfulBuildAttributes,
@@ -30,14 +30,12 @@ const {
   togglePriority,
   toggleOwnedKey,
   taskStatuses,
-  traderProgress,
-  traderRequirementsEnabled,
   setTaskStatus,
 } = useUserProgress()
 
 const { overlayEnabled } = useOverlay()
 const { playerLevel } = useAppState()
-const { traderLoyalty } = useApiData()
+const { taskData, traderLoyalty } = useApiData()
 const traderLoyaltyById = computed(() => Object.fromEntries(traderLoyalty.value.map(trader => [trader.id, trader])))
 
 const props = defineProps({
@@ -60,9 +58,9 @@ const availability = computed(() => {
   return TaskLogic.evaluateTaskAvailability(props.task, completedTasks.value, {
     playerLevel: playerLevel.value,
     taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value,
-    traderRequirementsEnabled: traderRequirementsEnabled.value,
     traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: props.task.otherRequirements?.some(requirement => requirement?.type === 'globalVariable')
+      ? getProgressionPoolCounts(taskData.value, completedTasks.value) : undefined,
   })
 })
 
@@ -81,10 +79,6 @@ const prerequisites = computed(() => {
     ...TaskLogic.evaluateTaskPrerequisite(requirement, completedTasks.value, taskStatuses.value),
   }))
 })
-
-function traderRequirementResult(requirement) {
-  return TaskLogic.evaluateTraderRequirement(requirement, traderProgress.value)
-}
 
 function traderRequirementLabel(requirement) {
   const isReputation = ['reputation', 'standing'].includes(requirement.requirementType)
@@ -200,6 +194,12 @@ function objectiveConstraintLines(obj) {
         class="alert alert-secondary py-2 px-3 small"
       >
         🔒 現在の入力内容では未解放です。下の条件を確認してください。
+        <div
+          v-for="({ trader, tier, count, required }, index) in availability.progressionChecks.filter(
+            ({ count, required }) => count != null && count < required,
+          )"
+          :key="index"
+        >{{ trader }} LL{{ tier }} {{ count }}/{{ required }}件（参考）</div>
       </div>
 
       <div
@@ -236,24 +236,8 @@ function objectiveConstraintLines(obj) {
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>{{ traderRequirementLabel(requirement) }}<br v-if="requirement.sourceUrl"><a v-if="requirement.sourceUrl" :href="safeUrl(requirement.sourceUrl)" target="_blank" rel="noopener noreferrer" class="small">{{ requirement.sourceLabel }}</a></span>
-            <span
-              class="badge align-self-center"
-              :class="traderRequirementResult(requirement).met
-                ? 'bg-success'
-                : (traderRequirementResult(requirement).unknown ? 'bg-secondary' : 'bg-danger')"
-            >
-              <template v-if="traderRequirementResult(requirement).unknown">未設定</template>
-              <template v-else>
-                {{ traderRequirementResult(requirement).met ? '達成' : '未達' }}:
-                現在 {{ traderRequirementResult(requirement).actual }}
-              </template>
-            </span>
           </li>
         </ul>
-        <p v-if="task.traderLevelRequirements?.length" class="small text-muted mb-2">
-          トレーダー条件のロック判定は現在
-          <strong>{{ traderRequirementsEnabled ? '有効' : '無効' }}</strong>です。
-        </p>
 
         <ul v-if="task.otherRequirements?.length" class="list-group">
           <li
@@ -265,9 +249,9 @@ function objectiveConstraintLines(obj) {
             <details v-if="requirement.type === 'globalVariable'" class="small text-muted mt-1">
               <summary>&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
               {{ describeGlobalVariable(requirement).technical }}
-              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1・完了数は自動判定しません</a>
+              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1</a>
             </details>
-            <span class="badge bg-secondary ms-1">自動判定なし</span>
+            <span class="badge bg-secondary ms-1">ゲーム内で確認</span>
           </li>
         </ul>
       </div>

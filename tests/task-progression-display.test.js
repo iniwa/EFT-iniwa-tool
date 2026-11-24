@@ -37,17 +37,19 @@ test('explicit LL conditions use the trader API level floor for the active list'
   assert.deepEqual(filterActiveTasks([task], [], {
     ...options, playerLevel: 6, traderRequirementsEnabled: true, traderProgress: { prapor: { level: 1 } },
   }), [])
-  const strict = { ...options, progressionPoolCounts: new Map(), showFuture: true }
-  assert.deepEqual(filterActiveTasks([task], [], strict), [])
-  assert.deepEqual(filterActiveTasks([task], [], { ...strict, playerLevel: 6 }), [task])
-  const belowLL = { ...strict, playerLevel: 6, traderRequirementsEnabled: true,
+  const withProgression = { ...options, progressionPoolCounts: new Map() }
+  assert.deepEqual(filterActiveTasks([task], [], withProgression), [])
+  assert.deepEqual(filterActiveTasks([task], [], { ...withProgression, showFuture: true }), [task])
+  assert.equal(evaluateTaskAvailability(task, [], withProgression).locked, true)
+  assert.deepEqual(filterActiveTasks([task], [], { ...withProgression, playerLevel: 6 }), [task])
+  const belowLL = { ...withProgression, playerLevel: 6, traderRequirementsEnabled: true,
     traderProgress: { prapor: { level: 1 } } }
   assert.deepEqual(filterActiveTasks([task], [], belowLL), [])
   assert.deepEqual(filterActiveTasks([task], [], { ...belowLL, traderProgress: { prapor: { level: 2 } } }), [task])
   assert.deepEqual(filterActiveTasks([task], [task.id], { ...belowLL, showCompleted: true }), [task])
 
   const otherLock = { ...task, minPlayerLevel: 10 }
-  assert.deepEqual(filterActiveTasks([otherLock], [], { ...strict, playerLevel: 6 }), [otherLock])
+  assert.deepEqual(filterActiveTasks([otherLock], [], { ...withProgression, playerLevel: 6, showFuture: true }), [otherLock])
 })
 
 test('community counts require the full pool in the active catalog', () => {
@@ -65,8 +67,10 @@ test('community counts require the full pool in the active catalog', () => {
   ])
   assert.equal(checks([catalog.slice(1), [pool[0]]])[0].count, null)
   const belowCount = [pool[0]]
-  const options = { showFuture: true, progressionPoolCounts: getProgressionPoolCounts(catalog, belowCount) }
+  const options = { progressionPoolCounts: getProgressionPoolCounts(catalog, belowCount) }
   assert.deepEqual(filterActiveTasks([task], belowCount, options), [])
+  assert.deepEqual(filterActiveTasks([task], belowCount, { ...options, showFuture: true }), [task])
+  assert.equal(evaluateTaskAvailability(task, belowCount, options).locked, true)
   assert.deepEqual(filterActiveTasks([task], [...belowCount, task.id], { ...options, showCompleted: true }), [task])
   const enough = pool.slice(0, 2)
   assert.deepEqual(filterActiveTasks([task], enough, {

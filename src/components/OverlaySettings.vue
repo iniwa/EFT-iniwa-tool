@@ -22,7 +22,7 @@ const {
   setObjectiveCount,
   clearAllFocused,
 } = useOverlay()
-const { completedTasks, toggleTask, taskStatuses, traderProgress, traderRequirementsEnabled } = useUserProgress()
+const { completedTasks, toggleTask, taskStatuses } = useUserProgress()
 const { playerLevel } = useAppState()
 
 // 連鎖モード: あるタスクを完了した際、そのタスクを前提とする
@@ -36,8 +36,6 @@ function findUnlockedTasks(completedTaskId) {
   const options = {
     playerLevel: playerLevel.value,
     taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value,
-    traderRequirementsEnabled: traderRequirementsEnabled.value,
   }
   return taskData.value
     .filter((task) => !completed.has(task.id) && !focused.has(task.id)

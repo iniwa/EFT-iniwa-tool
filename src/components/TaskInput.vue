@@ -8,8 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
-import { getProgressionPoolCounts, getTaskProgressionChecks } from '../logic/globalConditionLabels.js'
-import { TRADER_ORDER } from '../data/constants.js'
+import { getProgressionPoolCounts } from '../logic/globalConditionLabels.js'
 
 const { playerLevel, gameMode } = useAppState()
 
@@ -27,8 +26,6 @@ const {
   toggleTask,
   togglePriority,
   taskStatuses,
-  traderProgress,
-  traderRequirementsEnabled,
 } = useUserProgress()
 
 const { taskData, hideoutData, traderLoyalty } = useApiData()
@@ -38,61 +35,9 @@ const poolCounts = computed(() => getProgressionPoolCounts(taskData.value, compl
 const emit = defineEmits(['open-task-details'])
 
 // --- ローカル状態 ---
-const DEFAULT_LOYALTY_LEVELS = [1, 2, 3, 4].map(level => ({ level }))
 const taskSortMode = ref('default')
 const taskViewMode = ref('list')
 const searchTask = ref('')
-
-const traderRequirementProfiles = computed(() => {
-  const profiles = new Map(traderLoyalty.value
-    .filter(trader => trader.levels.some(({ level }) => level > 1))
-    .map(trader => [trader.id, { ...trader, needsReputation: false }]))
-  ;(taskData.value || []).forEach((task) => {
-    ;(task.traderLevelRequirements || []).forEach((requirement) => {
-      const trader = requirement.trader
-      if (!trader?.id) return
-      const current = profiles.get(trader.id) || {
-        id: trader.id,
-        name: trader.name || 'Unknown',
-        levels: traderLoyaltyById.value[trader.id]?.levels,
-        needsReputation: false,
-      }
-      if (['reputation', 'standing'].includes(requirement.requirementType)) {
-        current.needsReputation = true
-      }
-      profiles.set(trader.id, current)
-    })
-  })
-
-  return Array.from(profiles.values()).sort((a, b) => {
-    const indexA = TRADER_ORDER.indexOf(a.name)
-    const indexB = TRADER_ORDER.indexOf(b.name)
-    if (indexA === -1 && indexB === -1) return a.name.localeCompare(b.name)
-    if (indexA === -1) return 1
-    if (indexB === -1) return -1
-    return indexA - indexB
-  })
-})
-
-function getLoyaltyOptions(trader) {
-  const options = trader.levels || DEFAULT_LOYALTY_LEVELS
-  const savedLevel = traderProgress.value[trader.id]?.level
-  return savedLevel != null && !options.some(({ level }) => level === savedLevel)
-    ? [...options, { level: savedLevel, saved: true }] : options
-}
-
-function updateTraderProgress(traderId, field, rawValue) {
-  const nextProgress = { ...traderProgress.value }
-  const nextTrader = { ...(nextProgress[traderId] || {}) }
-  const value = rawValue === '' ? null : Number(rawValue)
-
-  if (value == null || !Number.isFinite(value)) delete nextTrader[field]
-  else nextTrader[field] = value
-
-  if (Object.keys(nextTrader).length === 0) delete nextProgress[traderId]
-  else nextProgress[traderId] = nextTrader
-  traderProgress.value = nextProgress
-}
 
 // --- ハイドアウト: 最大レベル済みステーションの表示制御 ---
 const visibleHideoutStations = computed(() => {
@@ -115,8 +60,6 @@ const filteredTasksList = computed(() => {
     showKappaOnly: showKappaOnly.value,
     showLightkeeperOnly: showLightkeeperOnly.value,
     taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value,
-    traderRequirementsEnabled: traderRequirementsEnabled.value,
     traderLoyaltyById: traderLoyaltyById.value,
     progressionPoolCounts: poolCounts.value,
   })
@@ -135,11 +78,11 @@ const tasksByMap = computed(() => TaskLogic.groupTasksByMap(filteredTasksList.va
 const taskDisplay = computed(() => new Map(filteredTasksList.value.map((task) => {
   const availability = TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
     playerLevel: playerLevel.value, taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value, traderRequirementsEnabled: traderRequirementsEnabled.value,
     traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: poolCounts.value,
   })
   const checks = showCompleted.value || taskStatuses.value[task.id] === 'active'
-    ? [] : getTaskProgressionChecks(task, poolCounts.value)
+    ? [] : availability.progressionChecks
   return [task.id, {
     ...availability,
     checks,
@@ -288,7 +231,7 @@ const hideoutPercent = computed(() => {
       </div>
 
       <p v-if="!showCompleted && taskData.length" class="small text-muted mb-2">
-        記録上のクリア数や必要LLが未達と分かるタスクは、「ロック中も表示」をONにしても一覧から除外します。
+        クリア数や必要LLのプレイヤーレベルが未達のタスクは、「ロック中も表示」で確認できます。
       </p>
 
       <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">
@@ -302,74 +245,6 @@ const hideoutPercent = computed(() => {
           </ul>
         </div>
       </section>
-
-      <details
-        v-if="traderRequirementProfiles.length > 0"
-        class="task-group"
-      >
-        <summary class="p-2 px-3 fw-bold" style="cursor: pointer; color: var(--gold);">
-          トレーダー進捗条件
-          <span
-            class="badge ms-1"
-            :class="traderRequirementsEnabled ? 'bg-success' : 'bg-secondary'"
-          >{{ traderRequirementsEnabled ? '判定中' : '表示のみ' }}</span>
-        </summary>
-
-        <div class="p-3 border-top" style="border-color: var(--line) !important;">
-          <div class="form-check form-switch mb-2">
-            <input
-              id="enable-trader-requirements"
-              v-model="traderRequirementsEnabled"
-              class="form-check-input"
-              type="checkbox"
-            >
-            <label class="form-check-label small" for="enable-trader-requirements">
-              入力したLL・評判もタスクのロック判定に使用する
-            </label>
-          </div>
-          <p class="text-muted small mb-2">
-            タスクに必要なLLが指定されている場合、そのLLの必要プレイヤーレベルも表示判定に使います。
-            スイッチをONにすると、未入力のLL・評判は未達として扱います。
-          </p>
-
-          <div class="row g-2">
-            <div
-              v-for="trader in traderRequirementProfiles"
-              :key="trader.id"
-              class="col-12 col-sm-6 col-xl-4"
-            >
-              <div class="hideout-card h-100">
-                <div class="small fw-bold mb-1">{{ trader.name }}</div>
-                <div class="d-flex align-items-center gap-2">
-                  <label class="small text-muted" :for="`trader-level-${trader.id}`">LL</label>
-                  <select
-                    :id="`trader-level-${trader.id}`"
-                    class="form-select form-select-sm"
-                    :value="traderProgress[trader.id]?.level ?? ''"
-                    @change="updateTraderProgress(trader.id, 'level', $event.target.value)"
-                  >
-                    <option value="">未設定</option>
-                    <option v-for="{ level, requiredPlayerLevel, saved } in getLoyaltyOptions(trader)"
-                      :key="level" :value="level">LL{{ level }}{{ requiredPlayerLevel > 0 ? `（Lv.${requiredPlayerLevel}）` : saved ? '（保存値）' : '' }}</option>
-                  </select>
-                </div>
-                <div v-if="trader.needsReputation" class="d-flex align-items-center gap-2 mt-2">
-                  <label class="small text-muted" :for="`trader-reputation-${trader.id}`">評判</label>
-                  <input
-                    :id="`trader-reputation-${trader.id}`"
-                    class="form-control form-control-sm"
-                    type="number"
-                    step="0.01"
-                    placeholder="未設定"
-                    :value="traderProgress[trader.id]?.reputation ?? ''"
-                    @input="updateTraderProgress(trader.id, 'reputation', $event.target.value)"
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </details>
 
       <div v-if="!taskData || taskData.length === 0" class="empty-state">
         <strong>タスクデータがありません</strong>
@@ -426,7 +301,7 @@ const hideoutPercent = computed(() => {
                 <span
                   v-for="({ trader, tier, count, required }, index) in taskDisplay.get(task.id).checks"
                   :key="index"
-                  :class="{ 'text-warning': count == null }"
+                  :class="{ 'text-warning': count == null || count < required }"
                 >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
                 <span v-if="taskViewMode !== 'trader'" class="d-lg-none">{{ task.trader?.name || 'Unknown' }}</span>
