@@ -75,7 +75,7 @@ const GROUPS = [
     { key: 'work', label: '作業' },
     { key: 'tools', label: '道具' },
     { key: 'info', label: 'ガイド / 設定' },
-    { key: 'about', label: 'このツールについて' },
+    { key: 'about', label: 'サイト情報', secondary: true },
 ]
 const FALLBACK_ICON = { guide: '📘', faq: '❓', about: 'ℹ️', privacy: '🔒', terms: '📄', debug: '🛠️' }
 const NAV_EXTRAS = {

@@ -23,7 +23,7 @@ function navigate(item) {
 
 <template>
     <nav class="app-nav" aria-label="メインナビゲーション">
-        <section v-for="group in groups" :key="group.key" class="nav-group">
+        <section v-for="group in groups" :key="group.key" class="nav-group" :class="{ 'nav-group-secondary': group.secondary }">
             <h2 class="nav-group-title">{{ group.label }}</h2>
             <ul class="nav-list">
                 <li v-for="item in group.items" :key="item.name">
