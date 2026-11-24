@@ -476,8 +476,8 @@ export const MAIN_CHAPTERS = [
             text: 'Armored Caseの処遇を選択',
             options: [
               { value: 'keep', label: '自分の手元に残す (Prapor評判-0.3 / ケース入手 / 実績「Just Business」/ The TicketでMechanicルート)' },
-              { value: 'give', label: 'Praporに直接渡す (報酬: 1,500,000ルーブル / 実績「Man of His Word」)' },
-              { value: 'pretend', label: '見つけなかったフリをして渡す (報酬: 1,000,000ルーブル / 実績「Man of His Word」)' },
+              { value: 'give', label: 'Praporに直接渡す (報酬額は資料で不一致: 1,000,000〜1,500,000ルーブル / 実績「Man of His Word」)' },
+              { value: 'pretend', label: '見つけなかったフリをして渡す (報酬額は資料で不一致 / 実績「Man of His Word」)' },
             ],
           },
         ],
