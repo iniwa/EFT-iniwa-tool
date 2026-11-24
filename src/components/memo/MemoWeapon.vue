@@ -51,7 +51,7 @@
                 <td class="weapon-col-mode"><span class="mode-full">Full</span></td>
                 <td class="weapon-col-rpm">550</td>
                 <td class="text-muted-dark">
-                    <span class="text-blue">LMG</span>。100連発による制圧力が売り。低レートで制御しやすく、オープンボルトでジャムらない。
+                    <span class="text-blue">LMG</span>。100連発による制圧力が売り。故障の発生条件は要確認。
                 </td>
             </tr>
             <tr>
@@ -135,7 +135,7 @@
                 <td class="weapon-col-mode"><span class="mode-full">Full</span></td>
                 <td class="weapon-col-rpm">700</td>
                 <td class="text-muted-dark">
-                    100連ドラム固定のLMG。オープンボルト(ジャム無)。RPDNはサイト装着可。弾幕でゴリ押す用。
+                    100連ドラムを使うLMG。故障の発生条件は要確認。RPDNはサイト装着可。
                 </td>
             </tr>
 
@@ -314,7 +314,7 @@
                     .45 ACP
                 </td>
                 <td class="text-start ps-3 fw-bold">Vector .45</td>
-                <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
+                <td class="weapon-col-mode"><span class="mode-full">Full</span>/Burst/Semi</td>
                 <td class="weapon-col-rpm">1100</td>
                 <td class="text-muted-dark">
                     圧倒的レートで近距離最強クラス。弾消費が激しく、マガジン容量(最大30)がネック。
@@ -326,7 +326,7 @@
                     9x19mm
                 </td>
                 <td class="text-start ps-3 fw-bold">Vector 9mm</td>
-                <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
+                <td class="weapon-col-mode"><span class="mode-full">Full</span>/Burst/Semi</td>
                 <td class="weapon-col-rpm">950</td>
                 <td class="text-muted-dark">
                     レートは.45より落ちるが、<span class="text-blue">50連ドラム</span>が使用可能で継戦能力が高い。AP 6.3以上推奨。
@@ -337,7 +337,7 @@
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">1075</td>
                 <td class="text-muted-dark">
-                    Vectorを超える超高レートSMG。非常にコンパクトで低反動。クローズドボルトのためジャム有り。
+                    コンパクトで低反動 (目安)。故障の発生条件は要確認。
                 </td>
             </tr>
             <tr>
@@ -345,7 +345,7 @@
                 <td class="weapon-col-mode"><span class="mode-full">Full</span>/Semi</td>
                 <td class="weapon-col-rpm">600</td>
                 <td class="text-muted-dark">
-                    旧式モデル。レートは遅いが<span class="text-green">オープンボルトでジャムらない</span>。50連マガジン使用可。
+                    旧式モデル。50連マガジン使用可。故障の発生条件は要確認。
                 </td>
             </tr>
 

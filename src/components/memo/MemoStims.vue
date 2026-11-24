@@ -48,12 +48,12 @@
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold">L1</td>
                 <td>鎮痛 / Strength +20 / Endurance +10 / 最大スタミナ +30 (120s)</td>
-                <td>Energy / Hydration -0.4/s (60s)。旧重量ボーナスは要確認。</td>
+                <td>Energy / Hydration -0.45/s (60s)。旧重量ボーナスは要確認。</td>
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold">SJ1 (赤)</td>
                 <td>Strength / Endurance / Stress +20 (180s)</td>
-                <td>100s後からEnergy -0.2/s・Hydration -0.3/s (200s、-40 / -60)。旧被ダメージ+10%は要確認。</td>
+                <td>100s後からEnergy -0.25/s・Hydration -0.3/s (200s、-50 / -60)。旧被ダメージ+10%は要確認。</td>
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold">2A2-(b-TG)</td>
@@ -87,7 +87,7 @@
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold text-info">AHF1-M</td>
-                <td>止血・出血予防 / Healthスキル +5 (60s)</td>
+                <td>止血 / Healthスキル +5 (60s)。出血予防は要確認。</td>
                 <td>Hydration -0.3/s (120s、計-36)。使用2s (Zagustinと同じ)。</td>
             </tr>
             <tr>
@@ -97,8 +97,8 @@
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold text-info">Perfotoran<br><small class="text-muted">(Blue Blood)</small></td>
-                <td>毒・放射線への効果と止血、HP +1.5/s (60s、計90)</td>
-                <td>遅延してHP -1.5/s / Energy -1.1/s (60s)。旧鎮痛効果は要確認。</td>
+                <td>毒への効果と止血、HP +1.5/s (60s、計90)。放射線への効果は要確認。</td>
+                <td>遅延してHealthスキル -15 / Energy -1.1/s (60s)。旧HP減少・鎮痛効果は要確認。</td>
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold">Adrenaline</td>
@@ -122,7 +122,7 @@
         <tbody>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold text-orange">SJ12 (黒)</td>
-                <td>体温 -4°C、Energy / Hydration +0.1/s、Perception +30 (600s)</td>
+                <td>体温 -4°C、Energy / Hydration +0.05/s、Perception +30 (600s)</td>
                 <td>606s後から体温 +6°C (300s)。</td>
             </tr>
             <tr>
@@ -133,7 +133,7 @@
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold">3-(b-TG)</td>
                 <td>Attention / Perception +30、Strength +10 / スタミナ回復 +1/s (240s)</td>
-                <td>220s後から震え45s、Energy -0.2/s (120s、計-24)。探索・聴覚の運用評価は目安。</td>
+                <td>220s後から震え45s、120s後からEnergy -0.25/s (120s、計-30)。探索・聴覚の運用評価は目安。</td>
             </tr>
             <tr>
                 <td class="stim-col-name text-start ps-3 fw-bold text-muted">Obdolbos</td>
@@ -142,7 +142,7 @@
             </tr>
         </tbody>
     </table>
-    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/%E5%8C%BB%E8%96%AC%E5%93%81" target="_blank" rel="noopener noreferrer">医薬品</a>。数値は医薬品表・各薬品ページの記載。旧効果が現行表にないだけでは廃止を断定できません。合計量は秒数からの計算値です。</p>
+    <p class="p-2 small text-muted mb-0">2026-11-24: <a href="https://json.tarkov.dev/endpoints" target="_blank" rel="noopener noreferrer">tarkov.dev</a> の3モードの刺激剤データを照合。旧効果がデータにないだけでは廃止を断定できません。合計量は秒数からの計算値です。</p>
 </template>
 
 <style scoped>

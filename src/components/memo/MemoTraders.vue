@@ -60,8 +60,8 @@
                 <td class="text-center">Lv 25 / Rep 0.50</td>
                 <td class="text-center">Lv 35 / Rep 1.20</td>
             </tr>
-            <tr><td class="text-start ps-4 fw-bold">Fence</td><td class="text-center">—</td><td class="text-center">—</td><td class="text-center">Lv 1 / スカブカルマ 6.00</td></tr>
+            <tr><td class="text-start ps-4 fw-bold">Fence</td><td class="text-center">Lv 1 / スカブカルマ 6.00</td><td class="text-center">—</td><td class="text-center">—</td></tr>
         </tbody>
     </table>
-    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/%E3%83%88%E3%83%AC%E3%83%BC%E3%83%80%E3%83%BC" target="_blank" rel="noopener noreferrer">トレーダー</a>。ゲーム内表示を優先。<a href="https://steamcommunity.com/games/3932890/announcements/detail/686386819418294181" target="_blank" rel="noopener noreferrer">BSG公式 Patch 1.1</a>。</p>
+    <p class="p-2 small text-muted mb-0">FenceはLL2が上限です。2026-11-24にtarkov.devの<a href="https://json.tarkov.dev/pve/traders" target="_blank" rel="noopener noreferrer">PvE</a>・<a href="https://json.tarkov.dev/pvp-season/traders" target="_blank" rel="noopener noreferrer">Seasonal PvP</a>データと照合。Fenceは<a href="https://json.tarkov.dev/regular/traders" target="_blank" rel="noopener noreferrer">通常PvP</a>でも確認。ゲーム内表示を優先。<a href="https://steamcommunity.com/games/3932890/announcements/detail/686386819418294181" target="_blank" rel="noopener noreferrer">BSG公式 Patch 1.1</a>。</p>
 </template>
