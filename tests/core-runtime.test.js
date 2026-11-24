@@ -103,6 +103,22 @@ test('live-shaped objective constraints format safely', () => {
   assert.match(formatObjectiveValue({ bodyParts: ['頭'], effects: ['痛み'] }), /部位: 頭/);
   assert.equal(objectivePositionLines({ zones: [null], possibleLocations: [null, { positions: [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }] }] })[0].endsWith('ほか1地点'), true);
 });
+test('ID-only task translations fall back to an English title, including prerequisite references', () => {
+  const gunsmith = '639872f9decada40426d3447';
+  const token = `${gunsmith} name`;
+  const converted = convertMainData({
+    tasksRaw: {
+      [gunsmith]: { id: gunsmith, name: token, normalizedName: 'gunsmith-op-sks' },
+      next: { id: 'next', name: 'Next', taskRequirements: [{ task: gunsmith, status: ['complete'] }] },
+    },
+    tasksDict: { [token]: gunsmith }, tasksEnDict: { [token]: 'Gunsmith - OP-SKS' },
+    hideoutRaw: {}, itemsRaw: {}, questItemsRaw: {}, mapsRaw: {}, tradersRaw: {}, craftsRaw: {}, bartersRaw: {},
+  });
+  assert.equal(converted.tasks[0].id, gunsmith);
+  assert.equal(converted.tasks[0].name, 'Gunsmith - OP-SKS');
+  assert.deepEqual(converted.tasks[1].taskRequirements[0].task, { id: gunsmith, name: 'Gunsmith - OP-SKS' });
+});
+
 const valid = () => ({
   schemaVersion: '3.2.1', gameMode: 'pve', userHideout: { Workbench: 2 },
   completedTasks: [id], collectedItems: [], ownedKeys: [], keyUserData: {}, playerLevel: 20,

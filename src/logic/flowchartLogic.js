@@ -1,4 +1,4 @@
-import { describeGlobalVariable } from './globalConditionLabels.js'
+import { describeGlobalVariable, UNVERIFIED_GLOBAL_CONDITION_LABEL } from './globalConditionLabels.js'
 /** Return scrollable stage bounds from the measured SVG, without arbitrary margins. */
 export function getZoomedStageBounds(width, height, zoom = 1) {
   const factor = Number.isFinite(zoom) && zoom > 0 ? zoom : 1
@@ -38,9 +38,9 @@ export function buildFlowchartGateGraph(tasks) {
     if (!gateMap.has(key)) gateMap.set(key, { key, label, kind, automatic })
     return key
   }
-  const link = (key, taskId, label = '', technical = null) => {
+  const link = (key, taskId, label = '', technical = null, displayLabel = label) => {
     if (!key || !taskId) return
-    edges.push({ gateKey: key, taskId, label, ...(technical ? { technical } : {}) })
+    edges.push({ gateKey: key, taskId, label, displayLabel, ...(technical ? { technical } : {}) })
   }
   for (const task of Array.isArray(tasks) ? tasks : []) {
     if (!task?.id) continue
@@ -71,7 +71,7 @@ export function buildFlowchartGateGraph(tasks) {
           gateMap.get(key).label = description.label
           delete gateMap.get(key).sourceUrl
         }
-        link(key, task.id, `${op} ${value}`.trim(), description.technical)
+        link(key, task.id, `${op} ${value}`.trim(), description.technical, description.conditionText)
       } else if (req.type === 'dialogue') {
         const traders = (Array.isArray(req.traders) ? req.traders : [])
           .map((trader) => typeof trader === 'string'
@@ -110,7 +110,11 @@ export function buildFlowchartGateGraph(tasks) {
   }
   const nodes = [...gateMap.values()].sort((a, b) => a.key.localeCompare(b.key))
   let unknownIndex = 0
-  nodes.forEach(node => { if (node.kind === 'globalVariable') node.label += ` #${++unknownIndex}` })
+  nodes.forEach((node) => {
+    if (node.kind === 'globalVariable' && node.label === UNVERIFIED_GLOBAL_CONDITION_LABEL) {
+      node.label += ` #${++unknownIndex}`
+    }
+  })
   edges.sort((a, b) => `${a.taskId}:${a.gateKey}`.localeCompare(`${b.taskId}:${b.gateKey}`))
   return { nodes, edges }
 }

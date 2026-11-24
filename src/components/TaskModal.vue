@@ -9,7 +9,7 @@ import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
 import { describeGlobalVariable } from '../logic/globalConditionLabels.js'
-import { toHttpsUrl } from '../logic/taskReference.js'
+import { getTaskDisplayName, toHttpsUrl } from '../logic/taskReference.js'
 import {
   meaningfulBuildAttributes,
   formatBuildAttribute,
@@ -93,7 +93,10 @@ function otherRequirementLabel(requirement) {
     const traders = (requirement.traders || []).map((trader) => trader.name).join(' / ')
     return `会話条件${traders ? `: ${traders}` : ''}`
   }
-  if (requirement.type === 'globalVariable') return describeGlobalVariable(requirement).label
+  if (requirement.type === 'globalVariable') {
+    const { label, conditionText } = describeGlobalVariable(requirement)
+    return `${label}：${conditionText}`
+  }
 
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }
@@ -123,7 +126,7 @@ function objectiveConstraintLines(obj) {
 </script>
 
 <template>
-  <BaseModal :show="show" variant="panel" max-width="560px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
+  <BaseModal :show="show" variant="panel" max-width="560px" :aria-label="task ? `${getTaskDisplayName(task)} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
       <button v-if="returnLabel" class="btn btn-outline-info mb-3" type="button" @click="emit('close')">{{ returnLabel }}</button>
       <!-- 進捗/優先トグル + 閉じるボタン -->
@@ -169,7 +172,7 @@ function objectiveConstraintLines(obj) {
         class="m-0 text-warning mb-3"
         :class="{ 'text-decoration-line-through text-muted': completedTasks.includes(task.id) }"
       >
-        {{ task.name }}
+        {{ getTaskDisplayName(task) }}
       </h4>
 
       <button v-if="canShowFlowchart && task.id" type="button" class="btn btn-outline-info mb-3" @click="emit('show-flowchart', task)">&#12501;&#12525;&#12540;&#12481;&#12515;&#12540;&#12488;&#12391;&#34920;&#31034;</button>
@@ -208,7 +211,7 @@ function objectiveConstraintLines(obj) {
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>
-              前提: {{ requirement?.task?.name || requirement?.task?.id || '参照不明' }}
+              前提: {{ getTaskDisplayName(requirement?.task, '前提タスク名未取得') }}
               <span v-if="allowed" class="text-muted small">
                 （必要: {{ allowed.map((status) => statusLabels[status]).join(' / ') }}）
               </span>

@@ -24,3 +24,17 @@ export function toHttpsUrl(value) {
     return null
   }
 }
+
+function readableName(value) {
+  return typeof value === 'string' && value.trim()
+    && !/^(?:[0-9a-f]{24}(?:\s+name)?|\d+|unknown task)$/i.test(value.trim())
+}
+
+export function getTaskDisplayName(task, fallback = 'タスク名未取得') {
+  const names = [task?.name, ...(task?.nameAliases || [])]
+  const name = names.find(readableName)
+  if (name) return name.trim()
+  const slug = task?.normalizedName
+  if (readableName(slug)) return slug.replace(/[-_]+/g, ' ').trim() || fallback
+  return fallback
+}

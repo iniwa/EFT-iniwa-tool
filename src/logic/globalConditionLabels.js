@@ -16,9 +16,10 @@ export function describeGlobalVariable(raw) {
   // Only the observed >= 1..5 threshold family is covered. Scalars, alternate
   // operators, strings and out-of-scope values keep the unknown label.
   const supported = entry && condition.compareMethod === '>=' && Number.isInteger(value) && value >= 1 && value <= 5
-  const qualifier = entry?.verification === 'verified' ? 'コミュニティ観測・参考' : '推定・未確定'
+  const qualifier = entry?.verification === 'verified' ? '参考' : '推定'
   return {
-    label: supported ? `${entry.trader} Tier ${entry.tier} のタスク進行条件（${qualifier}・1.1）` : UNVERIFIED_GLOBAL_CONDITION_LABEL,
+    label: supported ? `${entry.trader}のタスク進行（区分${entry.tier}・${qualifier}）` : UNVERIFIED_GLOBAL_CONDITION_LABEL,
+    conditionText: supported ? `進行値 ${value} 以上` : 'ゲーム内で詳細を確認',
     ...(supported ? { communityVerification: entry.verification, sourceUrl: PROGRESSION_CONDITION_SOURCE, sourceRevision: entry.revision } : {}),
     verified: false,
     variableId,

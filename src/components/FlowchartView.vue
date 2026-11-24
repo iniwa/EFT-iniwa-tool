@@ -11,6 +11,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
 import * as TaskLogic from '../logic/taskLogic.js'
+import { getTaskDisplayName } from '../logic/taskReference.js'
 import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../logic/flowchartLogic.js'
 
 const {
@@ -190,7 +191,7 @@ async function renderChart() {
   nodesToRender.forEach((task, taskId) => {
     const nid = taskToNodeId.get(taskId)
     const isExternal = !isCurrentTraderTask(task)
-    const label = escapeLabel(`${task.name}${isExternal && task.trader?.name ? ` (${task.trader.name})` : ''}`)
+    const label = escapeLabel(`${getTaskDisplayName(task)}${isExternal && task.trader?.name ? ` (${task.trader.name})` : ''}`)
     const status = TaskLogic.getTaskStatus(task.id, completedTasks.value, taskStatuses.value)
     const isDone = status === 'complete'
     const isPriority = prioritizedTasks.value.includes(task.id)
@@ -250,7 +251,7 @@ async function renderChart() {
     const fromId = gateNodeIds.get(edge.gateKey)
     const toId = taskToNodeId.get(edge.taskId)
     if (fromId && toId) {
-      graph += formatMermaidDottedEdge(fromId, toId, edge.label ? escapeLabel(edge.label) : '')
+      graph += formatMermaidDottedEdge(fromId, toId, edge.displayLabel ? escapeLabel(edge.displayLabel) : '')
       edgeCount++
     }
   })
@@ -273,7 +274,7 @@ async function renderChart() {
     cancelPan()
     nodeMap = renderNodeMap
     chartGateDetails.value = gateGraph.nodes.filter(node => node.kind === 'globalVariable').map(node => ({
-      ...node, requirements: gateGraph.edges.filter(edge => edge.gateKey === node.key).map(edge => ({ ...edge, taskName: byId.get(edge.taskId)?.name || edge.taskId })),
+      ...node, requirements: gateGraph.edges.filter(edge => edge.gateKey === node.key).map(edge => ({ ...edge, taskName: getTaskDisplayName(byId.get(edge.taskId)) })),
     }))
     mermaidContainer.value.innerHTML = svg
 
@@ -383,7 +384,7 @@ function handleChartClick(event) {
     toggleTask(task.id)
   } else if (isInitialSetupMode.value) {
     // 初期設定モード: タスクと全前提タスクを要件ステータスに沿って適用
-    const taskName = task.name
+    const taskName = getTaskDisplayName(task)
     const plan = TaskLogic.getInitialSetupPlan(task.id, taskData.value)
     const totalCount = plan.length
     if (plan.some((entry) => entry.conflict)) {
@@ -506,7 +507,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
 
     <!-- チャート本体 -->
     <div class="px-3 py-2 small text-muted border-bottom border-secondary">
-      実線=タスク前提 / 点線=解放条件（推測でタスク同士を接続しません）・実験的機能　
+      実線は前提タスク、点線はゲーム内の解放条件です。区分はトレーダーのタスクのグループを指し、進行値の数え方は未確認です。　
       対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 条件ノード {{ chartStats.gateNodes }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
       <span class="ms-2">
         <span class="badge bg-success">完了</span>
@@ -527,7 +528,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
       </div>
     </details>
     <div v-if="targetTaskId !== null" class="px-3 py-2 small border-bottom border-secondary" role="status">
-      <span v-if="targetTask">{{ targetTask.name }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
+      <span v-if="targetTask">{{ getTaskDisplayName(targetTask) }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
       <span v-else>&#23550;&#35937;&#12479;&#12473;&#12463;&#12364;&#35211;&#12388;&#12363;&#12426;&#12414;&#12379;&#12435;&#12290;</span>
       <button class="btn btn-sm btn-outline-secondary ms-2" type="button" @click="clearTarget">&#36890;&#24120;&#34920;&#31034;&#12395;&#25147;&#12427;</button>
     </div>

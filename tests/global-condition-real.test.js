@@ -16,12 +16,13 @@ test('all current real unlock variables retain uncertain semantics and exact gra
       const c = usage.condition
       assert.equal(c.variableId, group.variableId)
       const info = describeGlobalVariable(c)
-      assert.match(info.label, /Tier [1-4] のタスク進行条件/)
+      assert.match(info.label, /タスク進行（区分[1-4]/)
       assert.ok(info.sourceUrl.includes('4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6'))
       assert.equal(info.verified, false)
       assert.equal(info.variableId, c.variableId)
       assert.equal(info.compareMethod, c.compareMethod)
       assert.equal(info.value, c.value)
+      assert.equal(info.conditionText, `進行値 ${c.value} 以上`)
       if (!byTask.has(usage.taskId)) byTask.set(usage.taskId, { id: usage.taskId, name: usage.name, otherRequirements: [] })
       byTask.get(usage.taskId).otherRequirements.push(c)
     }

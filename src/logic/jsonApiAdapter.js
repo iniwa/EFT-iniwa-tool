@@ -7,6 +7,7 @@
 //       docs/handoffs/2026-07-22-json-api-migration.md
 
 import { JSON_API_URL } from '../data/constants.js';
+import { getTaskDisplayName } from './taskReference.js';
 
 const REQUEST_TIMEOUT_MS = 30000;
 
@@ -58,6 +59,14 @@ async function fetchDicts(mode, resource, lang) {
     lang === 'en' ? Promise.resolve(null) : fetchJsonPath(`/${mode}/${resource}_en`),
   ]);
   return { langDict: langDict || {}, enDict: enDict || {} };
+}
+
+function taskName(task, langDict, enDict) {
+  return getTaskDisplayName({
+    name: tr(task.name, langDict, enDict),
+    nameAliases: [tr(task.name, enDict, null)],
+    normalizedName: task.normalizedName,
+  });
 }
 
 /** トークン文字列を lang 辞書 → en 辞書 → トークン自身の順で解決する。 */
@@ -428,7 +437,7 @@ export function convertMainData(bundle) {
   const taskNamesById = Object.fromEntries(
     Object.values(tasksRaw).map((task) => [
       task.id,
-      tr(task.name, tasksDict, tasksEnDict),
+      taskName(task, tasksDict, tasksEnDict),
     ]),
   );
   const categoriesById = Object.fromEntries(
@@ -451,7 +460,7 @@ export function convertMainData(bundle) {
   // --- tasks ---
   const tasks = Object.values(tasksRaw).map((raw) => ({
     id: raw.id,
-    name: tr(raw.name, tasksDict, tasksEnDict),
+    name: taskNamesById[raw.id],
     normalizedName: raw.normalizedName,
     nameAliases: [...new Set([tr(raw.name, tasksDict, tasksEnDict), tr(raw.name, tasksEnDict, null)].filter(Boolean))],
     minPlayerLevel: raw.minPlayerLevel || 0,
@@ -676,7 +685,7 @@ export function convertItemDb(bundle) {
   const taskNamesById = Object.fromEntries(
     Object.values(tasksRaw).map((task) => [
       task.id,
-      tr(task.name, bundle.tasksDict, bundle.tasksEnDict),
+      taskName(task, bundle.tasksDict, bundle.tasksEnDict),
     ]),
   );
 
@@ -701,7 +710,7 @@ export function convertItemDb(bundle) {
   }
 
   Object.values(tasksRaw).forEach((task) => {
-    const taskName = tr(task.name, bundle.tasksDict, bundle.tasksEnDict);
+    const taskName = taskNamesById[task.id];
     const seenItems = new Set();
     (task.objectives || []).forEach((obj) => {
       // Include positive item requirements/restrictions. `notWearing` and

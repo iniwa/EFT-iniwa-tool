@@ -13,8 +13,8 @@ test('23 observed and four unresolved groups have qualified labels, not calculat
   assert.deepEqual(entries.filter(([,e]) => e.verification === 'unresolved').map(([,e]) => e.trader + ':' + e.tier).sort(), ['Mechanic:3','Mechanic:4','Prapor:4','Ragman:1'])
   for (const [id, entry] of entries) {
     const info = describeGlobalVariable({variableId:id,compareMethod:'>=',value:1})
-    assert.ok(info.label.includes(entry.trader + ' Tier ' + entry.tier))
-    assert.ok(info.label.includes(entry.verification === 'verified' ? 'コミュニティ観測・参考' : '推定・未確定'))
+    assert.ok(info.label.includes(entry.trader + 'のタスク進行（区分' + entry.tier))
+    assert.ok(info.label.includes(entry.verification === 'verified' ? '参考' : '推定'))
     assert.equal(info.verified, false)
     assert.equal(info.sourceRevision, '1.1.0')
     assert.equal(Object.hasOwn(entry,'taskIds'), false)
