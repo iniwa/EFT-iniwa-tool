@@ -2,8 +2,9 @@
 // 鍵カタログの組み立てと標準ティアの算出 (純粋関数)。
 // ティアは「標準評価」。利用者の個人評価 (keyUserData.rating) とは別に扱う。
 
-import { KEY_CURATION, ROLE_LABELS } from '../data/keyCuration.js'
+import { ROLE_LABELS } from '../data/keyCuration.js'
 import { KEY_LOOT } from '../data/keyLoot.js'
+import { KEY_REVIEW, KEY_OPENINGS, keyReviewSource } from '../data/keyReview.js'
 
 export const TIER_ORDER = ['SS', 'S', 'A', 'B', 'C', 'D', 'F']
 export function tierRank(tier) {
@@ -11,24 +12,41 @@ export function tierRank(tier) {
   return i === -1 ? TIER_ORDER.length : i
 }
 
-const LOOT_TIERS = { 'income-high': 'A', 'loot-high': 'A', 'income-mid': 'B', 'loot-mid': 'B' }
+const SAMPLE_MODES = { regular: 'PvP', pve: 'PvE', 'pvp-season': 'Season 1 PvP' }
+const KEY_INDEX_URL = 'https://wikiwiki.jp/eft/%E9%8D%B5'
+const MAP_REVIEW_SOURCES = {
+  Customs: 'https://wikiwiki.jp/eft/CUSTOMS',
+  'Ground Zero': 'https://wikiwiki.jp/eft/GROUND%20ZERO',
+  Interchange: 'https://wikiwiki.jp/eft/INTERCHANGE',
+  Lighthouse: 'https://wikiwiki.jp/eft/LIGHTHOUSE',
+  'The Labyrinth': 'https://tarkovwiki.com/maps/the-labyrinth',
+}
 
-/** The standard tier measures loot. Task, travel and lock evidence only describes usage. */
-export function evaluateKey({ locks, tasks, curation, loot }) {
-  const { roles = [], special, unlocked } = curation || {}
-  const reasons = roles.filter(role => !LOOT_TIERS[role]).map(role => ROLE_LABELS[role])
+/** A task or lock record can describe usage, but cannot establish a loot tier. */
+export function evaluateKey({ locks, tasks, review, loot }) {
+  const roles = review?.roles || []
+  const reasons = roles.map(role => ROLE_LABELS[role])
   if (tasks.length) reasons.push(`タスクで使用 ${tasks.length} 件`)
   if (locks) reasons.push(`施錠 ${locks} か所`)
 
-  const curatedTier = roles.map(role => LOOT_TIERS[role]).filter(Boolean)
-    .sort((a, b) => tierRank(a) - tierRank(b))[0]
-  const noLock = unlocked && !tasks.length && locks === 0
-  const tier = loot?.tier || (!special && (curatedTier || (noLock ? 'F' : null))) || null
-  if (loot) reasons.unshift(`部屋の戦利品に基づく標準ティア ${tier}`)
-  else if (curatedTier && tier) reasons.unshift('出典の物資情報に基づく暫定ティア')
-  else if (noLock && tier) reasons.unshift('施錠なしとの資料あり')
-  else reasons.unshift(special ? 'ストーリー・イベント用途' : '戦利品の情報を確認中')
-  return { tier, confidence: tier ? 'provisional' : 'unverified', reasons }
+  // A later API lock record calls an old "always open" observation into question.
+  if (review?.status === 'no-lock' && (locks || tasks.length)) {
+    reasons.unshift('現在の施錠データと、開錠先なし／常時開放の資料が一致しません。')
+    return { tier: null, confidence: 'unverified', reasons, roles }
+  }
+
+  if (loot) {
+    reasons.unshift(review?.status === 'no-lock'
+      ? '開錠が不要なため標準ティア F'
+      : `戦利品に基づく標準ティア ${loot.tier}`)
+    return { tier: loot.tier, confidence: 'provisional', reasons, roles }
+  }
+  if (review?.status === 'use') {
+    return { tier: null, confidence: 'usage', reasons, roles }
+  }
+
+  if (!review) reasons.unshift('この鍵IDの戦利品は照合台帳にありません。')
+  return { tier: null, confidence: 'unverified', reasons, roles }
 }
 
 /**
@@ -36,7 +54,7 @@ export function evaluateKey({ locks, tasks, curation, loot }) {
  * @param {{items:Array, maps:Array}} itemsData
  * @param {Array} taskData
  */
-export function buildKeyCatalog(itemsData, taskData) {
+export function buildKeyCatalog(itemsData, taskData, mode) {
   const items = itemsData?.items || []
   const maps = itemsData?.maps || []
   const keyItems = new Map()
@@ -75,10 +93,16 @@ export function buildKeyCatalog(itemsData, taskData) {
     const mapList = [...mapCounts.entries()].map(([name, count]) => ({ name, count }))
     const locks = mapList.reduce((s, m) => s + m.count, 0)
     const tasks = taskMap.has(id) ? [...taskMap.get(id).values()] : []
-    const curation = KEY_CURATION[item.normalizedName] || null
-    const loot = KEY_LOOT[item.normalizedName] || null
-    const evaluation = evaluateKey({ locks, tasks, curation, loot })
-    const primaryMap = mapList[0]?.name || tasks.map((t) => t.map).find(Boolean) || null
+    const review = KEY_REVIEW[id] || null
+    const sourcedLoot = review?.status === 'detailed' ? KEY_LOOT[review.name] : null
+    const reviewUrl = sourcedLoot?.url || (review ? keyReviewSource(review) : null)
+    const loot = sourcedLoot || (review?.tier ? {
+      tier: review.tier, items: review.items, containers: review.containers, url: reviewUrl,
+    } : null)
+    const evaluation = evaluateKey({ locks, tasks, review, loot })
+    const primaryMap = mapList.find(m => m.name === review?.map)?.name || mapList[0]?.name
+      || tasks.find(t => t.map)?.map || review?.map || null
+    const observations = (KEY_OPENINGS[id] || []).filter(sample => sample.mode === SAMPLE_MODES[mode])
     catalog.push({
       id,
       name: item.name || 'Unknown Key',
@@ -91,10 +115,14 @@ export function buildKeyCatalog(itemsData, taskData) {
       locks,
       primaryMap,
       tasks,
-      curation,
       loot,
-      roles: curation?.roles || [],
-      isNew: curation?.isNew || null,
+      review,
+      reviewUrl,
+      referenceUrl: evaluation.confidence === 'unverified'
+        ? (MAP_REVIEW_SOURCES[review?.map] || KEY_INDEX_URL) : null,
+      observations,
+      fallbackUrl: !review ? 'https://json.tarkov.dev/endpoints' : null,
+      isNew: review?.since || null,
       duplicateName: (nameCount[(item.name || '').toLowerCase()] || 0) > 1,
       notInItemDb: !keyItems.has(id),
       ...evaluation,
@@ -104,7 +132,7 @@ export function buildKeyCatalog(itemsData, taskData) {
 }
 
 export function summarizeCatalog(catalog) {
-  const s = { total: catalog.length, provisional: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
+  const s = { total: catalog.length, provisional: 0, usage: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
   TIER_ORDER.forEach((t) => { s.byTier[t] = 0 })
   catalog.forEach((k) => {
     s[k.confidence]++

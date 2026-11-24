@@ -1,6 +1,7 @@
 <script setup>
 // 鍵管理 — 全鍵の所持管理・ティア・根拠を一画面で辿れるカタログ
 import { ref, computed } from 'vue'
+import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { loadLS, saveLS } from '../composables/useStorage.js'
@@ -19,6 +20,7 @@ const {
   toggleOwnedKey, updateKeyUserData,
 } = useUserProgress()
 const { itemsData, taskData } = useApiData()
+const { gameMode } = useAppState()
 
 const UNKNOWN_MAP = '場所不明'
 const COLLAPSED_LS_KEY = 'eft_keys_collapsed_state'
@@ -33,7 +35,7 @@ const SORTS = [
 // ---------------------------------------------------------------------------
 // カタログ
 // ---------------------------------------------------------------------------
-const catalog = computed(() => buildKeyCatalog(itemsData.value, taskData.value))
+const catalog = computed(() => buildKeyCatalog(itemsData.value, taskData.value, gameMode.value))
 const summary = computed(() => summarizeCatalog(catalog.value))
 const completedSet = computed(() => new Set(completedTasks.value))
 const ownedSet = computed(() => new Set(ownedKeys.value))
@@ -65,7 +67,7 @@ function mapCompare(a, b) {
 // ---------------------------------------------------------------------------
 const searchQuery = ref('')
 const mapFilter = ref('')            // '' = 全マップ
-const tierFilter = ref([])           // 選択中のティア。'未確認' を含められる
+const tierFilter = ref([])           // ティアまたはティアのない鍵の分類
 const needNow = ref(false)           // 未完了タスクで必要
 const confidenceFilter = ref('')     // '' | provisional | unverified
 
@@ -99,7 +101,7 @@ const filtered = computed(() => {
     if (confidenceFilter.value && k.confidence !== confidenceFilter.value) return false
     if (tierFilter.value.length) {
       const t = tierOf(k)
-      const label = t || '未確認'
+      const label = t || k.confidence
       if (!tierFilter.value.includes(label)) return false
     }
     if (q) {
@@ -170,18 +172,9 @@ function toggleGroup(name) {
   saveLS(COLLAPSED_LS_KEY, collapsedGroups.value)
 }
 
-const CONF_LABEL = { provisional: '暫定', unverified: '未確認' }
+const CONF_LABEL = Object.fromEntries(KEY_REVIEW_META.confidence.map(({ id, label }) => [id, label]))
 function tarkovUrl(k) {
   return k.normalizedName ? toHttpsUrl(`https://tarkov.dev/item/${encodeURIComponent(k.normalizedName)}`) : null
-}
-function sourceLabels(k) {
-  const ids = k.curation?.src || []
-  const labels = KEY_REVIEW_META.sources.filter((s) => ids.includes(s.id)).map((s) => s.label)
-  if (k.tasks.length || k.locks) {
-    const api = KEY_REVIEW_META.sources[0].label
-    if (!labels.includes(api)) labels.unshift(api)
-  }
-  return labels
 }
 function onRating(id, e) { updateKeyUserData(id, 'rating', e.target.value) }
 function onMemo(id, e) { updateKeyUserData(id, 'memo', e.target.value) }
@@ -198,7 +191,7 @@ const basisOpen = ref(false)
       </div>
       <p class="km-sub">
         全 {{ summary.total }} 本 / 所持 {{ ownedKeys.length }} 本。
-        暫定 {{ summary.provisional }}・未確認 {{ summary.unverified }}
+        評価済み {{ summary.provisional }}・用途のみ {{ summary.usage }}・未確認 {{ summary.unverified }}
         <span class="km-sub-note">(ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 確認)</span>
       </p>
     </header>
@@ -225,9 +218,10 @@ const basisOpen = ref(false)
           :aria-pressed="tierFilter.includes(t)" @click="toggleTier(t)"
         >{{ t }}<small>{{ summary.byTier[t] }}</small></button>
         <button
-          type="button" class="km-chip tier t-none" :class="{ on: tierFilter.includes('未確認') }"
-          :aria-pressed="tierFilter.includes('未確認')" @click="toggleTier('未確認')"
-        >未確認<small>{{ summary.unverified }}</small></button>
+          v-for="status in ['usage', 'unverified']" :key="status" type="button"
+          class="km-chip tier t-none" :class="{ on: tierFilter.includes(status) }"
+          :aria-pressed="tierFilter.includes(status)" @click="toggleTier(status)"
+        >{{ CONF_LABEL[status] }}<small>{{ summary[status] }}</small></button>
       </div>
 
       <div class="km-row km-toggles">
@@ -293,24 +287,27 @@ const basisOpen = ref(false)
           <div v-if="expanded.has(k.id)" class="km-detail">
             <div class="km-col">
               <h3>評価の根拠</h3>
-              <ul class="km-reasons">
+              <ul v-if="k.reasons.length" class="km-reasons">
                 <li v-for="r in k.reasons" :key="r">{{ r }}</li>
               </ul>
-              <template v-if="k.loot">
-                <h3>部屋の戦利品</h3>
-                <p class="km-note">{{ k.loot.room }}</p>
-                <p class="km-note">出現例: {{ k.loot.items.join('、') }}</p>
-                <p v-if="k.loot.containers" class="km-note">容器: {{ k.loot.containers }}</p>
+              <template v-if="k.loot && k.tier && k.tier !== 'F'">
+                <h3>開錠先の戦利品</h3>
+                <p v-if="k.loot.room || k.primaryMap" class="km-note">{{ k.loot.room || k.primaryMap }}</p>
+                <p v-if="k.loot.items?.length" class="km-note">直湧きの出現例 {{ k.loot.items.join('、') }}</p>
+                <p v-if="k.loot.containers" class="km-note">探索できる容器 {{ k.loot.containers }}</p>
                 <p v-if="k.loot.note" class="km-note">{{ k.loot.note }}</p>
-                <p v-if="k.loot.observation" class="km-note">
-                  {{ k.loot.observation.mode }}・{{ k.loot.observation.openings }}回の平均
-                  {{ k.loot.observation.averageRub.toLocaleString('ja-JP') }} ₽／開錠（鍵代控除前）
-                  <a :href="k.loot.observation.url" target="_blank" rel="noopener noreferrer">開錠記録</a>
-                </p>
-                <p class="km-src"><a :href="k.loot.url" target="_blank" rel="noopener noreferrer">部屋の出典</a>（{{ KEY_REVIEW_META.checkedAt }} 確認）</p>
               </template>
-              <p v-if="k.curation?.note" class="km-note">{{ k.curation.note }}</p>
-              <p class="km-src">出典: {{ sourceLabels(k).join(' / ') || '確認できず' }}</p>
+              <p v-if="k.review?.note" class="km-note">{{ k.review.note }}</p>
+              <p v-for="sample in k.observations" :key="sample.slug" class="km-note">
+                {{ sample.mode }}・{{ sample.openings }}回の平均
+                {{ sample.averageRub.toLocaleString('ja-JP') }} ₽／開錠（鍵代控除前）
+                <a :href="`https://raidsignal.com/keys/${sample.slug}`" target="_blank" rel="noopener noreferrer">開錠記録</a>
+              </p>
+              <div class="km-links km-src">
+                <a v-if="k.loot?.url || k.reviewUrl" :href="k.loot?.url || k.reviewUrl" target="_blank" rel="noopener noreferrer">照合した資料</a>
+                <a v-if="k.referenceUrl" :href="k.referenceUrl" target="_blank" rel="noopener noreferrer">マップ・鍵索引</a>
+                <a v-if="k.fallbackUrl" :href="k.fallbackUrl" target="_blank" rel="noopener noreferrer">鍵データの出典</a>
+              </div>
               <p v-if="k.notInItemDb" class="km-note warn">アイテム DB に見つからない鍵 ID です。</p>
             </div>
 
@@ -319,7 +316,7 @@ const basisOpen = ref(false)
               <ul v-if="k.maps.length" class="km-plain">
                 <li v-for="m in k.maps" :key="m.name">{{ m.name }}: {{ m.count }} か所</li>
               </ul>
-              <p v-else class="km-dim">API に施錠データがありません。</p>
+              <p v-else class="km-dim">{{ k.primaryMap ? `${k.primaryMap}（資料）` : '場所の資料なし' }}。APIの施錠データなし。</p>
 
               <h3>必要なタスク</h3>
               <ul v-if="k.tasks.length" class="km-plain">
@@ -368,15 +365,15 @@ const basisOpen = ref(false)
         </div>
         <p class="km-dim">
           ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 時点。{{ KEY_REVIEW_META.gameVersionNote }}
-          標準ティアは戦利品を基準に表示します。タスク・脱出・通行の用途と、モード別の開錠記録も確認できます。
+          標準ティアは部屋の資料をもとにした共通の暫定評価です。開錠記録は該当モードのサンプルのみ表示し、出現率や収益を保証するものではありません。
         </p>
 
         <h4>棚卸し</h4>
         <ul class="km-plain">
-          <li>鍵 {{ summary.total }} 本 (暫定 {{ summary.provisional }} / 未確認 {{ summary.unverified }})</li>
+          <li>鍵 {{ summary.total }} 本 (評価済み {{ summary.provisional }} / 用途のみ {{ summary.usage }} / 未確認 {{ summary.unverified }})</li>
           <li>同名の別 ID: {{ summary.duplicates }} 本 (Folding car key)</li>
           <li>1.2.0.0 の新規鍵: {{ summary.newKeys }} 本 (ZB-1013 key、Security post key)</li>
-          <li>施錠箇所もタスクもなく場所を特定できない鍵: {{ summary.noMap }} 本</li>
+          <li>資料から場所を特定できない鍵: {{ summary.noMap }} 本</li>
         </ul>
 
         <h4>戦利品ティア</h4>
