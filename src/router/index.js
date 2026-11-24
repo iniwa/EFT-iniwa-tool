@@ -10,10 +10,10 @@ const routes = [
         meta: { group: 'work', label: '📝 進捗入力', tab: true, title: '進捗入力' },
     },
     {
-        path: '/result',
-        name: 'result',
-        component: () => import('../components/ResultList.vue'),
-        meta: { group: 'work', label: '📦 必要なアイテム', tab: true, title: '必要なアイテム' },
+        path: '/flowchart',
+        name: 'flowchart',
+        component: () => import('../components/FlowchartView.vue'),
+        meta: { group: 'work', label: '🗺️ フローチャート', tab: true, title: 'フローチャート' },
     },
     {
         path: '/keys',
@@ -22,10 +22,10 @@ const routes = [
         meta: { group: 'work', label: '🔑 鍵管理', tab: true, title: '鍵管理' },
     },
     {
-        path: '/flowchart',
-        name: 'flowchart',
-        component: () => import('../components/FlowchartView.vue'),
-        meta: { group: 'tools', label: '🗺️ フローチャート', tab: true, title: 'フローチャート' },
+        path: '/result',
+        name: 'result',
+        component: () => import('../components/ResultList.vue'),
+        meta: { group: 'tools', label: '📦 必要なアイテム', tab: true, title: '必要なアイテム' },
     },
     {
         path: '/story',

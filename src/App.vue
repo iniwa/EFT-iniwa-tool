@@ -115,8 +115,8 @@ const navGroups = computed(() => {
     })).filter(g => g.items.length)
 })
 
-const MOBILE_TABS = ['input', 'result', 'keys', 'search']
-const TAB_SHORT = { input: '入力', result: '必要品', keys: '鍵', search: '検索' }
+const MOBILE_TABS = ['input', 'flowchart', 'keys', 'search']
+const TAB_SHORT = { input: '入力', flowchart: 'チャート', keys: '鍵', search: '検索' }
 const mobileTabs = computed(() => MOBILE_TABS
     .map(name => router.options.routes.find(r => r.name === name))
     .filter(Boolean).map(r => ({ ...toNavItem(r), short: TAB_SHORT[r.name] })))
