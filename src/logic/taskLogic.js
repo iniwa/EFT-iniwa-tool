@@ -22,6 +22,15 @@ const mapKeywords = {
   'Terminal': ['terminal', 'ターミナル'],
 };
 
+export function isToTheLightTask(task) {
+  const names = [task.normalizedName, task.name, ...(task.nameAliases || [])];
+  return names.some((name) => /^to[\s_-]+the[\s_-]+light(?:[\s_–—:.-]|$)/i.test(name ?? ''));
+}
+
+export function isLightkeeperUnlockTask(task) {
+  return Boolean(task.lightkeeperRequired) || isToTheLightTask(task);
+}
+
 /**
  * タスクのフィルタリングを行う
  * @param {Array} tasks - 全タスクデータ
@@ -32,7 +41,7 @@ const mapKeywords = {
  * @param {boolean} options.showCompleted - 完了済み表示モード
  * @param {boolean} options.showFuture - ロック中タスク表示
  * @param {boolean} options.showKappaOnly - Kappaのみ表示
- * @param {boolean} options.showLightkeeperOnly - Lightkeeperのみ表示
+ * @param {boolean} options.showLightkeeperOnly - Lightkeeper解放タスクのみ表示
  * @returns {Array}
  */
 export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
@@ -90,7 +99,7 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     if (showKappaOnly && !task.kappaRequired) return false;
 
     // LK判定
-    if (showLightkeeperOnly && !task.lightkeeperRequired) return false;
+    if (showLightkeeperOnly && !isLightkeeperUnlockTask(task)) return false;
 
     return true;
   });

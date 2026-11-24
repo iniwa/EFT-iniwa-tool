@@ -181,7 +181,7 @@ function objectiveConstraintLines(obj) {
           <span class="text-info fw-bold">Req Lv: {{ task.minPlayerLevel }}</span>
         </div>
         <div v-if="task.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
-        <div v-if="task.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
+        <div v-if="TaskLogic.isLightkeeperUnlockTask(task)"><span class="badge badge-lk">LK</span></div>
       </div>
       <div
         v-if="taskStatus !== 'complete' && availability?.locked"

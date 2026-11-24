@@ -133,3 +133,16 @@ test('unverified prerequisites never unlock a task or authorize a bulk setup', (
   const orphan = { id: 'orphan', taskRequirements: [{ task: { id: 'missing' }, status: ['complete'] }] }
   assert.deepEqual(getInitialSetupPlan(orphan.id, [orphan]), [{ id: orphan.id, status: 'complete', conflict: true }])
 })
+
+test('LK shows the unlock chain when the source flags are all false', () => {
+  const oldTask = { id: 'old', name: 'Network Provider', lightkeeperRequired: true }
+  const start = { id: 'start', name: 'To the Light - Trust but Verify', lightkeeperRequired: false }
+  const end = { id: 'end', name: '解放タスク', nameAliases: ['To the Light - Getting Acquainted'] }
+  const bySlug = { id: 'slug', name: '別の解放タスク', normalizedName: 'to-the-light-the-other-side' }
+  const afterUnlock = { id: '63966faeea19ac7ed845db2c', name: 'Information Source', lightkeeperRequired: false }
+  const options = { showLightkeeperOnly: true }
+  assert.deepEqual(filterActiveTasks([start, end, bySlug, afterUnlock], [], options), [start, end, bySlug])
+  assert.deepEqual(filterActiveTasks([oldTask, afterUnlock], [], options), [oldTask])
+  assert.deepEqual(filterActiveTasks([start, end], [start.id], { ...options, showCompleted: true }), [start])
+  assert.deepEqual(filterActiveTasks([{ ...start, minPlayerLevel: 40 }], [], { ...options, playerLevel: 10 }), [])
+})

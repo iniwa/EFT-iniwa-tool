@@ -452,6 +452,7 @@ export function convertMainData(bundle) {
   const tasks = Object.values(tasksRaw).map((raw) => ({
     id: raw.id,
     name: tr(raw.name, tasksDict, tasksEnDict),
+    normalizedName: raw.normalizedName,
     nameAliases: [...new Set([tr(raw.name, tasksDict, tasksEnDict), tr(raw.name, tasksEnDict, null)].filter(Boolean))],
     minPlayerLevel: raw.minPlayerLevel || 0,
     availableDelaySecondsMin: raw.availableDelaySecondsMin ?? null,

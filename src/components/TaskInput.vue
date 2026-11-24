@@ -106,6 +106,11 @@ const filteredTasksList = computed(() => {
   })
 })
 
+const showLightkeeperReference = computed(() =>
+  showLightkeeperOnly.value && !showCompleted.value && taskData.value?.length > 0
+  && !taskData.value.some(TaskLogic.isToTheLightTask),
+)
+
 // --- タスク: トレーダー/マップグループ ---
 const tasksByTrader = computed(() => TaskLogic.groupTasksByTrader(filteredTasksList.value))
 const tasksByMap = computed(() => TaskLogic.groupTasksByMap(filteredTasksList.value))
@@ -251,10 +256,22 @@ const hideoutPercent = computed(() => {
         <div class="d-flex flex-wrap gap-2">
           <button type="button" class="chip" :aria-pressed="showCompleted" @click="showCompleted = !showCompleted">{{ showCompleted ? '履歴を閉じる' : '履歴' }}</button>
           <button type="button" class="chip" :aria-pressed="showKappaOnly" title="Kappa必須のみ" @click="showKappaOnly = !showKappaOnly">Kappa</button>
-          <button type="button" class="chip" :aria-pressed="showLightkeeperOnly" title="Lightkeeper必須のみ" @click="showLightkeeperOnly = !showLightkeeperOnly">LK</button>
+          <button type="button" class="chip" :aria-pressed="showLightkeeperOnly" title="ライトキーパー解放タスク" @click="showLightkeeperOnly = !showLightkeeperOnly">LK</button>
           <button v-if="!showCompleted" type="button" class="chip" :aria-pressed="showFuture" @click="showFuture = !showFuture">ロック中も表示</button>
         </div>
       </div>
+
+      <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">
+        <div>
+          <strong>ライトキーパー解放タスク（参考）</strong>
+          <p>現在の取得データに「To the Light」がありません。解放の流れは以下から確認できます。</p>
+          <ul class="mb-0">
+            <li><a href="https://t.me/escapefromtarkovEN/6815" target="_blank" rel="noopener noreferrer">解放の開始条件（公式）</a></li>
+            <li><a href="https://tarkov.help/en/quest/to-the-light-trust-but-verify" target="_blank" rel="noopener noreferrer">To the Light - Trust but Verify</a>（開始）</li>
+            <li><a href="https://tarkov.help/en/quest/to-the-light-getting-acquainted" target="_blank" rel="noopener noreferrer">To the Light - Getting Acquainted</a>（解放）</li>
+          </ul>
+        </div>
+      </section>
 
       <details
         v-if="traderRequirementProfiles.length > 0"
@@ -370,7 +387,7 @@ const hideoutPercent = computed(() => {
                 <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark">進行中</span>
                 <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger">失敗</span>
                 <span v-if="task.kappaRequired" class="badge badge-kappa">KAPPA</span>
-                <span v-if="task.lightkeeperRequired" class="badge badge-lk">LK</span>
+                <span v-if="TaskLogic.isLightkeeperUnlockTask(task)" class="badge badge-lk">LK</span>
                 <span v-if="isLocked(task)" class="text-warning">ロック中</span>
                 <span v-if="task.minPlayerLevel > 1">Lv.{{ task.minPlayerLevel }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
@@ -382,7 +399,7 @@ const hideoutPercent = computed(() => {
           </div>
         </section>
 
-        <div v-if="taskGroups.length === 0" class="empty-state">
+        <div v-if="taskGroups.length === 0 && !showLightkeeperReference" class="empty-state">
           <strong>表示するタスクがありません</strong>
           検索語や絞込を解除するか、「ロック中も表示」を試してください。
         </div>
