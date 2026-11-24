@@ -1,5 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import { PROGRESSION_TASK_POOLS } from '../src/data/progressionTaskPools.js'
 import { getProgressionPoolCounts, getTaskProgressionChecks } from '../src/logic/globalConditionLabels.js'
 import { convertMainData } from '../src/logic/jsonApiAdapter.js'
@@ -76,11 +77,37 @@ test('community counts require the full pool in the active catalog', () => {
   assert.deepEqual(filterActiveTasks([task], enough, {
     ...options, progressionPoolCounts: getProgressionPoolCounts(catalog, enough),
   }), [task])
-  assert.deepEqual(filterActiveTasks([task], belowCount, { ...options, progressionPoolCounts: new Map() }), [task])
+  const incompleteCatalog = { progressionPoolCounts: new Map() }
+  assert.deepEqual(filterActiveTasks([task], belowCount, incompleteCatalog), [])
+  assert.deepEqual(filterActiveTasks([task], belowCount, { ...incompleteCatalog, showFuture: true }), [task])
   assert.equal(getTaskProgressionChecks({ otherRequirements: [
     { ...requirement, variableId: '6a3cf95c6b35530c4a4f532e' },
   ] }, getProgressionPoolCounts(catalog, []))[0].count, null)
   assert.deepEqual(getTaskProgressionChecks({ otherRequirements: [
     { ...requirement, compareMethod: '==' },
   ] }, getProgressionPoolCounts(catalog, [])), [])
+})
+
+test('tasks reported with unresolved counts appear only with locked tasks enabled', async () => {
+  const fixture = new URL('./fixtures/global-conditions-real.json', import.meta.url)
+  const { unlocks } = JSON.parse(await readFile(fixture, 'utf8'))
+  const names = ['Best Job in the World', 'Corporate Secrets', 'Dressed to Kill', 'Shooter Born in Heaven']
+  const reportedTasks = names.map((name) => {
+    const { taskId, condition } = unlocks.flatMap(group => group.usages).find(task => task.name === name)
+    return { id: taskId, name, otherRequirements: [condition] }
+  })
+  const unrelated = { id: 'opaque', name: 'Opaque', otherRequirements: [
+    { type: 'globalVariable', variableId: 'unknown', compareMethod: '==', value: 0 },
+  ] }
+  const tasks = [...reportedTasks, unrelated]
+  const options = { progressionPoolCounts: getProgressionPoolCounts(tasks, []) }
+
+  for (const task of reportedTasks) {
+    const availability = evaluateTaskAvailability(task, [], options)
+    assert.equal(availability.progressionChecks[0]?.count, null, task.name)
+    assert.equal(availability.locked, true, task.name)
+  }
+  assert.deepEqual(filterActiveTasks(tasks, [], options), [unrelated])
+  assert.deepEqual(filterActiveTasks(tasks, [], { ...options, showFuture: true }), tasks)
+  assert.deepEqual(filterActiveTasks(tasks, [tasks[0].id], { ...options, showCompleted: true }), [tasks[0]])
 })

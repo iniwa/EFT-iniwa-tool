@@ -217,7 +217,7 @@ export function evaluateTaskAvailability(task, completedTaskIds = [], options = 
   const levelMet = !playerLevel || requiredPlayerLevel <= playerLevel;
   const trader = evaluateTraderRequirements(task, traderProgress);
   const progressionChecks = progressionPoolCounts ? getTaskProgressionChecks(task, progressionPoolCounts) : [];
-  const progressionMet = progressionChecks.every(({ count, required }) => count == null || count >= required);
+  const progressionMet = progressionChecks.every(({ count, required }) => count != null && count >= required);
   return {
     locked: !(reqMet && levelMet && progressionMet && (!traderRequirementsEnabled || trader.met)),
     reqMet, levelMet, requiredPlayerLevel, trader, progressionChecks,

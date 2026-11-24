@@ -81,8 +81,7 @@ const taskDisplay = computed(() => new Map(filteredTasksList.value.map((task) =>
     traderLoyaltyById: traderLoyaltyById.value,
     progressionPoolCounts: poolCounts.value,
   })
-  const checks = showCompleted.value || taskStatuses.value[task.id] === 'active'
-    ? [] : availability.progressionChecks
+  const checks = showCompleted.value ? [] : availability.progressionChecks
   return [task.id, {
     ...availability,
     checks,
@@ -231,7 +230,7 @@ const hideoutPercent = computed(() => {
       </div>
 
       <p v-if="!showCompleted && taskData.length" class="small text-muted mb-2">
-        クリア数や必要LLのプレイヤーレベルが未達のタスクは、「ロック中も表示」で確認できます。
+        必要レベルやクリア数が未達のタスク、クリア数を確認できないタスクは「ロック中も表示」で確認できます。
       </p>
 
       <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">

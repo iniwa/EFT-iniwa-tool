@@ -193,13 +193,13 @@ function objectiveConstraintLines(obj) {
         v-if="taskStatus !== 'complete' && availability?.locked"
         class="alert alert-secondary py-2 px-3 small"
       >
-        🔒 現在の入力内容では未解放です。下の条件を確認してください。
+        🔒 解放条件を確認してください。
         <div
           v-for="({ trader, tier, count, required }, index) in availability.progressionChecks.filter(
-            ({ count, required }) => count != null && count < required,
+            ({ count, required }) => count == null || count < required,
           )"
           :key="index"
-        >{{ trader }} LL{{ tier }} {{ count }}/{{ required }}件（参考）</div>
+        >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</div>
       </div>
 
       <div
