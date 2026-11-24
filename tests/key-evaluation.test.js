@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  buildKeyCatalog, summarizeCatalog, evaluateKey, effectiveTier, tierFromScore,
+  buildKeyCatalog, summarizeCatalog, evaluateKey, effectiveTier,
 } from '../src/logic/keyEvaluation.js'
 import { KEY_CURATION } from '../src/data/keyCuration.js'
 
@@ -31,7 +31,7 @@ test('catalog merges items, locks and tasks, and flags duplicates / unknown IDs'
   assert.equal(cat.length, 7) // 6 key items + 1 lock-only ID, gun excluded
   assert.equal(by.a.locks, 3)
   assert.equal(by.a.tasks.length, 1)
-  assert.equal(by.a.confidence, 'confirmed')
+  assert.equal(by.a.confidence, 'unverified')
   assert.equal(by.b.duplicateName, true)
   assert.equal(by.c.duplicateName, true)
   assert.equal(by.missing.notInItemDb, true)
@@ -46,20 +46,34 @@ test('evidence-free keys get no tier; special keys are excluded from tiers', () 
   assert.equal(by.e.tier, null)
   const s = summarizeCatalog(cat)
   assert.equal(s.total, 7)
-  assert.equal(s.confirmed + s.provisional + s.unverified, 7)
+  assert.equal(s.provisional + s.unverified, 7)
 })
 
-test('scoring: task + locks, curated roles, provisional vs confirmed', () => {
-  const lockOnly = evaluateKey({ locks: 1, tasks: [], curation: null })
-  assert.equal(lockOnly.tier, 'D')
-  assert.equal(lockOnly.confidence, 'provisional')
-  const kappa = evaluateKey({ locks: 3, tasks: [{ kappa: true }], curation: null })
-  assert.equal(kappa.score, 6)
-  assert.equal(kappa.tier, 'A')
-  const extract = evaluateKey({ locks: 1, tasks: [], curation: KEY_CURATION['zb-014-key'] })
-  assert.equal(extract.tier, 'S')
-  assert.equal(extract.confidence, 'confirmed')
-  assert.equal(tierFromScore(0), 'F')
+test('loot tier is independent of task or lock count and travel utility', () => {
+  const tasks = [{ kappa: true }, { lightkeeper: true }]
+  assert.equal(evaluateKey({ locks: 9, tasks, curation: null }).tier, null)
+  const travel = evaluateKey({ locks: 1, tasks: [], curation: KEY_CURATION['zb-014-key'] })
+  assert.equal(travel.tier, null)
+  assert.ok(travel.reasons.includes('脱出口'))
+  const room = evaluateKey({ locks: 1, tasks, curation: { roles: ['loot-high'] } })
+  assert.equal(room.tier, 'A')
+  assert.equal(room.confidence, 'provisional')
+})
+
+test('marked rooms and Rusted bloody have SS with sourced loot, measured results stay mode-specific', () => {
+  const names = ['dorm-room-314-marked-key', 'abandoned-factory-marked-key', 'mysterious-room-marked-key',
+    'rb-vo-marked-key', 'rb-bk-marked-key', 'rb-pkpm-marked-key', 'rusted-bloody-key']
+  const keys = buildKeyCatalog({ items: names.map(name => key(name, name, name)) }, [])
+  for (const entry of keys) {
+    assert.equal(entry.tier, 'SS', entry.id)
+    assert.ok(entry.loot.url.startsWith('https://'))
+    assert.ok(entry.loot.items.length)
+  }
+  for (const room of keys.slice(0, 6)) {
+    assert.equal(room.loot.observation.mode, 'Season 1 PvP')
+    assert.equal(room.loot.observation.openings, 10)
+  }
+  assert.equal(keys.at(-1).loot.observation, undefined)
 })
 
 test('personal rating overrides the standard tier only when set', () => {

@@ -134,6 +134,21 @@ export const STORY_META = {
       'Wikiの更新日が、表示中のゲーム版日付より新しく、位置情報が古い可能性',
     ],
   },
+  boreas: {
+    order: 10, confidence: 'partial', changed: true,
+    summary: '砕氷船Boreasの調査を、開始からMechanicの解析報告まで記録します。ゲーム内で確認した節目を手動でチェックしてください。',
+    unlock: { text: 'Paradigm Shippingのポスターを入手する。無線からの開始例もあります。', confirmed: true },
+    sources: [
+      WIKI('Boreas', 'Boreas'),
+      { label: 'Tarkov.help（終盤の納品）', url: 'https://tarkov.help/en/quest/boreas' },
+      { label: '公式 Patch 1.1.5.0（乗船条件）', url: 'https://store.steampowered.com/news/posts/?enddate=1788872855&feed=steam_community_announcements' },
+    ],
+    branches: [
+      { title: '輸送手配', text: 'PraporとBTR Driverの手順は過去の選択に応じて変わります。ゲーム内で両者の指示を確認してください。' },
+      { title: '直行解放', text: 'Stick to Itによるマップ選択からの直行解放は、章完了と別に記録します。' },
+    ],
+    unconfirmed: ['輸送分岐の一部の撃破数は資料間で不一致。ゲーム内表示を優先してください。'],
+  },
   'boreas-reference': {
     order: 10, confidence: 'reference', changed: true,
     summary: 'Boreas（Icebreaker 章）。進行を確定できる資料が揃っておらず、本ツールでは参考情報と手動記録のみ。完了判定・一括完了は行いません。',

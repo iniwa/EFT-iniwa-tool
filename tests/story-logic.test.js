@@ -12,14 +12,14 @@ const chapter = { id: 'c', phases: [{ id: 'p', title: 'P', steps: [
   { id: 'h', type: 'check', showIf: { stepId: 'ch', value: 'x' } },
 ] }] }
 
-test('every current chapter has evidence metadata and unique step IDs; Boreas is reference only', () => {
+test('every current chapter has evidence metadata and unique step IDs; legacy Boreas records remain separate', () => {
   for (const c of chapters) {
     assert.ok(STORY_META[c.id], c.id)
     assert.ok(STORY_META[c.id].sources.length && STORY_META[c.id].unlock.text)
     const ids = c.phases.flatMap(p => p.steps.map(s => s.id))
     assert.equal(new Set(ids).size, ids.length, c.id)
   }
-  assert.equal(chapters.length, 9)
+  assert.equal(chapters.length, 10)
   assert.equal(STORY_META['boreas-reference'].confidence, 'reference')
 })
 
@@ -118,4 +118,20 @@ test('legacy checks with different objectives stay in storage without completing
     assert.equal(getChapterStats(chapter, saved).done, 0)
     assert.equal(findUnmappedRecords(chapters, saved).some(record => record.stepId === Object.keys(records)[0]), true)
   }
+})
+
+test('Boreas counts manual milestones and requires the in-game report for chapter completion', () => {
+  const boreas = chapters.find(c => c.id === 'boreas')
+  const milestones = boreas.phases.flatMap(phase => phase.steps).filter(isRequiredStep)
+  const report = milestones.at(-1)
+  assert.equal(report.id, 'boreas_report_received')
+  assert.deepEqual(getBulkCompletableStepIds(boreas), [])
+  const old = { 'boreas-reference': { '69a05f6893647652e0182471': true } }
+  assert.equal(getChapterStats(boreas, old).done, 0)
+  const progress = { boreas: Object.fromEntries(milestones.slice(0, -1).map(step => [step.id, true])) }
+  assert.equal(getChapterStats(boreas, progress).complete, false)
+  assert.equal(findNextStep(boreas, progress).step.id, report.id)
+  progress.boreas[report.id] = true
+  assert.equal(getChapterStats(boreas, progress).complete, true)
+  assert.equal(progress.boreas.boreas_direct_access, undefined)
 })

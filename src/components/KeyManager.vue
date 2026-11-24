@@ -170,7 +170,7 @@ function toggleGroup(name) {
   saveLS(COLLAPSED_LS_KEY, collapsedGroups.value)
 }
 
-const CONF_LABEL = { confirmed: '確定', provisional: '暫定', unverified: '未確認' }
+const CONF_LABEL = { provisional: '暫定', unverified: '未確認' }
 function tarkovUrl(k) {
   return k.normalizedName ? toHttpsUrl(`https://tarkov.dev/item/${encodeURIComponent(k.normalizedName)}`) : null
 }
@@ -198,7 +198,7 @@ const basisOpen = ref(false)
       </div>
       <p class="km-sub">
         全 {{ summary.total }} 本 / 所持 {{ ownedKeys.length }} 本。
-        確定 {{ summary.confirmed }}・暫定 {{ summary.provisional }}・未確認 {{ summary.unverified }}
+        暫定 {{ summary.provisional }}・未確認 {{ summary.unverified }}
         <span class="km-sub-note">(ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 確認)</span>
       </p>
     </header>
@@ -296,7 +296,19 @@ const basisOpen = ref(false)
               <ul class="km-reasons">
                 <li v-for="r in k.reasons" :key="r">{{ r }}</li>
               </ul>
-              <p v-if="k.score !== null" class="km-score">合計 {{ k.score }} 点 → 標準ティア {{ k.tier }}</p>
+              <template v-if="k.loot">
+                <h3>部屋の戦利品</h3>
+                <p class="km-note">{{ k.loot.room }}</p>
+                <p class="km-note">出現例: {{ k.loot.items.join('、') }}</p>
+                <p v-if="k.loot.containers" class="km-note">容器: {{ k.loot.containers }}</p>
+                <p v-if="k.loot.note" class="km-note">{{ k.loot.note }}</p>
+                <p v-if="k.loot.observation" class="km-note">
+                  {{ k.loot.observation.mode }}・{{ k.loot.observation.openings }}回の平均
+                  {{ k.loot.observation.averageRub.toLocaleString('ja-JP') }} ₽／開錠（鍵代控除前）
+                  <a :href="k.loot.observation.url" target="_blank" rel="noopener noreferrer">開錠記録</a>
+                </p>
+                <p class="km-src"><a :href="k.loot.url" target="_blank" rel="noopener noreferrer">部屋の出典</a>（{{ KEY_REVIEW_META.checkedAt }} 確認）</p>
+              </template>
               <p v-if="k.curation?.note" class="km-note">{{ k.curation.note }}</p>
               <p class="km-src">出典: {{ sourceLabels(k).join(' / ') || '確認できず' }}</p>
               <p v-if="k.notInItemDb" class="km-note warn">アイテム DB に見つからない鍵 ID です。</p>
@@ -356,32 +368,23 @@ const basisOpen = ref(false)
         </div>
         <p class="km-dim">
           ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 時点。{{ KEY_REVIEW_META.gameVersionNote }}
-          評価は通常/PVE のモードごとに、そのモードのデータで計算します。
+          標準ティアは戦利品を基準に表示します。タスク・脱出・通行の用途と、モード別の開錠記録も確認できます。
         </p>
 
         <h4>棚卸し</h4>
         <ul class="km-plain">
-          <li>鍵 {{ summary.total }} 本 (確定 {{ summary.confirmed }} / 暫定 {{ summary.provisional }} / 未確認 {{ summary.unverified }})</li>
+          <li>鍵 {{ summary.total }} 本 (暫定 {{ summary.provisional }} / 未確認 {{ summary.unverified }})</li>
           <li>同名の別 ID: {{ summary.duplicates }} 本 (Folding car key)</li>
           <li>1.2.0.0 の新規鍵: {{ summary.newKeys }} 本 (ZB-1013 key、Security post key)</li>
           <li>施錠箇所もタスクもなく場所を特定できない鍵: {{ summary.noMap }} 本</li>
         </ul>
 
-        <h4>点数のつけ方</h4>
-        <table class="km-table">
-          <tbody>
-            <tr v-for="c in KEY_REVIEW_META.criteria" :key="c.label">
-              <th scope="row">{{ c.label }}</th><td>+{{ c.points }}</td><td>{{ c.text }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h4>点数とティア</h4>
+        <h4>戦利品ティア</h4>
         <table class="km-table">
           <tbody>
             <tr v-for="t in KEY_REVIEW_META.tiers" :key="t.tier">
               <th scope="row"><span class="km-tier" :class="'t-' + t.tier"><b>{{ t.tier }}</b></span></th>
-              <td>{{ t.min }} 点以上</td><td>{{ t.text }}</td>
+              <td>{{ t.text }}</td>
             </tr>
           </tbody>
         </table>
@@ -478,7 +481,7 @@ const basisOpen = ref(false)
 .km-reasons, .km-plain { margin: 0; padding-left: 18px; font-size: 13px; }
 .km-plain { list-style: none; padding-left: 0; }
 .km-plain li { margin-bottom: 2px; }
-.km-score, .km-note, .km-src { margin: 6px 0 0; font-size: 12.5px; color: var(--color-text-muted); }
+.km-note, .km-src { margin: 6px 0 0; font-size: 12.5px; color: var(--color-text-muted); }
 .km-note.warn { color: #f0a070; }
 .km-dim { color: var(--color-text-muted); font-size: 13px; margin: 0; }
 .km-task { background: none; border: 0; padding: 0; color: var(--info); text-decoration: underline; cursor: pointer; text-align: left; }

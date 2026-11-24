@@ -39,7 +39,7 @@ watch(activeChapter, (chapter) => {
 const isReference = computed(() => selectedChapterId.value === REF_ID)
 const meta = computed(() => STORY_META[selectedChapterId.value] || null)
 
-// 一覧（Wiki掲載順 → 未登録章は末尾）。Boreas は参考情報として最後に置く
+// Wiki掲載順。旧Boreas手動記録は通常章と別に表示する。
 const sortedChapters = computed(() => [...STORY_CHAPTERS].sort((a, b) => (STORY_META[a.id]?.order ?? 99) - (STORY_META[b.id]?.order ?? 99)))
 const mainChapters = computed(() => sortedChapters.value.filter(c => c.category === 'main'))
 const sideChapters = computed(() => sortedChapters.value.filter(c => c.category === 'side'))
@@ -127,7 +127,7 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
       <label for="story-chapter-select" class="story-picker-label">章を選ぶ</label>
       <select id="story-chapter-select" class="form-select form-select-sm" :value="selectedChapterId" @change="selectedChapterId = $event.target.value">
         <option v-for="c in sortedChapters" :key="c.id" :value="c.id">{{ c.title }}{{ STATUS_LABEL[statusOf(c.id)] ? '（' + STATUS_LABEL[statusOf(c.id)] + '）' : '' }}</option>
-        <option :value="REF_ID">Boreas（参考のみ）</option>
+        <option :value="REF_ID">Boreas（旧手動記録）</option>
       </select>
     </div>
 
@@ -152,10 +152,10 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           </span>
           <span class="rail-count" :class="'st-' + statusOf(c.id)">{{ statsById[c.id].total ? statsById[c.id].done + '/' + statsById[c.id].total : '—' }}</span>
         </button>
-        <p class="rail-group">参考情報（進行は確定しない）</p>
+        <p class="rail-group">旧手動記録</p>
         <button class="rail-item" :class="{ active: isReference }" :aria-current="isReference ? 'true' : null" @click="selectedChapterId = REF_ID">
-          <span class="rail-no">10</span>
-          <span class="rail-main"><span class="rail-name">Boreas</span></span>
+          <span class="rail-no">·</span>
+          <span class="rail-main"><span class="rail-name">Boreas（旧記録）</span></span>
           <span class="rail-count st-ref">参考</span>
         </button>
       </nav>
@@ -207,6 +207,7 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
             <p class="branch-label">資料上の流れ（未検証・順序は確定ではありません）</p>
             <ol><li v-for="o in meta.outline" :key="o">{{ o }}</li></ol>
           </section>
+          <button type="button" class="btn btn-outline-info btn-sm mb-3" @click="selectedChapterId = 'boreas'">通常章のBoreasへ</button>
           <BoreasReference />
         </template>
 
@@ -225,9 +226,9 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
             <div class="story-bar story-bar-md flex-grow-1" role="progressbar" :aria-valuenow="pct(stats)" aria-valuemin="0" aria-valuemax="100" aria-label="この章の進捗"><span :style="{ width: pct(stats) + '%' }"></span></div>
             <span class="small text-secondary">{{ stats.done }} / {{ stats.total }}</span>
-            <button v-if="stats.done < stats.total" class="btn btn-sm btn-outline-success" @click="completeChapter">&#10003; チェック項目を一括完了</button>
-            <button v-else class="btn btn-sm btn-outline-secondary" @click="resetChapter">リセット</button>
-            <a v-if="safeUrl(activeChapter.wikiLink)" :href="safeUrl(activeChapter.wikiLink)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-info">英語Wiki</a>
+            <button v-if="!activeChapter.manualOnly && stats.done < stats.total" class="btn btn-sm btn-outline-success" @click="completeChapter">&#10003; チェック項目を一括完了</button>
+            <button v-else-if="stats.done > 0" class="btn btn-sm btn-outline-secondary" @click="resetChapter">リセット</button>
+            <a v-if="safeUrl(activeChapter.wikiLink)" :href="safeUrl(activeChapter.wikiLink)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-info">{{ activeChapter.wikiLabel || '英語Wiki' }}</a>
           </div>
 
           <p v-if="stats.complete" class="done-banner">このチャプターの全必須手順が完了しました</p>

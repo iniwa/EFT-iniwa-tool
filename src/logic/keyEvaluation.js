@@ -2,61 +2,33 @@
 // 鍵カタログの組み立てと標準ティアの算出 (純粋関数)。
 // ティアは「標準評価」。利用者の個人評価 (keyUserData.rating) とは別に扱う。
 
-import { KEY_CURATION, KEY_REVIEW_META, ROLE_LABELS } from '../data/keyCuration.js'
+import { KEY_CURATION, ROLE_LABELS } from '../data/keyCuration.js'
+import { KEY_LOOT } from '../data/keyLoot.js'
 
 export const TIER_ORDER = ['SS', 'S', 'A', 'B', 'C', 'D', 'F']
-const ROLE_POINTS = { extract: 6, access: 7, 'access-core': 9, 'income-high': 5, 'income-mid': 2, 'loot-high': 3, 'loot-mid': 1 }
-
-export function tierFromScore(score) {
-  for (const t of KEY_REVIEW_META.tiers) if (score >= t.min) return t.tier
-  return 'F'
-}
-
 export function tierRank(tier) {
   const i = TIER_ORDER.indexOf(tier)
   return i === -1 ? TIER_ORDER.length : i
 }
 
-/** 1 本の鍵の評価。facts: { locks, tasks, curation } */
-export function evaluateKey({ locks, tasks, curation }) {
-  const cur = curation || {}
-  const roles = cur.roles || []
-  const reasons = []
-  const hasKappa = tasks.some((t) => t.kappa)
-  const hasLk = tasks.some((t) => t.lightkeeper)
+const LOOT_TIERS = { 'income-high': 'A', 'loot-high': 'A', 'income-mid': 'B', 'loot-mid': 'B' }
 
-  if (cur.special) {
-    return { tier: null, score: null, confidence: 'unverified', reasons: ['ストーリー・イベント用など、探索向けの評価対象外'], basis: ['special'] }
-  }
-  if (cur.unlocked && tasks.length === 0 && locks === 0) {
-    return { tier: 'F', score: 0, confidence: 'provisional', reasons: ['Wiki は施錠なしと記載、API にも施錠・タスクの記録なし (記載版が古い可能性)'], basis: ['unlocked'] }
-  }
+/** The standard tier measures loot. Task, travel and lock evidence only describes usage. */
+export function evaluateKey({ locks, tasks, curation, loot }) {
+  const { roles = [], special, unlocked } = curation || {}
+  const reasons = roles.filter(role => !LOOT_TIERS[role]).map(role => ROLE_LABELS[role])
+  if (tasks.length) reasons.push(`タスクで使用 ${tasks.length} 件`)
+  if (locks) reasons.push(`施錠 ${locks} か所`)
 
-  let score = 0
-  roles.forEach((r) => {
-    score += ROLE_POINTS[r] || 0
-    reasons.push(`${ROLE_LABELS[r]} (+${ROLE_POINTS[r]})`)
-  })
-  if (tasks.length) {
-    const p = hasKappa ? 4 : hasLk ? 3 : 2
-    score += p
-    reasons.push(`${hasKappa ? 'Kappa 必須' : hasLk ? 'Lightkeeper 必須' : 'タスク'}で必要 ${tasks.length} 件 (+${p})`)
-  }
-  if (locks >= 3) { score += 2; reasons.push(`施錠 ${locks} か所 (+2)`) }
-  else if (locks >= 1) { score += 1; reasons.push(`施錠 ${locks} か所 (+1)`) }
-
-  if (!roles.length && !tasks.length && locks === 0) {
-    return { tier: null, score: null, confidence: 'unverified', reasons: ['施錠箇所・タスク使用・出典のいずれも確認できず'], basis: [] }
-  }
-
-  const strong = tasks.length > 0 || roles.some((r) => r === 'access' || r === 'access-core' || r === 'extract')
-  return {
-    tier: tierFromScore(score),
-    score,
-    confidence: strong ? 'confirmed' : 'provisional',
-    reasons,
-    basis: [...roles, ...(tasks.length ? ['task'] : []), ...(locks ? ['lock'] : [])],
-  }
+  const curatedTier = roles.map(role => LOOT_TIERS[role]).filter(Boolean)
+    .sort((a, b) => tierRank(a) - tierRank(b))[0]
+  const noLock = unlocked && !tasks.length && locks === 0
+  const tier = loot?.tier || (!special && (curatedTier || (noLock ? 'F' : null))) || null
+  if (loot) reasons.unshift(`部屋の戦利品に基づく標準ティア ${tier}`)
+  else if (curatedTier && tier) reasons.unshift('出典の物資情報に基づく暫定ティア')
+  else if (noLock && tier) reasons.unshift('施錠なしとの資料あり')
+  else reasons.unshift(special ? 'ストーリー・イベント用途' : '戦利品の情報を確認中')
+  return { tier, confidence: tier ? 'provisional' : 'unverified', reasons }
 }
 
 /**
@@ -104,7 +76,8 @@ export function buildKeyCatalog(itemsData, taskData) {
     const locks = mapList.reduce((s, m) => s + m.count, 0)
     const tasks = taskMap.has(id) ? [...taskMap.get(id).values()] : []
     const curation = KEY_CURATION[item.normalizedName] || null
-    const evaluation = evaluateKey({ locks, tasks, curation })
+    const loot = KEY_LOOT[item.normalizedName] || null
+    const evaluation = evaluateKey({ locks, tasks, curation, loot })
     const primaryMap = mapList[0]?.name || tasks.map((t) => t.map).find(Boolean) || null
     catalog.push({
       id,
@@ -119,6 +92,7 @@ export function buildKeyCatalog(itemsData, taskData) {
       primaryMap,
       tasks,
       curation,
+      loot,
       roles: curation?.roles || [],
       isNew: curation?.isNew || null,
       duplicateName: (nameCount[(item.name || '').toLowerCase()] || 0) > 1,
@@ -130,7 +104,7 @@ export function buildKeyCatalog(itemsData, taskData) {
 }
 
 export function summarizeCatalog(catalog) {
-  const s = { total: catalog.length, confirmed: 0, provisional: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
+  const s = { total: catalog.length, provisional: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
   TIER_ORDER.forEach((t) => { s.byTier[t] = 0 })
   catalog.forEach((k) => {
     s[k.confidence]++
