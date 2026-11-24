@@ -43,3 +43,56 @@ test('branch-gated steps count only for the chosen route; next step skips notes 
   assert.equal(findNextStep(chapter, withX).step.id, 'h')
   assert.equal(findNextStep(chapter, { c: { a: true, ch: 'y' } }), null)
 })
+
+import { isRequiredStep, routeFromCaseChoice, isStepVisible, getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
+
+test('showIf references resolve, choices have options, and reference steps are never required', () => {
+  for (const c of chapters) {
+    const steps = new Map(c.phases.flatMap(p => p.steps).map(s => [s.id, s]))
+    for (const s of steps.values()) {
+      for (const cond of [].concat(s.showIf || [])) {
+        const target = (cond.chapterId ? chapters.find(x => x.id === cond.chapterId) : c).phases.flatMap(p => p.steps).find(t => t.id === cond.stepId)
+        assert.ok(target?.type === 'choice', c.id + ':' + s.id)
+        assert.ok(target.options.some(o => o.value === cond.value), c.id + ':' + s.id)
+      }
+      if (s.type === 'choice') assert.ok(s.options?.length >= 2, s.id)
+      if (s.reference) assert.equal(isRequiredStep(s), false)
+    }
+  }
+})
+
+test('Falling Skies case choice maps only the three known values to a Ticket route; unknown values never auto-select', () => {
+  assert.equal(routeFromCaseChoice('give'), 'prapor')
+  assert.equal(routeFromCaseChoice('pretend'), 'prapor')
+  assert.equal(routeFromCaseChoice('keep'), 'mechanic')
+  for (const v of ['old', '', null, undefined, true, 'Keep']) assert.equal(routeFromCaseChoice(v), null)
+  const fs = chapters.find(c => c.id === 'falling_skies').phases.flatMap(p => p.steps).find(s => s.id === 'fs_case_choice')
+  assert.deepEqual(fs.options.map(o => o.value).sort(), ['give', 'keep', 'pretend'])
+})
+
+test('The Ticket route steps follow the chosen branch; old ending record is kept but not applied', () => {
+  const t = chapters.find(c => c.id === 'the_ticket')
+  const step = id => t.phases.flatMap(p => p.steps).find(s => s.id === id)
+  const p = (route, offer, extra = {}) => ({ the_ticket: { tt_route_choice: route, tt_kerman_offer: offer, ...extra } })
+  assert.equal(isStepVisible(step('tt_survivor_kills_50'), 'the_ticket', p('mechanic', 'refuse')), true)
+  assert.equal(isStepVisible(step('tt_survivor_kills_50'), 'the_ticket', p('prapor', 'refuse')), false)
+  assert.equal(isStepVisible(step('tt_case_workbench'), 'the_ticket', p('prapor', 'accept')), false)
+  assert.equal(isStepVisible(step('tt_prapor_camp'), 'the_ticket', p('mechanic', 'accept')), false)
+  const old = { the_ticket: { tt_ending: 'savior', tt_major_evidence: true } }
+  assert.equal(findUnmappedRecords(chapters, old).some(r => r.stepId === 'tt_ending'), true)
+  assert.equal(isStepVisible(step('tt_fence_rep'), 'the_ticket', old), false)
+})
+
+test('reference steps stay out of counts, next step and bulk completion', () => {
+  const ch = { id: 'r', phases: [{ id: 'p', steps: [{ id: 'a', type: 'check', reference: true }, { id: 'b', type: 'check' }] }] }
+  assert.deepEqual(getChapterStats(ch, {}), { done: 0, total: 1, complete: false })
+  assert.equal(findNextStep(ch, {}).step.id, 'b')
+  assert.deepEqual(getBulkCompletableStepIds(ch), ['b'])
+})
+
+test('They Are Already Here: reset branch gates the specification step', () => {
+  const t = chapters.find(c => c.id === 'they_are_already_here')
+  const spec = t.phases.flatMap(p => p.steps).find(s => s.id === 'th_read_spec')
+  assert.equal(isStepVisible(spec, t.id, { they_are_already_here: { th_reset_choice: 'skipped' } }), false)
+  assert.equal(isStepVisible(spec, t.id, { they_are_already_here: { th_reset_choice: 'pressed' } }), true)
+})

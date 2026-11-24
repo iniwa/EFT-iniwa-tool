@@ -7,7 +7,7 @@ import { toHttpsUrl } from '../logic/taskReference.js'
 import BoreasReference from './BoreasReference.vue'
 import { BOREAS_REFERENCE } from '../data/boreasReference.js'
 import { resolveStorySelection } from '../logic/boreasReferenceLogic.js'
-import { getBulkCompletableStepIds, isStepDone, isStepVisible as visibleByProgress, getChapterStats, findNextStep, findUnmappedRecords } from '../logic/storyLogic.js'
+import { getBulkCompletableStepIds, isStepDone, isRequiredStep, routeFromCaseChoice, isStepVisible as visibleByProgress, getChapterStats, findNextStep, findUnmappedRecords } from '../logic/storyLogic.js'
 import { STORY_META, STORY_CHECKED_AT, STORY_GAME_VERSION, STORY_SOURCE_INDEX, STORY_OFFICIAL_SOURCE, STORY_STEP_NOTES, CONFIDENCE_LABEL } from '../data/storyMeta.js'
 
 const STORY_CHAPTERS = [...MAIN_CHAPTERS, ...SIDE_CHAPTERS]
@@ -27,7 +27,8 @@ watch(selectedChapterId, () => { showEvidence.value = false })
 // Falling Skies の装甲ケース選択 → The Ticket の序盤ルートへ自動反映
 watch(() => storyProgress.value?.falling_skies?.fs_case_choice, (val) => {
   if (!val) return
-  const route = val === 'keep' ? 'mechanic' : 'prapor'
+  const route = routeFromCaseChoice(val)
+  if (!route) return // 未知の旧選択値ではルートを上書き・自動選択しない
   if (storyProgress.value?.the_ticket?.tt_route_choice !== route) updateStoryProgress('the_ticket', 'tt_route_choice', route)
 }, { immediate: true })
 
@@ -70,7 +71,7 @@ function isStepVisible(step) { return visibleByProgress(step, selectedChapterId.
 function phaseView(phase) {
   const visible = phase.steps.filter(isStepVisible)
   const required = visible.filter(s => !s.optional)
-  const actionable = required.filter(s => s.type !== 'note')
+  const actionable = required.filter(isRequiredStep)
   return {
     required,
     optional: visible.filter(s => s.optional),
@@ -245,13 +246,16 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
                     <input class="form-check-input" type="checkbox" :id="step.id" :checked="stepDone(step)" @change="onUpdateStep(step.id, $event.target.checked)">
                     <label :for="step.id">
                       <span v-if="step.type === 'wait'" class="wait-tag">&#9202; {{ step.duration }}</span>
+                      <span v-if="step.reference" class="ref-tag">参考</span>
                       {{ step.text }}
                       <span v-if="stepNote(step)" class="unconfirmed">（{{ stepNote(step) }}）</span>
+                      <span v-if="step.hint" class="step-hint">{{ step.hint }}</span>
                     </label>
                   </div>
 
                   <div v-else-if="step.type === 'choice'" :id="'story-step-' + step.id" class="choice">
-                    <p class="choice-q">分岐 ・ {{ step.text }}</p>
+                    <p class="choice-q"><span v-if="step.reference" class="ref-tag">参考</span>分岐 ・ {{ step.text }}</p>
+                    <p v-if="step.hint" class="step-hint ms-0">{{ step.hint }}</p>
                     <label v-for="opt in step.options" :key="opt.value" class="choice-opt" :class="{ picked: getStepValue(step.id) === opt.value }">
                       <input class="form-check-input" type="radio" :name="step.id" :id="step.id + '_' + opt.value" :value="opt.value" :checked="getStepValue(step.id) === opt.value" @change="onUpdateStep(step.id, opt.value)">
                       <span>{{ opt.label }}</span>
@@ -271,7 +275,7 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
                   <template v-for="step in v.optional" :key="step.id">
                     <div v-if="step.type === 'check'" :id="'story-step-' + step.id" class="step" :class="{ done: stepDone(step) }">
                       <input class="form-check-input" type="checkbox" :id="step.id" :checked="stepDone(step)" @change="onUpdateStep(step.id, $event.target.checked)">
-                      <label :for="step.id"><span class="opt-tag">任意</span> {{ step.text }}</label>
+                      <label :for="step.id"><span class="opt-tag">任意</span> {{ step.text }}<span v-if="step.hint" class="step-hint">{{ step.hint }}</span></label>
                     </div>
                     <p v-else-if="step.type === 'note'" class="step-note">{{ step.text }}</p>
                   </template>
@@ -368,6 +372,8 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
 .step label { flex: 1; font-size: .88rem; line-height: 1.5; cursor: pointer; }
 .step.done label { color: var(--muted); text-decoration: line-through; }
 .wait-tag, .opt-tag { display: inline-block; margin-right: .4rem; font-size: .68rem; padding: 0 .4rem; border-radius: 4px; background: rgba(224,165,38,.18); color: var(--accent); }
+.ref-tag { display: inline-block; margin-right: .4rem; font-size: .68rem; padding: 0 .4rem; border-radius: 4px; background: rgba(201,138,240,.18); color: #c98af0; }
+.step-hint { display: block; margin-top: .1rem; font-size: .74rem; color: var(--muted); line-height: 1.45; }
 .opt-tag { background: rgba(255,255,255,.1); color: var(--muted); }
 .step-note { margin: .2rem 0 .2rem 1.9rem; font-size: .8rem; color: #8ec5ee; }
 .choice { margin: .3rem 0; padding: .6rem .7rem; border: 1px solid #e0a52666; border-radius: 8px; background: rgba(224,165,38,.05); }

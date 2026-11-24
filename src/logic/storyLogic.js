@@ -1,7 +1,7 @@
 /** IDs that bulk completion may safely set without fabricating a choice. */
 export function getBulkCompletableStepIds(chapter, isVisible = () => true) {
   return (chapter?.phases || []).flatMap((phase) => phase.steps || [])
-    .filter((step) => isVisible(step) && !step.optional && ['check', 'wait'].includes(step.type))
+    .filter((step) => isVisible(step) && !step.optional && !step.reference && ['check', 'wait'].includes(step.type))
     .map((step) => step.id)
 }
 
@@ -12,11 +12,23 @@ export function isStepDone(step, value) {
   return value === true
 }
 
-/** Evaluate showIf against saved progress. showIf may point at another chapter. */
+/** showIf may be one condition or an array (all must hold); each may point at another chapter. */
 export function isStepVisible(step, chapterId, progress) {
   if (!step?.showIf) return true
-  const cId = step.showIf.chapterId || chapterId
-  return progress?.[cId]?.[step.showIf.stepId] === step.showIf.value
+  const conds = Array.isArray(step.showIf) ? step.showIf : [step.showIf]
+  return conds.every((c) => progress?.[c.chapterId || chapterId]?.[c.stepId] === c.value)
+}
+
+/** Required = counts toward progress. Optional and reference (low-confidence) steps never do. */
+export function isRequiredStep(step) {
+  return !!step && !step.optional && !step.reference && step.type !== 'note'
+}
+
+/** Map the Falling Skies case choice to The Ticket route. Unknown values map to null (never auto-selected). */
+export function routeFromCaseChoice(value) {
+  if (value === 'keep') return 'mechanic'
+  if (value === 'give' || value === 'pretend') return 'prapor'
+  return null
 }
 
 /** Count required (non-note, non-optional, visible) steps and finished ones. */
@@ -25,7 +37,7 @@ export function getChapterStats(chapter, progress) {
   let total = 0
   for (const phase of chapter?.phases || []) {
     for (const step of phase.steps || []) {
-      if (step.optional || step.type === 'note' || !isStepVisible(step, chapter.id, progress)) continue
+      if (!isRequiredStep(step) || !isStepVisible(step, chapter.id, progress)) continue
       total++
       if (isStepDone(step, progress?.[chapter.id]?.[step.id])) done++
     }
@@ -37,7 +49,7 @@ export function getChapterStats(chapter, progress) {
 export function findNextStep(chapter, progress) {
   for (const phase of chapter?.phases || []) {
     for (const step of phase.steps || []) {
-      if (step.optional || step.type === 'note' || !isStepVisible(step, chapter.id, progress)) continue
+      if (!isRequiredStep(step) || !isStepVisible(step, chapter.id, progress)) continue
       if (!isStepDone(step, progress?.[chapter.id]?.[step.id])) return { phase, step }
     }
   }

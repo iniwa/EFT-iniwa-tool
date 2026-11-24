@@ -46,10 +46,13 @@ export const STORY_META = {
     sources: [WIKI('The Ticket', 'The Ticket')],
     branches: [
       { title: '最初の分岐（Falling Skies の選択）', text: 'Praporルートと Mechanicルートで途中の依頼が異なり、どちらも Intelligence Center Lv1 と Kerman との会話から。' },
-      { title: 'Kerman に協力するか', text: '協力 → 証拠収集へ進むか否かで Fallen / Debtor / Survivor / Savior 系に分岐。拒否 → ポート側の Survivor 系へ。' },
+      { title: 'Kerman に協力するか', text: '協力 → 暗号化デバイスとカードの準備へ。断る → ポート側の Survivor 系へ（Prapor への支払い。Mechanicルートは追加依頼あり）。' },
+      { title: '証拠を集めるか／協力を続けるか', text: '集めない → Fallen。集める → 主要証拠2つのあと、協力を続けて告発（Survivor / Savior 系・主要証拠8つ）か、やめて自力脱出（Debtor）。' },
     ],
     unconfirmed: [
-      '終わり方のラベル（Survivor / Debtor）が複数の分岐に重複しており、Wiki内で整理されていない',
+      '終わり方のラベル（Survivor / Debtor）が複数の分岐に重複しており、Wiki内で整理されていない（本ツールの分岐は手順ベースで、結末名は参考表示）',
+      'Prapor への3億/5億ルーブルの支払いが、断るルートに付くか最初の分岐に付くかがWikiで不明確（断るルートに置き、参考扱い）',
+      '旧版の「Savior/Debtor＝証拠の個数で決まる」は資料と異なるため、旧保存の結末選択（tt_ending）は端末に保持するだけで現行の分岐には使いません',
       'Kerman からの連絡待ち時間が資料で不一致（旧40〜48時間 / 8月更新で12〜24時間と注記）',
       'Lab に30分以上いると失敗する可能性は推測のみ（報告なし）',
       'Lighthouse の証拠品1か所と一部実績は未確認',
@@ -143,6 +146,10 @@ export const STORY_META = {
       'Prapor と BTR 運転手の手配（Falling Skies・BTR章の結果で内容が変わる）',
       'Shoreline / Lighthouse からボートで砕氷船へ。機関室→上層→船長',
       '屋上ハッチを解凍し、科学者の避難とデータ解析で完了',
+      '脱出後: Mechanic と Prapor が爆薬を解放し、BTR の追加タスクで砕氷船へ直行できるようになる（資料上の流れ）',
+    ],
+    branches: [
+      { title: '輸送の手配（参考）', text: 'Prapor の手配は Falling Skies の結果（ケースを渡した／未完了）で内容が変わる。BTR Driver の手配は BTR 章の選択（BTR側／Skier側／未完了）で変わる。いずれも資料上の整理で未検証。' },
     ],
     unconfirmed: [
       '各マップの出現位置の多くが「情報求む」のまま',
