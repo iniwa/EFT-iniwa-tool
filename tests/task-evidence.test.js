@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { applyTaskEvidence, CRISIS_REQUIREMENT_SOURCE } from '../src/logic/taskEvidence.js'
+import { applyTaskCatalogEvidence, applyTaskEvidence, CRISIS_REQUIREMENT_SOURCE } from '../src/logic/taskEvidence.js'
 import { describeGlobalVariable, UNVERIFIED_GLOBAL_CONDITION_LABEL } from '../src/logic/globalConditionLabels.js'
 import { PROGRESSION_CONDITION_LABELS } from '../src/data/progressionConditionLabels.js'
-import { evaluateTaskAvailability } from '../src/logic/taskLogic.js'
+import { evaluateTaskAvailability, filterActiveTasks, getPrerequisiteClosure } from '../src/logic/taskLogic.js'
 import { buildFlowchartGateGraph } from '../src/logic/flowchartLogic.js'
 
 test('23 observed and four unresolved groups have qualified labels, not calculated completion', () => {
@@ -59,4 +59,32 @@ test('shared variable nodes stay unknown when any sibling uses an unsupported pr
     assert.deepEqual(graph.edges.map(e=>e.label).sort(),['== 0','>= 1'].sort())
     assert.equal(graph.nodes[0].automatic,false)
   }
+})
+
+test('Lightkeeper evidence adds missing game IDs after retrieval, scoped to PvE and regular PvP', () => {
+  const upstream = [{ id: '63966faeea19ac7ed845db2c', name: 'Information Source', taskRequirements: [] }]
+  const start = '6a880acc9216d0f5aa078305'
+  const next = '6a880f5d9438980c42076efe'
+  const end = '625d700cc48e6c62a440fab5'
+  const mode = 'pve'
+  const tasks = applyTaskCatalogEvidence(upstream, mode)
+  assert.equal(tasks.length, 12)
+  assert.equal(new Set(tasks.map((task) => task.id)).size, 12)
+  assert.equal(upstream.length, 1)
+  assert.strictEqual(tasks[0], upstream[0])
+  assert.strictEqual(applyTaskCatalogEvidence(upstream, 'pvp-season'), upstream)
+  assert.equal(applyTaskCatalogEvidence([], mode).length, 0)
+  assert.deepEqual(applyTaskCatalogEvidence(upstream, 'regular'), tasks)
+  assert.strictEqual(applyTaskCatalogEvidence(tasks, mode), tasks)
+  assert.deepEqual(filterActiveTasks(tasks, [], { showLightkeeperOnly: true }).map(t => t.id), [start])
+  assert.deepEqual(filterActiveTasks(tasks, [start], { showLightkeeperOnly: true }).map(t => t.id), [next])
+  assert.equal(getPrerequisiteClosure(end, tasks).length, 9)
+  assert.equal(tasks.find(t => t.id === start).catalogEvidence.checkedAt, '2026-11-24')
+
+  const newer = { id: start, name: '公式のタスク', lightkeeperRequired: false, taskRequirements: [{ status: ['active'] }] }
+  const merged = applyTaskCatalogEvidence([...upstream, newer], mode)
+  assert.strictEqual(merged.find(t => t.id === start), newer)
+  assert.deepEqual(merged.find(t => t.id === next).taskRequirements, [{
+    task: { id: start, name: newer.name }, status: ['complete'],
+  }])
 })

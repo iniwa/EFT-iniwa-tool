@@ -183,6 +183,11 @@ function objectiveConstraintLines(obj) {
         <div v-if="task.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
         <div v-if="TaskLogic.isLightkeeperUnlockTask(task)"><span class="badge badge-lk">LK</span></div>
       </div>
+      <div v-if="task.catalogEvidence" class="alert alert-info py-2 px-3 small">
+        <strong>補足タスク</strong>。進捗は手動で記録できます。目標・報酬やゲーム内の受注可否は出典またはゲーム内で確認してください。
+        <p v-if="task.catalogEvidence.note" class="mb-1">{{ task.catalogEvidence.note }}</p>
+        <a :href="safeUrl(task.catalogEvidence.sourceUrl)" target="_blank" rel="noopener noreferrer">出典（{{ task.catalogEvidence.checkedAt }}確認）</a>
+      </div>
       <div
         v-if="taskStatus !== 'complete' && availability?.locked"
         class="alert alert-secondary py-2 px-3 small"

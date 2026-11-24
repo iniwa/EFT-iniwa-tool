@@ -388,6 +388,7 @@ const hideoutPercent = computed(() => {
                 <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger">失敗</span>
                 <span v-if="task.kappaRequired" class="badge badge-kappa">KAPPA</span>
                 <span v-if="TaskLogic.isLightkeeperUnlockTask(task)" class="badge badge-lk">LK</span>
+                <span v-if="task.catalogEvidence" class="badge bg-secondary">補足</span>
                 <span v-if="isLocked(task)" class="text-warning">ロック中</span>
                 <span v-if="task.minPlayerLevel > 1">Lv.{{ task.minPlayerLevel }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>

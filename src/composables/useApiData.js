@@ -18,7 +18,7 @@ import {
   validateItemDb,
 } from '../logic/jsonApiAdapter.js';
 import { getTaskMaps } from '../logic/taskLogic.js';
-import { applyTaskEvidence } from '../logic/taskEvidence.js';
+import { applyTaskEvidence, applyTaskCatalogEvidence } from '../logic/taskEvidence.js';
 import { normalizeApiLang } from './useAppState.js';
 
 // ---------------------------------------------------------------------------
@@ -507,7 +507,8 @@ function saveMainRecord(contextKey, record) {
 
 function applyMainRecord(record, contextKey) {
   hideoutData.value = record.hideoutStations || [];
-  taskData.value = (record.tasks || []).map(applyTaskEvidence);
+  const tasks = (record.tasks || []).map(applyTaskEvidence);
+  taskData.value = applyTaskCatalogEvidence(tasks, contextKey.split(':', 1)[0]);
   itemsData.value = record.items || { items: [], maps: [] };
   ammoData.value = record.ammo || [];
   lastUpdated.value = record.timestamp || null;
