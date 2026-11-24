@@ -13,10 +13,14 @@ export function isStepDone(step, value) {
 }
 
 /** showIf may be one condition or an array (all must hold); each may point at another chapter. */
-export function isStepVisible(step, chapterId, progress) {
+export function isStepVisible(step, chapter, progress) {
   if (!step?.showIf) return true
-  const conds = Array.isArray(step.showIf) ? step.showIf : [step.showIf]
-  return conds.every((c) => progress?.[c.chapterId || chapterId]?.[c.stepId] === c.value)
+  return [].concat(step.showIf).every(({ chapterId = chapter.id, stepId, value }) => {
+    if (progress?.[chapterId]?.[stepId] !== value) return false
+    if (chapterId !== chapter.id) return true
+    const branch = chapter.phases.flatMap(phase => phase.steps).find(candidate => candidate.id === stepId)
+    return Boolean(branch) && isStepVisible(branch, chapter, progress)
+  })
 }
 
 /** Required = counts toward progress. Optional and reference (low-confidence) steps never do. */
@@ -37,19 +41,20 @@ export function getChapterStats(chapter, progress) {
   let total = 0
   for (const phase of chapter?.phases || []) {
     for (const step of phase.steps || []) {
-      if (!isRequiredStep(step) || !isStepVisible(step, chapter.id, progress)) continue
+      if (!isRequiredStep(step) || !isStepVisible(step, chapter, progress)) continue
       total++
       if (isStepDone(step, progress?.[chapter.id]?.[step.id])) done++
     }
   }
-  return { done, total, complete: total > 0 && done === total }
+  const canComplete = isStepVisible({ showIf: chapter?.completionRequires }, chapter, progress)
+  return { done, total, complete: total > 0 && done === total && canComplete }
 }
 
 /** First unfinished required step (the "next action"), with its phase. Null when none. */
 export function findNextStep(chapter, progress) {
   for (const phase of chapter?.phases || []) {
     for (const step of phase.steps || []) {
-      if (!isRequiredStep(step) || !isStepVisible(step, chapter.id, progress)) continue
+      if (!isRequiredStep(step) || !isStepVisible(step, chapter, progress)) continue
       if (!isStepDone(step, progress?.[chapter.id]?.[step.id])) return { phase, step }
     }
   }

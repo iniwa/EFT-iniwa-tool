@@ -59,7 +59,7 @@ export const MAIN_CHAPTERS = [
             "text": "Ragmanと話す（Therapistへの支払い後）"
           },
           {
-            "id": "t_interchange_extract",
+            "id": "t_interchange_extract_confirmed",
             "type": "check",
             "text": "Interchangeから脱出する",
             "hint": "通り抜け（run-through）脱出でも数えられるとWikiに記載。旧資料の「3回訪問」はWikiに無いため削除"
@@ -81,7 +81,7 @@ export const MAIN_CHAPTERS = [
             "text": "Skierと話す（Interchange報告後）"
           },
           {
-            "id": "t_customs_extract",
+            "id": "t_customs_extract_confirmed",
             "type": "check",
             "text": "Customsから脱出する",
             "hint": "通り抜け（run-through）脱出でも数えられるとWikiに記載。旧資料の「3回訪問」はWikiに無いため削除"
@@ -110,7 +110,7 @@ export const MAIN_CHAPTERS = [
             "text": "Mechanicと話す（Customs後）"
           },
           {
-            "id": "t_factory_extract",
+            "id": "t_factory_extract_confirmed",
             "type": "check",
             "text": "Factoryから脱出する",
             "hint": "通り抜け（run-through）脱出でも数えられるとWikiに記載。旧資料の「3回訪問」はWikiに無いため削除"
@@ -151,7 +151,7 @@ export const MAIN_CHAPTERS = [
             "hint": "プレイヤー・Scav・PMC・Rogue USEC・ボスのどれでも数えられる（Wiki）"
           },
           {
-            "id": "t_woods_extract",
+            "id": "t_woods_extract_confirmed",
             "type": "check",
             "text": "Woodsから脱出する",
             "hint": "通り抜け（run-through）脱出でも数えられるとWikiに記載。旧資料の「3回訪問」はWikiに無いため削除。生還脱出が必要かはWikiで未明記"
@@ -190,7 +190,7 @@ export const MAIN_CHAPTERS = [
         "title": "Phase 8: マップアクセス確保",
         "steps": [
           {
-            "id": "t_shoreline_extract",
+            "id": "t_shoreline_extract_confirmed",
             "type": "check",
             "text": "Shorelineから脱出する",
             "hint": "通り抜け（run-through）脱出でも数えられるとWikiに記載。旧資料の「3回訪問」はWikiに無いため削除"
@@ -683,7 +683,7 @@ export const MAIN_CHAPTERS = [
             }
           },
           {
-            "id": "tt_interchange_kills",
+            "id": "tt_interchange_kills_survived",
             "type": "check",
             "text": "死なずに1レイドでInterchangeの敵を15体排除する",
             "showIf": {
@@ -692,7 +692,7 @@ export const MAIN_CHAPTERS = [
             }
           },
           {
-            "id": "tt_lightkeeper_talk2",
+            "id": "tt_lightkeeper_case",
             "type": "check",
             "text": "Lightkeeperからケースを受け取る",
             "showIf": {
@@ -803,32 +803,70 @@ export const MAIN_CHAPTERS = [
             }
           },
           {
-            "id": "tt_kerman_talk4",
-            "type": "check",
-            "text": "Mr. Kermanと話す",
+            "id": "tt_rfid_route",
+            "type": "choice",
+            "text": "RFID暗号化装置の目標がどう進んだか",
             "showIf": {
               "stepId": "tt_kerman_offer",
               "value": "accept"
-            }
+            },
+            "hint": "KermanはThe Labを案内しますが、現地での入手は未確認です。失敗の表示後にMechanic経由で入手する手順が報告されています。",
+            "options": [
+              {
+                "value": "lab",
+                "label": "The Labでの入手がゲーム内で記録された"
+              },
+              {
+                "value": "elektronik",
+                "label": "入手目標が失敗し、Mechanicの代替手順に進んだ"
+              }
+            ]
+          },
+          {
+            "id": "tt_kerman_talk4",
+            "type": "check",
+            "text": "Mr. Kermanと話す",
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ]
           },
           {
             "id": "tt_mechanic_talk2",
             "type": "check",
             "text": "Mechanicと話す",
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            }
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ]
           },
           {
             "id": "tt_mechanic_wait",
             "type": "wait",
             "text": "Mechanicからの返答を待つ",
             "duration": "12〜24時間（旧資料）",
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            },
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ],
             "reference": true,
             "hint": "Wikiに待ち時間の記載なし（旧資料）"
           },
@@ -836,10 +874,16 @@ export const MAIN_CHAPTERS = [
             "id": "tt_bitcoin_pay",
             "type": "check",
             "text": "Mechanicに Physical Bitcoin x40を渡す",
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            },
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ],
             "hint": "Physical Bitcoin 40個でElektronikの鍵を受け取る（Wiki）"
           },
           {
@@ -847,30 +891,48 @@ export const MAIN_CHAPTERS = [
             "type": "check",
             "text": "Bitcoin Farm Lv1を設置する",
             "optional": true,
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            }
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ]
           },
           {
             "id": "tt_bitcoin_collect",
             "type": "check",
             "text": "Physical Bitcoin x40を用意する",
             "optional": true,
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            }
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ]
           },
           {
             "id": "tt_streets_access",
             "type": "check",
             "text": "Streets of Tarkovへのアクセスを確保する",
             "optional": true,
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            }
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ]
           },
           {
             "id": "tt_kruglov_apt",
@@ -886,20 +948,32 @@ export const MAIN_CHAPTERS = [
             "id": "tt_rfid_device",
             "type": "check",
             "text": "RFID card encryption deviceを入手する (Streets, Klimov 14A)",
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            },
-            "hint": "Elektronikの鍵でKlimova 14Aの2番目の部屋から入手。「Labに累計30分以上いるとデバイス無しでは失敗する」は推測のみで報告なし（参考）"
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ],
+            "hint": "40 BTCの支払い後に受け取ったElektronikの鍵を使い、Klimova 14Aの2番目の部屋で探す（Wiki）。"
           },
           {
             "id": "tt_rfid_retrieve",
             "type": "check",
             "text": "RFID card encryption deviceを回収する",
-            "showIf": {
-              "stepId": "tt_kerman_offer",
-              "value": "accept"
-            },
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_rfid_route",
+                "value": "elektronik"
+              }
+            ],
             "reference": true,
             "hint": "RFID card encryption deviceの入手と重複（旧資料）"
           },
@@ -1222,13 +1296,23 @@ export const MAIN_CHAPTERS = [
         "title": "Phase 6a-B: 協力をやめる（Debtor）",
         "steps": [
           {
-            "id": "tt_debtor_ask",
+            "id": "tt_debtor_ask_lightkeeper",
             "type": "check",
             "text": "Lightkeeperと話し、脱出方法を尋ねる",
-            "showIf": {
-              "stepId": "tt_cooperation",
-              "value": "leave"
-            }
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_evidence_agree",
+                "value": "agree"
+              },
+              {
+                "stepId": "tt_cooperation",
+                "value": "leave"
+              }
+            ]
           },
           {
             "id": "tt_debtor_maps",
@@ -1310,13 +1394,23 @@ export const MAIN_CHAPTERS = [
             }
           },
           {
-            "id": "tt_debtor_report",
+            "id": "tt_debtor_receive_card",
             "type": "check",
             "text": "LightkeeperからTerminalのキーカードを受け取る",
-            "showIf": {
-              "stepId": "tt_cooperation",
-              "value": "leave"
-            },
+            "showIf": [
+              {
+                "stepId": "tt_kerman_offer",
+                "value": "accept"
+              },
+              {
+                "stepId": "tt_evidence_agree",
+                "value": "agree"
+              },
+              {
+                "stepId": "tt_cooperation",
+                "value": "leave"
+              }
+            ],
             "hint": "再受け取りにはTerraGroup Blue Folders 1つ（1レイド1回）（Wiki）"
           }
         ]
@@ -1516,7 +1610,7 @@ export const MAIN_CHAPTERS = [
               "stepId": "tt_kerman_offer",
               "value": "refuse"
             },
-            "hint": "Wikiでは、この支払いが断るルートに付くかが明記されていない。本ツールは旧資料どおり断るルートに置く（参考）"
+            "hint": "Kermanへの協力を断った場合の支払い。Falling Skiesでケースを渡したかどうかで金額が変わる（Wiki）。"
           },
           {
             "id": "tt_survivor_collect_rub",
@@ -1540,7 +1634,7 @@ export const MAIN_CHAPTERS = [
             "hint": "時間制限の扱いはWikiでは72時間（実績条件）程度のみ。厳密な条件は未確認"
           },
           {
-            "id": "tt_survivor_ssd",
+            "id": "tt_survivor_deliver_drive",
             "type": "check",
             "text": "Lab内の4種のTerraGroup報告フォルダのデータをフラッシュドライブに入れてPraporに渡す（Mechanicルート）",
             "showIf": [
@@ -1587,7 +1681,7 @@ export const MAIN_CHAPTERS = [
             ]
           },
           {
-            "id": "tt_survivor_kills_4",
+            "id": "tt_survivor_kills_4_survived",
             "type": "check",
             "text": "1レイドでPMCを4人排除して生還する（Mechanicルート）",
             "showIf": [
@@ -1603,7 +1697,7 @@ export const MAIN_CHAPTERS = [
             "hint": "実績「I am Speed」の条件は72時間以内（PvPのみ）。超過した場合はKappaコンテナを渡す（Wiki）"
           },
           {
-            "id": "tt_survivor_report",
+            "id": "tt_survivor_receive_letter",
             "type": "check",
             "text": "PraporからTerminal兵士への紹介状を受け取る",
             "showIf": {

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import { MAIN_CHAPTERS } from '../src/data/storyChaptersMain.js'
 import { SIDE_CHAPTERS } from '../src/data/storyChaptersSide.js'
 import { STORY_META } from '../src/data/storyMeta.js'
-import { isStepDone, getChapterStats, findNextStep, findUnmappedRecords } from '../src/logic/storyLogic.js'
+import { isStepDone, getChapterStats, findNextStep, findUnmappedRecords, isRequiredStep, routeFromCaseChoice, isStepVisible, getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
 
 const chapters = [...MAIN_CHAPTERS, ...SIDE_CHAPTERS]
 const chapter = { id: 'c', phases: [{ id: 'p', title: 'P', steps: [
@@ -44,8 +44,6 @@ test('branch-gated steps count only for the chosen route; next step skips notes 
   assert.equal(findNextStep(chapter, { c: { a: true, ch: 'y' } }), null)
 })
 
-import { isRequiredStep, routeFromCaseChoice, isStepVisible, getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
-
 test('showIf references resolve, choices have options, and reference steps are never required', () => {
   for (const c of chapters) {
     const steps = new Map(c.phases.flatMap(p => p.steps).map(s => [s.id, s]))
@@ -54,6 +52,10 @@ test('showIf references resolve, choices have options, and reference steps are n
         const target = (cond.chapterId ? chapters.find(x => x.id === cond.chapterId) : c).phases.flatMap(p => p.steps).find(t => t.id === cond.stepId)
         assert.ok(target?.type === 'choice', c.id + ':' + s.id)
         assert.ok(target.options.some(o => o.value === cond.value), c.id + ':' + s.id)
+        if (!cond.chapterId) {
+          const order = [...steps.keys()]
+          assert.ok(order.indexOf(target.id) < order.indexOf(s.id), c.id + ':' + s.id)
+        }
       }
       if (s.type === 'choice') assert.ok(s.options?.length >= 2, s.id)
       if (s.reference) assert.equal(isRequiredStep(s), false)
@@ -74,13 +76,19 @@ test('The Ticket route steps follow the chosen branch; old ending record is kept
   const t = chapters.find(c => c.id === 'the_ticket')
   const step = id => t.phases.flatMap(p => p.steps).find(s => s.id === id)
   const p = (route, offer, extra = {}) => ({ the_ticket: { tt_route_choice: route, tt_kerman_offer: offer, ...extra } })
-  assert.equal(isStepVisible(step('tt_survivor_kills_50'), 'the_ticket', p('mechanic', 'refuse')), true)
-  assert.equal(isStepVisible(step('tt_survivor_kills_50'), 'the_ticket', p('prapor', 'refuse')), false)
-  assert.equal(isStepVisible(step('tt_case_workbench'), 'the_ticket', p('prapor', 'accept')), false)
-  assert.equal(isStepVisible(step('tt_prapor_camp'), 'the_ticket', p('mechanic', 'accept')), false)
+  assert.equal(isStepVisible(step('tt_survivor_kills_50'), t, p('mechanic', 'refuse')), true)
+  assert.equal(isStepVisible(step('tt_survivor_kills_50'), t, p('prapor', 'refuse')), false)
+  assert.equal(isStepVisible(step('tt_case_workbench'), t, p('prapor', 'accept')), false)
+  assert.equal(isStepVisible(step('tt_prapor_camp'), t, p('mechanic', 'accept')), false)
   const old = { the_ticket: { tt_ending: 'savior', tt_major_evidence: true } }
   assert.equal(findUnmappedRecords(chapters, old).some(r => r.stepId === 'tt_ending'), true)
-  assert.equal(isStepVisible(step('tt_fence_rep'), 'the_ticket', old), false)
+  assert.equal(isStepVisible(step('tt_fence_rep'), t, old), false)
+
+  const evidence = { tt_evidence_agree: 'agree', tt_cooperation: 'expose' }
+  assert.equal(isStepVisible(step('tt_fence_rep'), t, p('mechanic', 'accept', evidence)), true)
+  assert.equal(isStepVisible(step('tt_fence_rep'), t, p('mechanic', 'refuse', evidence)), false)
+  assert.equal(isStepVisible(step('tt_bitcoin_pay'), t, p('mechanic', 'accept', { tt_rfid_route: 'lab' })), false)
+  assert.equal(isStepVisible(step('tt_bitcoin_pay'), t, p('mechanic', 'accept', { tt_rfid_route: 'elektronik' })), true)
 })
 
 test('reference steps stay out of counts, next step and bulk completion', () => {
@@ -92,7 +100,22 @@ test('reference steps stay out of counts, next step and bulk completion', () => 
 
 test('They Are Already Here: reset branch gates the specification step', () => {
   const t = chapters.find(c => c.id === 'they_are_already_here')
-  const spec = t.phases.flatMap(p => p.steps).find(s => s.id === 'th_read_spec')
-  assert.equal(isStepVisible(spec, t.id, { they_are_already_here: { th_reset_choice: 'skipped' } }), false)
-  assert.equal(isStepVisible(spec, t.id, { they_are_already_here: { th_reset_choice: 'pressed' } }), true)
+  const steps = t.phases.flatMap(p => p.steps)
+  const spec = steps.find(s => s.id === 'th_read_spec')
+  const completed = Object.fromEntries(steps.filter(s => s.type === 'check').map(s => [s.id, true]))
+  const skipped = { [t.id]: { ...completed, th_reset_choice: 'skipped' } }
+  const pressed = { [t.id]: { ...completed, th_reset_choice: 'pressed' } }
+  assert.equal(isStepVisible(spec, t, skipped), false)
+  assert.equal(isStepVisible(spec, t, pressed), true)
+  assert.equal(getChapterStats(t, skipped).complete, false)
+  assert.equal(getChapterStats(t, pressed).complete, true)
+})
+
+test('legacy checks with different objectives stay in storage without completing new steps', () => {
+  const saved = { tour: { t_woods_extract: true }, the_ticket: { tt_survivor_ssd: true }, batya: { ba_cultist_photo: true } }
+  for (const [chapterId, records] of Object.entries(saved)) {
+    const chapter = chapters.find(c => c.id === chapterId)
+    assert.equal(getChapterStats(chapter, saved).done, 0)
+    assert.equal(findUnmappedRecords(chapters, saved).some(record => record.stepId === Object.keys(records)[0]), true)
+  }
 })

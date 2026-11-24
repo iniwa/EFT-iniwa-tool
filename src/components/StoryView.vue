@@ -67,7 +67,7 @@ function getStepValue(stepId, chapterId) {
   return storyProgress.value[chapterId || selectedChapterId.value]?.[stepId] || false
 }
 function stepDone(step) { return isStepDone(step, getStepValue(step.id)) }
-function isStepVisible(step) { return visibleByProgress(step, selectedChapterId.value, storyProgress.value) }
+function isStepVisible(step) { return visibleByProgress(step, activeChapter.value, storyProgress.value) }
 function phaseView(phase) {
   const visible = phase.steps.filter(isStepVisible)
   const required = visible.filter(s => !s.optional)
@@ -225,12 +225,13 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
             <div class="story-bar story-bar-md flex-grow-1" role="progressbar" :aria-valuenow="pct(stats)" aria-valuemin="0" aria-valuemax="100" aria-label="この章の進捗"><span :style="{ width: pct(stats) + '%' }"></span></div>
             <span class="small text-secondary">{{ stats.done }} / {{ stats.total }}</span>
-            <button v-if="!stats.complete" class="btn btn-sm btn-outline-success" @click="completeChapter">&#10003; チェック項目を一括完了</button>
+            <button v-if="stats.done < stats.total" class="btn btn-sm btn-outline-success" @click="completeChapter">&#10003; チェック項目を一括完了</button>
             <button v-else class="btn btn-sm btn-outline-secondary" @click="resetChapter">リセット</button>
             <a v-if="safeUrl(activeChapter.wikiLink)" :href="safeUrl(activeChapter.wikiLink)" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-info">英語Wiki</a>
           </div>
 
           <p v-if="stats.complete" class="done-banner">このチャプターの全必須手順が完了しました</p>
+          <p v-else-if="stats.total && !nextStep && activeChapter.incompleteMessage" class="small text-warning">{{ activeChapter.incompleteMessage }}</p>
 
           <!-- 段階 -->
           <ol class="phases">

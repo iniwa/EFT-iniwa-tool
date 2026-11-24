@@ -51,7 +51,7 @@ export const SIDE_CHAPTERS = [
             "hint": "Woods。製材所北の丘の焼けたキャンプ跡"
           },
           {
-            "id": "ba_ryabina_info",
+            "id": "ba_ryabina_amulet",
             "type": "check",
             "text": "メモを読み、Streletsの護符を回収する"
           },
@@ -218,7 +218,7 @@ export const SIDE_CHAPTERS = [
             "hint": "LighthouseのBEARキャンプ（Wiki）"
           },
           {
-            "id": "ba_cultist_photo",
+            "id": "ba_cultist_investigation",
             "type": "check",
             "text": "4つのマップでカルトの活動を調べる（Customs寮の壁のメモから進む）",
             "parallel": true,
@@ -281,7 +281,7 @@ export const SIDE_CHAPTERS = [
             "duration": "約24時間（目安・実タイマー未確認。旧資料は12時間）"
           },
           {
-            "id": "ba_receive_report",
+            "id": "ba_pick_up_report",
             "type": "check",
             "text": "Lightkeeperの部屋の外にある最後の文書を回収する（Lighthouse）"
           },
@@ -779,7 +779,7 @@ export const SIDE_CHAPTERS = [
           {
             "id": "th_kill_priest",
             "type": "check",
-            "text": "マークされた部屋でCultist Priestを1体排除する",
+            "text": "Cultist Priestを1体排除する",
             "hint": "討伐数は2→1に変更（2026-03-27の更新とWikiに注記）"
           }
         ]
@@ -1008,7 +1008,12 @@ export const SIDE_CHAPTERS = [
           }
         ]
       }
-    ]
+    ],
+    "completionRequires": {
+      "stepId": "th_reset_choice",
+      "value": "pressed"
+    },
+    "incompleteMessage": "リセットを押さなかった分岐では、Mechanicから仕様書が届かないため章は未完了です。"
   },
   {
     "id": "accidental_witness",
@@ -1334,7 +1339,7 @@ export const SIDE_CHAPTERS = [
             "hint": "Wikiでは任意目標（研究員の遺体）"
           },
           {
-            "id": "tl_locked_office",
+            "id": "tl_office_tape",
             "type": "check",
             "text": "施錠されたオフィスに入り、オーディオテープを聴く"
           }
