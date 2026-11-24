@@ -10,7 +10,9 @@ import { useApiData } from '../composables/useApiData.js'
 const { collectedItems, toggleCollected, shoppingListMode: listMode } = useUserProgress()
 const { displayLists, priorityTaskPlan, priorityDisplayLists } = useShoppingList()
 const { taskData } = useApiData()
-const visibleLists = computed(() => listMode.value === 'priority' ? priorityDisplayLists.value : displayLists.value)
+const category = ref(listMode.value === 'priority' ? 'tasks' : 'hideout')
+const isPriorityView = computed(() => category.value === 'tasks' && listMode.value === 'priority')
+const visibleLists = computed(() => isPriorityView.value ? priorityDisplayLists.value : displayLists.value)
 const taskNames = computed(() => new Map((taskData.value || []).map(task => [task.id, task.name])))
 const taskLabel = id => taskNames.value.get(id) || id || '\u4e0d\u660e'
 const statusLabels = { complete: '\u5b8c\u4e86', active: '\u9032\u884c\u4e2d', failed: '\u5931\u6557' }
@@ -29,12 +31,12 @@ const emit = defineEmits(['open-task-from-name'])
 // Intel Console: FIR / 買い物の2面 (PC: 並列, スマホ: 切替)
 const resPane = ref('fir')
 const PANES = [
-  { id: 'fir', title: 'FIR（レイドで入手）', keys: ['hideoutFir', 'taskFir', 'collector'] },
-  { id: 'buy', title: '買い物（購入で可）', keys: ['hideoutBuy', 'taskNormal'] },
+  { id: 'fir', title: 'FIR（レイドで入手）', keys: { hideout: ['hideoutFir'], tasks: ['taskFir', 'collector'] } },
+  { id: 'buy', title: '買い物（購入で可）', keys: { hideout: ['hideoutBuy'], tasks: ['taskNormal'] } },
 ]
 const panes = computed(() => PANES.map(pane => ({
   ...pane,
-  lists: pane.keys.filter(key => visibleLists.value[key]).map(key => ({ key, list: visibleLists.value[key] })),
+  lists: pane.keys[category.value].map(key => ({ key, list: visibleLists.value[key] })),
 })))
 const paneCount = pane => pane.lists.reduce((sum, { list }) => sum + list.items.length, 0)
 
@@ -48,15 +50,19 @@ function toggleItemDetails(uid) {
 
 <template>
   <div class="result-page">
-    <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+    <div class="pg-switch mb-3" role="group" aria-label="必要品の表示対象">
+      <button type="button" :aria-pressed="category === 'hideout'" @click="category = 'hideout'">ハイドアウト</button>
+      <button type="button" :aria-pressed="category === 'tasks'" @click="category = 'tasks'">タスク</button>
+    </div>
+    <div v-if="category === 'tasks'" class="d-flex align-items-center flex-wrap gap-2 mb-3">
       <label for="item-list-mode">&#12450;&#12452;&#12486;&#12512;&#19968;&#35239;</label>
       <select id="item-list-mode" v-model="listMode" class="form-select form-select-sm bg-dark text-white border-secondary" style="width: auto;">
         <option value="all">&#20840;&#26410;&#23436;&#20102;&#12479;&#12473;&#12463;&#65288;&#24467;&#26469;&#12398;&#19968;&#35239;&#65289;</option>
         <option value="priority">&#20778;&#20808;&#12479;&#12473;&#12463;&#65291;&#24517;&#35201;&#12394;&#21069;&#25552;</option>
       </select>
     </div>
-    <section v-if="listMode === 'priority'" class="mb-3" aria-label="Priority task scope">
-      <p class="small text-muted mb-2">&#20778;&#20808;&#30446;&#27161;&#12392;&#23436;&#20102;&#12364;&#24517;&#38920;&#12398;&#26410;&#23436;&#20102;&#21069;&#25552;&#12434;&#38598;&#35336;&#12290;&#12495;&#12452;&#12489;&#12450;&#12454;&#12488;&#26448;&#26009;&#12399;&#36890;&#24120;&#19968;&#35239;&#12392;&#21516;&#12376;&#26465;&#20214;&#12391;&#21547;&#12415;&#12414;&#12377;&#12290;&#21454;&#38598;&#12481;&#12455;&#12483;&#12463;&#12399;&#36890;&#24120;&#19968;&#35239;&#12392;&#20849;&#36890;&#12391;&#12377;&#12290;</p>
+    <section v-if="isPriorityView" class="mb-3" aria-label="優先タスクの集計範囲">
+      <p class="small text-muted mb-2">優先タスクと、完了が必要な未完了の前提タスクのアイテムを集計します。</p>
       <p v-if="!priorityTaskPlan.goals.length" role="status">&#26410;&#23436;&#20102;&#12398;&#20778;&#20808;&#12479;&#12473;&#12463;&#12364;&#12354;&#12426;&#12414;&#12379;&#12435;&#12290;&#36914;&#25431;&#19968;&#35239;&#12398;&#26143;&#12391;&#20778;&#20808;&#30446;&#27161;&#12434;&#36984;&#12435;&#12391;&#12367;&#12384;&#12373;&#12356;&#12290;</p>
       <div class="d-flex flex-wrap gap-2 mb-2">
         <button v-for="task in priorityTaskPlan.goals" :key="task.id" type="button" class="btn btn-sm btn-outline-info" @click="emit('open-task-from-name', { id: task.id, name: task.name })">{{ task.name }}</button>
@@ -105,7 +111,7 @@ function toggleItemDetails(uid) {
                   </span>
                   <span v-else>・{{ source.name }} (x{{ source.count }})</span>
                 </div>
-                <template v-if="listMode === 'priority' && ['taskFir', 'collector', 'taskNormal'].includes(key)">
+                <template v-if="isPriorityView">
                   <div v-for="source in item.sources" :key="'conditions:' + source.taskId" class="ms-2">
                     <div v-for="(objective, index) in source.objectives" :key="index">{{ source.name }}: {{ objective.description }} <span v-if="objective.optional">(&#20219;&#24847;)</span></div>
                   </div>
@@ -119,7 +125,6 @@ function toggleItemDetails(uid) {
             <li v-if="list.items.length === 0" class="res-empty">この区分の必要品はありません。</li>
           </ul>
         </div>
-        <p v-if="pane.lists.length === 0" class="res-empty">表示できる必要品がありません。</p>
       </section>
     </div>
   </div>
