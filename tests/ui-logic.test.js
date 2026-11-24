@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { resolveTaskReference, toHttpsUrl } from '../src/logic/taskReference.js'
-import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan } from '../src/logic/taskLogic.js'
+import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan, filterActiveTasks, evaluateTaskAvailability, getTaskRequirementStatuses } from '../src/logic/taskLogic.js'
 import { getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
 import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../src/logic/flowchartLogic.js'
 import { calculateShoppingList } from '../src/logic/keyLogic.js'
@@ -100,4 +100,36 @@ test('key task sources retain stable IDs and do not merge duplicate names', () =
   )
   assert.deepEqual(sources.map((entry) => entry.taskId).sort(), ['first', 'second'])
   assert.equal(isSameSource({ name: 'Task: Duplicate', taskId: 'first', type: 'task' }, { name: 'Task: Duplicate', taskId: 'second', type: 'task' }), false)
+})
+
+test('task visibility requires each prerequisite and accepts any listed status for that prerequisite', () => {
+  const task = {
+    id: 'out-of-curiosity',
+    taskRequirements: [
+      { task: { id: 'chemical-4' }, status: ['active'] },
+      { task: { id: 'other-branch' }, status: ['complete', 'failed'] },
+    ],
+  }
+  const options = { taskStatuses: { 'chemical-4': 'active', 'other-branch': 'failed' } }
+  assert.deepEqual(filterActiveTasks([task], [], options), [task])
+  assert.deepEqual(filterActiveTasks([task], ['chemical-4'], options), [])
+  assert.deepEqual(filterActiveTasks([task], ['chemical-4'], { ...options, showFuture: true }), [task])
+  assert.deepEqual(filterActiveTasks([task], ['other-branch'], options), [task])
+  assert.equal(evaluateTaskAvailability(task, [], { taskStatuses: { 'chemical-4': 'active' } }).reqMet, false)
+  assert.deepEqual(getTaskRequirementStatuses({ task: { id: 'legacy' } }), ['complete'])
+})
+
+test('unverified prerequisites never unlock a task or authorize a bulk setup', () => {
+  const base = { id: 'base', taskRequirements: [] }
+  for (const req of [
+    { task: { id: 'base' }, status: ['complete', 'unknown'] },
+    { task: { id: 'base' }, status: ['complete'], group: 'ambiguous' },
+    { task: null, status: ['complete'] },
+  ]) {
+    const target = { id: 'target', taskRequirements: [req] }
+    assert.equal(evaluateTaskAvailability(target, ['base']).locked, true)
+    assert.equal(getInitialSetupPlan(target.id, [base, target]).find(row => row.id === target.id).conflict, true)
+  }
+  const orphan = { id: 'orphan', taskRequirements: [{ task: { id: 'missing' }, status: ['complete'] }] }
+  assert.deepEqual(getInitialSetupPlan(orphan.id, [orphan]), [{ id: orphan.id, status: 'complete', conflict: true }])
 })

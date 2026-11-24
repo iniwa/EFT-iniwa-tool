@@ -69,20 +69,14 @@ const statusLabels = {
   failed: '失敗',
 }
 
-function prerequisiteStatus(requirement) {
-  return TaskLogic.getTaskStatus(
-    requirement.task.id,
-    completedTasks.value,
-    taskStatuses.value,
-  )
-}
-
-function prerequisiteMet(requirement) {
-  const allowed = Array.isArray(requirement.status) && requirement.status.length > 0
-    ? requirement.status
-    : ['complete']
-  return allowed.includes(prerequisiteStatus(requirement))
-}
+const prerequisites = computed(() => {
+  const requirements = props.task?.taskRequirements
+  if (!Array.isArray(requirements)) return []
+  return requirements.map((requirement) => ({
+    requirement,
+    ...TaskLogic.evaluateTaskPrerequisite(requirement, completedTasks.value, taskStatuses.value),
+  }))
+})
 
 function traderRequirementResult(requirement) {
   return TaskLogic.evaluateTraderRequirement(requirement, traderProgress.value)
@@ -202,23 +196,23 @@ function objectiveConstraintLines(obj) {
       >
         <h6 class="border-bottom pb-1 mb-2 text-warning">解放条件</h6>
 
-        <ul v-if="task.taskRequirements?.length" class="list-group mb-2">
+        <ul v-if="prerequisites.length" class="list-group mb-2">
           <li
-            v-for="requirement in task.taskRequirements"
-            :key="requirement.task.id"
+            v-for="({ requirement, allowed, actual, met }, index) in prerequisites"
+            :key="index"
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>
-              前提: {{ requirement.task.name }}
-              <span class="text-muted small">
-                （必要: {{ (requirement.status?.length ? requirement.status : ['complete']).map((status) => statusLabels[status] || status).join(' / ') }}）
+              前提: {{ requirement?.task?.name || requirement?.task?.id || '参照不明' }}
+              <span v-if="allowed" class="text-muted small">
+                （必要: {{ allowed.map((status) => statusLabels[status]).join(' / ') }}）
               </span>
             </span>
             <span
               class="badge align-self-center"
-              :class="prerequisiteMet(requirement) ? 'bg-success' : 'bg-danger'"
+              :class="met ? 'bg-success' : allowed ? 'bg-danger' : 'bg-secondary'"
             >
-              {{ statusLabels[prerequisiteStatus(requirement)] || prerequisiteStatus(requirement) }}
+              {{ allowed ? statusLabels[actual] : '要確認' }}
             </span>
           </li>
         </ul>

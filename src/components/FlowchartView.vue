@@ -232,12 +232,13 @@ async function renderChart() {
 
   // エッジ定義 (前提タスク → タスク)
   nodesToRender.forEach((task, taskId) => {
-    if (task.taskRequirements) {
+    if (Array.isArray(task.taskRequirements)) {
       task.taskRequirements.forEach((req) => {
-        const fromId = taskToNodeId.get(req.task.id)
+        const fromId = taskToNodeId.get(req?.task?.id)
         const toId = taskToNodeId.get(taskId)
         if (fromId && toId) {
-          const statusLabel = TaskLogic.formatTaskRequirementStatuses(req.status)
+          const statuses = TaskLogic.getTaskRequirementStatuses(req)
+          const statusLabel = statuses ? TaskLogic.formatTaskRequirementStatuses(statuses) : '要確認'
           const renderedLabel = statusLabel ? `|${escapeLabel(statusLabel)}|` : ''
           graph += `  ${fromId} -->${renderedLabel} ${toId}\n`
           edgeCount++
@@ -385,12 +386,12 @@ function handleChartClick(event) {
     const taskName = task.name
     const plan = TaskLogic.getInitialSetupPlan(task.id, taskData.value)
     const totalCount = plan.length
-    const conflictCount = plan.filter((entry) => entry.conflict).length
-    const conflictNotice = conflictCount > 0
-      ? `\n※分岐条件が競合する前提タスク ${conflictCount} 件は、単一の状態では全経路を同時に満たせないため推奨値を設定します。`
-      : ''
+    if (plan.some((entry) => entry.conflict)) {
+      alert('矛盾または確認できない前提タスクがあるため、一括設定を中止しました。個別のタスク詳細を確認してください。')
+      return
+    }
     const confirmed = confirm(
-      `「${taskName}」と前提タスク ${Math.max(0, totalCount - 1)} 件を、要件に基づく推奨ステータス（完了/進行中/失敗）で設定しますか？${conflictNotice}`
+      `「${taskName}」と前提タスク ${Math.max(0, totalCount - 1)} 件を、要件に基づく推奨ステータス（完了/進行中/失敗）で設定しますか？`
     )
     if (confirmed) {
       // 対象タスクと全前提タスクへ推奨ステータスを適用

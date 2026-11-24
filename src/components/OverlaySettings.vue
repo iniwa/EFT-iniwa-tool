@@ -7,6 +7,7 @@ import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useAppState } from '../composables/useAppState.js'
+import { evaluateTaskAvailability } from '../logic/taskLogic.js'
 
 const emit = defineEmits(['open-task-details'])
 
@@ -21,55 +22,39 @@ const {
   setObjectiveCount,
   clearAllFocused,
 } = useOverlay()
-const { completedTasks, toggleTask } = useUserProgress()
+const { completedTasks, toggleTask, taskStatuses, traderProgress, traderRequirementsEnabled } = useUserProgress()
 const { playerLevel } = useAppState()
 
 // 連鎖モード: あるタスクを完了した際、そのタスクを前提とする
 // 「次に着手可能になる」タスクを自動でピン留めする
 function findUnlockedTasks(completedTaskId) {
   if (!taskData.value) return []
-  const completedSet = new Set([...completedTasks.value, completedTaskId])
-  const lv = playerLevel.value
-  const result = []
-
-  for (const t of taskData.value) {
-    // 完了済み・既にピン留め済みはスキップ
-    if (completedSet.has(t.id)) continue
-    if (focusedTaskIds.value.includes(t.id)) continue
-
-    // completedTaskId を前提に含むか？
-    const reqs = t.taskRequirements || []
-    const dependsOnCompleted = reqs.some((r) => r && r.task && r.task.id === completedTaskId)
-    if (!dependsOnCompleted) continue
-
-    // 他の前提条件もすべて完了しているか？
-    const allReqsMet = reqs.every((r) => r && r.task && completedSet.has(r.task.id))
-    if (!allReqsMet) continue
-
-    // レベル条件 (playerLevel=0は制限なし)
-    if (lv > 0 && t.minPlayerLevel && t.minPlayerLevel > lv) continue
-
-    result.push(t.id)
+  const before = completedTasks.value
+  const after = [...before, completedTaskId]
+  const completed = new Set(after)
+  const focused = new Set(focusedTaskIds.value)
+  const options = {
+    playerLevel: playerLevel.value,
+    taskStatuses: taskStatuses.value,
+    traderProgress: traderProgress.value,
+    traderRequirementsEnabled: traderRequirementsEnabled.value,
   }
-  return result
+  return taskData.value
+    .filter((task) => !completed.has(task.id) && !focused.has(task.id)
+      && Array.isArray(task.taskRequirements)
+      && task.taskRequirements.some((requirement) => requirement?.task?.id === completedTaskId)
+      && evaluateTaskAvailability(task, before, options).locked
+      && !evaluateTaskAvailability(task, after, options).locked)
+    .map((task) => task.id)
 }
 
 function completeTask(task) {
   if (!task) return
   const alreadyDone = completedTasks.value.includes(task.id)
 
-  // 既存完了システムに反映
+  const nextIds = overlayConfig.value.chainMode && !alreadyDone ? findUnlockedTasks(task.id) : []
   if (!alreadyDone) toggleTask(task.id)
-
-  // 次タスクを連鎖表示（ONの時のみ）
-  if (overlayConfig.value.chainMode && !alreadyDone) {
-    const nextIds = findUnlockedTasks(task.id)
-    for (const id of nextIds) {
-      if (!focusedTaskIds.value.includes(id)) {
-        toggleFocusedTask(id)
-      }
-    }
-  }
+  nextIds.forEach(toggleFocusedTask)
 
   // 完了タスクはピン留めから外す
   removeFocusedTask(task.id)
