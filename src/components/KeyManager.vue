@@ -1,492 +1,512 @@
 <script setup>
-// 鍵管理タブ — マップごとにグループ化した鍵一覧の管理
-import { ref, computed, watch, onMounted } from 'vue'
+// 鍵管理 — 全鍵の所持管理・ティア・根拠を一画面で辿れるカタログ
+import { ref, computed } from 'vue'
 import { useUserProgress } from '../composables/useUserProgress.js'
-import { useShoppingList } from '../composables/useShoppingList.js'
 import { useApiData } from '../composables/useApiData.js'
-import { MAP_ORDER } from '../data/constants.js'
 import { loadLS, saveLS } from '../composables/useStorage.js'
+import { MAP_ORDER } from '../data/constants.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
+import { KEY_REVIEW_META, ROLE_LABELS } from '../data/keyCuration.js'
+import {
+  TIER_ORDER, buildKeyCatalog, summarizeCatalog, effectiveTier, tierRank,
+} from '../logic/keyEvaluation.js'
+import BaseModal from './ui/BaseModal.vue'
 
 const emit = defineEmits(['open-task-from-name'])
-const safeUrl = toHttpsUrl
-
-function tarkovItemUrl(item) {
-  const slug = item.normalizedName || getKeyNormalizedName(item.id)
-  return slug ? safeUrl(`https://tarkov.dev/item/${encodeURIComponent(slug)}`) : null
-}
 
 const {
-  ownedKeys,
-  keyUserData,
-  keysViewMode,
-  keysSortMode,
-  toggleOwnedKey,
-  updateKeyUserData,
+  ownedKeys, keyUserData, keysViewMode, keysSortMode, completedTasks,
+  toggleOwnedKey, updateKeyUserData,
 } = useUserProgress()
+const { itemsData, taskData } = useApiData()
 
-const { shoppingList } = useShoppingList()
-const { itemsData } = useApiData()
-
-// ---------------------------------------------------------------------------
-// ローカル状態
-// ---------------------------------------------------------------------------
-
-const searchQuery = ref('')
-const collapsedMaps = ref({})
-const ratings = ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F']
-
-// ---------------------------------------------------------------------------
-// 折りたたみ状態の永続化
-// ---------------------------------------------------------------------------
-
+const UNKNOWN_MAP = '場所不明'
 const COLLAPSED_LS_KEY = 'eft_keys_collapsed_state'
+const RATINGS = ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F']
+const SORTS = [
+  { id: 'map', label: 'マップ順' },
+  { id: 'tier', label: 'ティアが高い順' },
+  { id: 'owned_first', label: '所持を先頭に' },
+  { id: 'rating', label: '自分の評価順' },
+]
 
-onMounted(() => {
-  const saved = loadLS(COLLAPSED_LS_KEY, null)
-  if (saved) {
-    collapsedMaps.value = saved
-    // 新しいマップ名が追加された場合にデフォルト値を補完
-    MAP_ORDER.forEach((m) => {
-      if (collapsedMaps.value[m] === undefined) {
-        collapsedMaps.value[m] = true
-      }
-    })
-    if (collapsedMaps.value['Unknown / Other'] === undefined) {
-      collapsedMaps.value['Unknown / Other'] = true
-    }
-  } else {
-    collapseAll()
-  }
+// ---------------------------------------------------------------------------
+// カタログ
+// ---------------------------------------------------------------------------
+const catalog = computed(() => buildKeyCatalog(itemsData.value, taskData.value))
+const summary = computed(() => summarizeCatalog(catalog.value))
+const completedSet = computed(() => new Set(completedTasks.value))
+const ownedSet = computed(() => new Set(ownedKeys.value))
+
+function userRating(id) { return keyUserData.value[id]?.rating || '-' }
+function userMemo(id) { return keyUserData.value[id]?.memo || '' }
+function tierOf(k) { return effectiveTier(k, userRating(k.id)) }
+function pendingTasks(k) { return k.tasks.filter((t) => !completedSet.value.has(t.id)) }
+
+const mapOptions = computed(() => {
+  const set = new Set()
+  catalog.value.forEach((k) => set.add(k.primaryMap || UNKNOWN_MAP))
+  return [...set].sort(mapCompare)
 })
 
-watch(collapsedMaps, (val) => saveLS(COLLAPSED_LS_KEY, val), { deep: true })
+function mapCompare(a, b) {
+  if (a === UNKNOWN_MAP) return 1
+  if (b === UNKNOWN_MAP) return -1
+  const ia = MAP_ORDER.indexOf(a)
+  const ib = MAP_ORDER.indexOf(b)
+  if (ia !== -1 && ib !== -1) return ia - ib
+  if (ia !== -1) return -1
+  if (ib !== -1) return 1
+  return a.localeCompare(b)
+}
 
 // ---------------------------------------------------------------------------
-// アイテム画像の参照用マップ
+// 絞り込み
 // ---------------------------------------------------------------------------
+const searchQuery = ref('')
+const mapFilter = ref('')            // '' = 全マップ
+const tierFilter = ref([])           // 選択中のティア。'未確認' を含められる
+const needNow = ref(false)           // 未完了タスクで必要
+const confidenceFilter = ref('')     // '' | provisional | unverified
 
-const itemImageMap = computed(() => {
-  const map = {}
-  const items = itemsData.value?.items || []
-  items.forEach((item) => {
-    map[item.id] = {
-      image512pxLink: item.image512pxLink,
-      normalizedName: item.normalizedName,
-    }
-  })
-  return map
-})
+function toggleTier(t) {
+  const i = tierFilter.value.indexOf(t)
+  if (i === -1) tierFilter.value = [...tierFilter.value, t]
+  else tierFilter.value = tierFilter.value.filter((x) => x !== t)
+}
 
-// ---------------------------------------------------------------------------
-// フィルタリング済み鍵リスト
-// ---------------------------------------------------------------------------
+const filtersActive = computed(() => !!(
+  searchQuery.value || mapFilter.value || tierFilter.value.length || needNow.value
+  || confidenceFilter.value || keysViewMode.value === 'owned'
+))
 
-const filteredKeys = computed(() => {
-  let keys = shoppingList.value.keys || []
+function resetFilters() {
+  searchQuery.value = ''
+  mapFilter.value = ''
+  tierFilter.value = []
+  needNow.value = false
+  confidenceFilter.value = ''
+  keysViewMode.value = 'all'
+}
 
-  // 所持モードフィルタ (composable側でも処理されるがsearchQueryは未適用)
-  if (keysViewMode.value === 'owned') {
-    keys = keys.filter((k) => ownedKeys.value.includes(k.id))
-  }
-
-  // テキスト検索
+const filtered = computed(() => {
   const q = searchQuery.value.toLowerCase().trim()
-  if (q) {
-    keys = keys.filter((k) => {
-      return (
-        (k.name && k.name.toLowerCase().includes(q)) ||
-        (k.shortName && k.shortName.toLowerCase().includes(q))
-      )
-    })
+  return catalog.value.filter((k) => {
+    if (keysViewMode.value === 'owned' && !ownedSet.value.has(k.id)) return false
+    if (mapFilter.value && (k.primaryMap || UNKNOWN_MAP) !== mapFilter.value
+      && !k.maps.some((m) => m.name === mapFilter.value)) return false
+    if (needNow.value && pendingTasks(k).length === 0) return false
+    if (confidenceFilter.value && k.confidence !== confidenceFilter.value) return false
+    if (tierFilter.value.length) {
+      const t = tierOf(k)
+      const label = t || '未確認'
+      if (!tierFilter.value.includes(label)) return false
+    }
+    if (q) {
+      const hay = `${k.name} ${k.shortName || ''} ${k.primaryMap || ''} ${k.tasks.map((t) => t.name).join(' ')}`.toLowerCase()
+      if (!hay.includes(q)) return false
+    }
+    return true
+  })
+})
+
+function compareKeys(a, b) {
+  const mode = keysSortMode.value
+  if (mode === 'owned_first') {
+    const d = Number(ownedSet.value.has(b.id)) - Number(ownedSet.value.has(a.id))
+    if (d) return d
   }
+  if (mode === 'rating') {
+    const ra = RATINGS.indexOf(userRating(a.id)); const rb = RATINGS.indexOf(userRating(b.id))
+    const sa = ra <= 0 ? 99 : ra; const sb = rb <= 0 ? 99 : rb
+    if (sa !== sb) return sa - sb
+  }
+  if (mode === 'tier' || mode === 'map' || mode === 'owned_first' || mode === 'rating') {
+    const d = tierRank(tierOf(a)) - tierRank(tierOf(b))
+    if (d) return d
+  }
+  return a.name.localeCompare(b.name)
+}
 
-  return keys
+const sortMode = computed(() => (SORTS.some((s) => s.id === keysSortMode.value) ? keysSortMode.value : 'map'))
+
+// 並び順が「ティア順」のときはマップをまたいで 1 本のリストにする
+const groups = computed(() => {
+  const list = [...filtered.value]
+  if (sortMode.value === 'tier') {
+    list.sort(compareKeys)
+    return [{ name: null, keys: list }]
+  }
+  const byMap = new Map()
+  list.forEach((k) => {
+    const m = k.primaryMap || UNKNOWN_MAP
+    if (!byMap.has(m)) byMap.set(m, [])
+    byMap.get(m).push(k)
+  })
+  return [...byMap.entries()]
+    .sort((a, b) => mapCompare(a[0], b[0]))
+    .map(([name, keys]) => ({ name, keys: keys.sort(compareKeys) }))
 })
 
 // ---------------------------------------------------------------------------
-// マップごとにグループ化
+// 展開・補助表示
 // ---------------------------------------------------------------------------
-
-const groupedKeys = computed(() => {
-  const groups = {}
-  filteredKeys.value.forEach((k) => {
-    const map = k.mapName || 'Unknown / Other'
-    if (!groups[map]) groups[map] = []
-    groups[map].push(k)
-  })
-
-  // MAP_ORDER に従ってソート、未知のマップは末尾
-  const sortedMapNames = Object.keys(groups).sort((a, b) => {
-    if (a === 'Unknown / Other') return 1
-    if (b === 'Unknown / Other') return -1
-    const idxA = MAP_ORDER.indexOf(a)
-    const idxB = MAP_ORDER.indexOf(b)
-    if (idxA !== -1 && idxB !== -1) return idxA - idxB
-    if (idxA !== -1) return -1
-    if (idxB !== -1) return 1
-    return a.localeCompare(b)
-  })
-
-  // グループ内ソート
-  const rateValues = { SS: 12, S: 10, A: 8, B: 6, C: 4, D: 2, F: 0, '-': -1 }
-  const result = {}
-  sortedMapNames.forEach((mapName) => {
-    const items = groups[mapName]
-    items.sort((a, b) => {
-      if (keysSortMode.value === 'owned_first') {
-        const isOwnedA = ownedKeys.value.includes(a.id)
-        const isOwnedB = ownedKeys.value.includes(b.id)
-        if (isOwnedA !== isOwnedB) return isOwnedA ? -1 : 1
-      } else if (keysSortMode.value === 'rating') {
-        const getScore = (id) => {
-          const r = keyUserData.value[id]?.rating || '-'
-          return rateValues[r] !== undefined ? rateValues[r] : -1
-        }
-        const scoreA = getScore(a.id)
-        const scoreB = getScore(b.id)
-        if (scoreA !== scoreB) return scoreB - scoreA
-      }
-      return a.name.localeCompare(b.name)
-    })
-    result[mapName] = items
-  })
-
-  return result
-})
-
-// ---------------------------------------------------------------------------
-// ヘルパー
-// ---------------------------------------------------------------------------
-
-function toggleMap(mapName) {
-  collapsedMaps.value[mapName] = !collapsedMaps.value[mapName]
+const expanded = ref(new Set())
+function toggleExpand(id) {
+  const next = new Set(expanded.value)
+  if (next.has(id)) next.delete(id)
+  else next.add(id)
+  expanded.value = next
+}
+const collapsedGroups = ref(loadLS(COLLAPSED_LS_KEY, null) || {})
+function isGroupCollapsed(name) {
+  const storageName = name === UNKNOWN_MAP ? 'Unknown / Other' : name
+  return collapsedGroups.value[storageName] === true
 }
 
-function collapseAll() {
-  const newState = {}
-  Object.keys(groupedKeys.value).forEach((m) => {
-    newState[m] = true
-  })
-  newState['Unknown / Other'] = true
-  collapsedMaps.value = newState
+function toggleGroup(name) {
+  const storageName = name === UNKNOWN_MAP ? 'Unknown / Other' : name
+  collapsedGroups.value = { ...collapsedGroups.value, [storageName]: !isGroupCollapsed(name) }
+  saveLS(COLLAPSED_LS_KEY, collapsedGroups.value)
 }
 
-function expandAll() {
-  const newState = { ...collapsedMaps.value }
-  Object.keys(newState).forEach((k) => {
-    newState[k] = false
-  })
-  collapsedMaps.value = newState
+const CONF_LABEL = { confirmed: '確定', provisional: '暫定', unverified: '未確認' }
+function tarkovUrl(k) {
+  return k.normalizedName ? toHttpsUrl(`https://tarkov.dev/item/${encodeURIComponent(k.normalizedName)}`) : null
 }
+function sourceLabels(k) {
+  const ids = k.curation?.src || []
+  const labels = KEY_REVIEW_META.sources.filter((s) => ids.includes(s.id)).map((s) => s.label)
+  if (k.tasks.length || k.locks) {
+    const api = KEY_REVIEW_META.sources[0].label
+    if (!labels.includes(api)) labels.unshift(api)
+  }
+  return labels
+}
+function onRating(id, e) { updateKeyUserData(id, 'rating', e.target.value) }
+function onMemo(id, e) { updateKeyUserData(id, 'memo', e.target.value) }
 
-function getRating(id) {
-  return keyUserData.value[id]?.rating || '-'
-}
-
-function getMemo(id) {
-  return keyUserData.value[id]?.memo || ''
-}
-
-function onRatingChange(id, event) {
-  updateKeyUserData(id, 'rating', event.target.value)
-}
-
-function onMemoChange(id, event) {
-  updateKeyUserData(id, 'memo', event.target.value)
-}
-
-/** ソース名から "Task: " プレフィックスを除去 */
-function formatSourceName(name) {
-  if (!name) return ''
-  return name.replace(/^Task:\s*/, '')
-}
-
-/** 鍵の画像URLを取得 */
-function getKeyImage(id) {
-  return itemImageMap.value[id]?.image512pxLink || null
-}
-
-/** 鍵のnormalizedNameを取得 */
-function getKeyNormalizedName(id) {
-  return itemImageMap.value[id]?.normalizedName || null
-}
+const basisOpen = ref(false)
 </script>
 
 <template>
-  <div class="card border-info">
-    <!-- ヘッダー: 検索 + 表示モード + ソート + 折りたたみボタン -->
-    <div class="card-header bg-dark text-info border-bottom border-info">
-      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
-        <div class="d-flex align-items-center flex-wrap gap-2">
-          <div class="fw-bold fs-5">鍵管理</div>
-          <div class="btn-group btn-group-sm">
-            <button
-              class="btn btn-outline-secondary text-light text-nowrap"
-              @click="collapseAll"
-              title="全てのマップを閉じる"
-            >
-              全て収納
-            </button>
-            <button
-              class="btn btn-outline-secondary text-light text-nowrap"
-              @click="expandAll"
-              title="全てのマップを開く"
-            >
-              全て展開
-            </button>
-          </div>
-        </div>
+  <section class="km" aria-labelledby="km-title">
+    <header class="km-head">
+      <div class="km-title-row">
+        <h2 id="km-title" class="km-title">鍵管理</h2>
+        <button type="button" class="km-link-btn" @click="basisOpen = true">評価基準と出典</button>
+      </div>
+      <p class="km-sub">
+        全 {{ summary.total }} 本 / 所持 {{ ownedKeys.length }} 本。
+        確定 {{ summary.confirmed }}・暫定 {{ summary.provisional }}・未確認 {{ summary.unverified }}
+        <span class="km-sub-note">(ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 確認)</span>
+      </p>
+    </header>
+
+    <div class="km-filters" role="search">
+      <div class="km-row">
         <input
-          type="text"
-          class="form-control form-control-sm key-search"
-          placeholder="鍵名で検索..."
-          v-model="searchQuery"
+          v-model="searchQuery" type="search" class="km-input km-search"
+          placeholder="鍵名・略称・タスク名で検索" aria-label="鍵を検索"
         />
+        <select v-model="mapFilter" class="km-input km-select" aria-label="マップで絞り込む">
+          <option value="">全マップ</option>
+          <option v-for="m in mapOptions" :key="m" :value="m">{{ m }}</option>
+        </select>
+        <select v-model="keysSortMode" class="km-input km-select" aria-label="並び順">
+          <option v-for="s in SORTS" :key="s.id" :value="s.id">{{ s.label }}</option>
+        </select>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-        <!-- 表示モード切替 -->
-        <div class="d-flex align-items-center gap-2">
-          <span class="small text-secondary">表示:</span>
-          <div class="btn-group btn-group-sm">
-            <button
-              class="btn"
-              :class="keysViewMode === 'all' ? 'btn-info' : 'btn-outline-secondary'"
-              @click="keysViewMode = 'all'"
-            >
-              全ての鍵
-            </button>
-            <button
-              class="btn"
-              :class="keysViewMode === 'owned' ? 'btn-info' : 'btn-outline-secondary'"
-              @click="keysViewMode = 'owned'"
-            >
-              所持のみ
-            </button>
-          </div>
-        </div>
-
-        <!-- ソートモード -->
-        <div class="d-flex align-items-center gap-2">
-          <span class="small text-secondary">並び順:</span>
-          <select
-            class="form-select form-select-sm bg-dark text-white border-secondary"
-            style="width: auto"
-            v-model="keysSortMode"
-          >
-            <option value="map">マップ順 (Default)</option>
-            <option value="owned_first">所持済みを先頭に</option>
-            <option value="rating">Rate順 (SS -> F)</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- 鍵テーブル本体 -->
-    <div class="card-body p-0 overflow-auto" style="max-height: 80vh">
-      <div
-        v-for="(keys, mapName) in groupedKeys"
-        :key="mapName"
-        class="map-group"
-      >
-        <!-- マップヘッダー -->
+      <div class="km-row km-chips" role="group" aria-label="ティアで絞り込む">
         <button
-          type="button"
-          class="map-header w-100 px-3 py-2 d-flex justify-content-between align-items-center text-start"
-          @click="toggleMap(mapName)"
-          style="background-color: #2c3e50; cursor: pointer; border: 0; border-bottom: 1px solid #444"
-        >
-          <span class="fw-bold text-white">{{ mapName }} ({{ keys.length }})</span>
-          <span class="small text-muted">
-            {{ collapsedMaps[mapName] ? '▼ 表示' : '▲ 非表示' }}
-          </span>
-        </button>
-
-        <!-- 鍵テーブル (折りたたみ可能) -->
-        <div v-show="!collapsedMaps[mapName]">
-          <table
-            class="table table-dark table-hover mb-0 table-sm"
-            style="table-layout: fixed"
-          >
-            <thead>
-              <tr>
-                <th style="width: 50px" class="text-center">所持</th>
-                <th style="width: 70px" class="text-center">Rate</th>
-                <th style="width: 100px">ShortName</th>
-                <th>Name / Memo</th>
-                <th style="width: 180px">使用Task</th>
-                <th style="width: 50px" class="text-center">Wiki</th>
-                <th style="width: 50px" class="text-center">Dev</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="item in keys"
-                :key="item.id"
-                :class="{ 'key-owned': ownedKeys.includes(item.id) }"
-              >
-                <!-- 所持チェックボックス -->
-                <td class="text-center align-middle">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    style="cursor: pointer"
-                    :checked="ownedKeys.includes(item.id)"
-                    @change="toggleOwnedKey(item.id)"
-                  />
-                </td>
-
-                <!-- レーティング選択 -->
-                <td class="align-middle text-center">
-                  <select
-                    class="form-select form-select-sm p-0 text-center"
-                    style="height: 24px; background-color: #222; color: gold; border: 1px solid #555"
-                    :value="getRating(item.id)"
-                    @change="onRatingChange(item.id, $event)"
-                    @click.stop
-                  >
-                    <option v-for="r in ratings" :key="r" :value="r">{{ r }}</option>
-                  </select>
-                </td>
-
-                <!-- ショートネーム -->
-                <td
-                  class="align-middle text-info small text-truncate"
-                  :title="item.shortName"
-                >
-                  {{ item.shortName || '-' }}
-                </td>
-
-                <!-- 名前 + メモ入力 -->
-                <td class="align-middle">
-                  <div class="d-flex align-items-center gap-2">
-                    <div
-                      class="bg-black rounded d-flex align-items-center justify-content-center flex-shrink-0"
-                      style="width: 32px; height: 32px; border: 1px solid #444"
-                    >
-                      <img
-                        v-if="getKeyImage(item.id)"
-                        :src="getKeyImage(item.id)"
-                        alt=""
-                        style="max-width: 100%; max-height: 100%; object-fit: contain"
-                      />
-                    </div>
-
-                    <div style="min-width: 0; flex-grow: 1">
-                      <div
-                        :class="{ 'item-collected': ownedKeys.includes(item.id) }"
-                        class="fw-bold small text-truncate"
-                        :title="item.name"
-                      >
-                        {{ item.name }}
-                      </div>
-                      <input
-                        type="text"
-                        class="form-control form-control-sm mt-1 py-0"
-                        style="
-                          background: transparent;
-                          border: none;
-                          border-bottom: 1px solid #444;
-                          color: #aaa;
-                          font-size: 0.8em;
-                        "
-                        placeholder="メモ..."
-                        :value="getMemo(item.id)"
-                        @input="onMemoChange(item.id, $event)"
-                      />
-                    </div>
-                  </div>
-                </td>
-
-                <!-- 使用タスク -->
-                <td class="align-middle small">
-                  <div v-if="item.sources && item.sources.length > 0">
-                    <div
-                      v-for="(source, idx) in item.sources"
-                      :key="idx"
-                      class="text-truncate"
-                    >
-                      <button type="button"
-                        v-if="source.type === 'task'"
-                        class="btn p-0 border-0 bg-transparent text-info text-start"
-                        style="cursor: pointer; text-decoration: underline"
-                        @click="emit('open-task-from-name', { id: source.taskId, name: formatSourceName(source.name) })"
-                      >
-                        {{ formatSourceName(source.name) }}
-                      </button>
-                      <span v-else>{{ source.name }}</span>
-                    </div>
-                  </div>
-                  <span v-else class="text-muted">-</span>
-                </td>
-
-                <!-- Wiki リンク -->
-                <td class="align-middle text-center">
-                  <a
-                    v-if="safeUrl(item.wikiLink)"
-                    :href="safeUrl(item.wikiLink)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn btn-sm btn-outline-warning py-0 px-1"
-                    title="Wiki"
-                    @click.stop
-                  >
-                    W
-                  </a>
-                  <span v-else class="text-muted">-</span>
-                </td>
-
-                <!-- tarkov.dev リンク -->
-                <td class="align-middle text-center">
-                  <a
-                    v-if="tarkovItemUrl(item)"
-                    :href="tarkovItemUrl(item)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn btn-sm btn-outline-primary py-0 px-1"
-                    title="Tarkov.dev"
-                    @click.stop
-                  >
-                    D
-                  </a>
-                  <span v-else class="text-muted">-</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          v-for="t in TIER_ORDER" :key="t" type="button"
+          class="km-chip tier" :class="['t-' + t, { on: tierFilter.includes(t) }]"
+          :aria-pressed="tierFilter.includes(t)" @click="toggleTier(t)"
+        >{{ t }}<small>{{ summary.byTier[t] }}</small></button>
+        <button
+          type="button" class="km-chip tier t-none" :class="{ on: tierFilter.includes('未確認') }"
+          :aria-pressed="tierFilter.includes('未確認')" @click="toggleTier('未確認')"
+        >未確認<small>{{ summary.unverified }}</small></button>
       </div>
 
-      <!-- 鍵が見つからない場合 -->
-      <div
-        v-if="Object.keys(groupedKeys).length === 0"
-        class="text-center py-4 text-muted"
-      >
-        鍵が見つかりません。
+      <div class="km-row km-toggles">
+        <button type="button" class="km-chip" :class="{ on: keysViewMode === 'owned' }"
+          :aria-pressed="keysViewMode === 'owned'" @click="keysViewMode = keysViewMode === 'owned' ? 'all' : 'owned'">所持のみ</button>
+        <button type="button" class="km-chip" :class="{ on: needNow }"
+          :aria-pressed="needNow" @click="needNow = !needNow">未完了タスクで必要</button>
+        <button type="button" class="km-chip" :class="{ on: confidenceFilter === 'provisional' }"
+          :aria-pressed="confidenceFilter === 'provisional'"
+          @click="confidenceFilter = confidenceFilter === 'provisional' ? '' : 'provisional'">暫定のみ</button>
+        <button v-if="filtersActive" type="button" class="km-link-btn" @click="resetFilters">絞り込みを解除</button>
+        <span class="km-count" aria-live="polite">{{ filtered.length }} 本を表示</span>
       </div>
     </div>
-  </div>
+
+    <div v-for="g in groups" :key="g.name ?? 'all'" class="km-group">
+      <button
+        v-if="g.name" type="button" class="km-group-head"
+        :aria-expanded="!isGroupCollapsed(g.name)" @click="toggleGroup(g.name)"
+      >
+        <span class="km-group-name">{{ g.name }}</span>
+        <span class="km-group-n">{{ g.keys.length }} 本 / 所持 {{ g.keys.filter((k) => ownedSet.has(k.id)).length }}</span>
+        <span class="km-group-caret" aria-hidden="true">{{ isGroupCollapsed(g.name) ? '＋' : '－' }}</span>
+      </button>
+
+      <ul v-show="!g.name || !isGroupCollapsed(g.name)" class="km-list">
+        <li v-for="k in g.keys" :key="k.id" class="km-item" :class="{ owned: ownedSet.has(k.id) }">
+          <div class="km-line">
+            <button
+              type="button" class="km-own" :class="{ on: ownedSet.has(k.id) }"
+              :aria-pressed="ownedSet.has(k.id)" :aria-label="`${k.name} を所持`"
+              @click="toggleOwnedKey(k.id)"
+            >{{ ownedSet.has(k.id) ? '所持' : '未所持' }}</button>
+
+            <span class="km-thumb" aria-hidden="true"><img v-if="k.image" :src="k.image" alt="" loading="lazy" /></span>
+
+            <button type="button" class="km-main" :aria-expanded="expanded.has(k.id)" @click="toggleExpand(k.id)">
+              <span class="km-name">{{ k.name }}</span>
+              <span class="km-meta">
+                <span v-if="k.shortName" class="km-short">{{ k.shortName }}</span>
+                <span v-if="k.locks" class="km-tag">施錠 {{ k.locks }}</span>
+                <span v-for="r in k.roles" :key="r" class="km-tag role">{{ ROLE_LABELS[r] }}</span>
+                <span v-if="k.tasks.length" class="km-tag task" :class="{ done: !pendingTasks(k).length }">
+                  タスク {{ pendingTasks(k).length }}/{{ k.tasks.length }}
+                </span>
+                <span v-if="k.isNew" class="km-tag new">新規 {{ k.isNew }}</span>
+                <span v-if="k.duplicateName" class="km-tag warn">同名あり</span>
+                <span v-if="k.noFlea" class="km-tag">フリマ不可</span>
+              </span>
+            </button>
+
+            <span class="km-grade">
+              <span v-if="userRating(k.id) !== '-'" class="km-mine" :class="'t-' + userRating(k.id)" title="自分の評価">{{ userRating(k.id) }}</span>
+              <span
+                class="km-tier" :class="[k.tier ? 't-' + k.tier : 't-none', 'c-' + k.confidence]"
+                :title="`標準ティア (${CONF_LABEL[k.confidence]})`"
+              >
+                <b>{{ k.tier || '—' }}</b><i>{{ CONF_LABEL[k.confidence] }}</i>
+              </span>
+            </span>
+          </div>
+
+          <div v-if="expanded.has(k.id)" class="km-detail">
+            <div class="km-col">
+              <h3>評価の根拠</h3>
+              <ul class="km-reasons">
+                <li v-for="r in k.reasons" :key="r">{{ r }}</li>
+              </ul>
+              <p v-if="k.score !== null" class="km-score">合計 {{ k.score }} 点 → 標準ティア {{ k.tier }}</p>
+              <p v-if="k.curation?.note" class="km-note">{{ k.curation.note }}</p>
+              <p class="km-src">出典: {{ sourceLabels(k).join(' / ') || '確認できず' }}</p>
+              <p v-if="k.notInItemDb" class="km-note warn">アイテム DB に見つからない鍵 ID です。</p>
+            </div>
+
+            <div class="km-col">
+              <h3>使う場所</h3>
+              <ul v-if="k.maps.length" class="km-plain">
+                <li v-for="m in k.maps" :key="m.name">{{ m.name }}: {{ m.count }} か所</li>
+              </ul>
+              <p v-else class="km-dim">API に施錠データがありません。</p>
+
+              <h3>必要なタスク</h3>
+              <ul v-if="k.tasks.length" class="km-plain">
+                <li v-for="t in k.tasks" :key="t.id">
+                  <button type="button" class="km-task" @click="emit('open-task-from-name', { id: t.id, name: t.name })">{{ t.name }}</button>
+                  <span v-if="completedSet.has(t.id)" class="km-dim">(完了)</span>
+                  <span v-if="t.kappa" class="km-tag">Kappa</span>
+                  <span v-else-if="t.lightkeeper" class="km-tag">Lightkeeper</span>
+                </li>
+              </ul>
+              <p v-else class="km-dim">使うタスクはありません。</p>
+            </div>
+
+            <div class="km-col">
+              <h3>自分の評価とメモ</h3>
+              <label class="km-field">
+                <span>自分の評価</span>
+                <select class="km-input" :value="userRating(k.id)" @change="onRating(k.id, $event)">
+                  <option v-for="r in RATINGS" :key="r" :value="r">{{ r === '-' ? '未設定 (標準ティアを使う)' : r }}</option>
+                </select>
+              </label>
+              <label class="km-field">
+                <span>メモ</span>
+                <input class="km-input" type="text" :value="userMemo(k.id)" placeholder="メモ" @input="onMemo(k.id, $event)" />
+              </label>
+              <div class="km-links">
+                <a v-if="toHttpsUrl(k.wikiLink)" :href="toHttpsUrl(k.wikiLink)" target="_blank" rel="noopener noreferrer">Wiki</a>
+                <a v-if="tarkovUrl(k)" :href="tarkovUrl(k)" target="_blank" rel="noopener noreferrer">tarkov.dev</a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div v-if="!filtered.length" class="km-empty">
+      <p>条件に合う鍵がありません。</p>
+      <button v-if="filtersActive" type="button" class="km-link-btn" @click="resetFilters">絞り込みを解除</button>
+    </div>
+
+    <BaseModal :show="basisOpen" aria-label="鍵の評価基準と出典" max-width="720px" @close="basisOpen = false">
+      <div class="km-basis">
+        <div class="km-basis-head">
+          <h3>鍵の評価基準と出典</h3>
+          <button type="button" class="km-link-btn" @click="basisOpen = false">閉じる</button>
+        </div>
+        <p class="km-dim">
+          ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 時点。{{ KEY_REVIEW_META.gameVersionNote }}
+          評価は通常/PVE のモードごとに、そのモードのデータで計算します。
+        </p>
+
+        <h4>棚卸し</h4>
+        <ul class="km-plain">
+          <li>鍵 {{ summary.total }} 本 (確定 {{ summary.confirmed }} / 暫定 {{ summary.provisional }} / 未確認 {{ summary.unverified }})</li>
+          <li>同名の別 ID: {{ summary.duplicates }} 本 (Folding car key)</li>
+          <li>1.2.0.0 の新規鍵: {{ summary.newKeys }} 本 (ZB-1013 key、Security post key)</li>
+          <li>施錠箇所もタスクもなく場所を特定できない鍵: {{ summary.noMap }} 本</li>
+        </ul>
+
+        <h4>点数のつけ方</h4>
+        <table class="km-table">
+          <tbody>
+            <tr v-for="c in KEY_REVIEW_META.criteria" :key="c.label">
+              <th scope="row">{{ c.label }}</th><td>+{{ c.points }}</td><td>{{ c.text }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>点数とティア</h4>
+        <table class="km-table">
+          <tbody>
+            <tr v-for="t in KEY_REVIEW_META.tiers" :key="t.tier">
+              <th scope="row"><span class="km-tier" :class="'t-' + t.tier"><b>{{ t.tier }}</b></span></th>
+              <td>{{ t.min }} 点以上</td><td>{{ t.text }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>確度の見方</h4>
+        <ul class="km-plain">
+          <li v-for="c in KEY_REVIEW_META.confidence" :key="c.id"><b>{{ c.label }}</b>: {{ c.text }}</li>
+        </ul>
+        <p class="km-dim">標準ティアは固定の参考値です。「自分の評価」を付けると、一覧のティア表示と絞り込みでは自分の評価を優先します。所持と自分の評価は端末のこのモードの保存データに残ります。</p>
+
+        <h4>出典</h4>
+        <ul class="km-plain">
+          <li v-for="s in KEY_REVIEW_META.sources" :key="s.id">
+            <a :href="s.url" target="_blank" rel="noopener noreferrer">{{ s.label }}</a>: {{ s.detail }}
+          </li>
+        </ul>
+      </div>
+    </BaseModal>
+  </section>
 </template>
 
 <style scoped>
-/* 所持済み鍵の行ハイライト */
-.key-owned {
-  background-color: rgba(25, 135, 84, 0.15);
-}
+.km { max-width: 1040px; margin: 0 auto; padding-bottom: 24px; }
+.km-head { margin-bottom: 12px; }
+.km-title-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.km-title { font-size: 20px; font-weight: 700; margin: 0; color: var(--gold); }
+.km-sub { margin: 4px 0 0; color: var(--color-text-muted); font-size: 13px; }
+.km-sub-note { margin-left: 4px; }
+.km-link-btn { background: none; border: 0; padding: 4px 0; color: var(--info); text-decoration: underline; cursor: pointer; font-size: 13px; }
 
-/* マップヘッダーのホバー効果 */
-.map-header:hover {
-  background-color: #34495e;
-}
+.km-filters { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; display: grid; gap: 8px; margin-bottom: 12px; }
+.km-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.km-input { background: var(--surface-input); border: 1px solid var(--line); color: var(--color-text); border-radius: var(--radius); padding: 7px 10px; min-height: 38px; font-size: 14px; }
+.km-search { flex: 1 1 220px; min-width: 0; }
+.km-select { flex: 0 1 170px; }
+.km-chips { gap: 6px; }
+.km-chip { background: var(--surface-input); border: 1px solid var(--line); color: var(--color-text); border-radius: 999px; padding: 4px 12px; min-height: 34px; font-size: 13px; cursor: pointer; display: inline-flex; gap: 6px; align-items: baseline; }
+.km-chip small { color: var(--color-text-muted); font-size: 11px; }
+.km-chip.on { background: var(--info); border-color: var(--info); color: #06161a; }
+.km-chip.on small { color: #06161a; }
+.km-count { margin-left: auto; color: var(--color-text-muted); font-size: 13px; }
 
-/* 検索欄: デスクトップは固定幅、モバイルは1行使い切る */
-.key-search {
-  width: 200px;
+.km-group { margin-bottom: 10px; }
+.km-group-head { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--surface-hi); border: 1px solid var(--line); border-left: 4px solid var(--mode-color); color: var(--color-text); padding: 8px 12px; border-radius: var(--radius); cursor: pointer; position: sticky; top: calc(var(--topbar-h) + 3px); z-index: 2; }
+.km-group-name { font-weight: 700; }
+.km-group-n { color: var(--color-text-muted); font-size: 13px; }
+.km-group-caret { margin-left: auto; color: var(--color-text-muted); }
+
+.km-list { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 4px; }
+.km-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.km-item.owned { border-color: color-mix(in srgb, var(--mode-color) 55%, var(--line)); background: color-mix(in srgb, var(--mode-color) 8%, var(--surface)); }
+.km-line { display: flex; align-items: center; gap: 10px; padding: 6px 10px; }
+.km-own { flex: 0 0 auto; width: 62px; min-height: 40px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface-input); color: var(--color-text-muted); font-size: 13px; cursor: pointer; }
+.km-own.on { background: var(--mode-color); border-color: var(--mode-color); color: #04120a; font-weight: 700; }
+.km-thumb { flex: 0 0 auto; width: 38px; height: 38px; background: #000; border: 1px solid var(--line); border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.km-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.km-main { flex: 1 1 auto; min-width: 0; text-align: left; background: none; border: 0; padding: 4px 0; color: var(--color-text); cursor: pointer; display: grid; gap: 2px; }
+.km-name { font-weight: 600; overflow-wrap: anywhere; }
+.km-meta { display: flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; font-size: 12px; color: var(--color-text-muted); }
+.km-short { color: var(--info); }
+.km-tag { border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; line-height: 18px; }
+.km-tag.role { border-color: #8a7a2a; color: var(--gold); }
+.km-tag.task { border-color: #2a6f80; color: var(--info); }
+.km-tag.task.done { color: var(--color-text-muted); border-color: var(--line); }
+.km-tag.new { border-color: #3a8f5a; color: #6fd196; }
+.km-tag.warn { border-color: #a0522d; color: #f0a070; }
+
+.km-grade { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
+.km-mine { min-width: 30px; text-align: center; font-weight: 800; font-size: 13px; padding: 2px 6px; border-radius: 4px; border: 1px solid currentColor; }
+.km-tier { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 52px; padding: 2px 6px; border-radius: 6px; border: 2px solid currentColor; line-height: 1.1; }
+.km-tier b { font-size: 18px; font-weight: 800; }
+.km-tier i { font-style: normal; font-size: 10px; }
+.km-tier.c-provisional { border-style: dashed; }
+.km-tier.c-unverified { border-style: dotted; opacity: 0.75; }
+
+.t-SS { color: #ffd24a; }
+.t-S { color: #ff9f43; }
+.t-A { color: #5ed28a; }
+.t-B { color: #4fd1e8; }
+.t-C { color: #8fa6ff; }
+.t-D { color: #a8b0bd; }
+.t-F { color: #7b828e; }
+.t-none { color: #7b828e; }
+.km-chip.tier { font-weight: 700; }
+.km-chip.tier:not(.on) { color: inherit; }
+.km-chip.tier.t-SS:not(.on) { color: #ffd24a; } .km-chip.tier.t-S:not(.on) { color: #ff9f43; }
+.km-chip.tier.t-A:not(.on) { color: #5ed28a; } .km-chip.tier.t-B:not(.on) { color: #4fd1e8; }
+.km-chip.tier.t-C:not(.on) { color: #8fa6ff; } .km-chip.tier.t-D:not(.on) { color: #a8b0bd; }
+.km-chip.tier.t-F:not(.on), .km-chip.tier.t-none:not(.on) { color: #9aa1ad; }
+
+.km-detail { border-top: 1px solid var(--line); padding: 10px 12px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.km-col h3 { font-size: 13px; margin: 0 0 4px; color: var(--gold); }
+.km-col h3:not(:first-child) { margin-top: 10px; }
+.km-reasons, .km-plain { margin: 0; padding-left: 18px; font-size: 13px; }
+.km-plain { list-style: none; padding-left: 0; }
+.km-plain li { margin-bottom: 2px; }
+.km-score, .km-note, .km-src { margin: 6px 0 0; font-size: 12.5px; color: var(--color-text-muted); }
+.km-note.warn { color: #f0a070; }
+.km-dim { color: var(--color-text-muted); font-size: 13px; margin: 0; }
+.km-task { background: none; border: 0; padding: 0; color: var(--info); text-decoration: underline; cursor: pointer; text-align: left; }
+.km-field { display: grid; gap: 2px; font-size: 12.5px; color: var(--color-text-muted); margin-bottom: 8px; }
+.km-field .km-input { width: 100%; }
+.km-links { display: flex; gap: 12px; font-size: 13px; }
+.km-links a { color: var(--info); }
+
+.km-empty { text-align: center; padding: 28px 12px; color: var(--color-text-muted); }
+
+.km-basis { padding: 16px; max-height: 80vh; overflow: auto; }
+.km-basis-head { display: flex; justify-content: space-between; align-items: baseline; }
+.km-basis h3 { margin: 0 0 6px; font-size: 18px; color: var(--gold); }
+.km-basis h4 { font-size: 14px; margin: 16px 0 6px; color: var(--info); }
+.km-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.km-table th, .km-table td { text-align: left; padding: 4px 8px 4px 0; border-bottom: 1px solid var(--line); font-weight: 400; vertical-align: middle; }
+.km-table th { font-weight: 600; white-space: nowrap; }
+.km-basis a { color: var(--info); }
+
+@media (max-width: 767.98px) {
+  .km-detail { grid-template-columns: 1fr; }
+  .km-line { gap: 8px; padding: 6px 8px; }
+  .km-own { width: 52px; }
+  .km-select { flex: 1 1 140px; }
+  .km-count { margin-left: 0; width: 100%; }
+  .km-group-head { top: var(--topbar-h); }
 }
-@media (max-width: 575.98px) {
-  .key-search {
-    width: 100%;
-  }
+@media (max-width: 479.98px) {
+  .km-thumb { display: none; }
 }
 </style>
