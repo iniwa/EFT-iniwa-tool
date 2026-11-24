@@ -176,7 +176,7 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. 不具合や要望はどこに報告すればいいですか？</summary>
                     <p>
-                        フッターの <strong>📮 意見箱（Google フォーム）</strong> から送信してください。
+                        メニューの <strong>📮 意見箱（Google フォーム）</strong> から送信してください。
                         匿名で送信できます。X (Twitter) の DM でも受け付けています：
                         <a href="https://twitter.com/iniwach" target="_blank" rel="noopener">@iniwach</a>
                     </p>

@@ -34,7 +34,7 @@ const {
   setTaskStatus,
 } = useUserProgress()
 
-const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
+const { overlayEnabled } = useOverlay()
 const { playerLevel } = useAppState()
 
 const props = defineProps({
@@ -151,21 +151,16 @@ function objectiveConstraintLines(obj) {
           </div>
 
           <button
+            type="button"
             class="btn btn-sm"
             :class="prioritizedTasks.includes(task.id) ? 'btn-warning' : 'btn-outline-secondary'"
+            :aria-pressed="prioritizedTasks.includes(task.id)"
+            :title="overlayEnabled ? '配信オーバーレイにも表示します' : undefined"
             @click="togglePriority(task.id)"
           >
-            {{ prioritizedTasks.includes(task.id) ? '★ 優先 (Prioritized)' : '☆ 優先にする' }}
+            {{ prioritizedTasks.includes(task.id) ? '★ 優先設定' : '☆ 優先設定' }}
           </button>
 
-          <button
-            v-if="overlayEnabled"
-            class="btn btn-sm"
-            :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
-            @click="toggleFocusedTask(task.id)"
-          >
-            {{ focusedTaskIds.includes(task.id) ? '📌 表示中' : '📌 配信オーバーレイに表示' }}
-          </button>
         </div>
         <button
           type="button"

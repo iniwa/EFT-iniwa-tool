@@ -12,7 +12,7 @@ import { TRADER_ORDER } from '../data/constants.js'
 
 const { playerLevel, gameMode } = useAppState()
 
-const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
+const { overlayEnabled } = useOverlay()
 
 const {
   completedTasks,
@@ -133,6 +133,10 @@ function getSortedTasks(tasks) {
       return a.name.localeCompare(b.name)
     })
   }
+  if (taskSortMode.value === 'priority') {
+    const priorities = new Set(prioritizedTasks.value)
+    sorted.sort((a, b) => Number(priorities.has(b.id)) - Number(priorities.has(a.id)))
+  }
   return sorted
 }
 
@@ -236,12 +240,13 @@ const hideoutPercent = computed(() => {
         >
         <div class="pg-switch" role="group" aria-label="グループ">
           <button type="button" :aria-pressed="taskViewMode === 'list'" @click="taskViewMode = 'list'">一覧</button>
-          <button type="button" :aria-pressed="taskViewMode === 'trader'" @click="taskViewMode = 'trader'">商人別</button>
+          <button type="button" :aria-pressed="taskViewMode === 'trader'" @click="taskViewMode = 'trader'">トレーダー別</button>
           <button type="button" :aria-pressed="taskViewMode === 'map'" @click="taskViewMode = 'map'">マップ別</button>
         </div>
         <select class="form-select form-select-sm w-auto" aria-label="並び順" v-model="taskSortMode">
           <option value="default">レベル順</option>
           <option value="name">名前順</option>
+          <option value="priority">優先を上位に</option>
         </select>
         <div class="d-flex flex-wrap gap-2">
           <button type="button" class="chip" :aria-pressed="showCompleted" @click="showCompleted = !showCompleted">{{ showCompleted ? '履歴を閉じる' : '履歴' }}</button>
@@ -343,13 +348,13 @@ const hideoutPercent = computed(() => {
               >
             </label>
             <button
-              v-if="overlayEnabled"
               type="button"
               class="chip px-2"
-              :aria-pressed="focusedTaskIds.includes(task.id)"
-              @click.stop="toggleFocusedTask(task.id)"
-              :title="focusedTaskIds.includes(task.id) ? '配信オーバーレイから外す' : '配信オーバーレイに表示'"
-            >📌</button>
+              :aria-pressed="prioritizedTasks.includes(task.id)"
+              :aria-label="`${task.name} の優先設定`"
+              :title="overlayEnabled ? '優先設定・配信オーバーレイ表示' : '優先設定'"
+              @click="togglePriority(task.id)"
+            >{{ prioritizedTasks.includes(task.id) ? '★' : '☆' }}</button>
             <div class="task-main">
               <button type="button"
                 class="task-title task-name-link"
@@ -369,7 +374,7 @@ const hideoutPercent = computed(() => {
                 <span v-if="isLocked(task)" class="text-warning">ロック中</span>
                 <span v-if="task.minPlayerLevel > 1">Lv.{{ task.minPlayerLevel }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
-                <span v-if="taskViewMode === 'map'">{{ task.trader?.name || 'Unknown' }}</span>
+                <span v-if="taskViewMode !== 'trader'" class="d-lg-none">{{ task.trader?.name || 'Unknown' }}</span>
               </div>
             </div>
             <span v-if="taskViewMode !== 'trader'" class="task-trader">{{ task.trader?.name || 'Unknown' }}</span>

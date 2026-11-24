@@ -1,5 +1,5 @@
 // Import / export user data as JSON (singleton)
-import { sanitizeTaskStatuses, sanitizeTraderProgress, useUserProgress } from './useUserProgress.js';
+import { mergePriorityTasks, sanitizeTaskStatuses, sanitizeTraderProgress, useUserProgress } from './useUserProgress.js';
 import { useAppState } from './useAppState.js';
 import { useApiData } from './useApiData.js';
 import { useOverlay } from './useOverlay.js';
@@ -109,7 +109,9 @@ export function validateBackup(payload, { tasks = [], stations = [], currentMode
   const traders = has('traderProgress') ? sanitizeTraderProgress(safeObject(payload.traderProgress, 'トレーダー進捗')) : {};
   if (has('traderProgress') && Object.keys(traders).length !== Object.keys(payload.traderProgress).length) throw new Error('トレーダー進捗の値が不正です。');
   const completed = has('completedTasks') ? migrateTasks(payload.completedTasks, '完了タスク') : { values: [], warnings: [] };
-  const prioritized = has('prioritizedTasks') ? migrateTasks(payload.prioritizedTasks, '優先タスク') : { values: [], warnings: [] };
+  const priorityIds = has('prioritizedTasks') ? cloneArray(payload.prioritizedTasks, '優先タスク') : [];
+  const focusedIds = has('focusedTaskIds') ? cloneArray(payload.focusedTaskIds, 'オーバーレイ固定タスク') : [];
+  const prioritized = resolveTaskReferences(mergePriorityTasks(priorityIds, focusedIds), tasks);
   const completedTasks = completed.values;
   completedTasks.forEach((id) => delete statuses[id]);
   const result = {
@@ -122,7 +124,7 @@ export function validateBackup(payload, { tasks = [], stations = [], currentMode
     wishlist: has('wishlist') ? cloneArray(payload.wishlist, 'ほしい物') : [], taskStatuses: statuses, traderProgress: traders,
     traderRequirementsEnabled: has('traderRequirementsEnabled') ? payload.traderRequirementsEnabled : false,
     storyProgress: has('storyProgress') ? sanitizeStory(payload.storyProgress) : {},
-    focusedTaskIds: has('focusedTaskIds') ? cloneArray(payload.focusedTaskIds, 'オーバーレイ固定タスク') : [],
+    focusedTaskIds: prioritized.values,
     overlayItemCounts: has('overlayItemCounts') ? sanitizeCounts(payload.overlayItemCounts) : {}, warnings: [...completed.warnings, ...prioritized.warnings],
   };
   if (has('boreasReferenceRecords')) result.boreasReferenceRecords = validateBoreasRecords(payload.boreasReferenceRecords);
@@ -138,7 +140,7 @@ export function useImportExport() {
   const { taskData, hideoutData } = useApiData();
   const overlay = useOverlay();
   function exportData() {
-    const data = { boreasReferenceRecords: [...boreas.recordedObjectiveIds.value], schemaVersion: BACKUP_SCHEMA_VERSION, gameMode: gameMode.value, userHideout: progress.userHideout.value, completedTasks: progress.completedTasks.value, collectedItems: progress.collectedItems.value, ownedKeys: progress.ownedKeys.value, keyUserData: progress.keyUserData.value, playerLevel: playerLevel.value, prioritizedTasks: progress.prioritizedTasks.value, wishlist: progress.wishlist.value, taskStatuses: progress.taskStatuses.value, traderProgress: progress.traderProgress.value, traderRequirementsEnabled: progress.traderRequirementsEnabled.value, storyProgress: progress.storyProgress.value, focusedTaskIds: overlay.focusedTaskIds.value, overlayItemCounts: overlay.overlayItemCounts.value };
+    const data = { boreasReferenceRecords: [...boreas.recordedObjectiveIds.value], schemaVersion: BACKUP_SCHEMA_VERSION, gameMode: gameMode.value, userHideout: progress.userHideout.value, completedTasks: progress.completedTasks.value, collectedItems: progress.collectedItems.value, ownedKeys: progress.ownedKeys.value, keyUserData: progress.keyUserData.value, playerLevel: playerLevel.value, prioritizedTasks: progress.prioritizedTasks.value, wishlist: progress.wishlist.value, taskStatuses: progress.taskStatuses.value, traderProgress: progress.traderProgress.value, traderRequirementsEnabled: progress.traderRequirementsEnabled.value, storyProgress: progress.storyProgress.value, focusedTaskIds: progress.prioritizedTasks.value, overlayItemCounts: overlay.overlayItemCounts.value };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
     const a = document.createElement('a'); a.href = url; a.download = 'iniwas_intel_center_backup.json'; a.click(); URL.revokeObjectURL(url);
   }
@@ -155,7 +157,7 @@ export function useImportExport() {
     progress.collectedItems.value = data.collectedItems; progress.ownedKeys.value = data.ownedKeys; progress.keyUserData.value = data.keyUserData;
     playerLevel.value = data.playerLevel; progress.prioritizedTasks.value = data.prioritizedTasks; progress.wishlist.value = data.wishlist;
     progress.taskStatuses.value = data.taskStatuses; progress.traderProgress.value = data.traderProgress; progress.traderRequirementsEnabled.value = data.traderRequirementsEnabled;
-    progress.storyProgress.value = data.storyProgress; overlay.focusedTaskIds.value = data.focusedTaskIds; overlay.overlayItemCounts.value = data.overlayItemCounts;
+    progress.storyProgress.value = data.storyProgress; overlay.overlayItemCounts.value = data.overlayItemCounts;
   }
   function importData(file) {
     return new Promise((resolve, reject) => {

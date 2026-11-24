@@ -2,6 +2,9 @@ import { createApp } from 'vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import './assets/style.css'
+import { syncPriorityStorage } from './composables/useUserProgress.js'
+
+window.addEventListener('storage', syncPriorityStorage)
 
 const params = new URLSearchParams(window.location.search)
 const isOverlay = params.get('overlay') === 'tasks'

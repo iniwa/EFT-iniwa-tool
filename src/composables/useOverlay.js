@@ -1,15 +1,16 @@
 // src/composables/useOverlay.js
 // 配信者用オーバーレイ機能の状態管理（singleton）
-// - focusedTaskIds: ピン留め中のタスクID配列（モード別）
+// - focusedTaskIds: 優先タスクの共用リスト（モード別）
 // - overlayItemCounts: 各objectiveの現在カウント（モード別、キー: `${taskId}__${objectiveIndex}`）
 // - overlayEnabled: 機能ON/OFFのグローバルフラグ
 // - overlayConfig: 表示カスタマイズ（フォントサイズなど）
 //
-// BroadcastChannelで別ウィンドウ間（メイン⇔オーバーレイ）にリアルタイム同期。
+// リストは storage イベント、表示設定とカウントは BroadcastChannel で同期。
 
 import { ref, watch } from 'vue';
 import { loadLS, saveLS } from './useStorage.js';
 import { useAppState } from './useAppState.js';
+import { useUserProgress } from './useUserProgress.js';
 
 const { gameMode, apiLang, normalizeGameMode, normalizeApiLang } = useAppState();
 
@@ -22,7 +23,7 @@ function modeKey(base) {
 // ---------------------------------------------------------------------------
 
 /** ピン留め中のタスクID配列（モード別） */
-const focusedTaskIds = ref(loadLS(modeKey('focused_tasks'), []));
+const { prioritizedTasks: focusedTaskIds, togglePriority: toggleFocusedTask } = useUserProgress();
 
 /** objectiveごとの現在数 (key: `${taskId}__${objIdx}`) — モード別 */
 const overlayItemCounts = ref(loadLS(modeKey('overlay_item_counts'), {}));
@@ -62,10 +63,6 @@ export function isValidOverlayMessage(msg, currentMode) {
       ['pve', 'regular', 'pvp-season', 'pvp'].includes(msg.payload.mode) &&
       ['ja', 'en'].includes(msg.payload.lang);
   }
-  if (msg.type === 'focusedTaskIds') {
-    return msg.mode === currentMode && Array.isArray(msg.payload) &&
-      msg.payload.every((id) => typeof id === 'string' && id.length > 0);
-  }
   if (msg.type === 'overlayItemCounts') {
     return msg.mode === currentMode && msg.payload && typeof msg.payload === 'object' &&
       !Array.isArray(msg.payload) &&
@@ -90,8 +87,7 @@ function getChannel() {
         const lang = normalizeApiLang(msg.payload?.lang);
         if (gameMode.value !== mode) gameMode.value = mode;
         if (apiLang.value !== lang) apiLang.value = lang;
-      } else if (msg.type === 'focusedTaskIds' && msg.mode === gameMode.value) focusedTaskIds.value = msg.payload;
-      else if (msg.type === 'overlayItemCounts' && msg.mode === gameMode.value) overlayItemCounts.value = msg.payload;
+      } else if (msg.type === 'overlayItemCounts' && msg.mode === gameMode.value) overlayItemCounts.value = msg.payload;
       else if (msg.type === 'overlayEnabled') overlayEnabled.value = msg.payload;
       else if (msg.type === 'overlayConfig') overlayConfig.value = msg.payload;
     } finally {
@@ -114,11 +110,6 @@ function broadcast(type, payload) {
 // flush: 'sync' で同期発火させ、isApplyingRemote ガードが効くようにする
 // (デフォルトの 'pre' だと watch コールバックはマイクロタスク後に動き、
 //  リモート適用中フラグが既に false に戻ってしまいフィードバックループが起きる)
-watch(focusedTaskIds, (val) => {
-  saveLS(modeKey('focused_tasks'), val);
-  broadcast('focusedTaskIds', JSON.parse(JSON.stringify(val)));
-}, { deep: true, flush: 'sync' });
-
 watch(overlayItemCounts, (val) => {
   saveLS(modeKey('overlay_item_counts'), val);
   broadcast('overlayItemCounts', JSON.parse(JSON.stringify(val)));
@@ -136,9 +127,7 @@ watch(overlayConfig, (val) => {
 
 // ゲームモード変更時にスワップ
 watch(gameMode, (newMode, oldMode) => {
-  saveLS(`eft_${oldMode}_focused_tasks`, focusedTaskIds.value);
   saveLS(`eft_${oldMode}_overlay_item_counts`, overlayItemCounts.value);
-  focusedTaskIds.value = loadLS(`eft_${newMode}_focused_tasks`, []);
   overlayItemCounts.value = loadLS(`eft_${newMode}_overlay_item_counts`, {});
   broadcast('context', { mode: newMode, lang: apiLang.value });
 });
@@ -149,18 +138,8 @@ watch(apiLang, (lang) => broadcast('context', { mode: gameMode.value, lang }));
 // Methods
 // ---------------------------------------------------------------------------
 
-function toggleFocusedTask(id) {
-  const idx = focusedTaskIds.value.indexOf(id);
-  if (idx > -1) {
-    focusedTaskIds.value.splice(idx, 1);
-  } else {
-    focusedTaskIds.value.push(id);
-  }
-}
-
 function removeFocusedTask(id) {
-  const idx = focusedTaskIds.value.indexOf(id);
-  if (idx > -1) focusedTaskIds.value.splice(idx, 1);
+  if (focusedTaskIds.value.includes(id)) toggleFocusedTask(id);
 }
 
 function moveFocusedTask(id, direction) {

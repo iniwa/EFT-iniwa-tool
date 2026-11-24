@@ -57,12 +57,6 @@ const routes = [
         component: () => import('../components/SeasonModifierBuilder.vue'),
         meta: { group: 'tools', label: '🧬 Modifier', tab: true, title: 'Personal Modifier' },
     },
-    {
-        path: '/battle-pass',
-        name: 'battle-pass',
-        component: () => import('../components/BattlePassView.vue'),
-        meta: { group: 'work', label: '🎟️ バトルパス', tab: true, title: 'バトルパス' },
-    },
     { path: '/settings', name: 'settings', component: () => import('../components/SettingsView.vue'), meta: { group: 'info', label: '⚙️ 設定', tab: true, title: '設定' } },
     {
         path: '/overlay',
@@ -82,19 +76,19 @@ const routes = [
         path: '/about',
         name: 'about',
         component: () => import('../components/pages/AboutPage.vue'),
-        meta: { group: 'info', title: 'About' },
+        meta: { group: 'about', title: 'About' },
     },
     {
         path: '/privacy',
         name: 'privacy',
         component: () => import('../components/pages/PrivacyPage.vue'),
-        meta: { title: 'プライバシーポリシー' },
+        meta: { group: 'about', title: 'プライバシーポリシー' },
     },
     {
         path: '/terms',
         name: 'terms',
         component: () => import('../components/pages/TermsPage.vue'),
-        meta: { title: '利用規約' },
+        meta: { group: 'about', title: '利用規約' },
     },
     {
         path: '/guide',

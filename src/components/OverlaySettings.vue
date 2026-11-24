@@ -99,7 +99,7 @@ async function copyOverlayUrl() {
 
 function handleClearAll() {
   if (focusedTaskIds.value.length === 0) return
-  if (confirm('ピン留めされたタスクを全てクリアしますか？')) {
+  if (confirm('すべてのタスクの優先設定と配信オーバーレイの進捗カウントを消去しますか？')) {
     clearAllFocused()
   }
 }
@@ -247,7 +247,7 @@ function onCountInput(taskId, idx, event) {
                 @click="handleClearAll"
                 :disabled="focusedTaskIds.length === 0"
               >
-                ピン留めを全てクリア
+                優先設定を全て解除
               </button>
             </div>
           </div>
@@ -257,7 +257,7 @@ function onCountInput(taskId, idx, event) {
         <div class="col-md-8">
           <div class="card bg-dark border-secondary h-100">
             <div class="card-header bg-dark border-secondary py-2 d-flex justify-content-between align-items-center">
-              <small class="text-info fw-bold">ピン留め中のタスク</small>
+              <small class="text-info fw-bold">優先タスク</small>
               <span class="badge bg-secondary">{{ focusedTaskIds.length }} 件</span>
             </div>
             <div class="card-body p-2">
@@ -266,7 +266,7 @@ function onCountInput(taskId, idx, event) {
                 v-if="focusedTasks.length === 0"
                 class="text-center text-muted py-5 small"
               >
-                タスク一覧で 📌 ボタンを押してピン留めしてください
+                進捗入力の ☆ ボタンでタスクを優先設定してください
               </div>
 
               <!-- タスクカードリスト -->
@@ -319,7 +319,7 @@ function onCountInput(taskId, idx, event) {
                       <button
                         class="btn btn-outline-danger"
                         @click="removeFocusedTask(task.id)"
-                        title="ピン留めのみ解除（完了にはしない）"
+                        title="優先設定を解除"
                       >✕</button>
                     </div>
                   </div>

@@ -47,7 +47,7 @@ import { RouterLink } from 'vue-router'
                             <li><code>eft_&#123;mode&#125;_task_statuses</code> — 進行中・失敗に設定したタスク</li>
                             <li><code>eft_&#123;mode&#125;_trader_progress</code> — 入力したトレーダーLL・評判</li>
                             <li><code>eft_&#123;mode&#125;_trader_requirements_enabled</code> — トレーダー条件をロック判定に使うか</li>
-                            <li><code>eft_&#123;mode&#125;_prioritized</code> — 優先タスクの ID 配列</li>
+                            <li><code>eft_&#123;mode&#125;_prioritized</code> — 優先タスクと配信オーバーレイで共有する ID 配列</li>
                             <li><code>eft_&#123;mode&#125;_hideout</code> — ハイドアウト各モジュールのレベル</li>
                             <li><code>eft_&#123;mode&#125;_collected</code> — 収集済みアイテムの識別子</li>
                             <li><code>eft_&#123;mode&#125;_keys</code> — 所持している鍵の ID</li>
@@ -55,7 +55,7 @@ import { RouterLink } from 'vue-router'
                             <li><code>eft_&#123;mode&#125;_wishlist</code> — ウィッシュリストのアイテム</li>
                             <li><code>eft_&#123;mode&#125;_story_progress</code> — ストーリータブの進捗</li>
                             <li><code>eft_&#123;mode&#125;_level</code> — プレイヤーレベル</li>
-                            <li><code>eft_&#123;mode&#125;_focused_tasks</code> / <code>eft_&#123;mode&#125;_overlay_item_counts</code> — 配信オーバーレイに表示するタスクと目標数</li>
+                            <li><code>eft_&#123;mode&#125;_overlay_item_counts</code> — 配信オーバーレイの目標数</li>
                             <li><code>eft_keys_collapsed_state</code> — 鍵管理で折りたたんだマップの状態</li>
                         </ul>
 

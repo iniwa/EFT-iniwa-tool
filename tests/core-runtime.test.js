@@ -146,6 +146,8 @@ test('story and overlay state survive a validated round trip', () => {
   const parsed = validateBackup(backup);
   assert.equal(parsed.storyProgress.chapter.step, true);
   assert.equal(parsed.overlayItemCounts[`${id}__0`], 3);
+  assert.deepEqual(parsed.prioritizedTasks, [id]);
+  assert.deepEqual(parsed.focusedTaskIds, [id]);
 });
 
 test('language normalization and trader sanitizer reject prototype keys', () => {
@@ -176,8 +178,8 @@ test('automatic v2 migration keeps mixed unresolved references and leaves its ma
 });
 
 test('overlay messages validate mode and payload shape', () => {
-  assert.equal(isValidOverlayMessage({ type: 'focusedTaskIds', mode: 'pve', payload: [id] }, 'pve'), true);
-  assert.equal(isValidOverlayMessage({ type: 'focusedTaskIds', mode: 'regular', payload: [id] }, 'pve'), false);
+  assert.equal(isValidOverlayMessage({ type: 'overlayItemCounts', mode: 'pve', payload: { [id]: 3 } }, 'pve'), true);
+  assert.equal(isValidOverlayMessage({ type: 'overlayItemCounts', mode: 'regular', payload: { [id]: 3 } }, 'pve'), false);
   assert.equal(isValidOverlayMessage({ type: 'overlayEnabled', mode: 'regular', payload: true }, 'pve'), true);
   assert.equal(isValidOverlayMessage({ type: 'overlayConfig', mode: 'regular', payload: { maxTasks: 5 } }, 'pve'), true);
   assert.equal(isValidOverlayMessage({ type: 'context', payload: { mode: 'invalid', lang: 'ja' } }, 'pve'), false);

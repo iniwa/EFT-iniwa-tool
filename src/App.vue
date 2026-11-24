@@ -13,7 +13,6 @@ import { useOverlay } from './composables/useOverlay.js'
 import './assets/console.css'
 import AppHeader from './components/AppHeader.vue'
 import AppNav from './components/AppNav.vue'
-import AppFooter from './components/AppFooter.vue'
 import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
 import TaskModal from './components/TaskModal.vue'
@@ -76,8 +75,17 @@ const GROUPS = [
     { key: 'work', label: '作業' },
     { key: 'tools', label: '道具' },
     { key: 'info', label: 'ガイド / 設定' },
+    { key: 'about', label: 'このツールについて' },
 ]
-const FALLBACK_ICON = { guide: '📘', faq: '❓', about: 'ℹ️', debug: '🛠️' }
+const FALLBACK_ICON = { guide: '📘', faq: '❓', about: 'ℹ️', privacy: '🔒', terms: '📄', debug: '🛠️' }
+const NAV_EXTRAS = {
+    info: [{ name: 'feedback', text: '意見箱', icon: '📮', href: "https://docs.google.com/forms/d/e/1FAIpQLScFPBXovafedEgQY10uTH1vAbyOA9r1l6kurIfkTuwN64eyqA/viewform?usp=dialog" }],
+    about: [
+        { name: 'release-notes', text: `更新情報 v${APP_VERSION}`, icon: '📢', action: () => noticeRef.value?.show() },
+        { name: 'author', text: '© 2026 @iniwach', icon: '👤', href: 'https://twitter.com/iniwach' },
+        { name: 'data-credit', text: 'Data by tarkov.dev', icon: '🛰️', href: 'https://tarkov.dev' },
+    ],
+}
 const CONDITION_NOTE = {
     showStoryTab: '設定でストーリータブを有効にしている間だけ表示されます',
     overlayEnabled: '配信オーバーレイを有効にしている間だけ表示されます',
@@ -102,7 +110,8 @@ const navGroups = computed(() => {
         ...g,
         items: router.options.routes
             .filter(r => r.meta?.group === g.key && (!r.meta.tab || visible.has(r.name)))
-            .map(toNavItem),
+            .map(toNavItem)
+            .concat(NAV_EXTRAS[g.key] || []),
     })).filter(g => g.items.length)
 })
 
@@ -360,10 +369,6 @@ watch(taskData, (tasks) => {
               </KeepAlive>
             </router-view>
 
-            <AppFooter
-                :app-version="APP_VERSION"
-                @show-notice="noticeRef?.show()"
-            />
         </main>
 
         <!-- スマホ: 下タブ -->
