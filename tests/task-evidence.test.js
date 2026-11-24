@@ -13,8 +13,8 @@ test('23 observed and four unresolved groups have qualified labels, not calculat
   assert.deepEqual(entries.filter(([,e]) => e.verification === 'unresolved').map(([,e]) => e.trader + ':' + e.tier).sort(), ['Mechanic:3','Mechanic:4','Prapor:4','Ragman:1'])
   for (const [id, entry] of entries) {
     const info = describeGlobalVariable({variableId:id,compareMethod:'>=',value:1})
-    assert.ok(info.label.includes(entry.trader + 'のタスク進行（区分' + entry.tier))
-    assert.ok(info.label.includes(entry.verification === 'verified' ? '参考' : '推定'))
+    const qualifier = entry.verification === 'verified' ? '参考' : '推定'
+    assert.equal(info.label, `${entry.trader} LL${entry.tier}のタスク（${qualifier}）`)
     assert.equal(info.verified, false)
     assert.equal(info.sourceRevision, '1.1.0')
     assert.equal(Object.hasOwn(entry,'taskIds'), false)
@@ -23,7 +23,7 @@ test('23 observed and four unresolved groups have qualified labels, not calculat
   }
 })
 
-test('Crisis receives separate sourced LL4 with unknown variable preserved, chart hiding and optional eligibility intact', () => {
+test('Crisis receives separate sourced LL4 with its task count gate preserved, chart hiding and optional eligibility intact', () => {
   const variable={type:'globalVariable',variableId:'6a56925b1c30ba5a77c7c518',compareMethod:'>=',value:1}
   const raw={id:'60e71c48c1bfa3050473b8e5',name:'Crisis',minPlayerLevel:38,traderLevelRequirements:[],taskRequirements:[],otherRequirements:[variable]}
   const before=JSON.stringify(raw), task=applyTaskEvidence(raw)
@@ -43,7 +43,8 @@ test('Crisis receives separate sourced LL4 with unknown variable preserved, char
   const graph=buildFlowchartGateGraph([task]);assert.equal(graph.nodes.length,1)
   assert.equal(graph.nodes[0].key,'global:'+variable.variableId)
   assert.equal(graph.nodes[0].automatic,false)
-  assert.ok(!graph.nodes[0].label.includes('LL4'))
+  assert.equal(graph.nodes[0].label,'Therapist LL4のタスク（参考）')
+  assert.equal(graph.edges[0].displayLabel,'1件以上クリア')
 })
 
 

@@ -507,7 +507,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
 
     <!-- チャート本体 -->
     <div class="px-3 py-2 small text-muted border-bottom border-secondary">
-      実線は前提タスク、点線はゲーム内の解放条件です。区分はトレーダーのタスクのグループを指し、進行値の数え方は未確認です。　
+      実線は前提タスク、点線はゲーム内の解放条件です。LL付きの条件は、そのトレーダーの該当LLで解放されるタスクのクリア数として表示しています（参考・推定）。　
       対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 条件ノード {{ chartStats.gateNodes }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
       <span class="ms-2">
         <span class="badge bg-success">完了</span>
