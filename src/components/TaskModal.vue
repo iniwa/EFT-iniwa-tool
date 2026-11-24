@@ -3,6 +3,7 @@
 // タスク情報の閲覧、進捗/優先トグル、鍵の所持トグル
 
 import { computed } from 'vue'
+import { useApiData } from '../composables/useApiData.js'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
@@ -36,6 +37,8 @@ const {
 
 const { overlayEnabled } = useOverlay()
 const { playerLevel } = useAppState()
+const { traderLoyalty } = useApiData()
+const traderLoyaltyById = computed(() => Object.fromEntries(traderLoyalty.value.map(trader => [trader.id, trader])))
 
 const props = defineProps({
   task: { type: Object, default: null },
@@ -59,6 +62,7 @@ const availability = computed(() => {
     taskStatuses: taskStatuses.value,
     traderProgress: traderProgress.value,
     traderRequirementsEnabled: traderRequirementsEnabled.value,
+    traderLoyaltyById: traderLoyaltyById.value,
   })
 })
 
@@ -180,8 +184,8 @@ function objectiveConstraintLines(obj) {
       <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
         <div><strong>Trader:</strong> {{ task.trader?.name || 'Unknown' }}</div>
         <div><strong>Map:</strong> {{ task.map ? task.map.name : 'None' }}</div>
-        <div v-if="task.minPlayerLevel > 0">
-          <span class="text-info fw-bold">Req Lv: {{ task.minPlayerLevel }}</span>
+        <div v-if="availability?.requiredPlayerLevel > 0">
+          <span class="text-info fw-bold">Req Lv: {{ availability.requiredPlayerLevel }}</span>
         </div>
         <div v-if="task.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
         <div v-if="TaskLogic.isLightkeeperUnlockTask(task)"><span class="badge badge-lk">LK</span></div>

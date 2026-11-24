@@ -1,4 +1,6 @@
 import { PROGRESSION_CONDITION_LABELS, PROGRESSION_CONDITION_SOURCE } from '../data/progressionConditionLabels.js'
+import { PROGRESSION_TASK_POOLS } from '../data/progressionTaskPools.js'
+
 // Qualified community labels are display-only; verified always remains false.
 // Do not infer meanings from the task name, ID spelling, comparison or value.
 export const UNVERIFIED_GLOBAL_CONDITION_LABEL = 'ゲーム内の追加条件（意味未検証）'
@@ -20,11 +22,33 @@ export function describeGlobalVariable(raw) {
   return {
     label: supported ? `${entry.trader} LL${entry.tier}のタスク（${qualifier}）` : UNVERIFIED_GLOBAL_CONDITION_LABEL,
     conditionText: supported ? `${value}件以上クリア` : 'ゲーム内で詳細を確認',
-    ...(supported ? { communityVerification: entry.verification, sourceUrl: PROGRESSION_CONDITION_SOURCE, sourceRevision: entry.revision } : {}),
+    ...(supported ? { trader: entry.trader, tier: entry.tier, communityVerification: entry.verification, sourceUrl: PROGRESSION_CONDITION_SOURCE, sourceRevision: entry.revision } : {}),
     verified: false,
     variableId,
     compareMethod,
     value,
     technical: `変数ID: ${variableId == null ? '不明' : display(variableId)}; 比較: ${compareMethod}; 値: ${display(value)}`,
   }
+}
+
+export function getProgressionPoolCounts(tasks, completedTaskIds) {
+  const catalog = new Set(tasks.map(({ id }) => id))
+  const completed = new Set(completedTaskIds)
+  const counts = new Map()
+  for (const [variableId, pool] of Object.entries(PROGRESSION_TASK_POOLS)) {
+    if (!pool.every(id => catalog.has(id))) continue
+    counts.set(variableId, pool.filter(id => completed.has(id)).length)
+  }
+  return counts
+}
+
+// These counts are advisory. A later LL may unlock a task through another route.
+export function getTaskProgressionChecks(task, poolCounts) {
+  return (task.otherRequirements || []).flatMap((requirement) => {
+    if (requirement.type !== 'globalVariable') return []
+    const { trader, tier, value, variableId } = describeGlobalVariable(requirement)
+    if (!trader) return []
+    const count = poolCounts.get(variableId) ?? null
+    return [{ trader, tier, required: value, count }]
+  })
 }

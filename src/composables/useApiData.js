@@ -39,6 +39,7 @@ const FETCH_COOLDOWN_KEY = 'eft_fetch_cooldowns_v313';
 
 /** Task list (processed) */
 const taskData = shallowRef([]);
+const traderLoyalty = shallowRef([]);
 
 /** Hideout station data (raw from API) */
 const hideoutData = shallowRef([]);
@@ -507,6 +508,7 @@ function saveMainRecord(contextKey, record) {
 
 function applyMainRecord(record, contextKey) {
   hideoutData.value = record.hideoutStations || [];
+  traderLoyalty.value = record.traderLoyalty || [];
   const tasks = (record.tasks || []).map(applyTaskEvidence);
   taskData.value = applyTaskCatalogEvidence(tasks, contextKey.split(':', 1)[0]);
   itemsData.value = record.items || { items: [], maps: [] };
@@ -519,6 +521,7 @@ function applyMainRecord(record, contextKey) {
 function clearMainRecord(contextKey) {
   hideoutData.value = [];
   taskData.value = [];
+  traderLoyalty.value = [];
   itemsData.value = { items: [], maps: [] };
   ammoData.value = [];
   lastUpdated.value = null;
@@ -679,6 +682,7 @@ async function fetchData(gameMode, lang, manual = false, isLoading, loadError) {
       timestamp,
       lastFetchTime: fetchTime,
       hideoutStations: mainData.hideoutStations,
+      traderLoyalty: mainData.traderLoyalty,
       tasks: processedTasks,
       items: processedItems,
       ammo: processedAmmo,
@@ -1108,6 +1112,7 @@ export function useApiData() {
   return {
     // Reactive state
     taskData,
+    traderLoyalty,
     hideoutData,
     itemsData,
     ammoData,

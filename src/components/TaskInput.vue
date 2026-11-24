@@ -8,6 +8,7 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
+import { getProgressionPoolCounts, getTaskProgressionChecks } from '../logic/globalConditionLabels.js'
 import { TRADER_ORDER } from '../data/constants.js'
 
 const { playerLevel, gameMode } = useAppState()
@@ -30,17 +31,22 @@ const {
   traderRequirementsEnabled,
 } = useUserProgress()
 
-const { taskData, hideoutData } = useApiData()
+const { taskData, hideoutData, traderLoyalty } = useApiData()
+const traderLoyaltyById = computed(() => Object.fromEntries(traderLoyalty.value.map(trader => [trader.id, trader])))
+const poolCounts = computed(() => getProgressionPoolCounts(taskData.value, completedTasks.value))
 
 const emit = defineEmits(['open-task-details'])
 
 // --- ローカル状態 ---
+const DEFAULT_LOYALTY_LEVELS = [1, 2, 3, 4].map(level => ({ level }))
 const taskSortMode = ref('default')
 const taskViewMode = ref('list')
 const searchTask = ref('')
 
 const traderRequirementProfiles = computed(() => {
-  const profiles = new Map()
+  const profiles = new Map(traderLoyalty.value
+    .filter(trader => trader.levels.some(({ level }) => level > 1))
+    .map(trader => [trader.id, { ...trader, needsReputation: false }]))
   ;(taskData.value || []).forEach((task) => {
     ;(task.traderLevelRequirements || []).forEach((requirement) => {
       const trader = requirement.trader
@@ -48,6 +54,7 @@ const traderRequirementProfiles = computed(() => {
       const current = profiles.get(trader.id) || {
         id: trader.id,
         name: trader.name || 'Unknown',
+        levels: traderLoyaltyById.value[trader.id]?.levels,
         needsReputation: false,
       }
       if (['reputation', 'standing'].includes(requirement.requirementType)) {
@@ -66,6 +73,13 @@ const traderRequirementProfiles = computed(() => {
     return indexA - indexB
   })
 })
+
+function getLoyaltyOptions(trader) {
+  const options = trader.levels || DEFAULT_LOYALTY_LEVELS
+  const savedLevel = traderProgress.value[trader.id]?.level
+  return savedLevel != null && !options.some(({ level }) => level === savedLevel)
+    ? [...options, { level: savedLevel, saved: true }] : options
+}
 
 function updateTraderProgress(traderId, field, rawValue) {
   const nextProgress = { ...traderProgress.value }
@@ -103,6 +117,7 @@ const filteredTasksList = computed(() => {
     taskStatuses: taskStatuses.value,
     traderProgress: traderProgress.value,
     traderRequirementsEnabled: traderRequirementsEnabled.value,
+    traderLoyaltyById: traderLoyaltyById.value,
   })
 })
 
@@ -116,12 +131,20 @@ const tasksByTrader = computed(() => TaskLogic.groupTasksByTrader(filteredTasksL
 const tasksByMap = computed(() => TaskLogic.groupTasksByMap(filteredTasksList.value))
 
 // --- タスク: ロック判定 (前提タスク未完了 or レベル不足) ---
-function isLocked(task) {
-  return TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
+const taskDisplay = computed(() => new Map(filteredTasksList.value.map((task) => {
+  const availability = TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
     playerLevel: playerLevel.value, taskStatuses: taskStatuses.value,
     traderProgress: traderProgress.value, traderRequirementsEnabled: traderRequirementsEnabled.value,
-  }).locked
-}
+    traderLoyaltyById: traderLoyaltyById.value,
+  })
+  const checks = showCompleted.value || taskStatuses.value[task.id] === 'active'
+    ? [] : getTaskProgressionChecks(task, poolCounts.value)
+  return [task.id, {
+    ...availability,
+    checks,
+    needsCheck: checks.some(({ count, required }) => count == null || count < required),
+  }]
+})))
 
 // --- タスク: ソート ---
 function getSortedTasks(tasks) {
@@ -130,12 +153,14 @@ function getSortedTasks(tasks) {
   if (taskSortMode.value === 'name') {
     sorted.sort((a, b) => a.name.localeCompare(b.name))
   } else {
-    // デフォルト: レベル順 → 名前順
+    // デフォルト: 解放条件 → 必要レベル → 名前
     sorted.sort((a, b) => {
-      if (a.minPlayerLevel !== b.minPlayerLevel) {
-        return a.minPlayerLevel - b.minPlayerLevel
-      }
-      return a.name.localeCompare(b.name)
+      const first = taskDisplay.value.get(a.id)
+      const second = taskDisplay.value.get(b.id)
+      return (!showCompleted.value && (
+        Number(first.locked) - Number(second.locked) ||
+        Number(first.needsCheck) - Number(second.needsCheck)
+      )) || first.requiredPlayerLevel - second.requiredPlayerLevel || a.name.localeCompare(b.name)
     })
   }
   if (taskSortMode.value === 'priority') {
@@ -249,7 +274,7 @@ const hideoutPercent = computed(() => {
           <button type="button" :aria-pressed="taskViewMode === 'map'" @click="taskViewMode = 'map'">マップ別</button>
         </div>
         <select class="form-select form-select-sm w-auto" aria-label="並び順" v-model="taskSortMode">
-          <option value="default">レベル順</option>
+          <option value="default">解放条件・レベル順</option>
           <option value="name">名前順</option>
           <option value="priority">優先を上位に</option>
         </select>
@@ -260,6 +285,10 @@ const hideoutPercent = computed(() => {
           <button v-if="!showCompleted" type="button" class="chip" :aria-pressed="showFuture" @click="showFuture = !showFuture">ロック中も表示</button>
         </div>
       </div>
+
+      <p v-if="!showCompleted && [...taskDisplay.values()].some(({ checks }) => checks.length)" class="small text-muted mb-2">
+        LL別クリア数は、このツールに記録した進捗からの参考値です。受注できるかはゲーム内で確認してください。
+      </p>
 
       <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">
         <div>
@@ -294,11 +323,12 @@ const hideoutPercent = computed(() => {
               type="checkbox"
             >
             <label class="form-check-label small" for="enable-trader-requirements">
-              入力したLL・評判をタスクのロック判定に使用する
+              入力したLL・評判もタスクのロック判定に使用する
             </label>
           </div>
           <p class="text-muted small mb-2">
-            未入力の条件は未達として扱います。会話やゲーム内変数など、本ツールで判定できない条件はタスク詳細で確認してください。
+            タスクに必要なLLが指定されている場合、そのLLの必要プレイヤーレベルも表示判定に使います。
+            スイッチをONにすると、未入力のLL・評判は未達として扱います。
           </p>
 
           <div class="row g-2">
@@ -318,7 +348,8 @@ const hideoutPercent = computed(() => {
                     @change="updateTraderProgress(trader.id, 'level', $event.target.value)"
                   >
                     <option value="">未設定</option>
-                    <option v-for="level in 4" :key="level" :value="level">{{ level }}</option>
+                    <option v-for="{ level, requiredPlayerLevel, saved } in getLoyaltyOptions(trader)"
+                      :key="level" :value="level">LL{{ level }}{{ requiredPlayerLevel > 0 ? `（Lv.${requiredPlayerLevel}）` : saved ? '（保存値）' : '' }}</option>
                   </select>
                 </div>
                 <div v-if="trader.needsReputation" class="d-flex align-items-center gap-2 mt-2">
@@ -353,7 +384,7 @@ const hideoutPercent = computed(() => {
           <h3 v-if="group.label">{{ group.label }} <small>{{ group.tasks.length }}</small></h3>
           <div
             v-for="task in group.tasks" :key="task.id"
-            class="task-row" :class="{ locked: isLocked(task) }"
+            class="task-row" :class="{ locked: taskDisplay.get(task.id).locked }"
           >
             <label class="check-wrap">
               <input
@@ -381,7 +412,7 @@ const hideoutPercent = computed(() => {
                 }"
                 @click="emit('open-task-details', task)"
               >
-                <span v-if="isLocked(task)" aria-hidden="true">🔒 </span>{{ task.name }}
+                <span v-if="taskDisplay.get(task.id).locked" aria-hidden="true">🔒 </span>{{ task.name }}
               </button>
               <div class="task-meta">
                 <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark">進行中</span>
@@ -389,8 +420,13 @@ const hideoutPercent = computed(() => {
                 <span v-if="task.kappaRequired" class="badge badge-kappa">KAPPA</span>
                 <span v-if="TaskLogic.isLightkeeperUnlockTask(task)" class="badge badge-lk">LK</span>
                 <span v-if="task.catalogEvidence" class="badge bg-secondary">補足</span>
-                <span v-if="isLocked(task)" class="text-warning">ロック中</span>
-                <span v-if="task.minPlayerLevel > 1">Lv.{{ task.minPlayerLevel }}</span>
+                <span v-if="taskDisplay.get(task.id).locked" class="text-warning">ロック中</span>
+                <span v-if="taskDisplay.get(task.id).requiredPlayerLevel > 1">Lv.{{ taskDisplay.get(task.id).requiredPlayerLevel }}</span>
+                <span
+                  v-for="({ trader, tier, count, required }, index) in taskDisplay.get(task.id).checks"
+                  :key="index"
+                  :class="{ 'text-warning': count == null || count < required }"
+                >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
                 <span v-if="taskViewMode !== 'trader'" class="d-lg-none">{{ task.trader?.name || 'Unknown' }}</span>
               </div>

@@ -57,6 +57,7 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     taskStatuses = {},
     traderProgress = {},
     traderRequirementsEnabled = false,
+    traderLoyaltyById = {},
   } = options;
 
   const q = searchQuery.toLowerCase();
@@ -89,6 +90,7 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
         taskStatuses,
         traderProgress,
         traderRequirementsEnabled,
+        traderLoyaltyById,
       });
 
       // showFuture=false (ロック中を表示しない) なら、条件未達は隠す
@@ -180,20 +182,41 @@ export function evaluateTaskPrerequisite(requirement, completedTaskIds, taskStat
   return { allowed, actual, met: allowed?.includes(actual) ?? false };
 }
 
+// Only explicit trader LL requirements imply a PMC level floor.
+export function getRequiredPlayerLevel(task, traderLoyaltyById = {}) {
+  let required = task.minPlayerLevel || 0;
+  for (const requirement of task.traderLevelRequirements || task.traderRequirements || []) {
+    if (requirement.requirementType && requirement.requirementType !== 'level') continue;
+    const value = requirement.value ?? requirement.level;
+    const threshold = Number(value);
+    const method = requirement.compareMethod || '>=';
+    if (value == null || !Number.isInteger(threshold) || !['>=', '>', '=', '=='].includes(method)) continue;
+    const id = requirement.trader?.id || requirement.trader;
+    const levels = traderLoyaltyById[id]?.levels || [];
+    const candidates = levels.filter(({ level }) => compareRequirement(level, threshold, method));
+    if (candidates.length) {
+      required = Math.max(required, Math.min(...candidates.map((level) => level.requiredPlayerLevel)));
+    }
+  }
+  return required;
+}
+
 export function evaluateTaskAvailability(task, completedTaskIds = [], options = {}) {
   const {
     playerLevel = 0,
     taskStatuses = {},
     traderProgress = {},
     traderRequirementsEnabled = false,
+    traderLoyaltyById = {},
   } = options;
   const requirements = task.taskRequirements ?? [];
   const reqMet = Array.isArray(requirements) && requirements.every(
     (requirement) => evaluateTaskPrerequisite(requirement, completedTaskIds, taskStatuses).met,
   );
-  const levelMet = !playerLevel || !task.minPlayerLevel || task.minPlayerLevel <= playerLevel;
+  const requiredPlayerLevel = getRequiredPlayerLevel(task, traderLoyaltyById);
+  const levelMet = !playerLevel || requiredPlayerLevel <= playerLevel;
   const trader = evaluateTraderRequirements(task, traderProgress);
-  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, trader };
+  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, requiredPlayerLevel, trader };
 }
 
 /**

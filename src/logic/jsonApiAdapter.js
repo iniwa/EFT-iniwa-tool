@@ -665,7 +665,17 @@ export function convertMainData(bundle) {
       };
     });
 
-  return { tasks, hideoutStations, items: rawItems, maps: rawMaps, ammo };
+  const traderLoyalty = Object.values(bundle.tradersRaw).flatMap((trader) => {
+    if (!Array.isArray(trader.levels)) return [];
+    const levels = trader.levels
+      .filter(row => Number.isInteger(row?.level) && row.level >= 0 &&
+        Number.isInteger(row.requiredPlayerLevel) && row.requiredPlayerLevel >= 0)
+      .map(({ level, requiredPlayerLevel }) => ({ level, requiredPlayerLevel }))
+      .sort((a, b) => a.level - b.level);
+    return levels.length ? [{ id: trader.id, name: tradersById[trader.id].name, levels }] : [];
+  });
+
+  return { tasks, hideoutStations, items: rawItems, maps: rawMaps, ammo, traderLoyalty };
 }
 
 // ---------------------------------------------------------------------------
