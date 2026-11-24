@@ -2,6 +2,7 @@
 // タスク関連のビジネスロジック (純粋関数)
 
 import { TRADER_ORDER, MAP_ORDER } from '../data/constants.js';
+import { getTaskProgressionChecks } from './globalConditionLabels.js';
 
 // マップ名キーワード辞書 (日本語含む)
 const mapKeywords = {
@@ -42,6 +43,7 @@ export function isLightkeeperUnlockTask(task) {
  * @param {boolean} options.showFuture - ロック中タスク表示
  * @param {boolean} options.showKappaOnly - Kappaのみ表示
  * @param {boolean} options.showLightkeeperOnly - Lightkeeper解放タスクのみ表示
+ * @param {Map} options.progressionPoolCounts - 進捗入力のクリア数・LL絞り込みに使用
  * @returns {Array}
  */
 export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
@@ -58,6 +60,7 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     traderProgress = {},
     traderRequirementsEnabled = false,
     traderLoyaltyById = {},
+    progressionPoolCounts,
   } = options;
 
   const q = searchQuery.toLowerCase();
@@ -93,7 +96,16 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
         traderLoyaltyById,
       });
 
-      // showFuture=false (ロック中を表示しない) なら、条件未達は隠す
+      // この絞り込みは「ロック中も表示」と独立して適用する。
+      if (progressionPoolCounts) {
+        if (playerLevel && playerLevel < availability.requiredLoyaltyPlayerLevel) return false;
+        if (traderRequirementsEnabled && availability.trader.results.some(
+          ({ field, supported, unknown, met }) => field === 'level' && supported && !unknown && !met,
+        )) return false;
+        if (getTaskProgressionChecks(task, progressionPoolCounts).some(
+          ({ count, required }) => count != null && count < required,
+        )) return false;
+      }
       if (!showFuture && availability.locked) return false;
     }
 
@@ -183,8 +195,8 @@ export function evaluateTaskPrerequisite(requirement, completedTaskIds, taskStat
 }
 
 // Only explicit trader LL requirements imply a PMC level floor.
-export function getRequiredPlayerLevel(task, traderLoyaltyById = {}) {
-  let required = task.minPlayerLevel || 0;
+function getRequiredLoyaltyPlayerLevel(task, traderLoyaltyById) {
+  let required = 0;
   for (const requirement of task.traderLevelRequirements || task.traderRequirements || []) {
     if (requirement.requirementType && requirement.requirementType !== 'level') continue;
     const value = requirement.value ?? requirement.level;
@@ -213,10 +225,11 @@ export function evaluateTaskAvailability(task, completedTaskIds = [], options = 
   const reqMet = Array.isArray(requirements) && requirements.every(
     (requirement) => evaluateTaskPrerequisite(requirement, completedTaskIds, taskStatuses).met,
   );
-  const requiredPlayerLevel = getRequiredPlayerLevel(task, traderLoyaltyById);
+  const requiredLoyaltyPlayerLevel = getRequiredLoyaltyPlayerLevel(task, traderLoyaltyById);
+  const requiredPlayerLevel = Math.max(task.minPlayerLevel || 0, requiredLoyaltyPlayerLevel);
   const levelMet = !playerLevel || requiredPlayerLevel <= playerLevel;
   const trader = evaluateTraderRequirements(task, traderProgress);
-  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, requiredPlayerLevel, trader };
+  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, requiredPlayerLevel, requiredLoyaltyPlayerLevel, trader };
 }
 
 /**

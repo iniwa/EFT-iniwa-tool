@@ -118,6 +118,7 @@ const filteredTasksList = computed(() => {
     traderProgress: traderProgress.value,
     traderRequirementsEnabled: traderRequirementsEnabled.value,
     traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: poolCounts.value,
   })
 })
 
@@ -142,7 +143,7 @@ const taskDisplay = computed(() => new Map(filteredTasksList.value.map((task) =>
   return [task.id, {
     ...availability,
     checks,
-    needsCheck: checks.some(({ count, required }) => count == null || count < required),
+    needsCheck: checks.some(({ count }) => count == null),
   }]
 })))
 
@@ -286,8 +287,8 @@ const hideoutPercent = computed(() => {
         </div>
       </div>
 
-      <p v-if="!showCompleted && [...taskDisplay.values()].some(({ checks }) => checks.length)" class="small text-muted mb-2">
-        LL別クリア数は、このツールに記録した進捗からの参考値です。受注できるかはゲーム内で確認してください。
+      <p v-if="!showCompleted && taskData.length" class="small text-muted mb-2">
+        記録上のクリア数や必要LLが未達と分かるタスクは、「ロック中も表示」をONにしても一覧から除外します。
       </p>
 
       <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">
@@ -425,7 +426,7 @@ const hideoutPercent = computed(() => {
                 <span
                   v-for="({ trader, tier, count, required }, index) in taskDisplay.get(task.id).checks"
                   :key="index"
-                  :class="{ 'text-warning': count == null || count < required }"
+                  :class="{ 'text-warning': count == null }"
                 >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</span>
                 <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
                 <span v-if="taskViewMode !== 'trader'" class="d-lg-none">{{ task.trader?.name || 'Unknown' }}</span>

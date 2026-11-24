@@ -42,7 +42,7 @@ export function getProgressionPoolCounts(tasks, completedTaskIds) {
   return counts
 }
 
-// These counts are advisory. A later LL may unlock a task through another route.
+// Counts use local progress. An incomplete or unresolved pool has no count.
 export function getTaskProgressionChecks(task, poolCounts) {
   return (task.otherRequirements || []).flatMap((requirement) => {
     if (requirement.type !== 'globalVariable') return []
