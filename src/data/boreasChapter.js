@@ -1,9 +1,8 @@
 // Verified milestones summarized from the current Boreas Wiki and patch notes.
-// The older objective IDs remain available in the separate reference record.
 export const BOREAS_CHAPTER = {
   id: 'boreas',
   title: 'Boreas',
-  category: 'main',
+  category: 'side',
   manualOnly: true,
   wikiLink: 'https://wikiwiki.jp/eft/' + encodeURI('ストーリータスク/Boreas'),
   wikiLabel: '日本語Wiki',

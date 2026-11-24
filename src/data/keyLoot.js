@@ -34,15 +34,15 @@ export const KEY_LOOT = {
     containers: '実験区画に医療ケース1', url: wiki('THE LAB'),
   },
   'terragroup-labs-keycard-green': {
-    tier: 'SS', room: 'The Lab・Green区画', items: ['LEDX', 'Blackキーカード', '電子機器', '刺激剤'],
+    tier: 'S', room: 'The Lab・Green区画', items: ['LEDX', 'Blackキーカード', '電子機器', '刺激剤'],
     containers: '医療ケース 0〜3個、武器箱 0〜2個', url: wiki('TerraGroup Labs keycard (Green)'),
   },
   'terragroup-labs-keycard-violet': {
-    tier: 'SS', room: 'The Lab・Violet区画', items: ['UHF RFID Reader', '機密文書', 'Blue Folders', '武器パーツ'],
+    tier: 'S', room: 'The Lab・Violet区画', items: ['UHF RFID Reader', '機密文書', 'Blue Folders', '武器パーツ'],
     containers: '武器箱3', url: wiki('THE LAB'),
   },
   'terragroup-labs-keycard-red': {
-    tier: 'SS', room: 'The Lab・Red区画', items: ['LEDX', 'VPX', 'MCC', '高価な武器パーツ'],
+    tier: 'S', room: 'The Lab・Red区画', items: ['LEDX', 'VPX', 'MCC', '高価な武器パーツ'],
     url: wiki('TerraGroup Labs keycard (Red)'),
   },
   'substation-marked-key': {

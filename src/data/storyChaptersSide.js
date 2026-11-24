@@ -1,6 +1,8 @@
 // サイドチャプターデータ (NIWA-226: 日本語Wiki 2026-11-21更新と照合)
 // step.reference=true は参考(進捗必須にしない)、step.hint は根拠・不一致の注記
 
+import { BOREAS_CHAPTER } from './boreasChapter.js'
+
 export const SIDE_CHAPTERS = [
   {
     "id": "batya",
@@ -1381,5 +1383,6 @@ export const SIDE_CHAPTERS = [
         ]
       }
     ]
-  }
+  },
+  BOREAS_CHAPTER,
 ]

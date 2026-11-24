@@ -37,7 +37,7 @@ async function component(name) {
 }
 const { default: Story } = await import(await component('StoryView.vue'))
 const { default: Settings } = await import(await component('SettingsView.vue'))
-const node = (tag='')=>({tag,props:{},children:[],parent:null,addEventListener(){},removeEventListener(){}})
+const node = (tag='')=>({tag,props:{},style:{},children:[],parent:null,addEventListener(){},removeEventListener(){}})
 const renderer = createRenderer({createElement:node,createText:text=>({...node(),text}),createComment:node,
   setText:(el,text)=>el.text=text,setElementText:(el,text)=>el.text=text,parentNode:el=>el.parent,
   nextSibling:el=>el.parent?.children[el.parent.children.indexOf(el)+1]||null,
@@ -62,32 +62,28 @@ test('pinned partial reference has 83 unique real objectives in 19 matching pare
   assert.deepEqual(validateBoreasRecords([unknown,unknown]),[unknown])
 })
 
-test('actual story renderer restores reference selection, never shows chapter completion or bulk action, and historical rows cannot be marked',async()=>{
-  gameMode.value='pve'; await nextTick()
-  reference.replaceRecords([unknown])
-  const original = {story:JSON.stringify(progress.storyProgress.value),tasks:JSON.stringify(progress.completedTasks.value),statuses:JSON.stringify(progress.taskStatuses.value)}
-  let {root,app}=mount(Story);await nextTick()
-  assert.ok(all(root).some(n=>n.props.id==='boreas-reference-title'))
-  assert.equal(all(root).filter(n=>n.tag==='details').length,20)
-  const boxes=all(root).filter(n=>n.tag==='input' && n.props.type==='checkbox')
-  assert.equal(boxes.length,80)
-  for(const id of HISTORICAL_BOREAS_IDS){assert.ok(!boxes.some(n=>n.props.id==='boreas-'+id));reference.setRecorded(id,true)}
-  assert.deepEqual(reference.recordedObjectiveIds.value,[unknown])
-  for(const box of boxes)box.props.onChange({target:{checked:true}})
+test('legacy selection opens Boreas under side stories without exposing or rewriting old records', async () => {
+  gameMode.value = 'pve'
   await nextTick()
-  assert.equal(reference.recordedObjectiveIds.value.length,81)
-  assert.equal(reference.unappliedCount.value,1)
-  assert.ok(!text(root).includes('このチャプターの全必須手順が完了しました'))
-  assert.ok(!all(root).some(n=>n.tag==='button'&&text(n).includes('一括完了')))
-  assert.deepEqual({story:JSON.stringify(progress.storyProgress.value),tasks:JSON.stringify(progress.completedTasks.value),statuses:JSON.stringify(progress.taskStatuses.value)},original)
-  const entry=all(root).find(n=>String(n.props.class).includes('alert-info'))
-  assert.match(text(entry),/Shoreline \/ Lighthouse/);assert.match(text(entry),/Sudak-tudak marine repair kit/);assert.match(text(entry),/Pay the Fare!/)
-  assert.doesNotMatch(text(entry),/400.?000|2400|2500|EUR|RUB/)
-  app.unmount();({root,app}=mount(Story));await nextTick()
-  assert.ok(all(root).some(n=>n.props.id==='boreas-reference-title'))
-  assert.equal(storage.get('eft_story_selected_chapter'),'boreas-reference')
-  assert.equal(all(root).filter(n=>n.tag==='input'&&n.props.checked).length,80)
-  app.unmount()
+  reference.replaceRecords([ids[0], unknown])
+  const { root, app } = mount(Story)
+  await nextTick()
+  try {
+    assert.equal(storage.get('eft_story_selected_chapter'), 'boreas')
+    assert.equal(all(root).find(n => n.tag === 'h2')?.text, 'Boreas')
+    const desktopChapter = all(root).find(n => n.tag === 'button' && n.props['aria-current'] === 'true')
+    const previousGroup = desktopChapter.parent.children.slice(0, desktopChapter.parent.children.indexOf(desktopChapter))
+      .findLast(n => n.props.class === 'rail-group')
+    assert.equal(previousGroup.text, 'サイドストーリー')
+    const mobileChapter = all(root).find(n => n.tag === 'option' && n.props.value === 'boreas')
+    assert.equal(mobileChapter.parent.props.label, 'サイドストーリー')
+    assert.ok(!all(root).some(n => n.props.id === 'boreas-reference-title' || n.props.value === 'boreas-reference'))
+    assert.doesNotMatch(text(root), /旧手動記録|Boreas（旧記録）/)
+    assert.ok(!all(root).some(n => n.tag === 'button' && text(n).includes('一括完了')))
+    assert.deepEqual(reference.recordedObjectiveIds.value, [ids[0], unknown])
+  } finally {
+    app.unmount()
+  }
 })
 
 test('modes are independent and unknown/historical saved IDs are retained but never applied',async()=>{
@@ -164,23 +160,21 @@ test('malformed reference backups are rejected before mode or progress changes',
   assert.equal(JSON.stringify([...storage]),before)
 })
 
-test('dedicated and settings reset require confirmation; ordinary story reset does not erase reference',async()=>{
-  gameMode.value='pve';await nextTick();reference.replaceRecords([ids[0],unknown])
-  let messages=[];globalThis.confirm=message=>{messages.push(message);return false}
-  let {root,app}=mount(Story);await nextTick()
-  all(root).find(n=>n.tag==='button'&&text(n).includes('この手動記録をリセット')).props.onClick()
-  assert.deepEqual(reference.recordedObjectiveIds.value,[ids[0],unknown]);assert.match(messages[0],/pve.*Boreas.*未適用ID/)
-  globalThis.confirm=message=>{messages.push(message);return true}
-  all(root).find(n=>n.tag==='button'&&text(n).includes('この手動記録をリセット')).props.onClick()
-  assert.deepEqual(reference.recordedObjectiveIds.value,[]);app.unmount()
-  reference.replaceRecords([unknown]);progress.storyProgress.value={chapter:{choice:'keep',check:true}};await nextTick()
-  ;({root,app}=mount(Settings));await nextTick()
-  const reset=()=>all(root).find(n=>n.tag==='button'&&text(n).includes('選択したデータをリセット')).props.onClick()
-  all(root).find(n=>n.props.id==='reset-story').props['onUpdate:modelValue'](true);reset();await nextTick()
-  assert.deepEqual(reference.recordedObjectiveIds.value,[unknown])
-  const checkbox=all(root).find(n=>n.props.id==='reset-boreasReference');assert.ok(checkbox)
-  checkbox.props['onUpdate:modelValue'](true)
-  globalThis.confirm=message=>{messages.push(message);return false};reset();assert.deepEqual(reference.recordedObjectiveIds.value,[unknown])
-  assert.match(messages.at(-1),/Boreas部分データ.*未適用ID/)
-  globalThis.confirm=()=>true;reset();assert.deepEqual(reference.recordedObjectiveIds.value,[]);app.unmount()
+test('story settings reset preserves legacy Boreas backup records', async () => {
+  gameMode.value = 'pve'
+  await nextTick()
+  reference.replaceRecords([unknown])
+  progress.storyProgress.value = { boreas: { boreas_contact: true } }
+  globalThis.confirm = () => true
+  const { root, app } = mount(Settings)
+  try {
+    assert.ok(!all(root).some(n => n.props.id === 'reset-boreasReference'))
+    all(root).find(n => n.props.id === 'reset-story').props['onUpdate:modelValue'](true)
+    all(root).find(n => n.tag === 'button' && text(n).includes('選択したデータをリセット')).props.onClick()
+    await nextTick()
+    assert.deepEqual(progress.storyProgress.value, {})
+    assert.deepEqual(reference.recordedObjectiveIds.value, [unknown])
+  } finally {
+    app.unmount()
+  }
 })

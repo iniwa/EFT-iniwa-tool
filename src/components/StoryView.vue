@@ -4,15 +4,12 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { MAIN_CHAPTERS } from '../data/storyChaptersMain.js'
 import { SIDE_CHAPTERS } from '../data/storyChaptersSide.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
-import BoreasReference from './BoreasReference.vue'
-import { BOREAS_REFERENCE } from '../data/boreasReference.js'
 import { resolveStorySelection } from '../logic/boreasReferenceLogic.js'
 import { getBulkCompletableStepIds, isStepDone, isRequiredStep, routeFromCaseChoice, isStepVisible as visibleByProgress, getChapterStats, findNextStep, findUnmappedRecords } from '../logic/storyLogic.js'
 import { STORY_META, STORY_CHECKED_AT, STORY_GAME_VERSION, STORY_SOURCE_INDEX, STORY_OFFICIAL_SOURCE, STORY_STEP_NOTES, CONFIDENCE_LABEL } from '../data/storyMeta.js'
 
 const STORY_CHAPTERS = [...MAIN_CHAPTERS, ...SIDE_CHAPTERS]
 const safeUrl = toHttpsUrl
-const REF_ID = BOREAS_REFERENCE.selectionId
 
 const { storyProgress, updateStoryProgress } = useUserProgress()
 
@@ -36,10 +33,9 @@ const activeChapter = computed(() => STORY_CHAPTERS.find(c => c.id === selectedC
 watch(activeChapter, (chapter) => {
   if (!chapter) selectedChapterId.value = resolveStorySelection(selectedChapterId.value, STORY_CHAPTERS)
 }, { immediate: true })
-const isReference = computed(() => selectedChapterId.value === REF_ID)
 const meta = computed(() => STORY_META[selectedChapterId.value] || null)
 
-// Wiki掲載順。旧Boreas手動記録は通常章と別に表示する。
+// Wiki掲載順。
 const sortedChapters = computed(() => [...STORY_CHAPTERS].sort((a, b) => (STORY_META[a.id]?.order ?? 99) - (STORY_META[b.id]?.order ?? 99)))
 const mainChapters = computed(() => sortedChapters.value.filter(c => c.category === 'main'))
 const sideChapters = computed(() => sortedChapters.value.filter(c => c.category === 'side'))
@@ -126,8 +122,12 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
     <div class="story-picker d-md-none">
       <label for="story-chapter-select" class="story-picker-label">章を選ぶ</label>
       <select id="story-chapter-select" class="form-select form-select-sm" :value="selectedChapterId" @change="selectedChapterId = $event.target.value">
-        <option v-for="c in sortedChapters" :key="c.id" :value="c.id">{{ c.title }}{{ STATUS_LABEL[statusOf(c.id)] ? '（' + STATUS_LABEL[statusOf(c.id)] + '）' : '' }}</option>
-        <option :value="REF_ID">Boreas（旧手動記録）</option>
+        <optgroup label="メインストーリー">
+          <option v-for="c in mainChapters" :key="c.id" :value="c.id">{{ c.title }}{{ STATUS_LABEL[statusOf(c.id)] ? '（' + STATUS_LABEL[statusOf(c.id)] + '）' : '' }}</option>
+        </optgroup>
+        <optgroup label="サイドストーリー">
+          <option v-for="c in sideChapters" :key="c.id" :value="c.id">{{ c.title }}{{ STATUS_LABEL[statusOf(c.id)] ? '（' + STATUS_LABEL[statusOf(c.id)] + '）' : '' }}</option>
+        </optgroup>
       </select>
     </div>
 
@@ -143,7 +143,7 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           </span>
           <span class="rail-count" :class="'st-' + statusOf(c.id)">{{ statsById[c.id].total ? statsById[c.id].done + '/' + statsById[c.id].total : '—' }}</span>
         </button>
-        <p class="rail-group">サイドチャプター</p>
+        <p class="rail-group">サイドストーリー</p>
         <button v-for="c in sideChapters" :key="c.id" class="rail-item" :class="{ active: selectedChapterId === c.id }" :aria-current="selectedChapterId === c.id ? 'true' : null" @click="selectedChapterId = c.id">
           <span class="rail-no">{{ STORY_META[c.id]?.order ?? '·' }}</span>
           <span class="rail-main">
@@ -152,12 +152,6 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           </span>
           <span class="rail-count" :class="'st-' + statusOf(c.id)">{{ statsById[c.id].total ? statsById[c.id].done + '/' + statsById[c.id].total : '—' }}</span>
         </button>
-        <p class="rail-group">旧手動記録</p>
-        <button class="rail-item" :class="{ active: isReference }" :aria-current="isReference ? 'true' : null" @click="selectedChapterId = REF_ID">
-          <span class="rail-no">·</span>
-          <span class="rail-main"><span class="rail-name">Boreas（旧記録）</span></span>
-          <span class="rail-count st-ref">参考</span>
-        </button>
       </nav>
 
       <main class="story-main">
@@ -165,12 +159,12 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
         <p class="story-warn">ネタバレを含みます（設定でタブごと非表示にできます）。内容は外部資料からこのツール用に要約・再構成したもので、ゲーム内の表示とは異なる場合があります。</p>
 
         <!-- 章ヘッダ（共通） -->
-        <section v-if="meta && (activeChapter || isReference)" class="chapter-head">
+        <section v-if="meta && activeChapter" class="chapter-head">
           <div class="chapter-head-top">
-            <h2 class="chapter-name">{{ isReference ? 'Boreas' : activeChapter.title }}</h2>
+            <h2 class="chapter-name">{{ activeChapter.title }}</h2>
             <span class="pill" :class="CONFIDENCE_LABEL[meta.confidence]?.cls">{{ CONFIDENCE_LABEL[meta.confidence]?.text }}</span>
             <span v-if="meta.changed" class="pill is-changed">追加・変更あり</span>
-            <span v-if="!isReference && STATUS_LABEL[statusOf(selectedChapterId)]" class="pill" :class="'st-pill-' + statusOf(selectedChapterId)">{{ STATUS_LABEL[statusOf(selectedChapterId)] }}</span>
+            <span v-if="STATUS_LABEL[statusOf(selectedChapterId)]" class="pill" :class="'st-pill-' + statusOf(selectedChapterId)">{{ STATUS_LABEL[statusOf(selectedChapterId)] }}</span>
           </div>
           <p class="chapter-summary">{{ meta.summary }}</p>
           <p class="chapter-unlock"><strong>開始条件</strong>　{{ meta.unlock.text }}<span v-if="!meta.unlock.confirmed" class="unconfirmed">（未確定）</span></p>
@@ -201,18 +195,8 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
           </div>
         </section>
 
-        <!-- Boreas: 参考情報 -->
-        <template v-if="isReference">
-          <section v-if="meta?.outline" class="outline-box">
-            <p class="branch-label">資料上の流れ（未検証・順序は確定ではありません）</p>
-            <ol><li v-for="o in meta.outline" :key="o">{{ o }}</li></ol>
-          </section>
-          <button type="button" class="btn btn-outline-info btn-sm mb-3" @click="selectedChapterId = 'boreas'">通常章のBoreasへ</button>
-          <BoreasReference />
-        </template>
-
         <!-- 通常章 -->
-        <template v-else-if="activeChapter">
+        <template v-if="activeChapter">
           <!-- 次の一手 -->
           <section v-if="nextStep && stats.total" class="next-card">
             <div>
@@ -338,7 +322,6 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
 .pill { font-size: .7rem; padding: .15rem .55rem; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .pill.is-solid { color: #5fc27e; border-color: #5fc27e66; }
 .pill.is-partial { color: var(--accent); border-color: #e0a52666; }
-.pill.is-reference { color: #c98af0; border-color: #c98af066; }
 .pill.is-changed { color: #6fb7e8; border-color: #6fb7e866; }
 .st-pill-done { color: #5fc27e; border-color: #5fc27e66; }
 .st-pill-doing { color: var(--accent); border-color: #e0a52666; }
@@ -346,9 +329,8 @@ function chapterTitle(id) { return STORY_CHAPTERS.find(c => c.id === id)?.title 
 .chapter-unlock { margin: 0; font-size: .8rem; color: var(--muted); }
 .chapter-unlock strong { color: #cfd4da; margin-right: .4rem; }
 .unconfirmed { color: #e0a526; font-size: .85em; margin-left: .25rem; }
-.branch-box, .outline-box { margin-top: .8rem; padding: .6rem .8rem; border-radius: 8px; background: rgba(224,165,38,.07); border: 1px dashed #e0a52666; font-size: .82rem; line-height: 1.55; }
-.outline-box { margin-bottom: 1rem; background: rgba(201,138,240,.06); border-color: #c98af066; }
-.branch-box ul, .outline-box ol { margin: 0; padding-left: 1.1rem; }
+.branch-box { margin-top: .8rem; padding: .6rem .8rem; border-radius: 8px; background: rgba(224,165,38,.07); border: 1px dashed #e0a52666; font-size: .82rem; line-height: 1.55; }
+.branch-box ul { margin: 0; padding-left: 1.1rem; }
 .branch-label { margin: 0 0 .3rem; font-size: .72rem; letter-spacing: .06em; color: var(--accent); }
 .evidence-toggle { margin-top: .8rem; padding: .2rem 0; background: none; border: 0; color: #8ec5ee; font-size: .8rem; cursor: pointer; }
 .evidence { margin-top: .4rem; font-size: .78rem; color: #b9c0c8; line-height: 1.6; }

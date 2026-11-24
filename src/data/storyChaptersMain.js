@@ -1,7 +1,6 @@
 // メインストーリーチャプターデータ (Tour, Falling Skies, The Ticket)
 // NIWA-226: 日本語Wiki「ストーリータスク」(2026-11-21〜23更新) と照合して再構成。
 // step.reference=true は確証が薄く進捗の必須条件にしない。step.hint は根拠・不一致の注記。showIf は配列でAND条件。
-import { BOREAS_CHAPTER } from './boreasChapter.js'
 
 export const MAIN_CHAPTERS = [
   {
@@ -1837,5 +1836,4 @@ export const MAIN_CHAPTERS = [
       }
     ]
   },
-  BOREAS_CHAPTER,
 ]

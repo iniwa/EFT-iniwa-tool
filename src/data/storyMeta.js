@@ -149,28 +149,6 @@ export const STORY_META = {
     ],
     unconfirmed: ['輸送分岐の一部の撃破数は資料間で不一致。ゲーム内表示を優先してください。'],
   },
-  'boreas-reference': {
-    order: 10, confidence: 'reference', changed: true,
-    summary: 'Boreas（Icebreaker 章）。進行を確定できる資料が揃っておらず、本ツールでは参考情報と手動記録のみ。完了判定・一括完了は行いません。',
-    unlock: { text: 'Paradigm Shipping のポスター入手、または Intelligence Center Lv3 の無線', confirmed: false },
-    sources: [WIKI('Boreas', 'Boreas')],
-    outline: [
-      'Mechanic に救難信号を相談 → Woods の基地局の機器を修理して報告',
-      'Lighthouse で Paradigm Shipping の資料を見つけ、Mechanic に「Boreas」を尋ねる',
-      'Prapor と BTR 運転手の手配（Falling Skies・BTR章の結果で内容が変わる）',
-      'Shoreline / Lighthouse からボートで砕氷船へ。機関室→上層→船長',
-      '屋上ハッチを解凍し、科学者の避難とデータ解析で完了',
-      '脱出後: Mechanic と Prapor が爆薬を解放し、BTR の追加タスクで砕氷船へ直行できるようになる（資料上の流れ）',
-    ],
-    branches: [
-      { title: '輸送の手配（参考）', text: 'Prapor の手配は Falling Skies の結果（ケースを渡した／未完了）で内容が変わる。BTR Driver の手配は BTR 章の選択（BTR側／Skier側／未完了）で変わる。いずれも資料上の整理で未検証。' },
-    ],
-    unconfirmed: [
-      '各マップの出現位置の多くが「情報求む」のまま',
-      'Prapor 分岐のキー位置・敵数・新ボス名が未確定',
-      'Wikiの編集中表示あり。Patch 1.2.0.0 で PvE Zone の Icebreaker 章が解放条件に含まれる旨の告知あり',
-    ],
-  },
 }
 
 // 資料間の不一致などで「確認が必要」と表示するステップ

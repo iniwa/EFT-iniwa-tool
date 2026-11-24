@@ -20,7 +20,9 @@ test('every current chapter has evidence metadata and unique step IDs; legacy Bo
     assert.equal(new Set(ids).size, ids.length, c.id)
   }
   assert.equal(chapters.length, 10)
-  assert.equal(STORY_META['boreas-reference'].confidence, 'reference')
+  assert.ok(!MAIN_CHAPTERS.some(c => c.id === 'boreas'))
+  assert.equal(SIDE_CHAPTERS.find(c => c.id === 'boreas')?.category, 'side')
+  assert.equal(STORY_META['boreas-reference'], undefined)
 })
 
 test('legacy chapter and step IDs persist so old saves map to the current data', () => {

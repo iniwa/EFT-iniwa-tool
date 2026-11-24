@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  buildKeyCatalog, summarizeCatalog, evaluateKey, effectiveTier,
+  buildKeyCatalog, summarizeCatalog, evaluateKey, effectiveTier, effectiveConfidence,
 } from '../src/logic/keyEvaluation.js'
 import { ROLE_LABELS } from '../src/data/keyCuration.js'
 import { KEY_LOOT } from '../src/data/keyLoot.js'
@@ -51,13 +51,19 @@ test('live IDs without review evidence get no tier', () => {
   assert.equal(s.provisional + s.usage + s.unverified, 7)
 })
 
-test('lock and task counts never confer a tier, and usage is a separate status', () => {
+test('extraction sets a minimum provisional A independently of loot and other uses', () => {
   const tasks = [{ kappa: true }, { lightkeeper: true }]
   assert.equal(evaluateKey({ locks: 9, tasks }).tier, null)
-  const travel = evaluateKey({ locks: 1, tasks: [], review: { status: 'use', roles: ['extract'] } })
-  assert.equal(travel.tier, null)
-  assert.equal(travel.confidence, 'usage')
-  assert.ok(travel.reasons.includes('脱出口'))
+  const review = { status: 'use', roles: ['extract'] }
+  for (const [loot, tier] of [[null, 'A'], [{ tier: 'D' }, 'A'], [{ tier: 'A' }, 'A'], [{ tier: 'SS' }, 'SS']]) {
+    const result = evaluateKey({ locks: 1, tasks: [], review, loot })
+    assert.equal(result.tier, tier)
+    assert.equal(result.confidence, 'provisional')
+    assert.ok(result.reasons.includes('脱出口'))
+  }
+  const access = evaluateKey({ locks: 1, tasks: [], review: { status: 'use', roles: ['access'] } })
+  assert.equal(access.tier, null)
+  assert.equal(access.confidence, 'usage')
 })
 
 test('F requires explicit evidence and yields to a current lock or task', () => {
@@ -111,10 +117,17 @@ test('opening records appear only in the matching game mode', () => {
 })
 
 test('personal rating overrides the standard tier only when set', () => {
-  const k = { tier: 'B' }
+  const k = { id: 'key', tier: 'B', confidence: 'provisional' }
   assert.equal(effectiveTier(k, '-'), 'B')
   assert.equal(effectiveTier(k, undefined), 'B')
   assert.equal(effectiveTier(k, 'SS'), 'SS')
+  assert.equal(effectiveConfidence(k, 'SS'), 'personal')
+  assert.equal(effectiveConfidence(k, '-'), 'provisional')
+  const summary = summarizeCatalog([k, { id: 'unknown', tier: null, confidence: 'unverified' }], () => 'S')
+  assert.equal(summary.personal, 2)
+  assert.equal(summary.byTier.S, 2)
+  assert.equal(summary.byTier.B, 0)
+  assert.equal(summary.provisional + summary.unverified, 0)
 })
 
 test('the 259-ID ledger includes evidence for every outcome', () => {
@@ -138,5 +151,28 @@ test('the 259-ID ledger includes evidence for every outcome', () => {
   }
   const catalog = buildKeyCatalog({ items: reviews.map(([id, r]) => key(id, r.name, r.name)) }, [])
   const { provisional, usage, unverified } = summarizeCatalog(catalog)
-  assert.deepEqual([provisional, usage, unverified], [218, 30, 11])
+  assert.deepEqual([provisional, usage, unverified], [221, 27, 11])
+})
+
+test('standard key tiers reflect the map-specific adjustments', () => {
+  const catalog = buildKeyCatalog({
+    items: Object.entries(KEY_REVIEW).map(([id, review]) => key(id, review.name, review.name)),
+  }, [])
+  const byName = Object.fromEntries(catalog.map(entry => [entry.normalizedName, entry]))
+  assert.equal(byName['rb-pkpts-key'].tier, 'S')
+  assert.equal(byName['dorm-guard-desk-key'].tier, 'A')
+  assert.equal(byName['health-resort-office-key-with-a-blue-tape'].tier, 'S')
+  assert.equal(byName['zb-1013-key'].tier, 'A')
+  const ssNames = map => catalog.filter(k => k.primaryMap === map && k.tier === 'SS').map(k => k.normalizedName).sort()
+  assert.deepEqual(ssNames('The Lab'), ['terragroup-labs-keycard-black'])
+  for (const color of ['blue', 'green', 'red', 'violet', 'yellow']) {
+    assert.equal(byName['terragroup-labs-keycard-' + color].tier, 'S')
+  }
+  assert.deepEqual(ssNames('Shoreline'), [
+    'health-resort-east-wing-room-222-key',
+    'health-resort-east-wing-room-226-key',
+    'health-resort-west-wing-room-301-key',
+    'vorons-hideout-key',
+  ])
+  assert.ok(catalog.filter(k => k.roles.includes('extract')).every(k => ['A', 'S', 'SS'].includes(k.tier)))
 })

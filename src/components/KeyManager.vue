@@ -9,7 +9,7 @@ import { MAP_ORDER } from '../data/constants.js'
 import { toHttpsUrl } from '../logic/taskReference.js'
 import { KEY_REVIEW_META, ROLE_LABELS } from '../data/keyCuration.js'
 import {
-  TIER_ORDER, buildKeyCatalog, summarizeCatalog, effectiveTier, tierRank,
+  TIER_ORDER, buildKeyCatalog, summarizeCatalog, effectiveTier, effectiveConfidence, tierRank,
 } from '../logic/keyEvaluation.js'
 import BaseModal from './ui/BaseModal.vue'
 
@@ -24,7 +24,7 @@ const { gameMode } = useAppState()
 
 const UNKNOWN_MAP = '場所不明'
 const COLLAPSED_LS_KEY = 'eft_keys_collapsed_state'
-const RATINGS = ['-', 'SS', 'S', 'A', 'B', 'C', 'D', 'F']
+const RATINGS = ['-', ...TIER_ORDER]
 const SORTS = [
   { id: 'map', label: 'マップ順' },
   { id: 'tier', label: 'ティアが高い順' },
@@ -36,13 +36,14 @@ const SORTS = [
 // カタログ
 // ---------------------------------------------------------------------------
 const catalog = computed(() => buildKeyCatalog(itemsData.value, taskData.value, gameMode.value))
-const summary = computed(() => summarizeCatalog(catalog.value))
+const summary = computed(() => summarizeCatalog(catalog.value, userRating))
 const completedSet = computed(() => new Set(completedTasks.value))
 const ownedSet = computed(() => new Set(ownedKeys.value))
 
 function userRating(id) { return keyUserData.value[id]?.rating || '-' }
 function userMemo(id) { return keyUserData.value[id]?.memo || '' }
 function tierOf(k) { return effectiveTier(k, userRating(k.id)) }
+function confidenceOf(k) { return effectiveConfidence(k, userRating(k.id)) }
 function pendingTasks(k) { return k.tasks.filter((t) => !completedSet.value.has(t.id)) }
 
 const mapOptions = computed(() => {
@@ -98,7 +99,7 @@ const filtered = computed(() => {
     if (mapFilter.value && (k.primaryMap || UNKNOWN_MAP) !== mapFilter.value
       && !k.maps.some((m) => m.name === mapFilter.value)) return false
     if (needNow.value && pendingTasks(k).length === 0) return false
-    if (confidenceFilter.value && k.confidence !== confidenceFilter.value) return false
+    if (confidenceFilter.value && confidenceOf(k) !== confidenceFilter.value) return false
     if (tierFilter.value.length) {
       const t = tierOf(k)
       const label = t || k.confidence
@@ -191,7 +192,7 @@ const basisOpen = ref(false)
       </div>
       <p class="km-sub">
         全 {{ summary.total }} 本 / 所持 {{ ownedKeys.length }} 本。
-        評価済み {{ summary.provisional }}・用途のみ {{ summary.usage }}・未確認 {{ summary.unverified }}
+        評価済み {{ summary.provisional + summary.personal }}・用途のみ {{ summary.usage }}・未確認 {{ summary.unverified }}
         <span class="km-sub-note">(ゲーム版 {{ KEY_REVIEW_META.gameVersion }}、{{ KEY_REVIEW_META.checkedAt }} 確認)</span>
       </p>
     </header>
@@ -274,12 +275,11 @@ const basisOpen = ref(false)
             </button>
 
             <span class="km-grade">
-              <span v-if="userRating(k.id) !== '-'" class="km-mine" :class="'t-' + userRating(k.id)" title="自分の評価">{{ userRating(k.id) }}</span>
               <span
-                class="km-tier" :class="[k.tier ? 't-' + k.tier : 't-none', 'c-' + k.confidence]"
-                :title="`標準ティア (${CONF_LABEL[k.confidence]})`"
+                class="km-tier" :class="[tierOf(k) ? 't-' + tierOf(k) : 't-none', 'c-' + confidenceOf(k)]"
+                :title="confidenceOf(k) === 'personal' ? '自分の評価' : `標準ティア (${CONF_LABEL[k.confidence]})`"
               >
-                <b>{{ k.tier || '—' }}</b><i>{{ CONF_LABEL[k.confidence] }}</i>
+                <b>{{ tierOf(k) || '—' }}</b><i>{{ CONF_LABEL[confidenceOf(k)] }}</i>
               </span>
             </span>
           </div>
@@ -370,7 +370,7 @@ const basisOpen = ref(false)
 
         <h4>棚卸し</h4>
         <ul class="km-plain">
-          <li>鍵 {{ summary.total }} 本 (評価済み {{ summary.provisional }} / 用途のみ {{ summary.usage }} / 未確認 {{ summary.unverified }})</li>
+          <li>鍵 {{ summary.total }} 本 (評価済み {{ summary.provisional + summary.personal }} / 用途のみ {{ summary.usage }} / 未確認 {{ summary.unverified }})</li>
           <li>同名の別 ID: {{ summary.duplicates }} 本 (Folding car key)</li>
           <li>1.2.0.0 の新規鍵: {{ summary.newKeys }} 本 (ZB-1013 key、Security post key)</li>
           <li>資料から場所を特定できない鍵: {{ summary.noMap }} 本</li>
@@ -450,7 +450,6 @@ const basisOpen = ref(false)
 .km-tag.warn { border-color: #a0522d; color: #f0a070; }
 
 .km-grade { flex: 0 0 auto; display: flex; align-items: center; gap: 6px; }
-.km-mine { min-width: 30px; text-align: center; font-weight: 800; font-size: 13px; padding: 2px 6px; border-radius: 4px; border: 1px solid currentColor; }
 .km-tier { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 52px; padding: 2px 6px; border-radius: 6px; border: 2px solid currentColor; line-height: 1.1; }
 .km-tier b { font-size: 18px; font-weight: 800; }
 .km-tier i { font-style: normal; font-size: 10px; }

@@ -15,5 +15,6 @@ export function groupBoreasObjectives() {
   return [...groups].map(([sourceQuestId, objectives]) => ({sourceQuestId, objectives}));
 }
 export function resolveStorySelection(id, chapters) {
-  return id === BOREAS_REFERENCE.selectionId || chapters.some(chapter => chapter.id === id) ? id : chapters[0]?.id;
+  const chapterId = id === BOREAS_REFERENCE.selectionId ? 'boreas' : id;
+  return chapters.some(chapter => chapter.id === chapterId) ? chapterId : chapters[0]?.id;
 }

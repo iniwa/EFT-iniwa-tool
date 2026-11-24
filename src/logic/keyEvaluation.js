@@ -22,7 +22,7 @@ const MAP_REVIEW_SOURCES = {
   'The Labyrinth': 'https://tarkovwiki.com/maps/the-labyrinth',
 }
 
-/** A task or lock record can describe usage, but cannot establish a loot tier. */
+/** Known extraction access sets a minimum standard tier of A. */
 export function evaluateKey({ locks, tasks, review, loot }) {
   const roles = review?.roles || []
   const reasons = roles.map(role => ROLE_LABELS[role])
@@ -33,6 +33,11 @@ export function evaluateKey({ locks, tasks, review, loot }) {
   if (review?.status === 'no-lock' && (locks || tasks.length)) {
     reasons.unshift('現在の施錠データと、開錠先なし／常時開放の資料が一致しません。')
     return { tier: null, confidence: 'unverified', reasons, roles }
+  }
+
+  if (roles.includes('extract') && tierRank(loot?.tier) > tierRank('A')) {
+    reasons.unshift('脱出口を利用可能にするため標準ティア A')
+    return { tier: 'A', confidence: 'provisional', reasons, roles }
   }
 
   if (loot) {
@@ -131,21 +136,26 @@ export function buildKeyCatalog(itemsData, taskData, mode) {
   return catalog
 }
 
-export function summarizeCatalog(catalog) {
-  const s = { total: catalog.length, provisional: 0, usage: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
+export function summarizeCatalog(catalog, ratingFor = () => undefined) {
+  const s = { total: catalog.length, personal: 0, provisional: 0, usage: 0, unverified: 0, duplicates: 0, newKeys: 0, noMap: 0, byTier: {} }
   TIER_ORDER.forEach((t) => { s.byTier[t] = 0 })
   catalog.forEach((k) => {
-    s[k.confidence]++
+    const rating = ratingFor(k.id)
+    const tier = effectiveTier(k, rating)
+    s[effectiveConfidence(k, rating)]++
     if (k.duplicateName) s.duplicates++
     if (k.isNew) s.newKeys++
     if (!k.primaryMap) s.noMap++
-    if (k.tier) s.byTier[k.tier]++
+    if (tier) s.byTier[tier]++
   })
   return s
 }
 
 /** 個人評価があればそれ、なければ標準ティア */
 export function effectiveTier(key, userRating) {
-  if (userRating && userRating !== '-') return userRating
-  return key.tier
+  return TIER_ORDER.includes(userRating) ? userRating : key.tier
+}
+
+export function effectiveConfidence(key, userRating) {
+  return TIER_ORDER.includes(userRating) ? 'personal' : key.confidence
 }
