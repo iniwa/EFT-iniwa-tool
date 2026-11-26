@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { resolveTaskReference, toHttpsUrl } from '../src/logic/taskReference.js'
+import { resolveTaskReference, getTaskDisplayName, toHttpsUrl } from '../src/logic/taskReference.js'
 import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan, filterActiveTasks, evaluateTaskAvailability, getTaskRequirementStatuses } from '../src/logic/taskLogic.js'
 import { getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
 import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../src/logic/flowchartLogic.js'
@@ -14,6 +14,24 @@ test('task references prefer IDs and surface duplicate names', () => {
   assert.equal(resolveTaskReference('Missing', tasks).status, 'not-found')
   assert.equal(resolveTaskReference('Unique', tasks).status, 'resolved')
   assert.equal(resolveTaskReference('Legacy alias', [{ id: 'd', name: '現行名', nameAliases: ['Legacy alias'] }]).task.id, 'd')
+})
+test('faction variants have distinct visible names and keep separate task IDs', () => {
+  const pairs = [
+    ['Drip-Out - Part 1', '6613f3007f6666d56807c929', '66151401efb0539ae10875ae'],
+    ['Drip-Out - Part 2', '6613f307fca4f2f386029409', '6615141bfda04449120269a7'],
+    ['Textile - Part 1', '5e381b0286f77420e3417a74', '5e383a6386f77465910ce1f3'],
+    ['Textile - Part 2', '5e4d4ac186f774264f758336', '5e4d515e86f77438b2195244'],
+  ]
+  for (const [name, bear, usec] of pairs) {
+    const variants = [{ id: bear, name }, { id: usec, name }]
+    assert.deepEqual(variants.map(task => getTaskDisplayName(task)), [name + '（BEAR）', name + '（USEC）'])
+    assert.equal(resolveTaskReference(name, variants).status, 'ambiguous')
+    assert.equal(resolveTaskReference({ id: usec }, variants).task.id, usec)
+    assert.deepEqual(variants.map(task => task.name), [name, name])
+  }
+  assert.equal(getTaskDisplayName({ name: 'Task', factionName: 'Any' }), 'Task')
+  assert.equal(getTaskDisplayName({ name: 'Task (BEAR)', factionName: 'BEAR' }), 'Task (BEAR)')
+  assert.equal(getTaskDisplayName({ name: 'Task', factionName: 'USEC' }), 'Task（USEC）')
 })
 test('story bulk completion never selects choices', () => {
   const chapter = { phases: [{ steps: [{ id: 'check', type: 'check' }, { id: 'wait', type: 'wait' }, { id: 'choice', type: 'choice' }, { id: 'optional', type: 'check', optional: true }] }] }

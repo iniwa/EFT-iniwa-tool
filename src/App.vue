@@ -16,7 +16,7 @@ import AppNav from './components/AppNav.vue'
 import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
 import TaskModal from './components/TaskModal.vue'
-import { resolveTaskReference } from './logic/taskReference.js'
+import { getTaskDisplayName, resolveTaskReference } from './logic/taskReference.js'
 import { useTaskFlowchartNavigation } from './composables/useTaskFlowchartNavigation.js'
 import BaseModal from './components/ui/BaseModal.vue'
 
@@ -404,7 +404,7 @@ watch(taskData, (tasks) => {
                 <h2 class="h5">同名のタスクを選択してください</h2>
                 <p class="small text-muted">この参照だけでは一意に特定できません。</p>
                 <div class="vstack gap-2">
-                    <button v-for="task in taskReferenceChoices" :key="task.id" class="btn btn-outline-info text-start" @click="openTaskDetails(task); taskReferenceChoices = []">{{ task.name }} — {{ task.trader?.name || 'Unknown' }} ({{ task.id.slice(-8) }})</button>
+                    <button v-for="task in taskReferenceChoices" :key="task.id" class="btn btn-outline-info text-start" @click="openTaskDetails(task); taskReferenceChoices = []">{{ getTaskDisplayName(task) }} — {{ task.trader?.name || 'Unknown' }} ({{ task.id.slice(-8) }})</button>
                 </div>
                 <button class="btn btn-secondary btn-sm mt-3" @click="taskReferenceChoices = []">閉じる</button>
             </template>
