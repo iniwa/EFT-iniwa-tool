@@ -82,7 +82,7 @@ test('flowchart gate graph includes explicit gates without inferring task links'
   assert.equal(graph.nodes.some((node) => node.label.includes('陣営: USEC')), true)
   assert.equal(graph.nodes.some((node) => node.label.includes('Prestige条件: p1')), true)
   assert.equal(graph.nodes.some((node) => node.key === 'level:10'), false)
-  assert.equal(graph.nodes.some((node) => node.key.startsWith('trader:')), false)
+  assert.ok(graph.nodes.some(node => node.key === 'trader:prapor:LL:>=:2' && node.label === 'Prapor LL2以上'))
   assert.equal(graph.nodes.find((node) => node.key === 'faction:USEC')?.automatic, false)
   assert.equal(graph.nodes.find((node) => node.key === 'global:var-1')?.automatic, false)
   assert.equal(graph.nodes.filter((node) => node.kind === 'dialogue').length, 3)

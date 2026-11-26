@@ -40,11 +40,13 @@ test('Crisis receives separate sourced LL4 with its task count gate preserved, c
   for(const [level,locked] of [[3,true],[4,false]]) assert.equal(evaluateTaskAvailability(task,[],{playerLevel:38,traderRequirementsEnabled:true,traderProgress:{'54cb57776803fa99248b456e':{level}}}).locked,locked)
   assert.equal(evaluateTaskAvailability(task,[],{playerLevel:37}).locked,true)
   assert.equal(evaluateTaskAvailability(task,[],{playerLevel:38,traderRequirementsEnabled:false}).locked,false)
-  const graph=buildFlowchartGateGraph([task]);assert.equal(graph.nodes.length,1)
+  const graph=buildFlowchartGateGraph([task]);assert.equal(graph.nodes.length,2)
   assert.equal(graph.nodes[0].key,'global:'+variable.variableId)
   assert.equal(graph.nodes[0].automatic,false)
   assert.equal(graph.nodes[0].label,'Therapist LL4のタスク（参考）')
   assert.equal(graph.edges[0].displayLabel,'1件以上クリア')
+  assert.ok(graph.nodes.some(node => node.label === 'Therapist LL4以上' && node.automatic))
+  assert.ok(graph.edges.some(edge => edge.gateKey.startsWith('trader:') && edge.taskId === task.id))
 })
 
 

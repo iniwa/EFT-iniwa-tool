@@ -12,7 +12,7 @@ import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import { getTaskDisplayName } from '../logic/taskReference.js'
-import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../logic/flowchartLogic.js'
+import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge, getFlowchartUnlockRanks } from '../logic/flowchartLogic.js'
 
 const {
   completedTasks,
@@ -103,6 +103,8 @@ function escapeLabel(text) {
     .replace(/\(/g, '（')
     .replace(/\)/g, '）')
 }
+
+const MAX_CHART_EDGES = 1500
 
 // --- フローチャート描画 ---
 async function renderChart() {
@@ -255,6 +257,24 @@ async function renderChart() {
       edgeCount++
     }
   })
+  // Anchor ranks with invisible layout-only links after checking the edge budget.
+  const unlockRanks = getFlowchartUnlockRanks([...nodesToRender.values()])
+  const lastRank = Math.max(0, ...unlockRanks.values())
+  const remainingEdges = MAX_CHART_EDGES - edgeCount
+  const guideLength = lastRank + 1
+  if (unlockRanks.size > 1 && remainingEdges >= lastRank - 1 + unlockRanks.size) {
+    const aligned = remainingEdges >= guideLength + unlockRanks.size * 2
+    const end = aligned ? guideLength : lastRank - 1
+    graph += '  rank0[" "]\n'
+    for (let index = 0; index < end; index++) {
+      graph += `  rank${index} ~~~ rank${index + 1}[" "]\n`
+    }
+    for (const [taskId, rank] of unlockRanks) {
+      const node = taskToNodeId.get(taskId)
+      graph += `  rank${rank - 1} ~~~ ${node}\n`
+      if (aligned) graph += `  ${node} ~~~ rank${rank + 1}\n`
+    }
+  }
   const connected = new Set()
   nodesToRender.forEach((task) => (task.taskRequirements || []).forEach((req) => { if (taskToNodeId.has(req?.task?.id)) { connected.add(task.id); connected.add(req.task.id) } }))
   chartStats.value = {
@@ -300,6 +320,10 @@ async function renderChart() {
     // ノード要素にポインターカーソルを設定
     const nodes = mermaidContainer.value.querySelectorAll('.node')
     nodes.forEach((el) => {
+      if (/(?:^|-)rank\d+(?:-|$)/.test(el.id || '')) {
+        el.remove()
+        return
+      }
       if (/(?:^|-)g\d+(?:-|$)/.test(el.id || '')) {
         el.style.cursor = 'default'
         const state = el.classList.contains('gateUnknown') ? '自動判定なし' : '解放条件'
@@ -426,7 +450,7 @@ onMounted(() => {
     startOnLoad: false,
     theme: 'dark',
     securityLevel: 'strict',
-    maxEdges: 1500,
+    maxEdges: MAX_CHART_EDGES,
     flowchart: {
       useMaxWidth: false,
       htmlLabels: true,
@@ -507,7 +531,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
 
     <!-- チャート本体 -->
     <div class="px-3 py-2 small text-muted border-bottom border-secondary">
-      実線は前提タスク、点線はゲーム内の解放条件です。LL付きの条件は、そのトレーダーの該当LLで解放されるタスクのクリア数として表示しています（参考・推定）。　
+      実線は前提タスク、点線はゲーム内の解放条件です。前提タスクに沿って、解放LLが低く、必要なクリア数が少ないタスクを左寄りに配置します。クリア数は該当LLのタスクが対象です（参考・推定）。　
       対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 条件ノード {{ chartStats.gateNodes }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
       <span class="ms-2">
         <span class="badge bg-success">完了</span>

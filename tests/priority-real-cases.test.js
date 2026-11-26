@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import { planPriorityTasks, aggregatePriorityTaskItems } from '../src/logic/priorityTasks.js'
-import { buildFlowchartGateGraph } from '../src/logic/flowchartLogic.js'
+import { buildFlowchartGateGraph, getFlowchartUnlockRanks } from '../src/logic/flowchartLogic.js'
 import { evaluateTaskAvailability } from '../src/logic/taskLogic.js'
 import { Graph } from 'dagre-d3-es/src/graphlib/index.js'
 import { layout } from 'dagre-d3-es/src/dagre/index.js'
@@ -67,14 +67,16 @@ test('active bridge never adds its own consumables but traverses its mandatory c
   assert.ok(planPriorityTasks(cyclic, ['goal'], []).issues.some(issue => issue.kind === 'cycle'))
 })
 
-test('chart-only PMC/LL removal retains reputation, raw task fields and eligibility checks', () => {
+test('LL and reputation gates preserve raw task fields and eligibility checks', () => {
   const task = { ...tasks.find(t => t.name === 'Sanitary Standards - Part 2'), minPlayerLevel: 20,
     traderLevelRequirements: [
       {trader:{id:'therapist',name:'Therapist'},requirementType:'level',value:3},
       {trader:{id:'therapist',name:'Therapist'},requirementType:'reputation',value:0.4},
     ] }
   const snapshot = JSON.stringify(task), graph = buildFlowchartGateGraph([task])
-  assert.ok(graph.nodes.every(n => n.kind !== 'level' && !n.key.includes(':LL:')))
+  assert.ok(graph.nodes.every(n => n.kind !== 'level'))
+  assert.ok(graph.nodes.some(n => n.key === 'trader:therapist:LL:>=:3' && n.label === 'Therapist LL3以上'))
+  assert.ok(graph.edges.some(e => e.gateKey === 'trader:therapist:LL:>=:3' && e.taskId === task.id))
   assert.ok(graph.nodes.some(n => n.key === 'trader:therapist:評判:>=:0.4'))
   const done = [id('Sanitary Standards')]
   const lowLevel = evaluateTaskAvailability(task, done, {playerLevel:19})
@@ -85,7 +87,7 @@ test('chart-only PMC/LL removal retains reputation, raw task fields and eligibil
   assert.equal(JSON.stringify(task), snapshot)
 })
 
-test('actual Dagre LR ranks preserve real sequence and shared branching edges after gate removal', () => {
+test('actual Dagre LR ranks preserve real sequence and shared branching edges with condition nodes visible', () => {
   const graph = new Graph().setGraph({rankdir:'LR',ranksep:50,nodesep:50}).setDefaultEdgeLabel(() => ({}))
   for (const task of tasks) graph.setNode(task.id, {width:200,height:40})
   for (const task of tasks) for (const req of task.taskRequirements) graph.setEdge(req.task.id, task.id, {minlen:1,weight:1})
@@ -99,4 +101,35 @@ test('actual Dagre LR ranks preserve real sequence and shared branching edges af
   }
   assert.equal(graph.node(id('The Blood of War - Part 2')).x, graph.node(id('Sew it Good - Part 2')).x)
   assert.ok(graph.node(id('Chemical - Part 1')).x < graph.node(id('Out of Curiosity')).x)
+})
+
+test('unlock groups place lower LL first, then fewer required clears, without ranking opaque values', () => {
+  const ll = (value, compareMethod = '>=') => ({ trader: { name: 'Jaeger' }, requirementType: 'level', value, compareMethod })
+  const count = (value, variableId = '6a43a095bfef0cd74c298963') => ({ type: 'globalVariable', compareMethod: '>=', value, variableId })
+  const catalog = [
+    { id: 'll3', traderLevelRequirements: [ll(2, '>')] },
+    { id: 'll2-count4', otherRequirements: [count(4)] },
+    { id: 'opaque', otherRequirements: [count(1, 'unknown')] },
+    { id: 'll2-count1', traderLevelRequirements: [ll(2)], otherRequirements: [count(1)] },
+    { id: 'll2', traderLevelRequirements: [{ level: 2 }] },
+    { id: 'll1-count5', otherRequirements: [count(5, '6a43a01ccc83aceedd35f09c')] },
+    { id: 'upper-bound', traderLevelRequirements: [ll(2, '<=')] },
+    { id: 'reputation', traderLevelRequirements: [{trader:{name:'Jaeger'},requirementType:'standing',value:3}] },
+  ]
+  assert.deepEqual(Object.fromEntries(getFlowchartUnlockRanks(catalog)), {
+    'll1-count5': 1, ll2: 2, 'll2-count1': 3, 'll2-count4': 4, ll3: 5,
+  })
+  const { nodes } = buildFlowchartGateGraph(catalog)
+  assert.ok(nodes.some(n => n.label === 'トレーダー LL2以上'))
+  assert.ok(nodes.some(n => n.label === 'Jaeger LL2超'))
+  assert.ok(nodes.some(n => n.label === 'Jaeger LL2以下'))
+
+  catalog[0].taskRequirements = [{ task: { id: 'bridge' } }]
+  catalog.push({ id: 'bridge', taskRequirements: [{ task: { id: 'll2-count4' } }] })
+  catalog[1].taskRequirements = [{ task: { id: 'll2' } }]
+  assert.equal(getFlowchartUnlockRanks(catalog).get('ll3'), 6)
+  catalog[1].taskRequirements = [{ task: { id: 'll3' } }]
+  const cyclicRanks = getFlowchartUnlockRanks(catalog)
+  assert.ok(!cyclicRanks.has('ll3') && !cyclicRanks.has('ll2-count4'))
+  assert.equal(cyclicRanks.get('ll2-count1'), 3)
 })

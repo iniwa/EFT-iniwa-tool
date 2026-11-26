@@ -29,6 +29,79 @@ export function formatMermaidDottedEdge(fromId, toId, label = '') {
     : `  ${fromId} -.-> ${toId}\n`
 }
 
+function getTraderRequirements(task) {
+  const requirements = task.traderLevelRequirements ?? task.traderRequirements
+  return Array.isArray(requirements) ? requirements : []
+}
+
+const loyaltyComparisons = { '>=': '以上', '>': '超', '<=': '以下', '<': '未満', '=': '', '==': '' }
+
+function isLoyaltyRequirement(requirement) {
+  return !!requirement && (!requirement.requirementType || requirement.requirementType === 'level')
+}
+
+/** Unlock stages are layout hints. Unmapped counters and upper limits carry no rank. */
+function getFlowchartUnlockGroups(tasks) {
+  const groups = new Map()
+  for (const task of tasks) {
+    let ll = 0
+    let clears = 0
+    for (const requirement of getTraderRequirements(task)) {
+      if (!isLoyaltyRequirement(requirement)) continue
+      const level = Number(requirement.value ?? requirement.level)
+      const op = compare(requirement.compareMethod)
+      const minimum = op === '>' ? level + 1 : level
+      if (['>=', '>', '=', '=='].includes(op) && Number.isInteger(level) && level >= 1 && minimum <= 4) {
+        ll = Math.max(ll, minimum)
+      }
+    }
+    for (const requirement of Array.isArray(task.otherRequirements) ? task.otherRequirements : []) {
+      if (requirement?.type !== 'globalVariable') continue
+      const condition = describeGlobalVariable(requirement)
+      if (!condition.tier) continue
+      ll = Math.max(ll, condition.tier)
+      clears = Math.max(clears, condition.value)
+    }
+
+    if (!ll) continue
+    const key = ll + ':' + clears
+    if (!groups.has(key)) groups.set(key, { ll, clears, taskIds: [] })
+    groups.get(key).taskIds.push(task.id)
+  }
+  return [...groups.values()].sort((a, b) => a.ll - b.ll || a.clears - b.clears).map(group => group.taskIds)
+}
+
+/**
+ * Match layout stages to prerequisite depth. A task can only be ranked
+ * after all its visible predecessors, so cycles keep Mermaid's native layout.
+ */
+export function getFlowchartUnlockRanks(tasks) {
+  const stages = new Map(getFlowchartUnlockGroups(tasks).flatMap((ids, index) => ids.map(id => [id, index + 1])))
+  if (!stages.size) return new Map()
+  const pending = new Map(tasks.map(task => [task.id, 0]))
+  const successors = new Map(tasks.map(task => [task.id, []]))
+  const minimum = new Map(tasks.map(task => [task.id, stages.get(task.id) || 1]))
+  for (const task of tasks) {
+    for (const requirement of Array.isArray(task.taskRequirements) ? task.taskRequirements : []) {
+      const next = successors.get(requirement?.task?.id)
+      if (!next) continue
+      next.push(task.id)
+      pending.set(task.id, pending.get(task.id) + 1)
+    }
+  }
+
+  const ready = tasks.filter(task => pending.get(task.id) === 0).map(task => task.id)
+  for (const id of ready) {
+    for (const child of successors.get(id)) {
+      minimum.set(child, Math.max(minimum.get(child), minimum.get(id) + 1))
+      const remaining = pending.get(child) - 1
+      pending.set(child, remaining)
+      if (remaining === 0) ready.push(child)
+    }
+  }
+  return new Map(ready.filter(id => stages.has(id)).map(id => [id, minimum.get(id)]))
+}
+
 /** Build non-task unlock gates without inferring task-to-task causality. */
 export function buildFlowchartGateGraph(tasks) {
   const gateMap = new Map()
@@ -44,15 +117,19 @@ export function buildFlowchartGateGraph(tasks) {
   }
   for (const task of Array.isArray(tasks) ? tasks : []) {
     if (!task?.id) continue
-    // PMC level and trader loyalty level are detail/eligibility conditions,
-    // not chart nodes. Keep trader reputation gates visible.
-    for (const req of Array.isArray(task.traderLevelRequirements) ? task.traderLevelRequirements : []) {
-      const trader = req?.trader?.name || req?.trader?.id || 'Unknown'
-      if (!['reputation', 'standing'].includes(req?.requirementType)) continue
-      const type = '評判'
-      const value = req?.value ?? req?.level
-      if (value == null) continue
-      const key = add(`trader:${req?.trader?.id || trader}:${type}:${compare(req.compareMethod)}:${value}`, `${trader} ${type} ${compare(req.compareMethod)} ${value}`, 'trader', true)
+    for (const req of getTraderRequirements(task)) {
+      const isReputation = ['reputation', 'standing'].includes(req?.requirementType)
+      if (!isReputation && !isLoyaltyRequirement(req)) continue
+      const traderId = req.trader?.id || (typeof req.trader === 'string' ? req.trader : null)
+      const trader = req.trader?.name && req.trader.name !== 'Unknown' ? req.trader.name : traderId || 'トレーダー'
+      const type = isReputation ? '評判' : 'LL'
+      const value = req.value ?? req.level
+      if (value == null || value === '') continue
+      const op = compare(req.compareMethod)
+      const comparisonText = !isReputation && Object.hasOwn(loyaltyComparisons, op)
+        ? `${type}${value}${loyaltyComparisons[op]}`
+        : `${type} ${op} ${value}`
+      const key = add(`trader:${traderId || trader}:${type}:${op}:${value}`, `${trader} ${comparisonText}`, 'trader', true)
       link(key, task.id)
     }
     for (const [index, req] of (Array.isArray(task.otherRequirements) ? task.otherRequirements : []).entries()) {
