@@ -80,14 +80,37 @@ defineExpose({ show })
       <div class="vstack gap-2">
         <details class="border border-secondary rounded" name="update-history" open>
           <summary class="notice-release-title fw-bold" tabindex="0">v3.5.0 — シーズン2に向けて大幅調整</summary>
-          <div class="vstack gap-3 p-3 pt-0">
-            <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
-              <ul class="text-light mb-0">
-                <li>PCは左のナビゲーション、スマホは画面下のナビゲーションと「その他」から各機能を開けます。</li>
-                <li>進捗入力でタスクとハイドアウトを切り替えられます。必要なアイテムはFIRと買い物に分かれ、入手元からタスク詳細を開けます。</li>
-                <li>進捗の Import / Export はヘッダーの「データ操作」（スマホでは「⋯」）にあります。</li>
-              </ul>
-            </div>
+          <div class="p-3 pt-0">
+            <ul class="list-unstyled d-grid gap-3 mb-0 text-light">
+              <li>
+                <strong class="d-block text-info">進捗入力・ライトキーパー</strong>
+                タスクとハイドアウトを切り替えられます。「LK」で To the Light を含む解放タスクを確認できます。必要なレベル・トレーダーLL・クリア数が未達のタスクは「ロック中も表示」で確認できます。
+              </li>
+              <li>
+                <strong class="d-block text-info">フローチャート</strong>
+                「解放条件を表示」で「Therapist LL4以上」などの条件を確認できます。前提タスクのつながりを優先し、解放LLが低いタスクを左寄りに配置します。同じLLでは必要なクリア数が少ないタスクが先です。
+              </li>
+              <li>
+                <strong class="d-block text-info">必要なアイテム</strong>
+                「ハイドアウト」と「タスク」を切り替え、FIR品と買い物を確認できます。タスクでは全未完了か、優先タスクと必要な前提に絞って集計でき、入手元からタスク詳細を開けます。
+              </li>
+              <li>
+                <strong class="d-block text-info">鍵管理</strong>
+                開錠先の戦利品・容器・出典を追加し、標準ティアを見直しました。血錆の鍵と主要マークドキーはSS、脱出口を解放する鍵は最低Aです。手動評価は点線の「暫定」を置き換え、実線の「確定」で表示します。
+              </li>
+              <li>
+                <strong class="d-block text-info">ストーリー・メモ</strong>
+                メインとサイドのストーリーを整理し、Boreasはサイドストーリーで進捗を記録できます。メモの武器・回復・トレーダー・アイテムなどの記載も見直しました。
+              </li>
+              <li>
+                <strong class="d-block text-info">シーズン2 Modifier</strong>
+                UNTAR Controlのビルドを試算し、シーズン別に下書き・プリセットを保存できます。ビルドの画像プレビューとPNG出力にも対応しました。
+              </li>
+              <li>
+                <strong class="d-block text-info">メニュー・データ操作</strong>
+                PCは左、スマホは画面下のナビゲーションと「その他」から各機能を開けます。進捗の Import / Export はヘッダーの「データ操作」（スマホでは「⋯」）にあります。
+              </li>
+            </ul>
           </div>
         </details>
         <details class="border border-secondary rounded" name="update-history">
