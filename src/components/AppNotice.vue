@@ -78,30 +78,32 @@ defineExpose({ show })
       </header>
 
       <div class="vstack gap-2">
-        <details class="rounded border border-info border-2 bg-info bg-opacity-10" name="update-history" open>
+        <details class="border border-secondary rounded" name="update-history" open>
           <summary class="notice-release-title fw-bold" tabindex="0">v3.5.0 — シーズン2に向けて大幅調整</summary>
-          <div class="p-3 pt-0">
-            <p class="text-light mb-3">進捗入力や必要なアイテムの画面を中心に、ツール全体のUIを大きく見直しました。</p>
-            <ul class="d-grid gap-2 mb-0 text-light">
-              <li>
-                <strong>UIの大幅変更</strong>　進捗入力では「タスク」と「ハイドアウト」を切り替えられます。「必要なアイテム」も対象別に切り替え、FIR品と買い物を確認しやすくしました。PCとスマホのナビゲーションも刷新しています。
-              </li>
-              <li>
-                <strong>To The Lightを追加</strong>　一覧から抜けていたライトキーパーの解放タスク「To The Light」を補完しました。「LK」から確認できます。
-              </li>
-              <li>
-                <strong>フローチャートを改善</strong>　トレーダーのLL条件を表示し、前提タスクのつながりに沿って、解放LLと必要なクリア数で配置を調整しました。
-              </li>
-              <li>
-                <strong>運営側で鍵ティアを用意</strong>　開錠先の戦利品や容器をもとに、運営側で目安を付けました。暫定評価なので、鍵の購入や持ち込みを考える際の参考程度にしてください。自分で評価を付けると、一覧ではその評価が優先されます。
-              </li>
-              <li>
-                <strong>ストーリー・メモを見直し</strong>　ストーリーの手順や分岐を整理し、Boreasはサイドストーリーで追えるようにしました。メモの情報も見直しています。
-              </li>
-              <li>
-                <strong>配信・更新情報を改善</strong>　配信オーバーレイは進捗入力と同じ優先タスクを使います。更新情報はバージョンごとに折りたたみ、非表示の操作を右上にまとめました。
-              </li>
-            </ul>
+          <div class="vstack gap-3 p-3 pt-0">
+            <div class="p-3 p-sm-4 rounded border border-info border-2 bg-info bg-opacity-10">
+              <h3 class="h5 text-info fw-bold mb-3"><span aria-hidden="true">✨ </span>UIの大幅変更</h3>
+              <p class="text-light mb-2">進捗入力や必要なアイテムの画面を中心に、ツール全体のUIを大きく見直しました。</p>
+              <p class="text-light mb-3">進捗入力では「タスク」と「ハイドアウト」を切り替えられます。「必要なアイテム」も対象別に切り替え、FIR品と買い物を確認しやすくしました。PCとスマホのナビゲーションも刷新しています。</p>
+              <ul class="text-light mb-0">
+                <li><strong>配信・更新情報を改善</strong>　配信オーバーレイは進捗入力と同じ優先タスクを使います。更新情報はバージョンごとに折りたたみ、非表示の操作を右上にまとめました。</li>
+              </ul>
+            </div>
+
+            <div class="p-3 p-sm-4 rounded border border-info border-2 bg-info bg-opacity-10">
+              <h3 class="h5 text-info fw-bold mb-3"><span aria-hidden="true">🧭 </span>タスク・ストーリー</h3>
+              <ul class="text-light mb-0">
+                <li><strong>To The Lightを追加</strong>　一覧から抜けていたライトキーパーの解放タスク「To The Light」を補完しました。「LK」から確認できます。</li>
+                <li><strong>フローチャートを改善</strong>　トレーダーのLL条件を表示し、前提タスクのつながりに沿って、解放LLと必要なクリア数で配置を調整しました。</li>
+                <li><strong>ストーリー・メモを見直し</strong>　ストーリーの手順や分岐を整理し、Boreasはサイドストーリーで追えるようにしました。メモの情報も見直しています。</li>
+              </ul>
+            </div>
+
+            <div class="p-3 p-sm-4 rounded border border-info border-2 bg-info bg-opacity-10">
+              <h3 class="h5 text-info fw-bold mb-3"><span aria-hidden="true">🔑 </span>運営側で鍵ティアを用意</h3>
+              <p class="text-light mb-2">開錠先の戦利品や容器をもとに、運営側で目安を付けました。自分で評価を付けると、一覧ではその評価が優先されます。</p>
+              <p class="small text-warning mb-0">暫定評価なので、鍵の購入や持ち込みを考える際の参考程度にしてください。</p>
+            </div>
           </div>
         </details>
         <details class="border border-secondary rounded" name="update-history">
