@@ -4,13 +4,13 @@ const emit = defineEmits(['open-task-from-name'])
 
 <template>
     <div class="memo-static-header">
-        📦 集めておくべき重要アイテム (Barter & Collection)
+        📦 交換用アイテム (Barter & Collection)
     </div>
     <div class="container-fluid px-0">
         <div class="row g-0">
             <div class="col-md-6 border-end border-secondary border-bottom border-dark">
                 <div class="p-3">
-                    <div class="text-blue fw-bold mb-2">Documents Case (セラピスト Lv.2)</div>
+                    <div class="text-blue fw-bold mb-2">Document Case (セラピスト LL2)</div>
                     <ul class="mb-0 text-secondary small">
                         <li>Cat Figurine x 1</li>
                         <li>Bronze Lion x 1</li>
@@ -83,7 +83,7 @@ const emit = defineEmits(['open-task-from-name'])
     </div>
 
     <div class="memo-static-header">
-        🔓 タスク進行順と重要アンロック (Priority Order)
+        🔓 タスクとアンロック
     </div>
     <table class="memo-table">
         <thead>
@@ -99,9 +99,9 @@ const emit = defineEmits(['open-task-from-name'])
                 <td rowspan="4" class="text-center align-middle border-end border-secondary text-white fw-bold">
                     医療品<br>(優先度は目安)
                 </td>
-                <td class="fw-bold ps-4 text-green">Propital (購入)</td>
+                <td class="fw-bold ps-4 text-green">Propital (交換)</td>
                 <td>
-                    <button class="task-link" @click="emit('open-task-from-name', 'Health Care Privacy - Part 2')">Health Care Privacy - Part 2</button>
+                    <button class="task-link" @click="emit('open-task-from-name', 'Health Care Privacy - Part 2')">Health Care Privacy - Part 2</button><br><small>LL2: Apple juice ×3。購入はLL4。</small>
                 </td>
                 <td>Therapist</td>
             </tr>
@@ -122,7 +122,7 @@ const emit = defineEmits(['open-task-from-name'])
             <tr>
                 <td class="fw-bold ps-4">Surv12 手術キット</td>
                 <td>
-                    <button class="task-link" @click="emit('open-task-from-name', 'Broadcast - Part 3')">Broadcast - Part 3</button><br><small>LL2: Antique vase ×2 の交換。旧Ambulance購入ルートは現在利用不可の記載・要確認。</small>
+                    <button class="task-link" @click="emit('open-task-from-name', 'The Survivalist Path - Unprotected but Dangerous')">The Survivalist Path - Unprotected but Dangerous</button><br><small>LL2: Antique vase ×2 の交換。LL3購入: <button class="task-link" @click="emit('open-task-from-name', 'The Survivalist Path - Tough Guy')">The Survivalist Path - Tough Guy</button>。</small>
                 </td>
                 <td>Jaeger</td>
             </tr>
@@ -139,7 +139,7 @@ const emit = defineEmits(['open-task-from-name'])
             <tr>
                 <td class="fw-bold ps-4">T.H.I.C.C. Item Case</td>
                 <td>
-                    <button class="task-link" @click="emit('open-task-from-name', 'A Difficult Choice')">A Difficult Choice</button> (報酬)<br><small>旧Private Clinicは現在利用不可の記載。</small>
+                    <button class="task-link" @click="emit('open-task-from-name', 'A Difficult Choice')">A Difficult Choice</button> (報酬)<br><small>旧Private Clinicの利用可否は要確認。</small>
                 </td>
                 <td>Therapist</td>
             </tr>
@@ -165,7 +165,7 @@ const emit = defineEmits(['open-task-from-name'])
                 <td>Peacekeeper</td>
             </tr>
             <tr>
-                <td class="fw-bold ps-4 text-red">BP (7.62x39mm)</td>
+                <td class="fw-bold ps-4 text-red">BP (7.62x39mm) (Craft)</td>
                 <td>
                     <button class="task-link" @click="emit('open-task-from-name', 'Intimidator')">Intimidator</button>
                 </td>
@@ -180,5 +180,5 @@ const emit = defineEmits(['open-task-from-name'])
             </tr>
         </tbody>
     </table>
-    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/%E3%82%B1%E3%83%BC%E3%82%B9" target="_blank" rel="noopener noreferrer">ケース</a> / <a href="https://wikiwiki.jp/eft/%E5%8C%BB%E8%96%AC%E5%93%81" target="_blank" rel="noopener noreferrer">医薬品</a> / <a href="https://wikiwiki.jp/eft/%E5%BC%BE%E8%96%AC" target="_blank" rel="noopener noreferrer">弾薬</a>。交換・購入・クラフト・報酬は別ルート。LL以外のタスク条件にも注意。優先度は実用目安でレベル保証ではありません。</p>
+    <p class="p-2 small text-muted mb-0">2026-11-24: <a href="https://json.tarkov.dev/endpoints" target="_blank" rel="noopener noreferrer">tarkov.dev</a> の各モードのアイテム・交換・クラフト・タスクを照合。掲載の交換は3モード共通の一部で、Seasonal PvPには追加ルートもあります。タスクの実際の受注可否や旧ルートの利用可否はゲーム内で要確認。優先度は実用目安です。</p>
 </template>

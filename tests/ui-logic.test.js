@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { resolveTaskReference, toHttpsUrl } from '../src/logic/taskReference.js'
-import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan } from '../src/logic/taskLogic.js'
+import { getPrerequisiteClosure, formatTaskRequirementStatuses, getInitialSetupPlan, filterActiveTasks, evaluateTaskAvailability, getTaskRequirementStatuses } from '../src/logic/taskLogic.js'
 import { getBulkCompletableStepIds } from '../src/logic/storyLogic.js'
 import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../src/logic/flowchartLogic.js'
 import { calculateShoppingList } from '../src/logic/keyLogic.js'
@@ -82,7 +82,7 @@ test('flowchart gate graph includes explicit gates without inferring task links'
   assert.equal(graph.nodes.some((node) => node.label.includes('陣営: USEC')), true)
   assert.equal(graph.nodes.some((node) => node.label.includes('Prestige条件: p1')), true)
   assert.equal(graph.nodes.some((node) => node.key === 'level:10'), false)
-  assert.equal(graph.nodes.some((node) => node.key.startsWith('trader:')), false)
+  assert.ok(graph.nodes.some(node => node.key === 'trader:prapor:LL:>=:2' && node.label === 'Prapor LL2以上'))
   assert.equal(graph.nodes.find((node) => node.key === 'faction:USEC')?.automatic, false)
   assert.equal(graph.nodes.find((node) => node.key === 'global:var-1')?.automatic, false)
   assert.equal(graph.nodes.filter((node) => node.kind === 'dialogue').length, 3)
@@ -100,4 +100,49 @@ test('key task sources retain stable IDs and do not merge duplicate names', () =
   )
   assert.deepEqual(sources.map((entry) => entry.taskId).sort(), ['first', 'second'])
   assert.equal(isSameSource({ name: 'Task: Duplicate', taskId: 'first', type: 'task' }, { name: 'Task: Duplicate', taskId: 'second', type: 'task' }), false)
+})
+
+test('task visibility requires each prerequisite and accepts any listed status for that prerequisite', () => {
+  const task = {
+    id: 'out-of-curiosity',
+    taskRequirements: [
+      { task: { id: 'chemical-4' }, status: ['active'] },
+      { task: { id: 'other-branch' }, status: ['complete', 'failed'] },
+    ],
+  }
+  const options = { taskStatuses: { 'chemical-4': 'active', 'other-branch': 'failed' } }
+  assert.deepEqual(filterActiveTasks([task], [], options), [task])
+  assert.deepEqual(filterActiveTasks([task], ['chemical-4'], options), [])
+  assert.deepEqual(filterActiveTasks([task], ['chemical-4'], { ...options, showFuture: true }), [task])
+  assert.deepEqual(filterActiveTasks([task], ['other-branch'], options), [task])
+  assert.equal(evaluateTaskAvailability(task, [], { taskStatuses: { 'chemical-4': 'active' } }).reqMet, false)
+  assert.deepEqual(getTaskRequirementStatuses({ task: { id: 'legacy' } }), ['complete'])
+})
+
+test('unverified prerequisites never unlock a task or authorize a bulk setup', () => {
+  const base = { id: 'base', taskRequirements: [] }
+  for (const req of [
+    { task: { id: 'base' }, status: ['complete', 'unknown'] },
+    { task: { id: 'base' }, status: ['complete'], group: 'ambiguous' },
+    { task: null, status: ['complete'] },
+  ]) {
+    const target = { id: 'target', taskRequirements: [req] }
+    assert.equal(evaluateTaskAvailability(target, ['base']).locked, true)
+    assert.equal(getInitialSetupPlan(target.id, [base, target]).find(row => row.id === target.id).conflict, true)
+  }
+  const orphan = { id: 'orphan', taskRequirements: [{ task: { id: 'missing' }, status: ['complete'] }] }
+  assert.deepEqual(getInitialSetupPlan(orphan.id, [orphan]), [{ id: orphan.id, status: 'complete', conflict: true }])
+})
+
+test('LK shows the unlock chain when the source flags are all false', () => {
+  const oldTask = { id: 'old', name: 'Network Provider', lightkeeperRequired: true }
+  const start = { id: 'start', name: 'To the Light - Trust but Verify', lightkeeperRequired: false }
+  const end = { id: 'end', name: '解放タスク', nameAliases: ['To the Light - Getting Acquainted'] }
+  const bySlug = { id: 'slug', name: '別の解放タスク', normalizedName: 'to-the-light-the-other-side' }
+  const afterUnlock = { id: '63966faeea19ac7ed845db2c', name: 'Information Source', lightkeeperRequired: false }
+  const options = { showLightkeeperOnly: true }
+  assert.deepEqual(filterActiveTasks([start, end, bySlug, afterUnlock], [], options), [start, end, bySlug])
+  assert.deepEqual(filterActiveTasks([oldTask, afterUnlock], [], options), [oldTask])
+  assert.deepEqual(filterActiveTasks([start, end], [start.id], { ...options, showCompleted: true }), [start])
+  assert.deepEqual(filterActiveTasks([{ ...start, minPlayerLevel: 40 }], [], { ...options, playerLevel: 10 }), [])
 })

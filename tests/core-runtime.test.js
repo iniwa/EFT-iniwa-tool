@@ -103,6 +103,22 @@ test('live-shaped objective constraints format safely', () => {
   assert.match(formatObjectiveValue({ bodyParts: ['頭'], effects: ['痛み'] }), /部位: 頭/);
   assert.equal(objectivePositionLines({ zones: [null], possibleLocations: [null, { positions: [{ x: 1 }, { x: 2 }, { x: 3 }, { x: 4 }] }] })[0].endsWith('ほか1地点'), true);
 });
+test('ID-only task translations fall back to an English title, including prerequisite references', () => {
+  const gunsmith = '639872f9decada40426d3447';
+  const token = `${gunsmith} name`;
+  const converted = convertMainData({
+    tasksRaw: {
+      [gunsmith]: { id: gunsmith, name: token, normalizedName: 'gunsmith-op-sks' },
+      next: { id: 'next', name: 'Next', taskRequirements: [{ task: gunsmith, status: ['complete'] }] },
+    },
+    tasksDict: { [token]: gunsmith }, tasksEnDict: { [token]: 'Gunsmith - OP-SKS' },
+    hideoutRaw: {}, itemsRaw: {}, questItemsRaw: {}, mapsRaw: {}, tradersRaw: {}, craftsRaw: {}, bartersRaw: {},
+  });
+  assert.equal(converted.tasks[0].id, gunsmith);
+  assert.equal(converted.tasks[0].name, 'Gunsmith - OP-SKS');
+  assert.deepEqual(converted.tasks[1].taskRequirements[0].task, { id: gunsmith, name: 'Gunsmith - OP-SKS' });
+});
+
 const valid = () => ({
   schemaVersion: '3.2.1', gameMode: 'pve', userHideout: { Workbench: 2 },
   completedTasks: [id], collectedItems: [], ownedKeys: [], keyUserData: {}, playerLevel: 20,
@@ -146,6 +162,8 @@ test('story and overlay state survive a validated round trip', () => {
   const parsed = validateBackup(backup);
   assert.equal(parsed.storyProgress.chapter.step, true);
   assert.equal(parsed.overlayItemCounts[`${id}__0`], 3);
+  assert.deepEqual(parsed.prioritizedTasks, [id]);
+  assert.deepEqual(parsed.focusedTaskIds, [id]);
 });
 
 test('language normalization and trader sanitizer reject prototype keys', () => {
@@ -176,8 +194,8 @@ test('automatic v2 migration keeps mixed unresolved references and leaves its ma
 });
 
 test('overlay messages validate mode and payload shape', () => {
-  assert.equal(isValidOverlayMessage({ type: 'focusedTaskIds', mode: 'pve', payload: [id] }, 'pve'), true);
-  assert.equal(isValidOverlayMessage({ type: 'focusedTaskIds', mode: 'regular', payload: [id] }, 'pve'), false);
+  assert.equal(isValidOverlayMessage({ type: 'overlayItemCounts', mode: 'pve', payload: { [id]: 3 } }, 'pve'), true);
+  assert.equal(isValidOverlayMessage({ type: 'overlayItemCounts', mode: 'regular', payload: { [id]: 3 } }, 'pve'), false);
   assert.equal(isValidOverlayMessage({ type: 'overlayEnabled', mode: 'regular', payload: true }, 'pve'), true);
   assert.equal(isValidOverlayMessage({ type: 'overlayConfig', mode: 'regular', payload: { maxTasks: 5 } }, 'pve'), true);
   assert.equal(isValidOverlayMessage({ type: 'context', payload: { mode: 'invalid', lang: 'ja' } }, 'pve'), false);

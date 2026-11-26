@@ -16,12 +16,13 @@ test('all current real unlock variables retain uncertain semantics and exact gra
       const c = usage.condition
       assert.equal(c.variableId, group.variableId)
       const info = describeGlobalVariable(c)
-      assert.match(info.label, /Tier [1-4] のタスク進行条件/)
+      assert.match(info.label, / LL[1-4]のタスク（(?:参考|推定)）$/)
       assert.ok(info.sourceUrl.includes('4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6'))
       assert.equal(info.verified, false)
       assert.equal(info.variableId, c.variableId)
       assert.equal(info.compareMethod, c.compareMethod)
       assert.equal(info.value, c.value)
+      assert.equal(info.conditionText, `${c.value}件以上クリア`)
       if (!byTask.has(usage.taskId)) byTask.set(usage.taskId, { id: usage.taskId, name: usage.name, otherRequirements: [] })
       byTask.get(usage.taskId).otherRequirements.push(c)
     }
@@ -33,13 +34,13 @@ test('all current real unlock variables retain uncertain semantics and exact gra
   assert.ok(graph.nodes.every(n => n.verified === false && n.automatic === false))
   for (const group of fixture.unlocks) {
     assert.ok(graph.nodes.some(n => n.key === `global:${group.variableId}`))
-    for (const usage of group.usages) assert.ok(graph.edges.some(e => e.taskId === usage.taskId && e.gateKey === `global:${group.variableId}` && e.label === `${usage.condition.compareMethod} ${usage.condition.value}`))
+    for (const usage of group.usages) assert.ok(graph.edges.some(e => e.taskId === usage.taskId && e.gateKey === `global:${group.variableId}` && e.label === `${usage.condition.compareMethod} ${usage.condition.value}` && e.displayLabel === `${usage.condition.value}件以上クリア`))
   }
   assert.equal(JSON.stringify(tasks), before)
   const crisis = fixture.unlocks.find(g => g.variableId === '6a56925b1c30ba5a77c7c518').usages.find(u => u.taskId === '60e71c48c1bfa3050473b8e5')
   assert.equal(crisis.name, 'Crisis')
   assert.equal(crisis.condition.value, 1)
-  assert.ok(!describeGlobalVariable(crisis.condition).label.includes('LL4'))
+  assert.equal(describeGlobalVariable(crisis.condition).label, 'Therapist LL4のタスク（参考）')
 })
 
 test('real English objective association alone does not define general variable semantics', () => {

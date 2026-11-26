@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // Composables
@@ -10,8 +10,9 @@ import { useImportExport } from './composables/useImportExport.js'
 import { useOverlay } from './composables/useOverlay.js'
 
 // Components
+import './assets/console.css'
 import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+import AppNav from './components/AppNav.vue'
 import AppNotice from './components/AppNotice.vue'
 import ToastNotify from './components/ui/ToastNotify.vue'
 import TaskModal from './components/TaskModal.vue'
@@ -70,6 +71,78 @@ const visibleTabs = computed(() => {
         })
 })
 
+const GROUPS = [
+    { key: 'work', label: '作業' },
+    { key: 'tools', label: '道具' },
+    { key: 'info', label: 'ガイド / 設定' },
+    { key: 'about', label: 'サイト情報', secondary: true },
+]
+const FALLBACK_ICON = { guide: '📘', faq: '❓', about: 'ℹ️', privacy: '🔒', terms: '📄', debug: '🛠️' }
+const NAV_EXTRAS = {
+    info: [{ name: 'feedback', text: '意見箱', icon: '📮', href: "https://docs.google.com/forms/d/e/1FAIpQLScFPBXovafedEgQY10uTH1vAbyOA9r1l6kurIfkTuwN64eyqA/viewform?usp=dialog" }],
+    about: [
+        { name: 'release-notes', text: `更新情報 v${APP_VERSION}`, icon: '📢', action: () => noticeRef.value?.show() },
+        { name: 'author', text: '© 2026 @iniwach', icon: '👤', href: 'https://twitter.com/iniwach' },
+        { name: 'data-credit', text: 'Data by tarkov.dev', icon: '🛰️', href: 'https://tarkov.dev' },
+    ],
+}
+const CONDITION_NOTE = {
+    showStoryTab: '設定でストーリータブを有効にしている間だけ表示されます',
+    overlayEnabled: '配信オーバーレイを有効にしている間だけ表示されます',
+}
+
+function toNavItem(r) {
+    const label = r.meta.label || r.meta.title
+    const m = /^(\S+)\s+(.+)$/u.exec(label)
+    const hasIcon = m && /[^\x00-\x7f]/.test(m[1])
+    return {
+        name: r.name,
+        icon: hasIcon ? m[1] : (FALLBACK_ICON[r.name] || '•'),
+        text: hasIcon ? m[2] : label,
+        cssClass: r.meta.cssClass,
+        conditional: r.meta.requiresFlag ? CONDITION_NOTE[r.meta.requiresFlag] : '',
+    }
+}
+
+const navGroups = computed(() => {
+    const visible = new Set(visibleTabs.value.map(t => t.name))
+    return GROUPS.map(g => ({
+        ...g,
+        items: router.options.routes
+            .filter(r => r.meta?.group === g.key && (!r.meta.tab || visible.has(r.name)))
+            .map(toNavItem)
+            .concat(NAV_EXTRAS[g.key] || []),
+    })).filter(g => g.items.length)
+})
+
+const MOBILE_TABS = ['input', 'flowchart', 'keys', 'search']
+const TAB_SHORT = { input: '入力', flowchart: 'チャート', keys: '鍵', search: '検索' }
+const mobileTabs = computed(() => MOBILE_TABS
+    .map(name => router.options.routes.find(r => r.name === name))
+    .filter(Boolean).map(r => ({ ...toNavItem(r), short: TAB_SHORT[r.name] })))
+const moreActive = computed(() => !MOBILE_TABS.includes(route.name))
+
+const railCollapsed = ref(false)
+const drawerOpen = ref(false)
+const drawerEl = ref(null)
+let drawerOpener = null
+function openDrawer() {
+    drawerOpener = document.activeElement
+    drawerOpen.value = true
+    nextTick(() => drawerEl.value?.querySelector('a, button')?.focus())
+}
+function closeDrawer() {
+    if (!drawerOpen.value) return
+    drawerOpen.value = false
+    drawerOpener?.focus?.()
+}
+function onDrawerKey(e) {
+    if (e.key === 'Escape') closeDrawer()
+}
+
+const currentGroupLabel = computed(() => GROUPS.find(g => g.key === route.meta?.group)?.label || '')
+const currentTitle = computed(() => route.meta?.title || '')
+
 // ルートが非表示タブを指していたらトップへ戻す
 watch([visibleTabs, () => route.name], ([list, name]) => {
     const current = router.options.routes.find((r) => r.name === name)
@@ -88,19 +161,51 @@ function handleFetchData() {
 }
 
 let taskDetailOpener = null
+let detailPushed = false
+const detailId = computed(() => (typeof route.query.detail === 'string' ? route.query.detail : ''))
+
 function openTaskDetails(task) {
     taskDetailOpener = document.activeElement
     selectedTask.value = task
     showTaskModal.value = true
+    if (task?.id && detailId.value !== task.id) {
+        detailPushed = true
+        router.push({ query: { ...route.query, detail: task.id } })
+    }
 }
 
+// 直リンク / Back / Forward で詳細パネルを URL と同期する
+watch([detailId, () => taskData.value], ([id]) => {
+    if (!id) {
+        if (showTaskModal.value) { showTaskModal.value = false; selectedTask.value = null }
+        return
+    }
+    if (selectedTask.value?.id === id) { showTaskModal.value = true; return }
+    const task = taskData.value?.find(t => t.id === id)
+    if (task) { selectedTask.value = task; showTaskModal.value = true }
+}, { immediate: true })
+
 const { showFlowchart } = useTaskFlowchartNavigation({ route, router, taskData,
-    openDetails: openTaskDetails, closeDetails: closeTaskModal, getOpener: () => taskDetailOpener,
+    openDetails: openTaskDetails, closeDetails: closeTaskPanelSilently, getOpener: () => taskDetailOpener,
 })
 
-function closeTaskModal() {
+// フローチャートへ移る時用: URL は触らず表示だけ閉じる (Back で復元される)
+function closeTaskPanelSilently() {
     showTaskModal.value = false
     selectedTask.value = null
+}
+
+function closeTaskModal() {
+    closeTaskPanelSilently()
+    if (!detailId.value) return
+    if (detailPushed && window.history.state?.back) {
+        detailPushed = false
+        router.back()
+    } else {
+        detailPushed = false
+        const { detail, ...rest } = route.query
+        router.replace({ query: rest })
+    }
 }
 
 /** タスク名からタスクオブジェクトを探してモーダルを開く */
@@ -181,9 +286,8 @@ watch(taskData, (tasks) => {
 </script>
 
 <template>
-    <div class="container-fluid py-4">
-        <div v-if="loadError" class="alert alert-danger text-center">{{ loadError }}</div>
-        <div v-if="dataWarning" class="alert alert-warning text-center">{{ dataWarning }}</div>
+    <div class="app-shell" :class="{ 'rail-collapsed': railCollapsed }" :data-mode="gameMode">
+        <a class="skip-link" href="#main-content">メインコンテンツへ移動</a>
 
         <AppHeader
             :last-updated="lastUpdated"
@@ -192,12 +296,15 @@ watch(taskData, (tasks) => {
             :game-mode="gameMode"
             :api-lang="apiLang"
             :app-version="APP_VERSION"
+            :rail-collapsed="railCollapsed"
             @fetch-data="handleFetchData"
             @update:player-level="playerLevel = $event"
             @update:game-mode="gameMode = $event"
             @update:api-lang="apiLang = $event"
             @export-data="exportData"
             @trigger-import="triggerImport"
+            @toggle-rail="railCollapsed = !railCollapsed"
+            @open-drawer="openDrawer"
         />
 
         <!-- 非表示のファイル入力 -->
@@ -209,36 +316,82 @@ watch(taskData, (tasks) => {
             @change="handleFileImport"
         >
 
-        <!-- タブナビゲーション -->
-        <ul class="nav nav-tabs mb-3" role="tablist">
-            <li
-                v-for="tab in visibleTabs"
-                :key="tab.name"
-                class="nav-item"
-                role="presentation"
+        <!-- PC: 左レール -->
+        <aside class="rail d-none d-lg-block" aria-label="サイドメニュー">
+            <AppNav :groups="navGroups" :collapsed="railCollapsed" />
+        </aside>
+
+        <!-- スマホ: ドロワー -->
+        <div v-if="drawerOpen" class="drawer-scrim d-lg-none" @click="closeDrawer"></div>
+        <aside
+            v-if="drawerOpen" ref="drawerEl"
+            class="drawer d-lg-none" role="dialog" aria-modal="true" aria-label="メニュー"
+            @keydown="onDrawerKey"
+        >
+            <div class="drawer-head">
+                <strong>メニュー</strong>
+                <button type="button" class="icon-btn" aria-label="メニューを閉じる" @click="closeDrawer">✕</button>
+            </div>
+            <AppNav :groups="navGroups" @navigate="closeDrawer" />
+        </aside>
+
+        <main id="main-content" class="app-main" tabindex="-1">
+            <div v-if="loadError" class="state-banner state-error" role="alert">
+                <span aria-hidden="true">⛔</span>
+                <div><strong>データを取得できませんでした</strong><p>{{ loadError }}</p></div>
+                <button type="button" class="btn btn-sm btn-outline-warning" :disabled="isLoading" @click="handleFetchData">再取得</button>
+            </div>
+            <div v-if="dataWarning" class="state-banner state-warn" role="status">
+                <span aria-hidden="true">⚠️</span>
+                <div><p>{{ dataWarning }}</p></div>
+            </div>
+            <div v-if="isLoading && !taskData?.length" class="state-banner state-loading" role="status">
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                <div><p>タスクデータを読み込み中です…</p></div>
+            </div>
+
+            <nav v-if="currentTitle && route.name !== 'input'" class="crumb" aria-label="現在地">
+                <router-link to="/">進捗入力</router-link>
+                <template v-if="currentGroupLabel"><span aria-hidden="true">/</span><span>{{ currentGroupLabel }}</span></template>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page">{{ currentTitle }}</span>
+            </nav>
+
+            <!-- ルートビュー（既存コンポーネントの emit をここで吸収） -->
+            <router-view v-slot="{ Component }">
+              <KeepAlive include="TaskInput">
+                <component
+                    :is="Component"
+                    :class="`view-${String(route.name)}`"
+                    @open-task-details="openTaskDetails"
+                    @open-task-from-name="openTaskFromName"
+                />
+              </KeepAlive>
+            </router-view>
+
+        </main>
+
+        <!-- スマホ: 下タブ -->
+        <nav class="tabbar d-lg-none" aria-label="主要タブ">
+            <router-link
+                v-for="tab in mobileTabs" :key="tab.name"
+                :to="{ name: tab.name }" class="tabbar-item"
+                :class="{ active: route.name === tab.name }"
+                :aria-current="route.name === tab.name ? 'page' : undefined"
             >
-                <router-link
-                    class="nav-link"
-                    :class="[{ active: route.name === tab.name }, tab.meta.cssClass]"
-                    :to="{ name: tab.name }"
-                    role="tab"
-                    :aria-selected="route.name === tab.name"
-                >{{ tab.meta.label }}</router-link>
-            </li>
-        </ul>
+                <span class="tab-ico" aria-hidden="true">{{ tab.icon }}</span>
+                <span class="tab-text">{{ tab.short }}</span>
+            </router-link>
+            <button
+                type="button" class="tabbar-item" :class="{ active: moreActive }"
+                aria-haspopup="dialog" :aria-expanded="drawerOpen" @click="openDrawer"
+            >
+                <span class="tab-ico" aria-hidden="true">☰</span>
+                <span class="tab-text">その他</span>
+            </button>
+        </nav>
 
-        <!-- ルートビュー（既存コンポーネントの emit をここで吸収） -->
-        <router-view v-slot="{ Component }">
-          <KeepAlive include="TaskInput">
-            <component
-                :is="Component"
-                @open-task-details="openTaskDetails"
-                @open-task-from-name="openTaskFromName"
-            />
-          </KeepAlive>
-        </router-view>
-
-        <!-- タスク詳細モーダル -->
+        <!-- タスク詳細: PC=右パネル / スマホ=ボトムシート -->
         <TaskModal
             :task="selectedTask"
             :show="showTaskModal"
@@ -256,9 +409,9 @@ watch(taskData, (tasks) => {
                 <button class="btn btn-secondary btn-sm mt-3" @click="taskReferenceChoices = []">閉じる</button>
             </template>
         </BaseModal>
-        <div v-if="taskReferenceMessage" class="alert alert-warning mt-3" role="status">
-            {{ taskReferenceMessage }}
-            <button class="btn btn-sm btn-outline-warning ms-2" @click="taskReferenceMessage = ''">閉じる</button>
+        <div v-if="taskReferenceMessage" class="state-banner state-warn ref-message" role="status">
+            <div><p>{{ taskReferenceMessage }}</p></div>
+            <button class="btn btn-sm btn-outline-warning" @click="taskReferenceMessage = ''">閉じる</button>
         </div>
 
         <!-- 更新通知 -->
@@ -266,10 +419,5 @@ watch(taskData, (tasks) => {
 
         <!-- Toast通知 -->
         <ToastNotify />
-
-        <AppFooter
-            :app-version="APP_VERSION"
-            @show-notice="noticeRef?.show()"
-        />
     </div>
 </template>

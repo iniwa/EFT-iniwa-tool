@@ -109,7 +109,47 @@ const ownedKeys = ref(loadLS(modeKey('keys'), []));
 const keyUserData = ref(loadLS(modeKey('key_user_data'), {}));
 
 /** Prioritized task IDs */
-const prioritizedTasks = ref(loadLS(modeKey('prioritized'), []));
+export function mergePriorityTasks(priorities, legacyPins) {
+  const ids = (value) => Array.isArray(value) ? value.filter(safeStorageKey) : [];
+  return [...new Set([...ids(legacyPins), ...ids(priorities)])];
+}
+
+function loadPriorities(mode) {
+  const key = `eft_${mode}_prioritized`;
+  const marker = `eft_${mode}_priority_overlay_migrated`;
+  const current = loadLS(key, []);
+  if (loadLS(marker, false)) return mergePriorityTasks(current, []);
+  const merged = mergePriorityTasks(current, loadLS(`eft_${mode}_focused_tasks`, []));
+  try {
+    if (JSON.stringify(merged) !== JSON.stringify(current)) {
+      localStorage.setItem(key, JSON.stringify(merged));
+    }
+    localStorage.setItem(marker, 'true');
+  } catch (error) {
+    console.warn('Priority migration failed', error);
+  }
+  return merged;
+}
+
+const prioritizedTasks = ref(loadPriorities(gameMode.value));
+let priorityMode = gameMode.value;
+let applyingStoredPriorities = false;
+
+function applyStoredPriorities() {
+  applyingStoredPriorities = true;
+  try {
+    prioritizedTasks.value = loadPriorities(priorityMode);
+  } finally {
+    applyingStoredPriorities = false;
+  }
+}
+
+// OBS and other same-origin windows share the authoritative list.
+export function syncPriorityStorage(event) {
+  if (event.storageArea === localStorage && event.key === `eft_${priorityMode}_prioritized`) {
+    applyStoredPriorities();
+  }
+}
 
 /** Wishlist item IDs */
 const wishlist = ref(loadLS(modeKey('wishlist'), []));
@@ -149,7 +189,14 @@ watch(userHideout, (val) => saveLS(modeKey('hideout'), val), { deep: true });
 watch(collectedItems, (val) => saveLS(modeKey('collected'), val), { deep: true });
 watch(ownedKeys, (val) => saveLS(modeKey('keys'), val), { deep: true });
 watch(keyUserData, (val) => saveLS(modeKey('key_user_data'), val), { deep: true });
-watch(prioritizedTasks, (val) => saveLS(modeKey('prioritized'), val), { deep: true });
+watch(prioritizedTasks, (val) => {
+  if (!applyingStoredPriorities) saveLS(`eft_${priorityMode}_prioritized`, val);
+}, { deep: true, flush: 'sync' });
+
+watch(gameMode, (mode) => {
+  priorityMode = mode;
+  applyStoredPriorities();
+}, { flush: 'sync' });
 watch(wishlist, (val) => saveLS(modeKey('wishlist'), val), { deep: true });
 watch(storyProgress, (val) => saveLS(modeKey('story_progress'), val), { deep: true });
 
@@ -164,7 +211,6 @@ watch(gameMode, (newMode, oldMode) => {
   saveLS(`eft_${oldMode}_collected`, collectedItems.value);
   saveLS(`eft_${oldMode}_keys`, ownedKeys.value);
   saveLS(`eft_${oldMode}_key_user_data`, keyUserData.value);
-  saveLS(`eft_${oldMode}_prioritized`, prioritizedTasks.value);
   saveLS(`eft_${oldMode}_wishlist`, wishlist.value);
   saveLS(`eft_${oldMode}_story_progress`, storyProgress.value);
 
@@ -178,7 +224,6 @@ watch(gameMode, (newMode, oldMode) => {
   collectedItems.value = loadLS(`eft_${newMode}_collected`, []);
   ownedKeys.value = loadLS(`eft_${newMode}_keys`, []);
   keyUserData.value = loadLS(`eft_${newMode}_key_user_data`, {});
-  prioritizedTasks.value = loadLS(`eft_${newMode}_prioritized`, []);
   wishlist.value = loadLS(`eft_${newMode}_wishlist`, []);
   storyProgress.value = loadLS(`eft_${newMode}_story_progress`, {});
 });
@@ -269,9 +314,9 @@ function toggleCollected(uid) {
 function togglePriority(id) {
   const idx = prioritizedTasks.value.indexOf(id);
   if (idx > -1) {
-    prioritizedTasks.value.splice(idx, 1);
+    prioritizedTasks.value = prioritizedTasks.value.filter((taskId) => taskId !== id);
   } else {
-    prioritizedTasks.value.push(id);
+    prioritizedTasks.value = [...prioritizedTasks.value, id];
   }
 }
 

@@ -1,7 +1,7 @@
 // Label-only subset adapted from TarkovTracker.org (MIT), pinned 4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6.
 // Copyright (c) 2026 TarkovTracker.org; full notice: public/licenses/tarkov-data-overlay-MIT.txt.
-// Pool membership is deliberately omitted: no completion derivation or prerequisite inference.
-export const PROGRESSION_CONDITION_SOURCE = "https://github.com/tarkovtracker-org/tarkov-data-overlay/blob/4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6/docs/GLOBAL_VARIABLES.md"
+// Pool membership for optional display of completion counts is in progressionTaskPools.js.
+export const PROGRESSION_CONDITION_SOURCE = "https://github.com/Wilsman/tarkov-data-overlay/blob/4f0090d8814d6eaf3b6a53adab1d6750e2a4f2e6/docs/GLOBAL_VARIABLES.md"
 export const PROGRESSION_CONDITION_LABELS = Object.freeze({
   "6a43a01ccc83aceedd35f09c": {
     "trader": "Jaeger",

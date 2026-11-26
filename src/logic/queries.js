@@ -28,7 +28,7 @@ query GetData($gameMode: GameMode, $lang: LanguageCode) {
       }
     }
 
-    taskRequirements { task { id name } }
+    taskRequirements { task { id name } status }
     traderLevelRequirements { level requirementType value }
     kappaRequired
     lightkeeperRequired

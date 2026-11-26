@@ -1,12 +1,5 @@
-import { getTaskStatus, calculateShoppingList } from './taskLogic.js'
+import { getTaskStatus, getTaskRequirementStatuses, calculateShoppingList } from './taskLogic.js'
 import { isSameSource } from './shoppingLogic.js'
-
-const KNOWN = ['complete', 'active', 'failed']
-const statesFor = req => {
-  if (req?.operator || req?.group || req?.groupId || req?.tasks || req?.anyOf || req?.allOf) return null
-  const values = req?.status == null || (Array.isArray(req.status) && !req.status.length) ? ['complete'] : req.status
-  return Array.isArray(values) && values.every(value => KNOWN.includes(value)) ? [...new Set(values)] : null
-}
 
 /** Completion prerequisites only; ambiguous status routes never become mandatory item totals. */
 export function planPriorityTasks(tasks = [], prioritized = [], completed = [], statuses = {}) {
@@ -31,7 +24,7 @@ export function planPriorityTasks(tasks = [], prioritized = [], completed = [], 
       const task = byId.get(id)
       if (!Array.isArray(task.taskRequirements) && task.taskRequirements != null) { report('unsupported', id, null); continue }
       for (const req of task.taskRequirements || []) {
-        const reqId = req?.task?.id, allowed = statesFor(req)
+        const reqId = req?.task?.id, allowed = getTaskRequirementStatuses(req)
         if (!reqId || !allowed) { report('unsupported', id, reqId || null); continue }
         if (!byId.has(reqId)) { report('missing', id, reqId, allowed); continue }
         if (!demands.has(reqId)) demands.set(reqId, [])
@@ -58,7 +51,7 @@ export function planPriorityTasks(tasks = [], prioritized = [], completed = [], 
   for (const id of discovered) {
     const next = []
     for (const req of Array.isArray(byId.get(id).taskRequirements) ? byId.get(id).taskRequirements : []) {
-      const reqId = req?.task?.id, allowed = statesFor(req)
+      const reqId = req?.task?.id, allowed = getTaskRequirementStatuses(req)
       if (!allowed || !byId.has(reqId)) continue
       const current = getTaskStatus(reqId, completed, statuses)
       if (allowed.includes(current)) continue

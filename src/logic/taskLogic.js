@@ -2,6 +2,7 @@
 // タスク関連のビジネスロジック (純粋関数)
 
 import { TRADER_ORDER, MAP_ORDER } from '../data/constants.js';
+import { getTaskProgressionChecks } from './globalConditionLabels.js';
 
 // マップ名キーワード辞書 (日本語含む)
 const mapKeywords = {
@@ -22,6 +23,15 @@ const mapKeywords = {
   'Terminal': ['terminal', 'ターミナル'],
 };
 
+export function isToTheLightTask(task) {
+  const names = [task.normalizedName, task.name, ...(task.nameAliases || [])];
+  return names.some((name) => /^to[\s_-]+the[\s_-]+light(?:[\s_–—:.-]|$)/i.test(name ?? ''));
+}
+
+export function isLightkeeperUnlockTask(task) {
+  return Boolean(task.lightkeeperRequired) || isToTheLightTask(task);
+}
+
 /**
  * タスクのフィルタリングを行う
  * @param {Array} tasks - 全タスクデータ
@@ -32,7 +42,8 @@ const mapKeywords = {
  * @param {boolean} options.showCompleted - 完了済み表示モード
  * @param {boolean} options.showFuture - ロック中タスク表示
  * @param {boolean} options.showKappaOnly - Kappaのみ表示
- * @param {boolean} options.showLightkeeperOnly - Lightkeeperのみ表示
+ * @param {boolean} options.showLightkeeperOnly - Lightkeeper解放タスクのみ表示
+ * @param {Map} options.progressionPoolCounts - 進捗入力のクリア数判定に使用
  * @returns {Array}
  */
 export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
@@ -48,6 +59,8 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     taskStatuses = {},
     traderProgress = {},
     traderRequirementsEnabled = false,
+    traderLoyaltyById = {},
+    progressionPoolCounts,
   } = options;
 
   const q = searchQuery.toLowerCase();
@@ -74,23 +87,20 @@ export function filterActiveTasks(tasks, completedTaskIds, options = {}) {
     }
 
     // 未完了タスクの表示条件
-    if (!isCompleted) {
-      const availability = evaluateTaskAvailability(task, completedTaskIds, {
-        playerLevel,
-        taskStatuses,
-        traderProgress,
-        traderRequirementsEnabled,
-      });
-
-      // showFuture=false (ロック中を表示しない) なら、条件未達は隠す
-      if (!showFuture && availability.locked) return false;
-    }
+    if (!isCompleted && !showFuture && evaluateTaskAvailability(task, completedTaskIds, {
+      playerLevel,
+      taskStatuses,
+      traderProgress,
+      traderRequirementsEnabled,
+      traderLoyaltyById,
+      progressionPoolCounts,
+    }).locked) return false;
 
     // Kappa判定
     if (showKappaOnly && !task.kappaRequired) return false;
 
     // LK判定
-    if (showLightkeeperOnly && !task.lightkeeperRequired) return false;
+    if (showLightkeeperOnly && !isLightkeeperUnlockTask(task)) return false;
 
     return true;
   });
@@ -152,20 +162,66 @@ export function evaluateTraderRequirements(task, traderProgress = {}) {
   };
 }
 
+const PREREQUISITE_STATUSES = ['complete', 'active', 'failed'];
+
+// Each entry is required. Within an entry the status values are alternatives.
+export function getTaskRequirementStatuses(requirement) {
+  if (!requirement?.task?.id || requirement.operator || requirement.group ||
+      requirement.groupId || requirement.tasks || requirement.anyOf || requirement.allOf) return null;
+  const { status } = requirement;
+  // Older cached GraphQL tasks may omit status.
+  if (status == null || (Array.isArray(status) && !status.length)) return ['complete'];
+  if (!Array.isArray(status) || !status.every((value) => PREREQUISITE_STATUSES.includes(value))) return null;
+  return [...new Set(status)];
+}
+
+export function evaluateTaskPrerequisite(requirement, completedTaskIds, taskStatuses) {
+  const allowed = getTaskRequirementStatuses(requirement);
+  const actual = allowed && getTaskStatus(requirement.task.id, completedTaskIds, taskStatuses);
+  return { allowed, actual, met: allowed?.includes(actual) ?? false };
+}
+
+// Only explicit trader LL requirements imply a PMC level floor.
+function getRequiredLoyaltyPlayerLevel(task, traderLoyaltyById) {
+  let required = 0;
+  for (const requirement of task.traderLevelRequirements || task.traderRequirements || []) {
+    if (requirement.requirementType && requirement.requirementType !== 'level') continue;
+    const value = requirement.value ?? requirement.level;
+    const threshold = Number(value);
+    const method = requirement.compareMethod || '>=';
+    if (value == null || !Number.isInteger(threshold) || !['>=', '>', '=', '=='].includes(method)) continue;
+    const id = requirement.trader?.id || requirement.trader;
+    const levels = traderLoyaltyById[id]?.levels || [];
+    const candidates = levels.filter(({ level }) => compareRequirement(level, threshold, method));
+    if (candidates.length) {
+      required = Math.max(required, Math.min(...candidates.map((level) => level.requiredPlayerLevel)));
+    }
+  }
+  return required;
+}
+
 export function evaluateTaskAvailability(task, completedTaskIds = [], options = {}) {
   const {
     playerLevel = 0,
     taskStatuses = {},
     traderProgress = {},
     traderRequirementsEnabled = false,
+    traderLoyaltyById = {},
+    progressionPoolCounts,
   } = options;
-  const reqMet = (task.taskRequirements || []).every((r) => {
-    const allowed = Array.isArray(r.status) && r.status.length ? r.status : ['complete'];
-    return allowed.includes(getTaskStatus(r.task.id, completedTaskIds, taskStatuses));
-  });
-  const levelMet = !playerLevel || !task.minPlayerLevel || task.minPlayerLevel <= playerLevel;
+  const requirements = task.taskRequirements ?? [];
+  const reqMet = Array.isArray(requirements) && requirements.every(
+    (requirement) => evaluateTaskPrerequisite(requirement, completedTaskIds, taskStatuses).met,
+  );
+  const requiredPlayerLevel = Math.max(task.minPlayerLevel || 0, getRequiredLoyaltyPlayerLevel(task, traderLoyaltyById));
+  const levelMet = !playerLevel || requiredPlayerLevel <= playerLevel;
   const trader = evaluateTraderRequirements(task, traderProgress);
-  return { locked: !(reqMet && levelMet && (!traderRequirementsEnabled || trader.met)), reqMet, levelMet, trader };
+  const progressionChecks = progressionPoolCounts ? getTaskProgressionChecks(task, progressionPoolCounts) : [];
+  const progressionMet = progressionChecks.every(({ count, required }) => count != null && count >= required);
+  return {
+    locked: !(reqMet && levelMet && progressionMet && (!traderRequirementsEnabled || trader.met)),
+    reqMet, levelMet, requiredPlayerLevel, trader, progressionChecks,
+  };
 }
 
 /**
@@ -416,7 +472,9 @@ export function getPrerequisiteClosure(taskIds, allTasks = []) {
     const task = byId.get(id);
     if (!task) return;
     const next = new Set(visiting).add(id);
-    (task.taskRequirements || []).forEach((req) => visit(req?.task?.id, next));
+    if (Array.isArray(task.taskRequirements)) {
+      task.taskRequirements.forEach((req) => visit(req?.task?.id, next));
+    }
     seen.add(id);
     result.push(id);
   };
@@ -439,21 +497,26 @@ export function getInitialSetupPlan(taskId, allTasks = []) {
   const constraints = new Map();
   const visiting = new Set();
   const expanded = new Set();
-  const allowedFor = (req) => {
-    const statuses = Array.isArray(req?.status) && req.status.length ? req.status : ['complete'];
-    return statuses.filter((status) => ['complete', 'active', 'failed'].includes(status));
-  };
+  const unverified = new Set();
   const visit = (id) => {
     if (!id || expanded.has(id)) return;
     const task = byId.get(id);
     if (!task) return;
-    if (visiting.has(id)) return;
+    if (visiting.has(id)) {
+      unverified.add(id);
+      return;
+    }
     visiting.add(id);
-    const requirements = Array.isArray(task.taskRequirements) ? task.taskRequirements : [];
-    requirements.slice().sort((a, b) => String(a?.task?.id || '').localeCompare(String(b?.task?.id || ''))).forEach((req) => {
+    const requirements = task.taskRequirements ?? [];
+    if (!Array.isArray(requirements)) unverified.add(id);
+    (Array.isArray(requirements) ? requirements : []).forEach((req) => {
       const reqId = req?.task?.id;
-      if (!reqId) return;
-      const allowed = new Set(allowedFor(req));
+      const statuses = getTaskRequirementStatuses(req);
+      if (!statuses || !byId.has(reqId)) {
+        unverified.add(id);
+        return;
+      }
+      const allowed = new Set(statuses);
       const prior = constraints.get(reqId) || [];
       prior.push(allowed);
       constraints.set(reqId, prior);
@@ -467,7 +530,7 @@ export function getInitialSetupPlan(taskId, allTasks = []) {
   return ids.map((id) => {
     const sets = constraints.get(id) || [];
     if (id === taskId && sets.length === 0) {
-      return { id, status: 'complete', conflict: false };
+      return { id, status: 'complete', conflict: unverified.has(id) };
     }
     const intersection = sets.length
       ? [...sets[0]].filter((status) => sets.every((set) => set.has(status)))
@@ -475,7 +538,7 @@ export function getInitialSetupPlan(taskId, allTasks = []) {
     const union = new Set(sets.flatMap((set) => [...set]));
     const candidates = intersection.length ? intersection : [...union];
     const status = ['complete', 'active', 'failed'].find((value) => candidates.includes(value)) || 'active';
-    const conflict = sets.length > 0 && intersection.length === 0;
+    const conflict = unverified.has(id) || (sets.length > 0 && intersection.length === 0);
     if (id === taskId) {
       return { id, status: 'complete', conflict: conflict || !intersection.includes('complete') };
     }

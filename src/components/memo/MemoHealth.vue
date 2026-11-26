@@ -71,7 +71,7 @@
     </table>
     <div class="p-2 small text-muted border-top border-secondary ms-2 me-2 mt-2">
         <ul class="mb-0 ps-3">
-            <li><strong>1回回復量:</strong> 旧英語Wikiの上限値。現行版は要確認。</li>
+            <li><strong>1回回復量:</strong> tarkov.devの回復上限値。ゲーム内表示を優先。</li>
             <li><strong>発動ラグ:</strong> 最初の回復までの時間とクリックキャンセルの実用目安。現行版では未再検証。</li>
         </ul>
     </div>

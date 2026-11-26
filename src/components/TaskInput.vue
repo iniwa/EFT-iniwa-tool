@@ -8,11 +8,11 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
-import { TRADER_ORDER } from '../data/constants.js'
+import { getProgressionPoolCounts } from '../logic/globalConditionLabels.js'
 
 const { playerLevel, gameMode } = useAppState()
 
-const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
+const { overlayEnabled } = useOverlay()
 
 const {
   completedTasks,
@@ -26,11 +26,11 @@ const {
   toggleTask,
   togglePriority,
   taskStatuses,
-  traderProgress,
-  traderRequirementsEnabled,
 } = useUserProgress()
 
-const { taskData, hideoutData } = useApiData()
+const { taskData, hideoutData, traderLoyalty } = useApiData()
+const traderLoyaltyById = computed(() => Object.fromEntries(traderLoyalty.value.map(trader => [trader.id, trader])))
+const poolCounts = computed(() => getProgressionPoolCounts(taskData.value, completedTasks.value))
 
 const emit = defineEmits(['open-task-details'])
 
@@ -38,47 +38,6 @@ const emit = defineEmits(['open-task-details'])
 const taskSortMode = ref('default')
 const taskViewMode = ref('list')
 const searchTask = ref('')
-
-const traderRequirementProfiles = computed(() => {
-  const profiles = new Map()
-  ;(taskData.value || []).forEach((task) => {
-    ;(task.traderLevelRequirements || []).forEach((requirement) => {
-      const trader = requirement.trader
-      if (!trader?.id) return
-      const current = profiles.get(trader.id) || {
-        id: trader.id,
-        name: trader.name || 'Unknown',
-        needsReputation: false,
-      }
-      if (['reputation', 'standing'].includes(requirement.requirementType)) {
-        current.needsReputation = true
-      }
-      profiles.set(trader.id, current)
-    })
-  })
-
-  return Array.from(profiles.values()).sort((a, b) => {
-    const indexA = TRADER_ORDER.indexOf(a.name)
-    const indexB = TRADER_ORDER.indexOf(b.name)
-    if (indexA === -1 && indexB === -1) return a.name.localeCompare(b.name)
-    if (indexA === -1) return 1
-    if (indexB === -1) return -1
-    return indexA - indexB
-  })
-})
-
-function updateTraderProgress(traderId, field, rawValue) {
-  const nextProgress = { ...traderProgress.value }
-  const nextTrader = { ...(nextProgress[traderId] || {}) }
-  const value = rawValue === '' ? null : Number(rawValue)
-
-  if (value == null || !Number.isFinite(value)) delete nextTrader[field]
-  else nextTrader[field] = value
-
-  if (Object.keys(nextTrader).length === 0) delete nextProgress[traderId]
-  else nextProgress[traderId] = nextTrader
-  traderProgress.value = nextProgress
-}
 
 // --- ハイドアウト: 最大レベル済みステーションの表示制御 ---
 const visibleHideoutStations = computed(() => {
@@ -101,22 +60,34 @@ const filteredTasksList = computed(() => {
     showKappaOnly: showKappaOnly.value,
     showLightkeeperOnly: showLightkeeperOnly.value,
     taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value,
-    traderRequirementsEnabled: traderRequirementsEnabled.value,
+    traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: poolCounts.value,
   })
 })
+
+const showLightkeeperReference = computed(() =>
+  showLightkeeperOnly.value && !showCompleted.value && taskData.value?.length > 0
+  && !taskData.value.some(TaskLogic.isToTheLightTask),
+)
 
 // --- タスク: トレーダー/マップグループ ---
 const tasksByTrader = computed(() => TaskLogic.groupTasksByTrader(filteredTasksList.value))
 const tasksByMap = computed(() => TaskLogic.groupTasksByMap(filteredTasksList.value))
 
 // --- タスク: ロック判定 (前提タスク未完了 or レベル不足) ---
-function isLocked(task) {
-  return TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
+const taskDisplay = computed(() => new Map(filteredTasksList.value.map((task) => {
+  const availability = TaskLogic.evaluateTaskAvailability(task, completedTasks.value, {
     playerLevel: playerLevel.value, taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value, traderRequirementsEnabled: traderRequirementsEnabled.value,
-  }).locked
-}
+    traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: poolCounts.value,
+  })
+  const checks = showCompleted.value ? [] : availability.progressionChecks
+  return [task.id, {
+    ...availability,
+    checks,
+    needsCheck: checks.some(({ count }) => count == null),
+  }]
+})))
 
 // --- タスク: ソート ---
 function getSortedTasks(tasks) {
@@ -125,341 +96,226 @@ function getSortedTasks(tasks) {
   if (taskSortMode.value === 'name') {
     sorted.sort((a, b) => a.name.localeCompare(b.name))
   } else {
-    // デフォルト: レベル順 → 名前順
+    // デフォルト: 解放条件 → 必要レベル → 名前
     sorted.sort((a, b) => {
-      if (a.minPlayerLevel !== b.minPlayerLevel) {
-        return a.minPlayerLevel - b.minPlayerLevel
-      }
-      return a.name.localeCompare(b.name)
+      const first = taskDisplay.value.get(a.id)
+      const second = taskDisplay.value.get(b.id)
+      return (!showCompleted.value && (
+        Number(first.locked) - Number(second.locked) ||
+        Number(first.needsCheck) - Number(second.needsCheck)
+      )) || first.requiredPlayerLevel - second.requiredPlayerLevel || a.name.localeCompare(b.name)
     })
+  }
+  if (taskSortMode.value === 'priority') {
+    const priorities = new Set(prioritizedTasks.value)
+    sorted.sort((a, b) => Number(priorities.has(b.id)) - Number(priorities.has(a.id)))
   }
   return sorted
 }
+
+// --- Intel Console: 表示対象・グループ・サマリ ---
+const progressView = ref('tasks')
+
+const taskGroups = computed(() => {
+  const tasks = filteredTasksList.value
+  if (taskViewMode.value === 'list') {
+    return tasks.length ? [{ key: 'all', label: '', tasks: getSortedTasks(tasks) }] : []
+  }
+  const grouped = taskViewMode.value === 'trader' ? tasksByTrader.value : tasksByMap.value
+  return Object.entries(grouped).map(([label, list]) => ({ key: label, label, tasks: getSortedTasks(list) }))
+})
+
+const totalCount = computed(() => (taskData.value || []).length)
+const doneCount = computed(() => {
+  const done = new Set(completedTasks.value)
+  return (taskData.value || []).filter((task) => done.has(task.id)).length
+})
+const donePercent = computed(() => (totalCount.value ? Math.round((doneCount.value / totalCount.value) * 100) : 0))
+const maxedStations = computed(() => (hideoutData.value || []).filter(
+  (station) => (userHideout.value[station.normalizedName] || 0) >= station.levels.length,
+).length)
+const hideoutPercent = computed(() => {
+  const total = (hideoutData.value || []).length
+  return total ? Math.round((maxedStations.value / total) * 100) : 0
+})
 </script>
 
 <template>
-  <div class="row">
-    <!-- 左カラム: ハイドアウト -->
-    <div class="col-md-4 mb-3">
-      <div class="card h-100">
-        <div class="card-header py-2">
-          <div class="d-flex justify-content-between align-items-center mb-1">
-            <span>🏠 ハイドアウト</span>
-          </div>
-          <div class="d-grid">
-            <button
-              class="btn btn-sm"
-              :class="showMaxedHideout ? 'btn-warning' : 'btn-outline-secondary'"
-              @click="showMaxedHideout = !showMaxedHideout"
-            >
-              {{ showMaxedHideout ? '完了済みを隠す' : '完了済みを表示' }}
-            </button>
-          </div>
-        </div>
-
-        <div class="card-body overflow-auto" style="max-height: 70vh;">
-          <div v-for="station in visibleHideoutStations" :key="station.normalizedName" class="mb-3">
-            <label class="form-label d-flex justify-content-between small mb-1">
-              <span>{{ station.name }}</span>
-              <span class="text-warning">
-                Lv {{ userHideout[station.normalizedName] || 0 }}
-                <span class="text-muted" style="font-size: 0.8em;">/ {{ station.levels.length }}</span>
-              </span>
-            </label>
-            <input
-              type="range"
-              class="form-range"
-              min="0"
-              :max="station.levels.length"
-              :value="userHideout[station.normalizedName] ?? 0"
-              @input="userHideout[station.normalizedName] = Number($event.target.value)"
-            >
-          </div>
-
-          <div v-if="visibleHideoutStations.length === 0" class="text-center text-muted small py-4">
-            全ての設備がレベルMAXです 🎉
-          </div>
-        </div>
-      </div>
+  <div class="progress-page">
+    <div
+      v-if="gameMode === 'pvp-season'"
+      class="state-banner state-warn"
+      role="status"
+    >
+      <span aria-hidden="true">⚠️</span>
+      <div><strong>Seasonal PvP:</strong>
+        通常PvPとは別の進捗として保存されます。新しいシーズン開始時は、このモードの進捗をリセットしてください。</div>
     </div>
 
-    <!-- 右カラム: タスクリスト -->
-    <div class="col-md-8 mb-3">
-      <div class="card h-100">
-        <!-- ヘッダー: フィルタ群 -->
-        <div class="card-header d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
-          <div class="d-flex align-items-center gap-2 flex-wrap">
-            <span class="d-none d-sm-inline">{{ showCompleted ? '✅ 完了済み' : '📜 受注可能タスク' }}</span>
+    <!-- 上段: 表示切替 + 進捗サマリ + 必要品への入口 -->
+    <div class="pg-toolbar">
+      <div class="pg-switch" role="group" aria-label="表示対象">
+        <button type="button" :aria-pressed="progressView === 'tasks'" @click="progressView = 'tasks'">タスク</button>
+        <button type="button" :aria-pressed="progressView === 'hideout'" @click="progressView = 'hideout'">ハイドアウト</button>
+      </div>
+      <div class="pg-summary grow">
+        <template v-if="progressView === 'tasks'">
+          <span>完了 <b>{{ doneCount }}</b> / {{ totalCount }}</span>
+          <span class="meter" role="img" :aria-label="`タスク完了率 ${donePercent}%`"><i :style="{ width: donePercent + '%' }"></i></span>
+        </template>
+        <template v-else>
+          <span>レベルMAX <b>{{ maxedStations }}</b> / {{ (hideoutData || []).length }}</span>
+          <span class="meter" role="img" :aria-label="`ハイドアウト完了率 ${hideoutPercent}%`"><i :style="{ width: hideoutPercent + '%' }"></i></span>
+        </template>
+      </div>
+      <router-link class="btn btn-sm btn-outline-info to-result" :to="{ name: 'result' }">📦 必要品を見る</router-link>
+    </div>
 
-            <div class="btn-group btn-group-sm">
-              <button
-                class="btn"
-                :class="showCompleted ? 'btn-warning' : 'btn-outline-secondary'"
-                @click="showCompleted = !showCompleted"
-              >
-                {{ showCompleted ? '戻る' : '履歴' }}
-              </button>
-              <button
-                class="btn"
-                :class="showKappaOnly ? 'btn-warning text-dark' : 'btn-outline-secondary'"
-                @click="showKappaOnly = !showKappaOnly"
-                title="Kappa必須のみ"
-              >
-                Kappa
-              </button>
-              <button
-                class="btn"
-                :class="showLightkeeperOnly ? 'btn-info text-dark' : 'btn-outline-secondary'"
-                @click="showLightkeeperOnly = !showLightkeeperOnly"
-                title="Lightkeeper必須のみ"
-              >
-                LK
-              </button>
-            </div>
-
-            <div v-if="!showCompleted" class="form-check form-switch ms-1">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                v-model="showFuture"
-              >
-              <label class="form-check-label small text-muted">ロック中も表示</label>
-            </div>
-          </div>
-
-          <div class="d-flex align-items-center gap-2">
-            <select
-              class="form-select form-select-sm bg-dark text-white border-secondary py-0"
-              style="width: auto; height: 31px;"
-              v-model="taskSortMode"
-            >
-              <option value="default">Default</option>
-              <option value="name">Name</option>
-            </select>
-
-            <div class="btn-group btn-group-sm">
-              <button
-                class="btn btn-outline-warning"
-                :class="{ active: taskViewMode === 'list' }"
-                @click="taskViewMode = 'list'"
-              >List</button>
-              <button
-                class="btn btn-outline-warning"
-                :class="{ active: taskViewMode === 'trader' }"
-                @click="taskViewMode = 'trader'"
-              >Trader</button>
-              <button
-                class="btn btn-outline-warning"
-                :class="{ active: taskViewMode === 'map' }"
-                @click="taskViewMode = 'map'"
-              >Map</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- タスクリスト本体 -->
-        <div class="card-body overflow-auto" style="max-height: 70vh;">
-          <div
-            v-if="gameMode === 'pvp-season'"
-            class="alert alert-warning py-2 px-3 small"
-            role="status"
-          >
-            <strong>Seasonal PvP:</strong>
-            通常PvPとは別の進捗として保存されます。新しいシーズン開始時は、このモードの進捗をリセットしてください。
-          </div>
-
-          <details
-            v-if="traderRequirementProfiles.length > 0"
-            class="border border-secondary rounded bg-dark bg-opacity-25 p-2 mb-3"
-          >
-            <summary class="text-warning small fw-bold" style="cursor: pointer;">
-              トレーダー進捗条件
-              <span
-                class="badge ms-1"
-                :class="traderRequirementsEnabled ? 'bg-success' : 'bg-secondary'"
-              >{{ traderRequirementsEnabled ? '判定中' : '表示のみ' }}</span>
-            </summary>
-
-            <div class="pt-2">
-              <div class="form-check form-switch mb-2">
-                <input
-                  id="enable-trader-requirements"
-                  v-model="traderRequirementsEnabled"
-                  class="form-check-input"
-                  type="checkbox"
-                >
-                <label class="form-check-label small" for="enable-trader-requirements">
-                  入力したLL・評判をタスクのロック判定に使用する
-                </label>
-              </div>
-              <p class="text-muted small mb-2">
-                未入力の条件は未達として扱います。会話やゲーム内変数など、本ツールで判定できない条件はタスク詳細で確認してください。
-              </p>
-
-              <div class="row g-2">
-                <div
-                  v-for="trader in traderRequirementProfiles"
-                  :key="trader.id"
-                  class="col-12 col-sm-6 col-xl-4"
-                >
-                  <div class="border border-secondary rounded p-2 h-100">
-                    <div class="small fw-bold mb-1">{{ trader.name }}</div>
-                    <div class="d-flex align-items-center gap-2">
-                      <label class="small text-muted" :for="`trader-level-${trader.id}`">LL</label>
-                      <select
-                        :id="`trader-level-${trader.id}`"
-                        class="form-select form-select-sm bg-dark text-white border-secondary"
-                        :value="traderProgress[trader.id]?.level ?? ''"
-                        @change="updateTraderProgress(trader.id, 'level', $event.target.value)"
-                      >
-                        <option value="">未設定</option>
-                        <option v-for="level in 4" :key="level" :value="level">{{ level }}</option>
-                      </select>
-                    </div>
-                    <div v-if="trader.needsReputation" class="d-flex align-items-center gap-2 mt-2">
-                      <label class="small text-muted" :for="`trader-reputation-${trader.id}`">評判</label>
-                      <input
-                        :id="`trader-reputation-${trader.id}`"
-                        class="form-control form-control-sm bg-dark text-white border-secondary"
-                        type="number"
-                        step="0.01"
-                        placeholder="未設定"
-                        :value="traderProgress[trader.id]?.reputation ?? ''"
-                        @input="updateTraderProgress(trader.id, 'reputation', $event.target.value)"
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </details>
-
+    <!-- ===== ハイドアウト ===== -->
+    <template v-if="progressView === 'hideout'">
+      <div class="pg-toolbar">
+        <button
+          type="button" class="chip" :aria-pressed="showMaxedHideout"
+          @click="showMaxedHideout = !showMaxedHideout"
+        >{{ showMaxedHideout ? '完了済みを隠す' : '完了済みを表示' }}</button>
+      </div>
+      <div class="hideout-grid">
+        <div
+          v-for="station in visibleHideoutStations" :key="station.normalizedName"
+          class="hideout-card" :class="{ maxed: (userHideout[station.normalizedName] || 0) >= station.levels.length }"
+        >
+          <header>
+            <b><label :for="`hideout-${station.normalizedName}`">{{ station.name }}</label></b>
+            <span>Lv {{ userHideout[station.normalizedName] || 0 }}<small class="text-muted"> / {{ station.levels.length }}</small></span>
+          </header>
           <input
-            type="text"
-            class="form-control mb-3"
-            placeholder="タスク名・マップ・トレーダーで検索..."
-            v-model="searchTask"
+            :id="`hideout-${station.normalizedName}`"
+            type="range" class="form-range" min="0"
+            :max="station.levels.length"
+            :value="userHideout[station.normalizedName] ?? 0"
+            @input="userHideout[station.normalizedName] = Number($event.target.value)"
           >
+        </div>
+      </div>
+      <div v-if="visibleHideoutStations.length === 0" class="empty-state">
+        <strong>全ての設備がレベルMAXです 🎉</strong>
+        「完了済みを表示」で一覧を確認できます。
+      </div>
+    </template>
 
-          <!-- リスト表示 -->
-          <div v-if="taskViewMode === 'list'" class="list-group">
-            <div
-              v-for="task in getSortedTasks(filteredTasksList)"
-              :key="task.id"
-              class="list-group-item d-flex align-items-center gap-3"
-              :class="{ 'bg-secondary bg-opacity-25': isLocked(task) }"
-            >
+    <!-- ===== タスク ===== -->
+    <template v-else>
+      <div class="pg-toolbar">
+        <input
+          type="search" class="form-control grow" aria-label="タスクを検索"
+          placeholder="タスク名・マップ・トレーダーで検索…"
+          v-model="searchTask"
+        >
+        <div class="pg-switch" role="group" aria-label="グループ">
+          <button type="button" :aria-pressed="taskViewMode === 'list'" @click="taskViewMode = 'list'">一覧</button>
+          <button type="button" :aria-pressed="taskViewMode === 'trader'" @click="taskViewMode = 'trader'">トレーダー別</button>
+          <button type="button" :aria-pressed="taskViewMode === 'map'" @click="taskViewMode = 'map'">マップ別</button>
+        </div>
+        <select class="form-select form-select-sm w-auto" aria-label="並び順" v-model="taskSortMode">
+          <option value="default">解放条件・レベル順</option>
+          <option value="name">名前順</option>
+          <option value="priority">優先を上位に</option>
+        </select>
+        <div class="d-flex flex-wrap gap-2">
+          <button type="button" class="chip" :aria-pressed="showCompleted" @click="showCompleted = !showCompleted">{{ showCompleted ? '履歴を閉じる' : '履歴' }}</button>
+          <button type="button" class="chip" :aria-pressed="showKappaOnly" title="Kappa必須のみ" @click="showKappaOnly = !showKappaOnly">Kappa</button>
+          <button type="button" class="chip" :aria-pressed="showLightkeeperOnly" title="ライトキーパー解放タスク" @click="showLightkeeperOnly = !showLightkeeperOnly">LK</button>
+          <button v-if="!showCompleted" type="button" class="chip" :aria-pressed="showFuture" @click="showFuture = !showFuture">ロック中も表示</button>
+        </div>
+      </div>
+
+      <p v-if="!showCompleted && taskData.length" class="small text-muted mb-2">
+        必要レベルやクリア数が未達のタスク、クリア数を確認できないタスクは「ロック中も表示」で確認できます。
+      </p>
+
+      <section v-if="showLightkeeperReference" class="state-banner state-warn mb-2" aria-label="ライトキーパー解放タスク">
+        <div>
+          <strong>ライトキーパー解放タスク（参考）</strong>
+          <p>現在の取得データに「To the Light」がありません。解放の流れは以下から確認できます。</p>
+          <ul class="mb-0">
+            <li><a href="https://t.me/escapefromtarkovEN/6815" target="_blank" rel="noopener noreferrer">解放の開始条件（公式）</a></li>
+            <li><a href="https://tarkov.help/en/quest/to-the-light-trust-but-verify" target="_blank" rel="noopener noreferrer">To the Light - Trust but Verify</a>（開始）</li>
+            <li><a href="https://tarkov.help/en/quest/to-the-light-getting-acquainted" target="_blank" rel="noopener noreferrer">To the Light - Getting Acquainted</a>（解放）</li>
+          </ul>
+        </div>
+      </section>
+
+      <div v-if="!taskData || taskData.length === 0" class="empty-state">
+        <strong>タスクデータがありません</strong>
+        上部の「更新」でデータを取得してください。
+      </div>
+
+      <template v-else>
+        <section
+          v-for="group in taskGroups" :key="group.key"
+          class="task-group"
+          :aria-label="group.label || 'タスク一覧'"
+        >
+          <h3 v-if="group.label">{{ group.label }} <small>{{ group.tasks.length }}</small></h3>
+          <div
+            v-for="task in group.tasks" :key="task.id"
+            class="task-row" :class="{ locked: taskDisplay.get(task.id).locked }"
+          >
+            <label class="check-wrap">
               <input
-                class="form-check-input flex-shrink-0 m-0"
+                class="form-check-input check"
                 type="checkbox"
+                :aria-label="`${task.name} を完了にする`"
                 :checked="completedTasks.includes(task.id)"
                 @change="toggleTask(task.id)"
-                style="cursor: pointer;"
               >
-              <button
-                v-if="overlayEnabled"
-                class="btn btn-sm py-0 px-2 flex-shrink-0"
-                :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
-                @click.stop="toggleFocusedTask(task.id)"
-                :title="focusedTaskIds.includes(task.id) ? '配信オーバーレイから外す' : '配信オーバーレイに表示'"
-                style="font-size: 0.85em;"
-              >📌</button>
-              <div
-                class="w-100 d-flex justify-content-between align-items-center"
-                :class="{ 'opacity-50': isLocked(task) }"
+            </label>
+            <button
+              type="button"
+              class="chip px-2"
+              :aria-pressed="prioritizedTasks.includes(task.id)"
+              :aria-label="`${task.name} の優先設定`"
+              :title="overlayEnabled ? '優先設定・配信オーバーレイ表示' : '優先設定'"
+              @click="togglePriority(task.id)"
+            >{{ prioritizedTasks.includes(task.id) ? '★' : '☆' }}</button>
+            <div class="task-main">
+              <button type="button"
+                class="task-title task-name-link"
+                :class="{
+                  'is-done': showCompleted,
+                  'is-priority': !showCompleted && prioritizedTasks.includes(task.id),
+                }"
+                @click="emit('open-task-details', task)"
               >
-                <button type="button"
-                  class="task-name-link text-start"
-                  style="background: none; border: 0; padding: 0; font: inherit"
-                  :class="{
-                    'text-decoration-line-through text-muted': showCompleted,
-                    'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.id),
-                  }"
-                  @click="emit('open-task-details', task)"
-                >
-                  <span v-if="isLocked(task)" class="me-1">🔒</span>
-                   {{ task.name }}
-                  <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark ms-1">進行中</span>
-                  <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger ms-1">失敗</span>
-                  <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
-                  <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
-                  <span v-if="task.mapLabel" class="badge bg-dark border border-secondary text-secondary ms-2 small">{{ task.mapLabel }}</span>
-                </button>
-                <span class="badge bg-secondary">{{ task.trader?.name || 'Unknown' }}</span>
+                <span v-if="taskDisplay.get(task.id).locked" aria-hidden="true">🔒 </span>{{ task.name }}
+              </button>
+              <div class="task-meta">
+                <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark">進行中</span>
+                <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger">失敗</span>
+                <span v-if="task.kappaRequired" class="badge badge-kappa">KAPPA</span>
+                <span v-if="TaskLogic.isLightkeeperUnlockTask(task)" class="badge badge-lk">LK</span>
+                <span v-if="task.catalogEvidence" class="badge bg-secondary">補足</span>
+                <span v-if="taskDisplay.get(task.id).locked" class="text-warning">ロック中</span>
+                <span v-if="taskDisplay.get(task.id).requiredPlayerLevel > 1">Lv.{{ taskDisplay.get(task.id).requiredPlayerLevel }}</span>
+                <span
+                  v-for="({ trader, tier, count, required }, index) in taskDisplay.get(task.id).checks"
+                  :key="index"
+                  :class="{ 'text-warning': count == null || count < required }"
+                >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</span>
+                <span v-if="task.mapLabel && taskViewMode !== 'map'">{{ task.mapLabel }}</span>
+                <span v-if="taskViewMode !== 'trader'" class="d-lg-none">{{ task.trader?.name || 'Unknown' }}</span>
               </div>
             </div>
-
-            <div v-if="filteredTasksList.length === 0" class="text-center text-muted py-4">
-              表示するタスクがありません。
-            </div>
+            <span v-if="taskViewMode !== 'trader'" class="task-trader">{{ task.trader?.name || 'Unknown' }}</span>
+            <button type="button" class="icon-btn" :aria-label="`${task.name} の詳細を開く`" @click="emit('open-task-details', task)">›</button>
           </div>
+        </section>
 
-          <!-- トレーダー/マップ グループ表示 -->
-          <div v-else>
-            <div
-              v-for="(tasks, group) in (taskViewMode === 'trader' ? tasksByTrader : tasksByMap)"
-              :key="group"
-              class="mb-3"
-            >
-              <h6 class="text-warning border-bottom border-secondary pb-1">{{ group }}</h6>
-              <div class="list-group">
-                <div
-                  v-for="task in getSortedTasks(tasks)"
-                  :key="task.id"
-                  class="list-group-item d-flex align-items-center gap-3 py-1"
-                  :class="{ 'bg-secondary bg-opacity-25': isLocked(task) }"
-                >
-                  <input
-                    class="form-check-input flex-shrink-0 m-0"
-                    type="checkbox"
-                    :checked="completedTasks.includes(task.id)"
-                    @change="toggleTask(task.id)"
-                    style="cursor: pointer;"
-                  >
-                  <button
-                    v-if="overlayEnabled"
-                    class="btn btn-sm py-0 px-2 flex-shrink-0"
-                    :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
-                    @click.stop="toggleFocusedTask(task.id)"
-                    :title="focusedTaskIds.includes(task.id) ? '配信オーバーレイから外す' : '配信オーバーレイに表示'"
-                    style="font-size: 0.85em;"
-                  >📌</button>
-                  <div
-                    class="d-flex justify-content-between w-100"
-                    :class="{ 'opacity-50': isLocked(task) }"
-                  >
-                    <button type="button"
-                      class="task-name-link text-start"
-                      style="background: none; border: 0; padding: 0; font: inherit"
-                      :class="{
-                        'text-decoration-line-through text-muted': showCompleted,
-                        'text-info fw-bold': !showCompleted && prioritizedTasks.includes(task.id),
-                      }"
-                      @click="emit('open-task-details', task)"
-                    >
-                      <span v-if="isLocked(task)" class="me-1">🔒</span>
-                      {{ task.name }}
-                      <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark ms-1">進行中</span>
-                      <span v-if="taskStatuses[task.id] === 'failed'" class="badge bg-danger ms-1">失敗</span>
-                      <span v-if="task.kappaRequired" class="badge badge-kappa ms-1">KAPPA</span>
-                      <span v-if="task.lightkeeperRequired" class="badge badge-lk ms-1">LK</span>
-                    </button>
-                    <small class="text-muted">
-                      {{ taskViewMode === 'trader' ? task.mapLabel : (task.trader?.name || 'Unknown') }}
-                    </small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              v-if="Object.keys(taskViewMode === 'trader' ? tasksByTrader : tasksByMap).length === 0"
-              class="text-center text-muted py-4"
-            >
-              表示するタスクがありません。
-            </div>
-          </div>
+        <div v-if="taskGroups.length === 0 && !showLightkeeperReference" class="empty-state">
+          <strong>表示するタスクがありません</strong>
+          検索語や絞込を解除するか、「ロック中も表示」を試してください。
         </div>
-      </div>
-    </div>
+      </template>
+    </template>
   </div>
 </template>

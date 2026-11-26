@@ -88,7 +88,7 @@ import { RouterLink } from 'vue-router'
                         サーバーにはバックアップが残っていません。Export ファイルが無い場合は<strong>復元できません</strong>。
                     </p>
                     <p>
-                        今後の対策として、ヘッダー右上の <kbd>Export</kbd> ボタンで
+                        今後の対策として、ヘッダーの「データ操作」（スマホでは「⋯」）にある <kbd>Export</kbd> で
                         定期的に JSON ファイルをダウンロードしてバックアップすることを強く推奨します。
                         端末を変える際や、ブラウザのデータ削除をする前にも Export しておくと安全です。Export/Import はスキーマとゲームモードを検証し、選択モードの進捗（ストーリー・オーバーレイを含む）をまとめて扱います。
                     </p>
@@ -142,14 +142,12 @@ import { RouterLink } from 'vue-router'
                 </details>
 
                 <details class="qa">
-                    <summary>Q. 進行中・失敗やトレーダーLLはどこで設定しますか？</summary>
+                    <summary>Q. 進行中・失敗はどこで設定しますか？</summary>
                     <p>
                         タスク名を開き、ステータスを「進行中」または「失敗」に変更できます。
-                        トレーダーLL・評判は進捗入力タブの「トレーダー進捗条件」から入力します。
-                        トレーダー条件は、同パネルのスイッチを有効にした場合だけロック判定に使われます。
                     </p>
                     <p>
-                        会話やゲーム内変数などAPIデータだけでは現在値を判断できない条件は、自動ではタスクを隠さず、詳細画面に注意として表示します。
+                        クリア数の条件は記録した進捗で判定します。対象タスクを特定できない場合は「ロック中も表示」で確認できます。会話など、その他のゲーム内条件はタスク詳細で確認できます。
                     </p>
                 </details>
 
@@ -176,7 +174,7 @@ import { RouterLink } from 'vue-router'
                 <details class="qa">
                     <summary>Q. 不具合や要望はどこに報告すればいいですか？</summary>
                     <p>
-                        フッターの <strong>📮 意見箱（Google フォーム）</strong> から送信してください。
+                        メニューの <strong>📮 意見箱（Google フォーム）</strong> から送信してください。
                         匿名で送信できます。X (Twitter) の DM でも受け付けています：
                         <a href="https://twitter.com/iniwach" target="_blank" rel="noopener">@iniwach</a>
                     </p>

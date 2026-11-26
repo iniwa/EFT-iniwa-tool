@@ -3,13 +3,14 @@
 // タスク情報の閲覧、進捗/優先トグル、鍵の所持トグル
 
 import { computed } from 'vue'
+import { useApiData } from '../composables/useApiData.js'
 import { useAppState } from '../composables/useAppState.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import BaseModal from './ui/BaseModal.vue'
-import { describeGlobalVariable } from '../logic/globalConditionLabels.js'
-import { toHttpsUrl } from '../logic/taskReference.js'
+import { describeGlobalVariable, getProgressionPoolCounts } from '../logic/globalConditionLabels.js'
+import { getTaskDisplayName, toHttpsUrl } from '../logic/taskReference.js'
 import {
   meaningfulBuildAttributes,
   formatBuildAttribute,
@@ -29,13 +30,13 @@ const {
   togglePriority,
   toggleOwnedKey,
   taskStatuses,
-  traderProgress,
-  traderRequirementsEnabled,
   setTaskStatus,
 } = useUserProgress()
 
-const { focusedTaskIds, toggleFocusedTask, overlayEnabled } = useOverlay()
+const { overlayEnabled } = useOverlay()
 const { playerLevel } = useAppState()
+const { taskData, traderLoyalty } = useApiData()
+const traderLoyaltyById = computed(() => Object.fromEntries(traderLoyalty.value.map(trader => [trader.id, trader])))
 
 const props = defineProps({
   task: { type: Object, default: null },
@@ -57,8 +58,9 @@ const availability = computed(() => {
   return TaskLogic.evaluateTaskAvailability(props.task, completedTasks.value, {
     playerLevel: playerLevel.value,
     taskStatuses: taskStatuses.value,
-    traderProgress: traderProgress.value,
-    traderRequirementsEnabled: traderRequirementsEnabled.value,
+    traderLoyaltyById: traderLoyaltyById.value,
+    progressionPoolCounts: props.task.otherRequirements?.some(requirement => requirement?.type === 'globalVariable')
+      ? getProgressionPoolCounts(taskData.value, completedTasks.value) : undefined,
   })
 })
 
@@ -69,24 +71,14 @@ const statusLabels = {
   failed: '失敗',
 }
 
-function prerequisiteStatus(requirement) {
-  return TaskLogic.getTaskStatus(
-    requirement.task.id,
-    completedTasks.value,
-    taskStatuses.value,
-  )
-}
-
-function prerequisiteMet(requirement) {
-  const allowed = Array.isArray(requirement.status) && requirement.status.length > 0
-    ? requirement.status
-    : ['complete']
-  return allowed.includes(prerequisiteStatus(requirement))
-}
-
-function traderRequirementResult(requirement) {
-  return TaskLogic.evaluateTraderRequirement(requirement, traderProgress.value)
-}
+const prerequisites = computed(() => {
+  const requirements = props.task?.taskRequirements
+  if (!Array.isArray(requirements)) return []
+  return requirements.map((requirement) => ({
+    requirement,
+    ...TaskLogic.evaluateTaskPrerequisite(requirement, completedTasks.value, taskStatuses.value),
+  }))
+})
 
 function traderRequirementLabel(requirement) {
   const isReputation = ['reputation', 'standing'].includes(requirement.requirementType)
@@ -99,7 +91,10 @@ function otherRequirementLabel(requirement) {
     const traders = (requirement.traders || []).map((trader) => trader.name).join(' / ')
     return `会話条件${traders ? `: ${traders}` : ''}`
   }
-  if (requirement.type === 'globalVariable') return describeGlobalVariable(requirement).label
+  if (requirement.type === 'globalVariable') {
+    const { label, conditionText } = describeGlobalVariable(requirement)
+    return `${label}：${conditionText}`
+  }
 
   return `${requirement.type || '追加条件'}（ゲーム内で確認）`
 }
@@ -129,7 +124,7 @@ function objectiveConstraintLines(obj) {
 </script>
 
 <template>
-  <BaseModal :show="show" max-width="700px" :aria-label="task ? `${task.name} の詳細` : 'タスク詳細'" @close="emit('close')">
+  <BaseModal :show="show" variant="panel" max-width="560px" :aria-label="task ? `${getTaskDisplayName(task)} の詳細` : 'タスク詳細'" @close="emit('close')">
     <template v-if="task">
       <button v-if="returnLabel" class="btn btn-outline-info mb-3" type="button" @click="emit('close')">{{ returnLabel }}</button>
       <!-- 進捗/優先トグル + 閉じるボタン -->
@@ -151,21 +146,16 @@ function objectiveConstraintLines(obj) {
           </div>
 
           <button
+            type="button"
             class="btn btn-sm"
             :class="prioritizedTasks.includes(task.id) ? 'btn-warning' : 'btn-outline-secondary'"
+            :aria-pressed="prioritizedTasks.includes(task.id)"
+            :title="overlayEnabled ? '配信オーバーレイにも表示します' : undefined"
             @click="togglePriority(task.id)"
           >
-            {{ prioritizedTasks.includes(task.id) ? '★ 優先 (Prioritized)' : '☆ 優先にする' }}
+            {{ prioritizedTasks.includes(task.id) ? '★ 優先設定' : '☆ 優先設定' }}
           </button>
 
-          <button
-            v-if="overlayEnabled"
-            class="btn btn-sm"
-            :class="focusedTaskIds.includes(task.id) ? 'btn-info' : 'btn-outline-secondary'"
-            @click="toggleFocusedTask(task.id)"
-          >
-            {{ focusedTaskIds.includes(task.id) ? '📌 表示中' : '📌 配信オーバーレイに表示' }}
-          </button>
         </div>
         <button
           type="button"
@@ -180,7 +170,7 @@ function objectiveConstraintLines(obj) {
         class="m-0 text-warning mb-3"
         :class="{ 'text-decoration-line-through text-muted': completedTasks.includes(task.id) }"
       >
-        {{ task.name }}
+        {{ getTaskDisplayName(task) }}
       </h4>
 
       <button v-if="canShowFlowchart && task.id" type="button" class="btn btn-outline-info mb-3" @click="emit('show-flowchart', task)">&#12501;&#12525;&#12540;&#12481;&#12515;&#12540;&#12488;&#12391;&#34920;&#31034;</button>
@@ -188,17 +178,28 @@ function objectiveConstraintLines(obj) {
       <div class="mb-3 d-flex justify-content-between flex-wrap gap-2 border-bottom border-secondary pb-2">
         <div><strong>Trader:</strong> {{ task.trader?.name || 'Unknown' }}</div>
         <div><strong>Map:</strong> {{ task.map ? task.map.name : 'None' }}</div>
-        <div v-if="task.minPlayerLevel > 0">
-          <span class="text-info fw-bold">Req Lv: {{ task.minPlayerLevel }}</span>
+        <div v-if="availability?.requiredPlayerLevel > 0">
+          <span class="text-info fw-bold">Req Lv: {{ availability.requiredPlayerLevel }}</span>
         </div>
         <div v-if="task.kappaRequired"><span class="badge badge-kappa">KAPPA</span></div>
-        <div v-if="task.lightkeeperRequired"><span class="badge badge-lk">LK</span></div>
+        <div v-if="TaskLogic.isLightkeeperUnlockTask(task)"><span class="badge badge-lk">LK</span></div>
+      </div>
+      <div v-if="task.catalogEvidence" class="alert alert-info py-2 px-3 small">
+        <strong>補足タスク</strong>。進捗は手動で記録できます。目標・報酬やゲーム内の受注可否は出典またはゲーム内で確認してください。
+        <p v-if="task.catalogEvidence.note" class="mb-1">{{ task.catalogEvidence.note }}</p>
+        <a :href="safeUrl(task.catalogEvidence.sourceUrl)" target="_blank" rel="noopener noreferrer">出典（{{ task.catalogEvidence.checkedAt }}確認）</a>
       </div>
       <div
         v-if="taskStatus !== 'complete' && availability?.locked"
         class="alert alert-secondary py-2 px-3 small"
       >
-        🔒 現在の入力内容では未解放です。下の条件を確認してください。
+        🔒 解放条件を確認してください。
+        <div
+          v-for="({ trader, tier, count, required }, index) in availability.progressionChecks.filter(
+            ({ count, required }) => count == null || count < required,
+          )"
+          :key="index"
+        >{{ trader }} LL{{ tier }} {{ count == null ? 'クリア数要確認' : `${count}/${required}件（参考）` }}</div>
       </div>
 
       <div
@@ -207,23 +208,23 @@ function objectiveConstraintLines(obj) {
       >
         <h6 class="border-bottom pb-1 mb-2 text-warning">解放条件</h6>
 
-        <ul v-if="task.taskRequirements?.length" class="list-group mb-2">
+        <ul v-if="prerequisites.length" class="list-group mb-2">
           <li
-            v-for="requirement in task.taskRequirements"
-            :key="requirement.task.id"
+            v-for="({ requirement, allowed, actual, met }, index) in prerequisites"
+            :key="index"
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>
-              前提: {{ requirement.task.name }}
-              <span class="text-muted small">
-                （必要: {{ (requirement.status?.length ? requirement.status : ['complete']).map((status) => statusLabels[status] || status).join(' / ') }}）
+              前提: {{ getTaskDisplayName(requirement?.task, '前提タスク名未取得') }}
+              <span v-if="allowed" class="text-muted small">
+                （必要: {{ allowed.map((status) => statusLabels[status]).join(' / ') }}）
               </span>
             </span>
             <span
               class="badge align-self-center"
-              :class="prerequisiteMet(requirement) ? 'bg-success' : 'bg-danger'"
+              :class="met ? 'bg-success' : allowed ? 'bg-danger' : 'bg-secondary'"
             >
-              {{ statusLabels[prerequisiteStatus(requirement)] || prerequisiteStatus(requirement) }}
+              {{ allowed ? statusLabels[actual] : '要確認' }}
             </span>
           </li>
         </ul>
@@ -235,24 +236,8 @@ function objectiveConstraintLines(obj) {
             class="list-group-item bg-dark text-light border-secondary py-2 d-flex justify-content-between gap-2"
           >
             <span>{{ traderRequirementLabel(requirement) }}<br v-if="requirement.sourceUrl"><a v-if="requirement.sourceUrl" :href="safeUrl(requirement.sourceUrl)" target="_blank" rel="noopener noreferrer" class="small">{{ requirement.sourceLabel }}</a></span>
-            <span
-              class="badge align-self-center"
-              :class="traderRequirementResult(requirement).met
-                ? 'bg-success'
-                : (traderRequirementResult(requirement).unknown ? 'bg-secondary' : 'bg-danger')"
-            >
-              <template v-if="traderRequirementResult(requirement).unknown">未設定</template>
-              <template v-else>
-                {{ traderRequirementResult(requirement).met ? '達成' : '未達' }}:
-                現在 {{ traderRequirementResult(requirement).actual }}
-              </template>
-            </span>
           </li>
         </ul>
-        <p v-if="task.traderLevelRequirements?.length" class="small text-muted mb-2">
-          トレーダー条件のロック判定は現在
-          <strong>{{ traderRequirementsEnabled ? '有効' : '無効' }}</strong>です。
-        </p>
 
         <ul v-if="task.otherRequirements?.length" class="list-group">
           <li
@@ -264,9 +249,9 @@ function objectiveConstraintLines(obj) {
             <details v-if="requirement.type === 'globalVariable'" class="small text-muted mt-1">
               <summary>&#25216;&#34899;&#24773;&#22577;&#65288;&#26410;&#26908;&#35388;&#65289;</summary>
               {{ describeGlobalVariable(requirement).technical }}
-              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1・完了数は自動判定しません</a>
+              <a v-if="describeGlobalVariable(requirement).sourceUrl" :href="safeUrl(describeGlobalVariable(requirement).sourceUrl)" target="_blank" rel="noopener noreferrer">出典: TarkovTracker / 1.1</a>
             </details>
-            <span class="badge bg-secondary ms-1">自動判定なし</span>
+            <span class="badge bg-secondary ms-1">ゲーム内で確認</span>
           </li>
         </ul>
       </div>

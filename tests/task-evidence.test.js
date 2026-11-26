@@ -1,9 +1,9 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { applyTaskEvidence, CRISIS_REQUIREMENT_SOURCE } from '../src/logic/taskEvidence.js'
+import { applyTaskCatalogEvidence, applyTaskEvidence, CRISIS_REQUIREMENT_SOURCE } from '../src/logic/taskEvidence.js'
 import { describeGlobalVariable, UNVERIFIED_GLOBAL_CONDITION_LABEL } from '../src/logic/globalConditionLabels.js'
 import { PROGRESSION_CONDITION_LABELS } from '../src/data/progressionConditionLabels.js'
-import { evaluateTaskAvailability } from '../src/logic/taskLogic.js'
+import { evaluateTaskAvailability, filterActiveTasks, getPrerequisiteClosure } from '../src/logic/taskLogic.js'
 import { buildFlowchartGateGraph } from '../src/logic/flowchartLogic.js'
 
 test('23 observed and four unresolved groups have qualified labels, not calculated completion', () => {
@@ -13,8 +13,8 @@ test('23 observed and four unresolved groups have qualified labels, not calculat
   assert.deepEqual(entries.filter(([,e]) => e.verification === 'unresolved').map(([,e]) => e.trader + ':' + e.tier).sort(), ['Mechanic:3','Mechanic:4','Prapor:4','Ragman:1'])
   for (const [id, entry] of entries) {
     const info = describeGlobalVariable({variableId:id,compareMethod:'>=',value:1})
-    assert.ok(info.label.includes(entry.trader + ' Tier ' + entry.tier))
-    assert.ok(info.label.includes(entry.verification === 'verified' ? 'コミュニティ観測・参考' : '推定・未確定'))
+    const qualifier = entry.verification === 'verified' ? '参考' : '推定'
+    assert.equal(info.label, `${entry.trader} LL${entry.tier}のタスク（${qualifier}）`)
     assert.equal(info.verified, false)
     assert.equal(info.sourceRevision, '1.1.0')
     assert.equal(Object.hasOwn(entry,'taskIds'), false)
@@ -23,7 +23,7 @@ test('23 observed and four unresolved groups have qualified labels, not calculat
   }
 })
 
-test('Crisis receives separate sourced LL4 with unknown variable preserved, chart hiding and optional eligibility intact', () => {
+test('Crisis receives separate sourced LL4 with its task count gate preserved, chart hiding and optional eligibility intact', () => {
   const variable={type:'globalVariable',variableId:'6a56925b1c30ba5a77c7c518',compareMethod:'>=',value:1}
   const raw={id:'60e71c48c1bfa3050473b8e5',name:'Crisis',minPlayerLevel:38,traderLevelRequirements:[],taskRequirements:[],otherRequirements:[variable]}
   const before=JSON.stringify(raw), task=applyTaskEvidence(raw)
@@ -40,10 +40,13 @@ test('Crisis receives separate sourced LL4 with unknown variable preserved, char
   for(const [level,locked] of [[3,true],[4,false]]) assert.equal(evaluateTaskAvailability(task,[],{playerLevel:38,traderRequirementsEnabled:true,traderProgress:{'54cb57776803fa99248b456e':{level}}}).locked,locked)
   assert.equal(evaluateTaskAvailability(task,[],{playerLevel:37}).locked,true)
   assert.equal(evaluateTaskAvailability(task,[],{playerLevel:38,traderRequirementsEnabled:false}).locked,false)
-  const graph=buildFlowchartGateGraph([task]);assert.equal(graph.nodes.length,1)
+  const graph=buildFlowchartGateGraph([task]);assert.equal(graph.nodes.length,2)
   assert.equal(graph.nodes[0].key,'global:'+variable.variableId)
   assert.equal(graph.nodes[0].automatic,false)
-  assert.ok(!graph.nodes[0].label.includes('LL4'))
+  assert.equal(graph.nodes[0].label,'Therapist LL4のタスク（参考）')
+  assert.equal(graph.edges[0].displayLabel,'1件以上クリア')
+  assert.ok(graph.nodes.some(node => node.label === 'Therapist LL4以上' && node.automatic))
+  assert.ok(graph.edges.some(edge => edge.gateKey.startsWith('trader:') && edge.taskId === task.id))
 })
 
 
@@ -59,4 +62,32 @@ test('shared variable nodes stay unknown when any sibling uses an unsupported pr
     assert.deepEqual(graph.edges.map(e=>e.label).sort(),['== 0','>= 1'].sort())
     assert.equal(graph.nodes[0].automatic,false)
   }
+})
+
+test('Lightkeeper evidence adds missing game IDs after retrieval, scoped to PvE and regular PvP', () => {
+  const upstream = [{ id: '63966faeea19ac7ed845db2c', name: 'Information Source', taskRequirements: [] }]
+  const start = '6a880acc9216d0f5aa078305'
+  const next = '6a880f5d9438980c42076efe'
+  const end = '625d700cc48e6c62a440fab5'
+  const mode = 'pve'
+  const tasks = applyTaskCatalogEvidence(upstream, mode)
+  assert.equal(tasks.length, 12)
+  assert.equal(new Set(tasks.map((task) => task.id)).size, 12)
+  assert.equal(upstream.length, 1)
+  assert.strictEqual(tasks[0], upstream[0])
+  assert.strictEqual(applyTaskCatalogEvidence(upstream, 'pvp-season'), upstream)
+  assert.equal(applyTaskCatalogEvidence([], mode).length, 0)
+  assert.deepEqual(applyTaskCatalogEvidence(upstream, 'regular'), tasks)
+  assert.strictEqual(applyTaskCatalogEvidence(tasks, mode), tasks)
+  assert.deepEqual(filterActiveTasks(tasks, [], { showLightkeeperOnly: true }).map(t => t.id), [start])
+  assert.deepEqual(filterActiveTasks(tasks, [start], { showLightkeeperOnly: true }).map(t => t.id), [next])
+  assert.equal(getPrerequisiteClosure(end, tasks).length, 9)
+  assert.equal(tasks.find(t => t.id === start).catalogEvidence.checkedAt, '2026-11-24')
+
+  const newer = { id: start, name: '公式のタスク', lightkeeperRequired: false, taskRequirements: [{ status: ['active'] }] }
+  const merged = applyTaskCatalogEvidence([...upstream, newer], mode)
+  assert.strictEqual(merged.find(t => t.id === start), newer)
+  assert.deepEqual(merged.find(t => t.id === next).taskRequirements, [{
+    task: { id: start, name: newer.name }, status: ['complete'],
+  }])
 })

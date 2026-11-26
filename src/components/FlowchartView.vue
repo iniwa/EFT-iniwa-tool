@@ -11,7 +11,8 @@ import { useUserProgress } from '../composables/useUserProgress.js'
 import { useApiData } from '../composables/useApiData.js'
 import { TRADER_ORDER } from '../data/constants.js'
 import * as TaskLogic from '../logic/taskLogic.js'
-import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge } from '../logic/flowchartLogic.js'
+import { getTaskDisplayName } from '../logic/taskReference.js'
+import { getZoomedStageBounds, buildFlowchartGateGraph, formatMermaidDottedEdge, getFlowchartUnlockRanks } from '../logic/flowchartLogic.js'
 
 const {
   completedTasks,
@@ -103,6 +104,8 @@ function escapeLabel(text) {
     .replace(/\)/g, '）')
 }
 
+const MAX_CHART_EDGES = 1500
+
 // --- フローチャート描画 ---
 async function renderChart() {
   if (!mermaidContainer.value) return
@@ -190,7 +193,7 @@ async function renderChart() {
   nodesToRender.forEach((task, taskId) => {
     const nid = taskToNodeId.get(taskId)
     const isExternal = !isCurrentTraderTask(task)
-    const label = escapeLabel(`${task.name}${isExternal && task.trader?.name ? ` (${task.trader.name})` : ''}`)
+    const label = escapeLabel(`${getTaskDisplayName(task)}${isExternal && task.trader?.name ? ` (${task.trader.name})` : ''}`)
     const status = TaskLogic.getTaskStatus(task.id, completedTasks.value, taskStatuses.value)
     const isDone = status === 'complete'
     const isPriority = prioritizedTasks.value.includes(task.id)
@@ -232,12 +235,13 @@ async function renderChart() {
 
   // エッジ定義 (前提タスク → タスク)
   nodesToRender.forEach((task, taskId) => {
-    if (task.taskRequirements) {
+    if (Array.isArray(task.taskRequirements)) {
       task.taskRequirements.forEach((req) => {
-        const fromId = taskToNodeId.get(req.task.id)
+        const fromId = taskToNodeId.get(req?.task?.id)
         const toId = taskToNodeId.get(taskId)
         if (fromId && toId) {
-          const statusLabel = TaskLogic.formatTaskRequirementStatuses(req.status)
+          const statuses = TaskLogic.getTaskRequirementStatuses(req)
+          const statusLabel = statuses ? TaskLogic.formatTaskRequirementStatuses(statuses) : '要確認'
           const renderedLabel = statusLabel ? `|${escapeLabel(statusLabel)}|` : ''
           graph += `  ${fromId} -->${renderedLabel} ${toId}\n`
           edgeCount++
@@ -249,10 +253,28 @@ async function renderChart() {
     const fromId = gateNodeIds.get(edge.gateKey)
     const toId = taskToNodeId.get(edge.taskId)
     if (fromId && toId) {
-      graph += formatMermaidDottedEdge(fromId, toId, edge.label ? escapeLabel(edge.label) : '')
+      graph += formatMermaidDottedEdge(fromId, toId, edge.displayLabel ? escapeLabel(edge.displayLabel) : '')
       edgeCount++
     }
   })
+  // Anchor ranks with invisible layout-only links after checking the edge budget.
+  const unlockRanks = getFlowchartUnlockRanks([...nodesToRender.values()])
+  const lastRank = Math.max(0, ...unlockRanks.values())
+  const remainingEdges = MAX_CHART_EDGES - edgeCount
+  const guideLength = lastRank + 1
+  if (unlockRanks.size > 1 && remainingEdges >= lastRank - 1 + unlockRanks.size) {
+    const aligned = remainingEdges >= guideLength + unlockRanks.size * 2
+    const end = aligned ? guideLength : lastRank - 1
+    graph += '  rank0[" "]\n'
+    for (let index = 0; index < end; index++) {
+      graph += `  rank${index} ~~~ rank${index + 1}[" "]\n`
+    }
+    for (const [taskId, rank] of unlockRanks) {
+      const node = taskToNodeId.get(taskId)
+      graph += `  rank${rank - 1} ~~~ ${node}\n`
+      if (aligned) graph += `  ${node} ~~~ rank${rank + 1}\n`
+    }
+  }
   const connected = new Set()
   nodesToRender.forEach((task) => (task.taskRequirements || []).forEach((req) => { if (taskToNodeId.has(req?.task?.id)) { connected.add(task.id); connected.add(req.task.id) } }))
   chartStats.value = {
@@ -272,7 +294,7 @@ async function renderChart() {
     cancelPan()
     nodeMap = renderNodeMap
     chartGateDetails.value = gateGraph.nodes.filter(node => node.kind === 'globalVariable').map(node => ({
-      ...node, requirements: gateGraph.edges.filter(edge => edge.gateKey === node.key).map(edge => ({ ...edge, taskName: byId.get(edge.taskId)?.name || edge.taskId })),
+      ...node, requirements: gateGraph.edges.filter(edge => edge.gateKey === node.key).map(edge => ({ ...edge, taskName: getTaskDisplayName(byId.get(edge.taskId)) })),
     }))
     mermaidContainer.value.innerHTML = svg
 
@@ -298,6 +320,10 @@ async function renderChart() {
     // ノード要素にポインターカーソルを設定
     const nodes = mermaidContainer.value.querySelectorAll('.node')
     nodes.forEach((el) => {
+      if (/(?:^|-)rank\d+(?:-|$)/.test(el.id || '')) {
+        el.remove()
+        return
+      }
       if (/(?:^|-)g\d+(?:-|$)/.test(el.id || '')) {
         el.style.cursor = 'default'
         const state = el.classList.contains('gateUnknown') ? '自動判定なし' : '解放条件'
@@ -382,15 +408,15 @@ function handleChartClick(event) {
     toggleTask(task.id)
   } else if (isInitialSetupMode.value) {
     // 初期設定モード: タスクと全前提タスクを要件ステータスに沿って適用
-    const taskName = task.name
+    const taskName = getTaskDisplayName(task)
     const plan = TaskLogic.getInitialSetupPlan(task.id, taskData.value)
     const totalCount = plan.length
-    const conflictCount = plan.filter((entry) => entry.conflict).length
-    const conflictNotice = conflictCount > 0
-      ? `\n※分岐条件が競合する前提タスク ${conflictCount} 件は、単一の状態では全経路を同時に満たせないため推奨値を設定します。`
-      : ''
+    if (plan.some((entry) => entry.conflict)) {
+      alert('矛盾または確認できない前提タスクがあるため、一括設定を中止しました。個別のタスク詳細を確認してください。')
+      return
+    }
     const confirmed = confirm(
-      `「${taskName}」と前提タスク ${Math.max(0, totalCount - 1)} 件を、要件に基づく推奨ステータス（完了/進行中/失敗）で設定しますか？${conflictNotice}`
+      `「${taskName}」と前提タスク ${Math.max(0, totalCount - 1)} 件を、要件に基づく推奨ステータス（完了/進行中/失敗）で設定しますか？`
     )
     if (confirmed) {
       // 対象タスクと全前提タスクへ推奨ステータスを適用
@@ -424,7 +450,7 @@ onMounted(() => {
     startOnLoad: false,
     theme: 'dark',
     securityLevel: 'strict',
-    maxEdges: 1500,
+    maxEdges: MAX_CHART_EDGES,
     flowchart: {
       useMaxWidth: false,
       htmlLabels: true,
@@ -505,7 +531,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
 
     <!-- チャート本体 -->
     <div class="px-3 py-2 small text-muted border-bottom border-secondary">
-      実線=タスク前提 / 点線=解放条件（推測でタスク同士を接続しません）・実験的機能　
+      実線は前提タスク、点線はゲーム内の解放条件です。前提タスクに沿って、解放LLが低く、必要なクリア数が少ないタスクを左寄りに配置します。クリア数は該当LLのタスクが対象です（参考・推定）。　
       対象 {{ chartStats.selected }} / 表示 {{ chartStats.nodes }} / エッジ {{ chartStats.edges }} / 条件ノード {{ chartStats.gateNodes }} / 外部 {{ chartStats.external }} / 孤立 {{ chartStats.isolated }}
       <span class="ms-2">
         <span class="badge bg-success">完了</span>
@@ -526,7 +552,7 @@ onUnmounted(() => { dispose(); window.removeEventListener('blur', cancelPan); cl
       </div>
     </details>
     <div v-if="targetTaskId !== null" class="px-3 py-2 small border-bottom border-secondary" role="status">
-      <span v-if="targetTask">{{ targetTask.name }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
+      <span v-if="targetTask">{{ getTaskDisplayName(targetTask) }} &#12398;&#21069;&#25552;&#12539;&#24460;&#32154;&#12479;&#12473;&#12463;</span>
       <span v-else>&#23550;&#35937;&#12479;&#12473;&#12463;&#12364;&#35211;&#12388;&#12363;&#12426;&#12414;&#12379;&#12435;&#12290;</span>
       <button class="btn btn-sm btn-outline-secondary ms-2" type="button" @click="clearTarget">&#36890;&#24120;&#34920;&#31034;&#12395;&#25147;&#12427;</button>
     </div>

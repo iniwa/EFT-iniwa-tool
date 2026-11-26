@@ -7,6 +7,7 @@ import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import { useUserProgress } from '../composables/useUserProgress.js'
 import { useAppState } from '../composables/useAppState.js'
+import { evaluateTaskAvailability } from '../logic/taskLogic.js'
 
 const emit = defineEmits(['open-task-details'])
 
@@ -21,55 +22,37 @@ const {
   setObjectiveCount,
   clearAllFocused,
 } = useOverlay()
-const { completedTasks, toggleTask } = useUserProgress()
+const { completedTasks, toggleTask, taskStatuses } = useUserProgress()
 const { playerLevel } = useAppState()
 
 // 連鎖モード: あるタスクを完了した際、そのタスクを前提とする
 // 「次に着手可能になる」タスクを自動でピン留めする
 function findUnlockedTasks(completedTaskId) {
   if (!taskData.value) return []
-  const completedSet = new Set([...completedTasks.value, completedTaskId])
-  const lv = playerLevel.value
-  const result = []
-
-  for (const t of taskData.value) {
-    // 完了済み・既にピン留め済みはスキップ
-    if (completedSet.has(t.id)) continue
-    if (focusedTaskIds.value.includes(t.id)) continue
-
-    // completedTaskId を前提に含むか？
-    const reqs = t.taskRequirements || []
-    const dependsOnCompleted = reqs.some((r) => r && r.task && r.task.id === completedTaskId)
-    if (!dependsOnCompleted) continue
-
-    // 他の前提条件もすべて完了しているか？
-    const allReqsMet = reqs.every((r) => r && r.task && completedSet.has(r.task.id))
-    if (!allReqsMet) continue
-
-    // レベル条件 (playerLevel=0は制限なし)
-    if (lv > 0 && t.minPlayerLevel && t.minPlayerLevel > lv) continue
-
-    result.push(t.id)
+  const before = completedTasks.value
+  const after = [...before, completedTaskId]
+  const completed = new Set(after)
+  const focused = new Set(focusedTaskIds.value)
+  const options = {
+    playerLevel: playerLevel.value,
+    taskStatuses: taskStatuses.value,
   }
-  return result
+  return taskData.value
+    .filter((task) => !completed.has(task.id) && !focused.has(task.id)
+      && Array.isArray(task.taskRequirements)
+      && task.taskRequirements.some((requirement) => requirement?.task?.id === completedTaskId)
+      && evaluateTaskAvailability(task, before, options).locked
+      && !evaluateTaskAvailability(task, after, options).locked)
+    .map((task) => task.id)
 }
 
 function completeTask(task) {
   if (!task) return
   const alreadyDone = completedTasks.value.includes(task.id)
 
-  // 既存完了システムに反映
+  const nextIds = overlayConfig.value.chainMode && !alreadyDone ? findUnlockedTasks(task.id) : []
   if (!alreadyDone) toggleTask(task.id)
-
-  // 次タスクを連鎖表示（ONの時のみ）
-  if (overlayConfig.value.chainMode && !alreadyDone) {
-    const nextIds = findUnlockedTasks(task.id)
-    for (const id of nextIds) {
-      if (!focusedTaskIds.value.includes(id)) {
-        toggleFocusedTask(id)
-      }
-    }
-  }
+  nextIds.forEach(toggleFocusedTask)
 
   // 完了タスクはピン留めから外す
   removeFocusedTask(task.id)
@@ -99,7 +82,7 @@ async function copyOverlayUrl() {
 
 function handleClearAll() {
   if (focusedTaskIds.value.length === 0) return
-  if (confirm('ピン留めされたタスクを全てクリアしますか？')) {
+  if (confirm('すべてのタスクの優先設定と配信オーバーレイの進捗カウントを消去しますか？')) {
     clearAllFocused()
   }
 }
@@ -247,7 +230,7 @@ function onCountInput(taskId, idx, event) {
                 @click="handleClearAll"
                 :disabled="focusedTaskIds.length === 0"
               >
-                ピン留めを全てクリア
+                優先設定を全て解除
               </button>
             </div>
           </div>
@@ -257,7 +240,7 @@ function onCountInput(taskId, idx, event) {
         <div class="col-md-8">
           <div class="card bg-dark border-secondary h-100">
             <div class="card-header bg-dark border-secondary py-2 d-flex justify-content-between align-items-center">
-              <small class="text-info fw-bold">ピン留め中のタスク</small>
+              <small class="text-info fw-bold">優先タスク</small>
               <span class="badge bg-secondary">{{ focusedTaskIds.length }} 件</span>
             </div>
             <div class="card-body p-2">
@@ -266,7 +249,7 @@ function onCountInput(taskId, idx, event) {
                 v-if="focusedTasks.length === 0"
                 class="text-center text-muted py-5 small"
               >
-                タスク一覧で 📌 ボタンを押してピン留めしてください
+                進捗入力の ☆ ボタンでタスクを優先設定してください
               </div>
 
               <!-- タスクカードリスト -->
@@ -319,7 +302,7 @@ function onCountInput(taskId, idx, event) {
                       <button
                         class="btn btn-outline-danger"
                         @click="removeFocusedTask(task.id)"
-                        title="ピン留めのみ解除（完了にはしない）"
+                        title="優先設定を解除"
                       >✕</button>
                     </div>
                   </div>

@@ -7,6 +7,7 @@ const props = defineProps({
     resumeFocus: { type: Function, default: null },
     maxWidth: { type: String, default: '600px' },
     ariaLabel: { type: String, default: 'Dialog' },
+    variant: { type: String, default: 'center' },
 })
 
 const emit = defineEmits(['close'])
@@ -57,7 +58,7 @@ onUnmounted(() => { document.removeEventListener('keydown', onKeydown); if (prop
 
 <template>
     <Teleport to="body">
-        <div v-if="show" v-show="!suspended" class="modal-overlay" @click.self="emit('close')">
+        <div v-if="show" v-show="!suspended" class="modal-overlay" :data-variant="variant" @click.self="emit('close')">
             <div ref="dialog" class="modal-content-custom" :style="{ maxWidth }" role="dialog" aria-modal="true" :aria-label="ariaLabel" tabindex="-1">
                 <slot />
             </div>

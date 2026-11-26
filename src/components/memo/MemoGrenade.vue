@@ -24,7 +24,7 @@
             <tr>
                 <td class="text-start ps-4 fw-bold text-info">V40 Mini</td>
                 <td class="text-center">3.0s</td>
-                <td class="text-center">1–5m / 25破片</td>
+                <td class="text-center">2–5m / 25破片</td>
                 <td class="text-muted-dark">軽量で遠投しやすい (目安)。</td>
             </tr>
             <tr>
@@ -53,5 +53,5 @@
             </tr>
         </tbody>
     </table>
-    <p class="p-2 small text-muted mb-0">2026-10-07確認・コミュニティWiki: <a href="https://wikiwiki.jp/eft/RGN%20hand%20grenade" target="_blank" rel="noopener noreferrer">RGN</a> / <a href="https://wikiwiki.jp/eft/RGO%20hand%20grenade" target="_blank" rel="noopener noreferrer">RGO</a>。範囲はWiki表の最小–最大値で、確殺範囲ではありません。衝撃信管の投擲直後の不発は旧検証・要確認。</p>
+    <p class="p-2 small text-muted mb-0">2026-11-24: <a href="https://json.tarkov.dev/endpoints" target="_blank" rel="noopener noreferrer">tarkov.dev</a> の3モードの数値を照合。範囲は最小–最大値で、確殺範囲ではありません。衝撃信管の投擲直後の不発は旧検証・要確認。</p>
 </template>

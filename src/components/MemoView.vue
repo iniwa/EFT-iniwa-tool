@@ -49,7 +49,7 @@ const sections = [
 
         <div class="card-body bg-black p-0">
             <div class="px-3 py-2 text-secondary small border-bottom border-secondary" style="font-size: 0.85rem;">
-                ※ 2026-10-07の調査を反映した実用早見表です。運用評価は「目安」、未確定の旧情報は「要確認」。価格・解放条件はゲーム内表示を優先してください。
+                ※ 2026-11-24に公式パッチ1.3.0.0とtarkov.devの通常PvP・PvE・Seasonal PvPデータを照合。ゲーム内実測が必要な値や記載のない条件は要確認です。武器の特徴・おすすめは運用の目安で、実際の価格・性能・解放条件はゲーム内表示を優先してください。
             </div>
 
             <div class="accordion accordion-flush">
