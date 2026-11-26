@@ -9,6 +9,7 @@ import { useApiData } from '../composables/useApiData.js'
 import { useOverlay } from '../composables/useOverlay.js'
 import * as TaskLogic from '../logic/taskLogic.js'
 import { getProgressionPoolCounts } from '../logic/globalConditionLabels.js'
+import { getTaskDisplayName } from '../logic/taskReference.js'
 
 const { playerLevel, gameMode } = useAppState()
 
@@ -265,7 +266,7 @@ const hideoutPercent = computed(() => {
               <input
                 class="form-check-input check"
                 type="checkbox"
-                :aria-label="`${task.name} を完了にする`"
+                :aria-label="`${getTaskDisplayName(task)} を完了にする`"
                 :checked="completedTasks.includes(task.id)"
                 @change="toggleTask(task.id)"
               >
@@ -274,7 +275,7 @@ const hideoutPercent = computed(() => {
               type="button"
               class="chip px-2"
               :aria-pressed="prioritizedTasks.includes(task.id)"
-              :aria-label="`${task.name} の優先設定`"
+              :aria-label="`${getTaskDisplayName(task)} の優先設定`"
               :title="overlayEnabled ? '優先設定・配信オーバーレイ表示' : '優先設定'"
               @click="togglePriority(task.id)"
             >{{ prioritizedTasks.includes(task.id) ? '★' : '☆' }}</button>
@@ -287,7 +288,7 @@ const hideoutPercent = computed(() => {
                 }"
                 @click="emit('open-task-details', task)"
               >
-                <span v-if="taskDisplay.get(task.id).locked" aria-hidden="true">🔒 </span>{{ task.name }}
+                <span v-if="taskDisplay.get(task.id).locked" aria-hidden="true">🔒 </span>{{ getTaskDisplayName(task) }}
               </button>
               <div class="task-meta">
                 <span v-if="taskStatuses[task.id] === 'active'" class="badge bg-info text-dark">進行中</span>
@@ -307,7 +308,7 @@ const hideoutPercent = computed(() => {
               </div>
             </div>
             <span v-if="taskViewMode !== 'trader'" class="task-trader">{{ task.trader?.name || 'Unknown' }}</span>
-            <button type="button" class="icon-btn" :aria-label="`${task.name} の詳細を開く`" @click="emit('open-task-details', task)">›</button>
+            <button type="button" class="icon-btn" :aria-label="`${getTaskDisplayName(task)} の詳細を開く`" @click="emit('open-task-details', task)">›</button>
           </div>
         </section>
 
