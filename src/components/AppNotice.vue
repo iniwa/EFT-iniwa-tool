@@ -78,37 +78,28 @@ defineExpose({ show })
       </header>
 
       <div class="vstack gap-2">
-        <details class="border border-secondary rounded" name="update-history" open>
+        <details class="rounded border border-info border-2 bg-info bg-opacity-10" name="update-history" open>
           <summary class="notice-release-title fw-bold" tabindex="0">v3.5.0 — シーズン2に向けて大幅調整</summary>
           <div class="p-3 pt-0">
-            <ul class="list-unstyled d-grid gap-3 mb-0 text-light">
+            <p class="text-light mb-3">進捗入力や必要なアイテムの画面を中心に、ツール全体のUIを大きく見直しました。</p>
+            <ul class="d-grid gap-2 mb-0 text-light">
               <li>
-                <strong class="d-block text-info">進捗入力・ライトキーパー</strong>
-                タスクとハイドアウトを切り替えられます。「LK」で To the Light を含む解放タスクを確認できます。必要なレベル・トレーダーLL・クリア数が未達のタスクは「ロック中も表示」で確認できます。
+                <strong>UIの大幅変更</strong>　進捗入力では「タスク」と「ハイドアウト」を切り替えられます。「必要なアイテム」も対象別に切り替え、FIR品と買い物を確認しやすくしました。PCとスマホのナビゲーションも刷新しています。
               </li>
               <li>
-                <strong class="d-block text-info">フローチャート</strong>
-                「解放条件を表示」で「Therapist LL4以上」などの条件を確認できます。前提タスクのつながりを優先し、解放LLが低いタスクを左寄りに配置します。同じLLでは必要なクリア数が少ないタスクが先です。
+                <strong>To The Lightを追加</strong>　一覧から抜けていたライトキーパーの解放タスク「To The Light」を補完しました。「LK」から確認できます。
               </li>
               <li>
-                <strong class="d-block text-info">必要なアイテム</strong>
-                「ハイドアウト」と「タスク」を切り替え、FIR品と買い物を確認できます。タスクでは全未完了か、優先タスクと必要な前提に絞って集計でき、入手元からタスク詳細を開けます。
+                <strong>フローチャートを改善</strong>　トレーダーのLL条件を表示し、前提タスクのつながりに沿って、解放LLと必要なクリア数で配置を調整しました。
               </li>
               <li>
-                <strong class="d-block text-info">鍵管理</strong>
-                開錠先の戦利品・容器・出典を追加し、標準ティアを見直しました。血錆の鍵と主要マークドキーはSS、脱出口を解放する鍵は最低Aです。手動評価は点線の「暫定」を置き換え、実線の「確定」で表示します。
+                <strong>運営側で鍵ティアを用意</strong>　開錠先の戦利品や容器をもとに、運営側で目安を付けました。暫定評価なので、鍵の購入や持ち込みを考える際の参考程度にしてください。自分で評価を付けると、一覧ではその評価が優先されます。
               </li>
               <li>
-                <strong class="d-block text-info">ストーリー・メモ</strong>
-                メインとサイドのストーリーを整理し、Boreasはサイドストーリーで進捗を記録できます。メモの武器・回復・トレーダー・アイテムなどの記載も見直しました。
+                <strong>ストーリー・メモを見直し</strong>　ストーリーの手順や分岐を整理し、Boreasはサイドストーリーで追えるようにしました。メモの情報も見直しています。
               </li>
               <li>
-                <strong class="d-block text-info">シーズン2 Modifier</strong>
-                UNTAR Controlのビルドを試算し、シーズン別に下書き・プリセットを保存できます。ビルドの画像プレビューとPNG出力にも対応しました。
-              </li>
-              <li>
-                <strong class="d-block text-info">メニュー・データ操作</strong>
-                PCは左、スマホは画面下のナビゲーションと「その他」から各機能を開けます。進捗の Import / Export はヘッダーの「データ操作」（スマホでは「⋯」）にあります。
+                <strong>配信・更新情報を改善</strong>　配信オーバーレイは進捗入力と同じ優先タスクを使います。更新情報はバージョンごとに折りたたみ、非表示の操作を右上にまとめました。
               </li>
             </ul>
           </div>
@@ -116,6 +107,16 @@ defineExpose({ show })
         <details class="border border-secondary rounded" name="update-history">
           <summary class="notice-release-title fw-bold" tabindex="0">v3.4.x — タスク計画とシーズン2 Modifier</summary>
           <div class="vstack gap-3 p-3 pt-0">
+            <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
+              <h3 class="h5 text-info fw-bold mb-3">🧬 v3.4.2 - モディファイアのPNG保存</h3>
+              <p class="text-light mb-2">
+                Modifier タブの「共有」から「画像プレビュー」を開き、選んだ構成をPNGで保存できます。
+                左に Positive（ポイント消費）、右に Negative（ポイント獲得）を並べ、各項目の効果とポイント、全体の収支を1枚にまとめます。
+              </p>
+              <p class="small text-warning mb-0">
+                シーズン2の効果やポイントは未確定で、シーズン開始前に変更される可能性があります。この注記はPNGにも表示されます。
+              </p>
+            </div>
             <div class="p-4 rounded border border-info border-2 bg-info bg-opacity-10">
               <h3 class="h5 text-info fw-bold mb-3">🧬 v3.4.1 - UNTAR Control のモディファイアを追加</h3>
               <p class="text-light mb-2">
